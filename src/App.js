@@ -1,14 +1,16 @@
 import React from 'react';
 import Main from './Components/main';
 import Menu from './Components/menu';
-import MasonryPage from './Components/MasonryPage'
+import ImageMasonry  from './Components/ImageMasonry'
+import PhotoGallery from './PhotoGallery'
 
 const App = () => {
   return (
     <div>
       <Menu />
       <Main />
-      <MasonryPage />
+      <ImageMasonry />
+      <PhotoGallery/>
     </div>
   );
 };
