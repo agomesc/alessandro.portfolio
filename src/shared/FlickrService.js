@@ -1,6 +1,6 @@
 class FlickrService {
   constructor(apiKey) {
-    this.apiKey = apiKey; 
+    this.apiKey = apiKey;
   }
 
   listarAlbuns = async (userId) => {
@@ -15,9 +15,6 @@ class FlickrService {
   };
 
   listarFotos = async (albumId) => {
-    const meuElemento = document.getElementById("fotos");
-    meuElemento.scrollIntoView({ behavior: "smooth" });
-
     // Construir a URL da API do Flickr para listar as fotos de um álbum
     const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${this.apiKey}&photoset_id=${albumId}&format=json&nojsoncallback=1`;
     // Fazer uma requisição HTTP GET para a URL e obter a resposta
