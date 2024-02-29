@@ -3,7 +3,6 @@ import Main from "./Components/main";
 import Menu from "./Components/menu";
 import Container from "@mui/material/Container";
 import ImageMasonry from "./Components/ImageMasonry";
-import PhotoGallery from "./PhotoGallery";
 import FlickrApp from "./shared/FlickrApp";
 
 const App = () => {
@@ -26,7 +25,6 @@ const App = () => {
       <Menu />
       <Main />
       <ImageMasonry />
-      <PhotoGallery />
     </Container>
   );
 };
