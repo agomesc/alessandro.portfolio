@@ -32,8 +32,9 @@ const ImageMasonry = () => {
   }, []);
 
   return (
-    <Box sx={{ width: 1024, minHeight: 829 }}>
+    <Box sx={{ width: '100vw', height: '100vh' }}>
       <Masonry columns={3} spacing={2}>
+        
         {galleryData.map((item, index) => (
           <div key={index}>
             <Label>{item.title}</Label>

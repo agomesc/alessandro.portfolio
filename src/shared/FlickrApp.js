@@ -12,7 +12,7 @@ class FlickrApp extends FlickrService {
     var itemData = [];
     data.forEach(function (album) {
       itemData.push({
-        img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_w.jpg`,
+        img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_b.jpg`,
         title: album.title._content,
         id: album.id,
       });
