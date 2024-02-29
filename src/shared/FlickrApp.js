@@ -26,8 +26,8 @@ class FlickrApp extends FlickrService {
     let data = await flickrService.listarFotos(albumId);
     let itemData = [];
     data.forEach(function (photo) {
-      let src = `https://farm${photo.farm}.staticflickr.com${photo.server}/${photo.id}_${photo.secret}"_b.jpg`;
-      itemData.push({ id: photo.id, img: src, title: photo.title });
+      let src = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+      itemData.push({ id: photo.id, url: src, title: photo.title });
     });
 
     return itemData;

@@ -26,7 +26,7 @@ const App = () => {
       <Menu />
       <Main />
       <ImageMasonry />
-      {/* <PhotoGallery/> */}
+      <PhotoGallery />
     </Container>
   );
 };
