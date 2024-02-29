@@ -1,9 +1,10 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
-import FlickrService from "../shared/FlickrService";
+import  FlickrApp from '../shared/FlickrApp'
+
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -15,13 +16,25 @@ const Label = styled(Paper)(({ theme }) => ({
   borderBottomRightRadius: 0,
 }));
 
-const itemData = [];
 
 const ImageMasonry = () => {
+
+  const [galleryData, setGalleryData] = useState([]);
+  const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
+
+  useEffect(() => {
+    async function fetchData() {
+      const flickrApp = new FlickrApp(apiKey);
+      const data = await flickrApp.GetGallery();
+      setGalleryData(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <Box sx={{ width: 1024, minHeight: 829 }}>
       <Masonry columns={3} spacing={2}>
-        {itemData.map((item, index) => (
+        {galleryData.map((item, index) => (
           <div key={index}>
             <Label>{item.title}</Label>
             <a href={`/DetalhesItem/${item.id}`}>
@@ -45,20 +58,5 @@ const ImageMasonry = () => {
     </Box>
   );
 }
-
-async function GetGallery() {
-  let apiKey = "099c9a89c04c78ec7592650af1d25a7a";
-  var flickrService = new FlickrService(apiKey);
-  var data = await flickrService.listarAlbuns("186526131@N04");
-  data.forEach(function (album) {
-    itemData.push({
-      img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_w.jpg`,
-      title: album.title._content,
-      id: album.id,
-    });
-  });
-}
-
-await GetGallery();
 
 export default  ImageMasonry;

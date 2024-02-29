@@ -41,6 +41,7 @@ class FlickrService {
   
       return data.comments.comment;
     }
+
   }
 
   export default FlickrService;
