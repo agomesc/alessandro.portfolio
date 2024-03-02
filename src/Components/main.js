@@ -14,13 +14,10 @@ const Main = () => {
       setGalleryData(data);
     }
     fetchData();
-
-    console.log("galleryData", galleryData);
   }, [galleryData]);
 
   return (
     <Container maxWidth="ln">
-      <h1>Seja bem-vindo ao meu Portfólio</h1>
       <ImageMasonry data={galleryData} />
     </Container>
   );

@@ -1,25 +1,40 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 const PhotoCarousel = ({ photos }) => {
   return (
-    <Carousel
-      autoPlay={false} // Desabilita a reprodução automática
-      animation="slide" // Define a animação como slide
-      navButtonsAlwaysVisible // Mantém os botões de navegação sempre visíveis
-      indicatorContainerProps={{ style: { display: "none" } }} // Remove os indicadores de slide
-    >
-      {photos.map((photo, index) => (
-        <Paper key={index} style={{ width: "100%" }}>
-          <img
-            src={photo.url}
-            alt={`Photo ${index}`}
-            style={{ width: "100%", height: "auto" }} // Ajusta a imagem ao tamanho do Paper
-          />
-        </Paper>
-      ))}
-    </Carousel>
+    <div style={{ textAlign: "center" }}>
+      <Carousel
+        autoPlay={true}
+        animation="fade"
+        navButtonsAlwaysVisible
+        indicatorContainerProps={{ style: { display: "block" } }}
+      >
+        {photos.map((photo, index) => (
+          <Paper key={index} style={{ width: "100%" }}>
+            <img
+              src={photo.url}
+              alt={`Photo ${index}`}
+              style={{ width: "auto", height: "600px" }}
+            />
+            <Typography
+              variant="h5"
+              style={{
+                position: "flex-box",
+                top: 0,
+                left: 5,
+                background: "rgba(255, 255, 255, 0.8)",
+                padding: "4px",
+                borderRadius: "4px",
+              }}
+            >
+              {photo.title}
+            </Typography>
+          </Paper>
+        ))}
+      </Carousel>
+    </div>
   );
 };
 
