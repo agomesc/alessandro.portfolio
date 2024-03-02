@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Masonry from "@mui/lab/Masonry";
 import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGallery";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Button, Box, Container } from "@mui/material";
 
 const ImageMasonry = ({ data }) => {
   const [open, setOpen] = useState(false);
@@ -20,25 +20,39 @@ const ImageMasonry = ({ data }) => {
   const body = <PhotoGallery id={getID} />;
 
   return (
-    <Box>
-      <Masonry columns={3} spacing={2}>
+    <Container>
+      <Masonry columns={4} spacing={0}>
         {data.map((item, index) => (
           <div key={index}>
             <Button onClick={() => handleOpen(item.id)}>
-              <img
-                srcSet={`${item.img}?w=100vw&auto=format&dpr=2 2x`}
-                src={`${item.img}?w=auto&auto=format`}
-                alt={item.title}
-                loading="lazy"
-                style={{
-                  borderBottomLeftRadius: 4,
-                  borderBottomRightRadius: 4,
-                  display: "block",
-                  width: "100%",
-                }}
-              />
+              <div style={{ position: "relative" }}>
+                <img
+                  srcSet={`${item.img}?w=100vw&auto=format&dpr=2 2x`}
+                  src={`${item.img}?w=auto&auto=format`}
+                  alt={item.title}
+                  loading="lazy"
+                  style={{
+                    borderBottomLeftRadius: 4,
+                    borderBottomRightRadius: 4,
+                    display: "flex-box",
+                    width: "100%",
+                  }}
+                />
+                <Typography
+                  variant="subititle"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    background: "rgba(255, 255, 255, 0.8)",
+                    padding: "4px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </div>
             </Button>
-            <Typography>{item.title}</Typography>
           </div>
         ))}
       </Masonry>
@@ -54,8 +68,8 @@ const ImageMasonry = ({ data }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "80vw",
-            height: "89vh",
+            width: "50vw",
+            height: "auto",
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -64,7 +78,7 @@ const ImageMasonry = ({ data }) => {
           {body}
         </Box>
       </Modal>
-    </Box>
+    </Container>
   );
 };
 
