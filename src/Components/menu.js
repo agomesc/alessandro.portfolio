@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Container from "@mui/material/Container";
 
 const theme = createTheme({
   palette: {
@@ -16,20 +17,22 @@ const theme = createTheme({
 
 const Menu = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Portfólio</Typography>
-          <Button color="inherit" href="">
-            Início
-          </Button>
-          <Button color="inherit" href="">
-            Sobre
-          </Button>
-          {/* Adicione mais botões conforme necessário */}
-        </Toolbar>
-      </AppBar>
-    </ThemeProvider>
+    <Container maxWidth="ln">
+      <ThemeProvider theme={theme}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6">Portfólio</Typography>
+            <Button color="inherit" href="">
+              Início
+            </Button>
+            <Button color="inherit" href="">
+              Sobre
+            </Button>
+            {/* Adicione mais botões conforme necessário */}
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
+    </Container>
   );
 };
 

@@ -25,7 +25,7 @@ const ImageMasonry = ({ data }) => {
         {data.map((item, index) => (
           <div key={index}>
             <Button onClick={() => handleOpen(item.id)}>
-              <div style={{ position: "relative" }}>
+              <Box>
                 <img
                   srcSet={`${item.img}?w=100vw&auto=format&dpr=2 2x`}
                   src={`${item.img}?w=auto&auto=format`}
@@ -39,19 +39,22 @@ const ImageMasonry = ({ data }) => {
                   }}
                 />
                 <Typography
+                  maxWidth="xm"
                   variant="subititle"
                   style={{
                     position: "absolute",
                     top: 0,
-                    left: 0,
+                    left: 4,
                     background: "rgba(255, 255, 255, 0.8)",
-                    padding: "4px",
-                    borderRadius: "4px",
+                    padding: "3px",
+                    borderRadius: "2px",
+                    maxWidth: "100%",
+                    height: "auto",
                   }}
                 >
                   {item.title}
                 </Typography>
-              </div>
+              </Box>
             </Button>
           </div>
         ))}

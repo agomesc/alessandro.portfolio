@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 
 const App = () => {
   return (
-    <Container maxWidth={false} disableGutters>
+    <Container maxWidth="lg" disableGutters>
       <Menu />
       <Main />
     </Container>
