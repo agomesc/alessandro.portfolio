@@ -1,8 +1,21 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGalleryApp";
-import { Typography, Box } from "@mui/material";
-import "./ImageMansory.css"; // Estilo opcional
+import {Box } from "@mui/material";
+import Paper from '@mui/material/Paper';
+import Masonry from '@mui/lab/Masonry';
+import { styled } from '@mui/material/styles';
+import InfoIcon from '@mui/icons-material/Info';
+
+const Label = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(0.5),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
+}));
 
 const ImageMasonry = ({ data }) => {
   const [open, setOpen] = useState(false);
@@ -20,35 +33,30 @@ const ImageMasonry = ({ data }) => {
   return (
     
     <Box className="container-mansory">
-      {data.map((item, index) => (
-        <div
-          className="image-container"
-          onClick={() => handleOpen(item.id)}
-          key={index}
-        >
-          <img
-            srcSet={item.img}
-            src={item.img}
-            alt={item.title}
-            loading="lazy"
-          />
-          <Typography
-            variant="h2"
-            style={{
-              position: "absolute",
-              top: 10,
-              left: 10,
-              background: "rgba(255, 255, 255, 0.8)",
-              padding: "5px",
-              borderRadius: "5px",
-            }}
-          >
-            {item.title}
-          </Typography>
-        </div>
-      ))}
-
+      <Box sx={{ width: "100%", minHeight: "800px" }}>
+      <Masonry columns={4} spacing={2}>
+        {data.map((item, index) => (
+          <div key={index} onClick={() => handleOpen(item.id)}>
+            <Label>{item.title}</Label>
+            <img
+              srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
+              src={`${item.img}?w=162&auto=format`}
+              alt={item.title}
+              loading="lazy"
+              style={{
+                borderBottomLeftRadius: 4,
+                borderBottomRightRadius: 4,
+                display: 'block',
+                width: '100%',
+                height: "auto"
+              }}
+            />
+          </div>
+        ))}
+      </Masonry>
+    </Box>
       <Modal
+        sx={{width:"100%"}}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -60,11 +68,12 @@ const ImageMasonry = ({ data }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "90%",
-            height: "95vh",
             bgcolor: "background.paper",
             boxShadow: 0,
             display: "block",
+            width:"80%",
+            height:"80%",
+            overflow:"scroll",
             p: 0,
           }}
         >
