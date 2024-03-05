@@ -1,6 +1,7 @@
 // src/components/PhotoGallery.js
 import React, { useState } from "react";
 import "./PhotoGallery.css"; // Estilo opcional
+import Box from "@mui/material/Box";
 
 const PhotoGallery = ({ photos }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -10,7 +11,7 @@ const PhotoGallery = ({ photos }) => {
   };
 
   return (
-    <div className="photo-gallery">
+    <Box className="photo-gallery">
       {photos.map((photo) => (
         <img
           key={photo.id}
@@ -22,12 +23,12 @@ const PhotoGallery = ({ photos }) => {
 
       {selectedPhoto && (
         <div className="fullscreen-overlay" onClick={() => setSelectedPhoto(null)}>
-          <div className="image-container">
-            <img className="image" src={selectedPhoto.url} alt={selectedPhoto.title} />
+          <div className="image-modal">
+            <img src={selectedPhoto.url} alt={selectedPhoto.title} />
           </div>
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 

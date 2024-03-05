@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGalleryApp";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
+import "./ImageMansory.css"; // Estilo opcional
 
 const ImageMasonry = ({ data }) => {
   const [open, setOpen] = useState(false);
@@ -16,21 +17,22 @@ const ImageMasonry = ({ data }) => {
     setOpen(false);
   };
 
-  const body = <PhotoGallery id={getID} />;
-
   return (
-    <div className="container-mansory">
+    
+    <Box className="container-mansory">
       {data.map((item, index) => (
-        <div className="image-container" onClick={() => handleOpen(item.id)}>
+        <div
+          className="image-container"
+          onClick={() => handleOpen(item.id)}
+          key={index}
+        >
           <img
-            srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
-            src={`${item.img}?w=162&auto=format`}
+            srcSet={item.img}
+            src={item.img}
             alt={item.title}
             loading="lazy"
-            className="thumbAlbum"
-                      />
+          />
           <Typography
-            
             variant="h2"
             style={{
               position: "absolute",
@@ -66,10 +68,11 @@ const ImageMasonry = ({ data }) => {
             p: 0,
           }}
         >
-          {body}
+          <PhotoGallery id={getID} />
         </Box>
       </Modal>
-    </div>
+    </Box>
+
   );
 };
 

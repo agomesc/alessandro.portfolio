@@ -17,18 +17,11 @@ const theme = createTheme({
 
 const Menu = () => {
   return (
-    <Container maxWidth="x1" disableGutters>
+    <Container fixed maxWidth="xl"  >
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6">Portfólio</Typography>
-            <Button color="inherit" href="">
-              Início
-            </Button>
-            <Button color="inherit" href="">
-              Sobre
-            </Button>
-            {/* Adicione mais botões conforme necessário */}
+            <Typography variant="subtitle">Alessandro Gomes - Portfólio</Typography>
           </Toolbar>
         </AppBar>
       </ThemeProvider>
