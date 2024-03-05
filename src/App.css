@@ -18,10 +18,6 @@ h3 {
   font-weight: bold;
 }
 
-.thumbAlbum {
-  object-fit: contain;
-}
-
 @media screen and (orientation: portrait) {
   img {
     display: flex;
@@ -71,31 +67,6 @@ h3 {
   padding: 1px;
 }
 
-.progresso {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  border: 1px solid black;
-  height: auto;
-  width: 120px;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-.btn {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background-color: #000;
-  color: white;
-  padding: 10px;
-  text-decoration: none;
-}
-
 .image-container {
   position: relative;
 }
@@ -123,32 +94,6 @@ h3 {
   padding: 10px;
   font-size: 10px;
   margin: 0;
-}
-
-.image-modal {
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-  height: 100vh; /* Altura total da tela (viewport height) */
-}
-
-.image {
-  width: auto; /* Defina uma largura para a imagem */
-  display: block; /* Converte para elemento de bloco */
-  max-width: 100%; /* Garante que a imagem nÃ£o ultrapasse a largura do contÃªiner */
-}
-
-@media screen and (orientation: portrait) {
-  img {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-@media screen and (orientation: landscape) {
-  img {
-    display: inline-flex;
-  }
 }
 
 @media screen and (orientation: landscape) {

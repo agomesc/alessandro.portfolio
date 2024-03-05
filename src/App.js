@@ -6,7 +6,7 @@ import "./App.css";
 const App = () => {
   return (
     <Container maxWidth="x1" disableGutters>
-      <Menu />
+      {/* <Menu /> */}
       <Main />
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
-import PhotoGallery from "../PhotoGallery";
+import PhotoGallery from "../PhotoGalleryApp";
 import { Typography, Button, Box } from "@mui/material";
 
 const ImageMasonry = ({ data }) => {
@@ -19,18 +19,18 @@ const ImageMasonry = ({ data }) => {
   const body = <PhotoGallery id={getID} />;
 
   return (
-    <div className="container-mansory image-container ">
+    <div className="container-mansory">
       {data.map((item, index) => (
-        <Button onClick={() => handleOpen(item.id)}>
+        <div className="image-container" onClick={() => handleOpen(item.id)}>
           <img
             srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
             src={`${item.img}?w=162&auto=format`}
             alt={item.title}
             loading="lazy"
-            className="image-container"
-          />
+            className="thumbAlbum"
+                      />
           <Typography
-            maxWidth="xm"
+            
             variant="h2"
             style={{
               position: "absolute",
@@ -43,7 +43,7 @@ const ImageMasonry = ({ data }) => {
           >
             {item.title}
           </Typography>
-        </Button>
+        </div>
       ))}
 
       <Modal

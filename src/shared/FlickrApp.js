@@ -11,7 +11,7 @@ class FlickrApp extends FlickrService {
     var data = await flickrService.listarAlbuns("186526131@N04");
     var itemData = [];
     data.forEach(function (album) {
-      console.log(album.id);
+      
       itemData.push({
         img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_b.jpg`,
         title: album.title._content,

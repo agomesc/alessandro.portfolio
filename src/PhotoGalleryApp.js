@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PhotoCarousel from "./Components/PhotoCarousel";
-import FlickrApp from "../src/shared/FlickrApp";
+import PhotoCarousel from "./Components/PhotoGallery";
+import FlickrApp from "./shared/FlickrApp";
 const PhotoGallery = (obj) => {
   const [galleryData, setGalleryData] = useState([]);
   const apiKey = "099c9a89c04c78ec7592650af1d25a7a";

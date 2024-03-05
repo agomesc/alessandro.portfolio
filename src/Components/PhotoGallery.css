@@ -1,0 +1,51 @@
+/* src/components/PhotoGallery.css */
+.photo-gallery {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .photo-gallery img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .image-modal {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: auto; /* Altura total da tela (viewport height) */
+  }
+  
+  .image {
+    width: auto; /* Defina uma largura para a imagem */
+    display: block; /* Converte para elemento de bloco */
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+    max-height:200px ;
+  }
+  
+  .fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .fullscreen-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .thumbAlbum {
+    object-fit: contain;
+  }
+  
