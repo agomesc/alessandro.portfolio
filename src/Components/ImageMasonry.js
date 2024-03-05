@@ -5,7 +5,6 @@ import {Box } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Masonry from '@mui/lab/Masonry';
 import { styled } from '@mui/material/styles';
-import InfoIcon from '@mui/icons-material/Info';
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -69,8 +68,8 @@ const ImageMasonry = ({ data }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             bgcolor: "background.paper",
-            boxShadow: 0,
-            display: "block",
+            boxShadow: 20,
+            display: "flex",
             width:"80%",
             height:"80%",
             overflow:"scroll",
