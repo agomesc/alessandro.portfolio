@@ -29,6 +29,8 @@
     object-fit: contain;
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center; /* Centraliza verticalmente */
+    max-width:max-content;
+    max-height: fit-content;
   }
   
   .fullscreen-overlay {
