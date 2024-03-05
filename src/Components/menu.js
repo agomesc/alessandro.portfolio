@@ -17,7 +17,7 @@ const theme = createTheme({
 
 const Menu = () => {
   return (
-    <Container fixed maxWidth="xl"  >
+    <Container maxWidth="100%"  >
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar>

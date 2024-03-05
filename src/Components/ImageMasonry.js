@@ -70,10 +70,10 @@ const ImageMasonry = ({ data }) => {
             bgcolor: "background.paper",
             boxShadow: 20,
             display: "flex",
-            width:"80%",
-            height:"80%",
+            width:"97%",
+            height:"97%",
             overflow:"scroll",
-            p: 0,
+            p: 10,
           }}
         >
           <PhotoGallery id={getID} />
