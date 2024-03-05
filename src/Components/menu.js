@@ -17,7 +17,7 @@ const theme = createTheme({
 
 const Menu = () => {
   return (
-    <Container maxWidth="ln">
+    <Container maxWidth="x1" disableGutters>
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar>

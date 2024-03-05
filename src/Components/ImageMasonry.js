@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import Masonry from "@mui/lab/Masonry";
 import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGallery";
-import { Typography, Button, Box, Container } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 
 const ImageMasonry = ({ data }) => {
   const [open, setOpen] = useState(false);
@@ -20,45 +19,35 @@ const ImageMasonry = ({ data }) => {
   const body = <PhotoGallery id={getID} />;
 
   return (
-    <Container>
-      <Masonry columns={4} spacing={0}>
-        {data.map((item, index) => (
-          <div key={index}>
-            <Button onClick={() => handleOpen(item.id)}>
-              <Box>
-                <img
-                  srcSet={`${item.img}?w=100vw&auto=format&dpr=2 2x`}
-                  src={`${item.img}?w=auto&auto=format`}
-                  alt={item.title}
-                  loading="lazy"
-                  style={{
-                    borderBottomLeftRadius: 4,
-                    borderBottomRightRadius: 4,
-                    display: "flex-box",
-                    width: "100%",
-                  }}
-                />
-                <Typography
-                  maxWidth="xm"
-                  variant="subititle"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 4,
-                    background: "rgba(255, 255, 255, 0.8)",
-                    padding: "3px",
-                    borderRadius: "2px",
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                >
-                  {item.title}
-                </Typography>
-              </Box>
-            </Button>
-          </div>
-        ))}
-      </Masonry>
+    <div className="container-mansory image-container ">
+      {data.map((item, index) => (
+        <Button onClick={() => handleOpen(item.id)}>
+          <img
+            srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
+            src={`${item.img}?w=162&auto=format`}
+            alt={item.title}
+            loading="lazy"
+            className="image-container"
+          />
+          <Typography
+            maxWidth="xm"
+            variant="h2"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 4,
+              background: "rgba(255, 255, 255, 0.8)",
+              padding: "3px",
+              borderRadius: "2px",
+              maxWidth: "100%",
+              height: "auto",
+            }}
+          >
+            {item.title}
+          </Typography>
+        </Button>
+      ))}
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -67,21 +56,22 @@ const ImageMasonry = ({ data }) => {
       >
         <Box
           sx={{
-            position: "absolute",
+            position: "relative",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "50vw",
+            width: "90%",
             height: "auto",
             bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
+            boxShadow: 0,
+            display: "flex-box",
+            p: 0,
           }}
         >
           {body}
         </Box>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

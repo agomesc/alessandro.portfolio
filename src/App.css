@@ -1,43 +1,188 @@
-/* src/styles/Fonts.css */
-@font-face {
-  font-family: "Rebot";
+/* Estilize os links no rodapÃ© */
+.social-icon {
+  color: black; /* Define a cor do link como preto */
+  /* Outros estilos, como tamanho da fonte, podem ser adicionados aqui */
 }
 
-.App {
-  text-align: center;
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400; /* Peso da fonte (normal) */
+  font-size: 14px;
+  overflow-y: auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1,
+h2,
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.thumbAlbum {
+  object-fit: contain;
+}
+
+@media screen and (orientation: portrait) {
+  img {
+    display: flex;
+    flex-direction: column;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+@media screen and (orientation: landscape) {
+  img {
+    display: inline-flex;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .container-mansory {
+    position: relative;
+    -moz-column-count: 3;
+    -moz-column-gap: 0;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 0;
+    column-count: 3;
+    column-gap: 0;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .container-mansory {
+    position: relative;
+    -moz-column-count: 2;
+    -moz-column-gap: 0;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 0;
+    column-count: 2;
+    column-gap: 0;
+  }
+}
+
+.container-mansory img {
+  width: 100%;
+  height: auto;
+  object-fit: fill;
+  padding: 0px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-wrap: nowrap;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.progresso {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border: 1px solid black;
+  height: auto;
+  width: 120px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.btn {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: #000;
   color: white;
+  padding: 10px;
+  text-decoration: none;
 }
 
-.App-link {
-  color: #61dafb;
+.image-container {
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+.image-container h2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.image-container h4 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  font-size: 10px;
+  margin: 0;
+}
+
+.image-modal {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  height: 100vh; /* Altura total da tela (viewport height) */
+}
+
+.image {
+  width: auto; /* Defina uma largura para a imagem */
+  display: block; /* Converte para elemento de bloco */
+  max-width: 100%; /* Garante que a imagem nÃ£o ultrapasse a largura do contÃªiner */
+}
+
+@media screen and (orientation: portrait) {
+  img {
+    display: flex;
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media screen and (orientation: landscape) {
+  img {
+    display: inline-flex;
   }
+}
+
+@media screen and (orientation: landscape) {
+  .container-mansory {
+    position: relative;
+    -moz-column-count: 4;
+    -moz-column-gap: 0;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 0;
+    column-count: 4;
+    column-gap: 0;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .container-mansory {
+    position: relative;
+    -moz-column-count: 2;
+    -moz-column-gap: 0;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 0;
+    column-count: 2;
+    column-gap: 0;
+  }
+}
+
+.container-mansory img {
+  width: 100%;
+  height: auto;
+  object-fit: fill;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  padding: 1px;
 }

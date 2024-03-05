@@ -7,16 +7,16 @@ const PhotoCarousel = ({ photos }) => {
     <div style={{ textAlign: "center" }}>
       <Carousel
         autoPlay={true}
-        animation="fade"
+        animation="slide"
         navButtonsAlwaysVisible
         indicatorContainerProps={{ style: { display: "block" } }}
       >
         {photos.map((photo, index) => (
-          <Paper key={index} style={{ width: "100%" }}>
+          <Paper key={index}>
             <img
               src={photo.url}
-              alt={`Photo ${index}`}
-              style={{ width: "auto", height: "600px" }}
+              alt={`${photo.title}`}
+              style={{ maxWidth: "100%" }} // Tornar a imagem responsiva
             />
             <Typography
               variant="h5"
