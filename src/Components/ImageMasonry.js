@@ -34,13 +34,11 @@ const ImageMasonry = ({ data }) => {
             variant="h2"
             style={{
               position: "absolute",
-              top: 0,
-              left: 4,
+              top: 10,
+              left: 10,
               background: "rgba(255, 255, 255, 0.8)",
-              padding: "3px",
-              borderRadius: "2px",
-              maxWidth: "100%",
-              height: "auto",
+              padding: "5px",
+              borderRadius: "5px",
             }}
           >
             {item.title}
@@ -56,15 +54,15 @@ const ImageMasonry = ({ data }) => {
       >
         <Box
           sx={{
-            position: "relative",
+            position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "90%",
-            height: "auto",
+            height: "95vh",
             bgcolor: "background.paper",
             boxShadow: 0,
-            display: "flex-box",
+            display: "block",
             p: 0,
           }}
         >

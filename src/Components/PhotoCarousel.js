@@ -9,6 +9,7 @@ const PhotoCarousel = ({ photos }) => {
         autoPlay={true}
         animation="slide"
         navButtonsAlwaysVisible
+        height="100vh"
         indicatorContainerProps={{ style: { display: "block" } }}
       >
         {photos.map((photo, index) => (
@@ -19,14 +20,15 @@ const PhotoCarousel = ({ photos }) => {
               style={{ maxWidth: "100%" }} // Tornar a imagem responsiva
             />
             <Typography
-              variant="h5"
+              maxWidth="xm"
+              variant="h2"
               style={{
-                position: "flex-box",
-                top: 0,
-                left: 5,
+                position: "absolute",
+                top: 20,
+                left: 10,
                 background: "rgba(255, 255, 255, 0.8)",
-                padding: "4px",
-                borderRadius: "4px",
+                padding: "5px",
+                borderRadius: "5px",
               }}
             >
               {photo.title}
