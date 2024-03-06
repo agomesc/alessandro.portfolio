@@ -17,9 +17,7 @@ const Main = () => {
   }, [galleryData]);
 
   return (
-    <Container maxWidth="100%">
       <ImageMasonry data={galleryData} />
-    </Container>
   );
 };
 

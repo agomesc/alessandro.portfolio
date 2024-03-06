@@ -1,7 +1,6 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Container from "@mui/material/Container";
 
 const theme = createTheme({
   palette: {
@@ -17,7 +16,6 @@ const theme = createTheme({
 
 const Menu = () => {
   return (
-    <Container maxWidth="100%"  >
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar>
@@ -25,7 +23,6 @@ const Menu = () => {
           </Toolbar>
         </AppBar>
       </ThemeProvider>
-    </Container>
   );
 };
 

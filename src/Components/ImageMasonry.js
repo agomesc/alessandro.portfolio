@@ -3,8 +3,11 @@ import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGalleryApp";
 import {Box } from "@mui/material";
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import Masonry from '@mui/lab/Masonry';
 import { styled } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -31,7 +34,8 @@ const ImageMasonry = ({ data }) => {
 
   return (
     
-    <Box className="container-mansory">
+    <Box sx={{ pt: 4 }}>
+     <Typography variant="h4">Minhas Galerias</Typography>  
       <Box sx={{ width: "100%", minHeight: "800px" }}>
       <Masonry columns={4} spacing={2}>
         {data.map((item, index) => (
@@ -47,7 +51,8 @@ const ImageMasonry = ({ data }) => {
                 borderBottomRightRadius: 4,
                 display: 'block',
                 width: '100%',
-                height: "auto"
+                height: "auto",
+                cursor: "pointer"
               }}
             />
           </div>
@@ -70,12 +75,18 @@ const ImageMasonry = ({ data }) => {
             bgcolor: "background.paper",
             boxShadow: 20,
             display: "flex",
-            width:"97%",
-            height:"97%",
+            width:"90%",
+            height:"90%",
             overflow:"scroll",
             p: 10,
           }}
         >
+           <IconButton
+          sx={{ position: 'absolute', top: 0, right: 0 }}
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
           <PhotoGallery id={getID} />
         </Box>
       </Modal>

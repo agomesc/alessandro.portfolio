@@ -12,11 +12,17 @@ body {
   background-color: #222;
 }
 
-h1,
-h2,
-h3 {
-  font-family: "Roboto", sans-serif;
-  font-weight: bold;
+body {
+  font-size: 16px; /* Define o tamanho base da fonte */
+}
+
+h1, h2, h3, h4 {
+  font-size: 2em; /* Tamanho da fonte é o dobro do tamanho base (32px) */
+}
+
+
+p {
+  font-size: 110%; /* Tamanho da fonte é 110% do tamanho base (17.6px) */
 }
 
 @media screen and (orientation: portrait) {
@@ -30,6 +36,14 @@ h3 {
   img {
     display: inline-flex;
   }
+}
+
+.small-text {
+  font-size: 0.8em; /* Tamanho menor */
+}
+
+.large-text {
+  font-size: 1.2em; /* Tamanho maior */
 }
 
 .image-container h2 {

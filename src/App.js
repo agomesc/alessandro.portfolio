@@ -1,18 +1,18 @@
-import * as React from 'react';
+import * as React from "react";
 import Main from "./Components/main";
 import Menu from "./Components/menu";
 import Container from "@mui/material/Container";
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from "@mui/material/CssBaseline";
 import "./App.css";
 
 const App = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-    <Container maxWidth="100%">
-      <Menu />
-      <Main />
-    </Container>
+      <Container maxWidth="lg">
+        <Menu />
+        <Main />
+      </Container>
     </React.Fragment>
   );
 };
