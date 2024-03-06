@@ -17,7 +17,7 @@ const Label = styled(Paper)(({ theme }) => ({
 }));
 const PhotoGallery = ({ photos }) => {
   return (
-    <Box sx={{ width: "100%", minHeight: "800px" }}>
+    <Box sx={{ pt: 4 }}>
       <Typography variant="h4">Minhas Fotos da Galeria</Typography>  
     <Masonry columns={{ xs: 1, sm: 2, md: 3, lg:4 }} spacing={2}>
       {photos.map((item, index) => (
