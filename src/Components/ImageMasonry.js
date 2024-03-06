@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import PhotoGallery from "../PhotoGalleryApp";
-import {Box } from "@mui/material";
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Masonry from '@mui/lab/Masonry';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Masonry from "@mui/lab/Masonry";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Label = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(0.5),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
@@ -33,11 +33,10 @@ const ImageMasonry = ({ data }) => {
   };
 
   return (
-    
     <Box sx={{ pt: 4 }}>
-     <Typography variant="h4">Minhas Galerias</Typography>  
-      <Box sx={{ width: "100%", minHeight: "800px" }}>
-      <Masonry columns={4} spacing={2}>
+      <Typography variant="h4">Minhas Galerias</Typography>
+
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
           <div key={index} onClick={() => handleOpen(item.id)}>
             <Label>{item.title}</Label>
@@ -49,18 +48,18 @@ const ImageMasonry = ({ data }) => {
               style={{
                 borderBottomLeftRadius: 4,
                 borderBottomRightRadius: 4,
-                display: 'block',
-                width: '100%',
+                display: "block",
+                width: "100%",
                 height: "auto",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             />
           </div>
         ))}
       </Masonry>
-    </Box>
+
       <Modal
-        sx={{width:"100%"}}
+        sx={{ width: "100%" }}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -75,23 +74,22 @@ const ImageMasonry = ({ data }) => {
             bgcolor: "background.paper",
             boxShadow: 20,
             display: "flex",
-            width:"90%",
-            height:"90%",
-            overflow:"scroll",
+            width: "90%",
+            height: "90%",
+            overflow: "scroll",
             p: 10,
           }}
         >
-           <IconButton
-          sx={{ position: 'absolute', top: 0, right: 0 }}
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </IconButton>
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
           <PhotoGallery id={getID} />
         </Box>
       </Modal>
     </Box>
-
   );
 };
 
