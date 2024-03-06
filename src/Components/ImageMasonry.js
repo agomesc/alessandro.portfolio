@@ -34,8 +34,9 @@ const ImageMasonry = ({ data }) => {
 
   return (
     <Box sx={{ pt: 4 }}>
+      
       <Typography variant="h4">Minhas Galerias</Typography>
-
+      
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
           <div key={index} onClick={() => handleOpen(item.id)}>

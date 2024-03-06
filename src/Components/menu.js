@@ -9,7 +9,7 @@ const theme = createTheme({
       main: "#000000", // Cor escura
     },
     secondary: {
-      main: "#FFFFFF", // Cor clara
+      main: "#FAEBD7", // Cor clara
     },
   },
 });

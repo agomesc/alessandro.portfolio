@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ImageMasonry from "./ImageMasonry";
 import FlickrApp from "../shared/FlickrApp";
-import Container from "@mui/material/Container";
 
 const Main = () => {
   const [galleryData, setGalleryData] = useState([]);
