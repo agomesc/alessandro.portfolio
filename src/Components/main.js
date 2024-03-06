@@ -24,10 +24,10 @@ const Main = () => {
   }, [galleryData]);
 
   return (
-    <>
+    <main>
       <ImageMasonry data={galleryData} />
       <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
-    </>
+    </main>
   );
 };
 

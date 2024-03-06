@@ -8,6 +8,7 @@ import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Drawer from '@mui/material/Drawer';
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -77,7 +78,7 @@ const ImageMasonry = ({ data }) => {
             display: "flex",
             width: "90%",
             height: "90%",
-            overflow: "scroll",
+            overflowY: "scroll",
             p: 10,
           }}
         >
