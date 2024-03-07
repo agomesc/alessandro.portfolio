@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 const PhotoDescription = ({ imageUrl, description }) => {
   return (
     <>
-      <Typography variant="h4">Sobre?</Typography>
+      <Typography variant="h4" style={{ marginBottom: '30px' }}>Sobre?</Typography>
       <Card
         style={{ display: "flex", alignItems: "flex-start", padding: "20px" }}
       >
@@ -15,7 +15,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
           alt="Foto"
           style={{ width: "100px", marginRight: "20px" }}
         />
-        <Typography variant="body1" style={{ textAlign: "justify" }}>
+        <Typography variant="body" style={{ textAlign: "justify" }}>
           {description}
         </Typography>
       </Card>

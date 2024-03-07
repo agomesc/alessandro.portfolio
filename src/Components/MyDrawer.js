@@ -1,8 +1,8 @@
 // MyDrawer.js
-import React from 'react';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import React from "react";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const MyDrawer = ({ open, handleClose, children }) => {
   return (
@@ -12,9 +12,9 @@ const MyDrawer = ({ open, handleClose, children }) => {
       onClose={handleClose}
       aria-labelledby="simple-drawer-title"
     >
-      <div style={{ width: '100vw', padding: '20px' }}>
+      <div style={{ width: "100vw", padding: "20px" }}>
         <IconButton
-          style={{ position: 'absolute', top: 0, right: 0 }}
+          style={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleClose}
         >
           <CloseIcon />
