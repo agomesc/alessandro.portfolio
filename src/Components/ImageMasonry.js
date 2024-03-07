@@ -51,6 +51,7 @@ const ImageMasonry = ({ data }) => {
                 cursor: "pointer",
               }}
             />
+            <Label>{item.description}</Label>
           </div>
         ))}
       </Masonry>

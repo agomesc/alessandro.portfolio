@@ -4,13 +4,10 @@ class FlickrService {
   }
 
   listarAlbuns = async (userId) => {
-    // Construir a URL da API do Flickr para listar os álbuns de um usuário
+    
     const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=${this.apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
-    // Fazer uma requisição HTTP GET para a URL e obter a resposta
     const response = await fetch(url);
-    // Converter a resposta em um objeto JSON
     const data = await response.json();
-    // Retornar a lista de álbuns
     return data.photosets.photoset;
   };
 
