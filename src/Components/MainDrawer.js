@@ -4,7 +4,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-const MyDrawer = ({ open, handleClose, children }) => {
+const MainDrawer = ({ open, handleClose, children }) => {
   return (
     <Drawer
       anchor="right"
@@ -25,4 +25,4 @@ const MyDrawer = ({ open, handleClose, children }) => {
   );
 };
 
-export default MyDrawer;
+export default MainDrawer;

@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
-import MyDrawer from "../Components/MyDrawer";
+import MainDrawer from "../Components/MainDrawer";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -32,7 +32,9 @@ const ImageMasonry = ({ data }) => {
 
   return (
     <Box sx={{ pt: 4 }}>
-      <Typography  sx={{ mt: 3, mb: 3 }} variant="h4">Minhas Galerias</Typography>
+      <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
+        Minhas Galerias
+      </Typography>
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
           <div key={index} onClick={() => handleDrawerOpen(item.id)}>
@@ -56,9 +58,9 @@ const ImageMasonry = ({ data }) => {
         ))}
       </Masonry>
 
-      <MyDrawer open={drawerOpen} handleClose={handleDrawerClose}>
+      <MainDrawer open={drawerOpen} handleClose={handleDrawerClose}>
         <PhotoGallery id={getID} />
-      </MyDrawer>
+      </MainDrawer>
     </Box>
   );
 };

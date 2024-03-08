@@ -1,7 +1,8 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import SvgIcon from '@mui/material/SvgIcon';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import Link from "@mui/material/Link";
+import SvgIcon from "@mui/material/SvgIcon";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 function LightBulbIcon(props) {
   return (
@@ -10,13 +11,16 @@ function LightBulbIcon(props) {
     </SvgIcon>
   );
 }
-
 export default function ProTip() {
   return (
-    <Typography sx={{ mt: 3, mb: 3 }} color="text.secondary">
-      <LightBulbIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-      Desenvolvido em: <Link href="https://react.dev/learn/installation">React</Link> e <Link href="https://www.flickr.com/services/api/">Flickr API </Link> .
-    </Typography>
-    
+    <Box sx={{ pt: 4, display: "flex", justifyContent: "center"  }}>
+      <Typography sx={{ mt: 3, mb: 3 }} color="text.secondary">
+        <LightBulbIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+        Desenvolvido em:{" "}
+        <Link href="https://react.dev/learn/installation">React</Link> e{" "}
+        <Link href="https://www.flickr.com/services/api/">Flickr API </Link>.
+      </Typography>
+      
+    </Box>
   );
 }
