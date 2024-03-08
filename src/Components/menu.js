@@ -11,8 +11,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import SatelliteRoundedIcon from '@mui/icons-material/SatelliteRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import SatelliteRoundedIcon from "@mui/icons-material/SatelliteRounded";
+import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
@@ -28,7 +28,11 @@ export default function TemporaryDrawer() {
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <SatelliteRoundedIcon /> : <InfoRoundedIcon />}
+                {index % 2 === 0 ? (
+                  <SatelliteRoundedIcon />
+                ) : (
+                  <InfoRoundedIcon />
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
