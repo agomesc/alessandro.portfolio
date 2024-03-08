@@ -28,10 +28,9 @@ const PhotoGallery = ({ photos }) => {
       {!showCarousel && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {photos.map((item, index) => (
-            <div key={index}>
+            <div key={index} onClick={() => setShowCarousel(true)}>
               <Label>{item.title}</Label>
               <img
-                onClick={() => setShowCarousel(true)}
                 srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
                 src={`${item.url}?w=162&auto=format`}
                 alt={item.title}
@@ -41,6 +40,7 @@ const PhotoGallery = ({ photos }) => {
                   borderBottomRightRadius: 0,
                   display: "block",
                   width: "100%",
+                  cursor: "pointer",
                 }}
               />
             </div>
@@ -48,14 +48,19 @@ const PhotoGallery = ({ photos }) => {
         </Masonry>
       )}
       {showCarousel && (
-        <PhotoCarousel photos={photos} onClose={() => setShowCarousel(false)} />
+        <>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={() => setShowCarousel(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+          <PhotoCarousel
+            photos={photos}
+            onClose={() => setShowCarousel(false)}
+          />
+        </>
       )}
-      <IconButton
-        style={{ position: "absolute", top: 0, right: 0 }}
-        onClick={() => setShowCarousel(false)}
-      >
-        <CloseIcon />
-      </IconButton>
     </Box>
   );
 };
