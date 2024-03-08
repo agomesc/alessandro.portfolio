@@ -3,6 +3,8 @@ import ImageMasonry from "./ImageMasonry";
 import PhotoDescription from "./PhotoDescription";
 import FlickrApp from "../shared/FlickrApp";
 import minhaImagem from "../images/Eu.png";
+import ProTip from "./ProTip";
+import Footer from "./Footer";
 
 const Main = () => {
   const [galleryData, setGalleryData] = useState([]);
@@ -27,6 +29,8 @@ const Main = () => {
     <main>
       <ImageMasonry data={galleryData} />
       <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
+      <Footer />
+      <ProTip />
     </main>
   );
 };
