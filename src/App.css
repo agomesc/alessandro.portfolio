@@ -4,6 +4,11 @@ body {
   font-size: 12px;
   overflow-y: auto;
   background-color: #faebd7;
+  height:100%;
+}
+
+#app div{
+  height:100%;
 }
 
 h1,

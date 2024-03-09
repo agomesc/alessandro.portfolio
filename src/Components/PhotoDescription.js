@@ -8,7 +8,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
   return (
     <Grid>
       <Grid item>
-        <Typography variant="h4" style={{ marginBottom: "30px" }}>
+        <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
           Sobre?
         </Typography>
         <Card

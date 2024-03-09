@@ -7,6 +7,7 @@ import Routes from "./routes";
 import ProTip from "./Pages/ProTip";
 import Footer from "./Pages/Footer";
 import "./App.css";
+import Main from "./Pages/Main"
 
 const darkTheme = createTheme({
   palette: {
@@ -22,6 +23,7 @@ const App = () => {
         <Container maxWidth="lg" style={{ height: "100vh", width: "100%" }}>
           <Menu />
           <Routes />
+          <Main/>
           <ProTip />
           <Footer />
         </Container>
