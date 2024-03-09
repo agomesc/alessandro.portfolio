@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import PhotoGallery from "../PhotoGalleryApp";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
-import MainDrawer from "../Components/MainDrawer";
+import { NavLink } from "react-router-dom";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,18 +16,6 @@ const Label = styled(Paper)(({ theme }) => ({
 }));
 
 const ImageMasonry = ({ data }) => {
-  const [getID, setID] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
-
-  const handleDrawerOpen = (id) => {
-    setDrawerOpen(true);
-    setID(id);
-  };
-
   return (
     <Box sx={{ pt: 4 }}>
       <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
@@ -37,7 +23,7 @@ const ImageMasonry = ({ data }) => {
       </Typography>
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
-          <div key={index} onClick={() => handleDrawerOpen(item.id)}>
+          <NavLink key={index} to={`/Photos/${item.id}`}>
             <Label>{item.title}</Label>
             <img
               srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
@@ -54,13 +40,9 @@ const ImageMasonry = ({ data }) => {
               }}
             />
             <Label>{item.description}</Label>
-          </div>
+          </NavLink>
         ))}
       </Masonry>
-
-      <MainDrawer open={drawerOpen} handleClose={handleDrawerClose}>
-        <PhotoGallery id={getID} />
-      </MainDrawer>
     </Box>
   );
 };
