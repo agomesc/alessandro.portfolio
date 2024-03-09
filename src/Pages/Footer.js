@@ -1,12 +1,14 @@
 // Footer.js
 import React from "react";
-import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { FaInstagram, FaFlickr, Fa500Px } from "react-icons/fa"; //
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
 const Footer = () => {
   return (
-    <Box sx={{ pt: 4, display: "flex", justifyContent: "center"  }}>
+    <AppBar position="static">
+    <Toolbar>
       <IconButton
         href="https://www.instagram.com/alessandro.portfolio"
         target="_blank"
@@ -22,7 +24,8 @@ const Footer = () => {
       >
         <Fa500Px /> {/* Ícone do 500px */}
       </IconButton>
-    </Box>
+      </Toolbar>
+      </AppBar>
   );
 };
 

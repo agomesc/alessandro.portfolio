@@ -4,6 +4,8 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Routes from "./routes";
+import ProTip from "./Pages/ProTip";
+import Footer from "./Pages/Footer";
 import "./App.css";
 
 const darkTheme = createTheme({
@@ -20,6 +22,8 @@ const App = () => {
         <Container maxWidth="lg" style={{ height: "100vh", width: "100%" }}>
           <Menu />
           <Routes />
+          <ProTip />
+          <Footer />
         </Container>
       </ThemeProvider>
     </React.Fragment>

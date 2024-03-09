@@ -31,8 +31,8 @@ const ImageMasonry = ({ data }) => {
               alt={item.title}
               loading="lazy"
               style={{
-                borderBottomLeftRadius: 4,
-                borderBottomRightRadius: 4,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
                 display: "block",
                 width: "100%",
                 height: "auto",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FlickrApp from "../shared/FlickrApp";
 import PhotoGallery from "../Components/PhotoGallery";
-import { useParams  } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -9,9 +9,10 @@ const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState([]);
   const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
-  
+  const navigate  = useNavigate();
+
   const handleGoBack = () => {
-    window.location.href = "/Gallery";    
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -25,14 +26,13 @@ const Photos = () => {
 
   return (
     <>
-      
       <IconButton
         style={{ position: "absolute", top: 0, right: 0 }}
-        onClick={handleGoBack} 
+        onClick={handleGoBack}
       >
         <CloseIcon />
       </IconButton>
-      <PhotoGallery photos={galleryData} />;
+      <PhotoGallery photos={galleryData} />
     </>
   );
 };
