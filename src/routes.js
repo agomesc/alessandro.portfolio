@@ -12,7 +12,7 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" component={<App />} />
+        <Route exact path="/" element={<Gallery />} />
         <Route path="/Main" element={<Main />} />
         <Route path="/Gallery" element={<Gallery />} />
         <Route path="/Photos/:id" element={<Photos />} />
