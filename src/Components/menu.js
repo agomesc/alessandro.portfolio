@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
@@ -10,38 +10,64 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-// import InboxIcon from "@mui/icons-material/MoveToInbox";
-// import MailIcon from "@mui/icons-material/Mail";
-import SatelliteRoundedIcon from "@mui/icons-material/SatelliteRounded";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import FlickrApp from "../shared/FlickrApp";
+import InfoIcon from "@mui/icons-material/Info";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import ArtTrackIcon from "@mui/icons-material/ArtTrack";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
+
+  const [galleryData, setGalleryData] = useState([]);
+  const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
+  useEffect(() => {
+    async function fetchData() {
+      const flickrApp = new FlickrApp(apiKey);
+      const data = await flickrApp.GetGallery();
+      setGalleryData(data);
+    }
+    fetchData();
+  }, [galleryData]);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
   const items = [
-    { route: "/Gallery", description: "Minhas Galerias" },
-    { route: "/About", description: "Sobre" },
+    {
+      route: "/Gallery",
+      description: "Minhas Galerias",
+      icon: <PhotoLibraryIcon />,
+    },
   ];
+
+  // eslint-disable-next-line array-callback-return
+  galleryData.map((item) => {
+    items.push({
+      route: `/Photos/${item.id}?`,
+      description: item.title,
+      icon: <ArtTrackIcon />,
+    });
+  });
+
+  items.push({ route: "/About", description: "Sobre", icon: <InfoIcon /> });
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {items.map((item, index) => (
-          <ListItem key={item.route} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton component="a" href={item.route}>
-              <ListItemIcon>
-                {index % 2 === 0 ? (
-                  <SatelliteRoundedIcon />
-                ) : (
-                  <InfoRoundedIcon />
-                )}
+              <ListItemIcon
+                size="small"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+              >
+                {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.description} />
             </ListItemButton>
@@ -49,24 +75,12 @@ export default function TemporaryDrawer() {
         ))}
       </List>
       <Divider />
-      {/* <List>
-        {["Redes Sociais", "Contato"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
     </Box>
   );
 
   return (
     <div>
-       <AppBar position="static">
+      <AppBar position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -81,7 +95,7 @@ export default function TemporaryDrawer() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Alessandro - Portfólio
           </Typography>
-          {(
+          {
             <div>
               <IconButton
                 size="large"
@@ -92,9 +106,8 @@ export default function TemporaryDrawer() {
               >
                 <AccountCircle />
               </IconButton>
-            
             </div>
-          )}
+          }
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={toggleDrawer(false)}>
