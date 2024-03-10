@@ -1,13 +1,10 @@
-// src/components/PhotoGallery.js
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import Typography from "@mui/material/Typography";
-import PhotoCarousel from "./PhotoCarousel";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import PhotoModal from "./PhotoModal"; // Importe o componente 
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -19,16 +16,16 @@ const Label = styled(Paper)(({ theme }) => ({
   borderBottomRightRadius: 0,
 }));
 const PhotoGallery = ({ photos }) => {
-  const [showCarousel, setShowCarousel] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   return (
     <Box sx={{ pt: 4 }}>
       <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
         Minhas Fotos
       </Typography>
-      {!showCarousel && (
+      {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {photos.map((item, index) => (
-            <div key={index} onClick={() => setShowCarousel(true)}>
+            <div key={index} onClick={() =>  setShowModal(true)}>
               <Label>{item.title}</Label>
               <img
                 srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
@@ -47,19 +44,8 @@ const PhotoGallery = ({ photos }) => {
           ))}
         </Masonry>
       )}
-      {showCarousel && (
-        <>
-          <IconButton
-            style={{ position: "absolute", top: 0, right: 0 }}
-            onClick={() => setShowCarousel(false)}
-          >
-            <CloseIcon />
-          </IconButton>
-          <PhotoCarousel
-            photos={photos}
-            onClose={() => setShowCarousel(false)}
-          />
-        </>
+      {showModal && (
+        <PhotoModal photos={photos} onClose={() => setShowModal(false)} />
       )}
     </Box>
   );
