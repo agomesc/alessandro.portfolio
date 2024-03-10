@@ -1,7 +1,7 @@
 import PhotoDescription from "../Components/PhotoDescription";
 import minhaImagem from "../images/Eu.png";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from "react-router-dom";
 
 const About = () => {
@@ -18,12 +18,11 @@ const About = () => {
 
   return (
     <>
-      {" "}
       <IconButton
-        style={{ position: "absolute", top: 0, right: 0 }}
+        style={{ position: "absolute", top: "8%", right: "10%" }}
         onClick={handleGoBack}
       >
-        <CloseIcon />
+        <ArrowBackIosIcon />
       </IconButton>
       <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
     </>

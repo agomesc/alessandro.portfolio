@@ -20,7 +20,7 @@ const App = () => {
     <React.Fragment>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Container maxWidth="lg" style={{ height: "100vh", width: "100%" }}>
+        <Container maxWidth="xl" disableGutters>
           <Menu />
           <Routes />
           <Main/>

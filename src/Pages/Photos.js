@@ -3,13 +3,13 @@ import FlickrApp from "../shared/FlickrApp";
 import PhotoGallery from "../Components/PhotoGallery";
 import { useParams, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState([]);
   const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1);
@@ -27,10 +27,10 @@ const Photos = () => {
   return (
     <>
       <IconButton
-        style={{ position: "absolute", top: 0, right: 0 }}
+        style={{ position: "absolute", top: "8%", right: "10%" }}
         onClick={handleGoBack}
       >
-        <CloseIcon />
+        <ArrowBackIosIcon />
       </IconButton>
       <PhotoGallery photos={galleryData} />
     </>
