@@ -23,7 +23,7 @@ const PhotoGallery = ({ photos }) => {
   return (
     <Box sx={{ pt: 4 }}>
       <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
-        Minhas Fotos da Galeria
+        Minhas Fotos
       </Typography>
       {!showCarousel && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>

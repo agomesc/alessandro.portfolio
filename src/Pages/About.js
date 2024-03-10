@@ -1,14 +1,8 @@
 import PhotoDescription from "../Components/PhotoDescription";
 import minhaImagem from "../images/Eu.png";
-import IconButton from "@mui/material/IconButton";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useNavigate } from "react-router-dom";
+
 
 const About = () => {
-  const navigate = useNavigate();
-  const handleGoBack = () => {
-    navigate(-1);
-  };
 
   const minhaDescricao = `Me chamo Alessandro, 
     Brasileiro, formado em Análise de Sistemas e pós-graduado em Engenharia de Software pela UFRJ, trabalho desde 1994 com tecnologia.
@@ -17,15 +11,8 @@ const About = () => {
     Hoje sou um amante da fotografia, com muito orgulho, registrando momentos importantes da vida das pessoas e o resultado dessa trajetória está refletido em meu portfólio que apresento a vocês.`;
 
   return (
-    <>
-      <IconButton
-        style={{ position: "absolute", top: "8%", right: "10%" }}
-        onClick={handleGoBack}
-      >
-        <ArrowBackIosIcon />
-      </IconButton>
+  
       <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
-    </>
   );
 };
 export default About;
