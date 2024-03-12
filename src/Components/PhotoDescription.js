@@ -17,6 +17,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
           <img
             src={imageUrl}
             alt="Foto"
+            loading="lazy"
             style={{ width: "100px", marginRight: "20px" }}
           />
           <Typography variant="body" style={{ textAlign: "justify" }}>

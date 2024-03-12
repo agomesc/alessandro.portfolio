@@ -1,22 +1,15 @@
 class FlickrService {
-  constructor(apiKey) {
-    this.apiKey = apiKey;
-  }
-
-  listarAlbuns = async (userId) => {
-    
-    const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=${this.apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
+  
+  listarAlbuns = async () => {
+    const url = `https://portfolio-api-flickr.netlify.app/.netlify/functions/api/albums`;
     const response = await fetch(url);
     const data = await response.json();
     return data.photosets.photoset;
   };
 
-  listarFotos = async (albumId) => {
-    // Construir a URL da API do Flickr para listar as fotos de um álbum
-    const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${this.apiKey}&photoset_id=${albumId}&format=json&nojsoncallback=1`;
-    // Fazer uma requisição HTTP GET para a URL e obter a resposta
+  listarFotos = async (id) => {
+    const url = `https://portfolio-api-flickr.netlify.app/.netlify/functions/api/photos/${id}`;
     const response = await fetch(url);
-    // Converter a resposta em um objeto JSON
     const data = await response.json();
     // Retornar a lista de fotos
     return data.photoset.photo;

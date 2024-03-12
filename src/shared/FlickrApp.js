@@ -1,14 +1,10 @@
 import FlickrService from "../shared/FlickrService";
 
 class FlickrApp extends FlickrService {
-  constructor(apiKey) {
-    super(apiKey);
-    this.apiKey = apiKey;
-  }
-
+  
   GetGallery = async () => {
-    var flickrService = new FlickrService(this.apiKey);
-    var data = await flickrService.listarAlbuns("186526131@N04");
+    var flickrService = new FlickrService();
+    var data = await flickrService.listarAlbuns();
     var itemData = [];
     data.forEach(function (album) {
       
@@ -22,9 +18,9 @@ class FlickrApp extends FlickrService {
     return itemData;
   };
 
-  GetPhotos = async (albumId) => {
+  GetPhotos = async (id) => {
     let flickrService = new FlickrService(this.apiKey);
-    let data = await flickrService.listarFotos(albumId);
+    let data = await flickrService.listarFotos(id);
     let itemData = [];
     data.forEach(function (photo) {
       let src = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
