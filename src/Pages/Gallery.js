@@ -1,18 +1,17 @@
 import ImageMasonry from "../Components/ImageMasonry";
-import FlickrApp from "../shared/FlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState } from "react";
 
 const Gallery = () => {
   const [galleryData, setGalleryData] = useState([]);
-  const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
+  const instance = CreateFlickrApp();
   useEffect(() => {
     async function fetchData() {
-      const flickrApp = new FlickrApp(apiKey);
-      const data = await flickrApp.GetGallery();
+      const data = await instance.getGallery();
       setGalleryData(data);
     }
     fetchData();
-  }, [galleryData]);
+  }, [galleryData, instance]);
 
   return (<ImageMasonry data={galleryData} />);
 };

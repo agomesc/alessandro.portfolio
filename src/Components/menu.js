@@ -13,7 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import FlickrApp from "../shared/FlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoIcon from "@mui/icons-material/Info";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import ArtTrackIcon from "@mui/icons-material/ArtTrack";
@@ -22,15 +22,14 @@ export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
 
   const [galleryData, setGalleryData] = useState([]);
-  const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
+  const instance =  CreateFlickrApp();
   useEffect(() => {
     async function fetchData() {
-      const flickrApp = new FlickrApp(apiKey);
-      const data = await flickrApp.GetGallery();
+      const data = await instance.getGallery();
       setGalleryData(data);
     }
     fetchData();
-  }, [galleryData]);
+  }, [galleryData, instance]);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);

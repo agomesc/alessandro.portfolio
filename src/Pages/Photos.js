@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
-import FlickrApp from "../shared/FlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 import PhotoGallery from "../Components/PhotoGallery";
 import { useParams } from "react-router-dom";
 
 const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState([]);
-  const apiKey = "099c9a89c04c78ec7592650af1d25a7a";
+  const instance = CreateFlickrApp();
 
   useEffect(() => {
     async function fetchData() {
-      const flickrApp = new FlickrApp(apiKey);
-      const data = await flickrApp.GetPhotos(id);
+      const data = await instance.getPhotos(id);
       setGalleryData(data);
     }
     fetchData();
-  }, [galleryData, id]);
+  }, [galleryData, id, instance]);
 
   return <PhotoGallery photos={galleryData} />;
 };
