@@ -9,7 +9,7 @@ const Gallery = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await instance.getGallery();
-      if (galleryData.length===0) setGalleryData(data);
+      if (galleryData.length === 0) setGalleryData(data);
     }
     fetchData();
   }, [galleryData, instance]);

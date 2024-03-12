@@ -1,9 +1,8 @@
 import CreateFlickrService from "../shared/CreateFlickrService";
 
 const CreateFlickrApp = () => {
-  
   const instance = CreateFlickrService();
-  
+
   const getGallery = async () => {
     try {
       const data = await instance.listarAlbuns();
