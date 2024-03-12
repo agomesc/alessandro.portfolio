@@ -20,15 +20,16 @@ import ArtTrackIcon from "@mui/icons-material/ArtTrack";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
-
   const [galleryData, setGalleryData] = useState([]);
-  const instance =  CreateFlickrApp();
+  const instance = CreateFlickrApp();
+
   useEffect(() => {
     async function fetchData() {
       const data = await instance.getGallery();
       setGalleryData(data);
     }
-    fetchData();
+
+    if (galleryData.length === 0) fetchData();
   }, [galleryData, instance]);
 
   const toggleDrawer = (newOpen) => () => {

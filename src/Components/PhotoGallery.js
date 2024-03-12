@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import Typography from "@mui/material/Typography";
-import PhotoModal from "./PhotoModal"; // Importe o componente 
+import PhotoModal from "./PhotoModal"; // Importe o componente
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -25,7 +25,7 @@ const PhotoGallery = ({ photos }) => {
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {photos.map((item, index) => (
-            <div key={index} onClick={() =>  setShowModal(true)}>
+            <div key={index} onClick={() => setShowModal(true)}>
               <Label>{item.title}</Label>
               <img
                 srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
