@@ -13,7 +13,7 @@ const Photos = () => {
       const data = await instance.getPhotos(id);
       setGalleryData(data);
     }
-    fetchData();
+    if (galleryData.length===0) fetchData();
   }, [galleryData, id, instance]);
 
   return <PhotoGallery photos={galleryData} />;
