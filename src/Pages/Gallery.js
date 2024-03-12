@@ -9,9 +9,9 @@ const Gallery = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await instance.getGallery();
-      if (galleryData.length === 0) setGalleryData(data);
+      setGalleryData(data);
     }
-    fetchData();
+    if (galleryData.length === 0) fetchData();
   }, [galleryData, instance]);
 
   return <ImageMasonry data={galleryData} />;
