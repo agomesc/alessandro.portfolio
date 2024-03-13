@@ -30,8 +30,8 @@ const GalleryContainer = styled(Paper)(() => ({
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
   return (
-    <Box sx={{ mt: 10, p: 0 }}>
-      <Typography sx={{ mt: 5, mb: 3 }} variant="h4">
+    <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+      <Typography sx={{ mt:10, mb: 3 }} variant="h4">
         Minhas Fotos
       </Typography>
       {!showModal && (
