@@ -48,6 +48,7 @@ const PhotoGallery = ({ photos }) => {
                 src={`${item.url}?w=162&auto=format`}
                 alt={item.title}
                 loading="lazy"
+                media="photo"
                 style={{
                   borderBottomLeftRadius: 0,
                   borderBottomRightRadius: 0,

@@ -54,9 +54,10 @@ const ImageMasonry = ({ data }) => {
             <GalleryContainer>
               <Label>{item.title}</Label>
               <img
-                srcSet={`${item.img}?w=162&auto=format&dpr=2 2x`}
-                src={`${item.img}?w=162&auto=format`}
+                srcSet={`${item.img}?w=500&auto=format&dpr=2 2x`}
+                src={`${item.img}?w=375&auto=format`}
                 alt={item.title}
+                media="photo"
                 loading="lazy"
                 style={{
                   borderBottomLeftRadius: 0,

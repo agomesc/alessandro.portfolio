@@ -4,15 +4,43 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const PhotoGrid = ({ itemData }) => {
+
+  function srcset(image, size, rows = 1, cols = 1) {
+    return {
+      src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
+      srcSet: `${image}?w=${size * cols}&h=${
+        size * rows
+      }&fit=crop&auto=format&dpr=2 2x`,
+    };
+  }
+
   return (
-    <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+    <Box
+      sx={{
+        p: 0,
+        width: "80%",
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
+    >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Atualizações
       </Typography>
-      <ImageList columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} cols={5} rowHeight={220}>
+      <ImageList
+      sx={{ width: 600, height: "auto" }}
+      variant="quilted"
+      cols={4}
+      rowHeight={121}
+    >
         {itemData.map((item) => (
-          <ImageListItem key={item.id}>
-            <img style={{ width: "220", height: "100%" }} loading="lazy" src={item.url} alt={item.title} />
+           <ImageListItem key={item.id} cols={item.cols || 1} rows={item.rows || 1}>
+            <img
+               {...srcset(item.url, 121, item.rows, item.cols)}
+               alt={item.title}
+               loading="lazy"
+               media="photo"
+            />
             <ImageListItemBar title={item.title} />
           </ImageListItem>
         ))}
