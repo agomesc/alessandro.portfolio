@@ -18,8 +18,8 @@ const Label = styled(Paper)(({ theme }) => ({
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
   return (
-    <Box sx={{ pt: 4 }}>
-      <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
+    <Box sx={{ mt: 10 }}>
+      <Typography sx={{ mt: 5, mb: 3 }} variant="h4">
         Minhas Fotos
       </Typography>
       {!showModal && (

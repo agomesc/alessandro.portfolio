@@ -1,21 +1,28 @@
-body {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400; /* Peso da fonte (normal) */
-  font-size: 12px;
-  overflow-y: auto;
-  background-color: #222;
-  height:100%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Estilos Globais */
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+  background-color: #222;
+  color: #fff; /* Cor do texto */
+}
+
+/* Estilos dos Títulos */
 h1,
 h2,
 h3,
 h4 {
-  font-size: 2em;
-  position: relative;
   font-weight: bold;
+  position: relative;
 }
 
+/* Linha abaixo dos Títulos */
 h1::after,
 h2::after,
 h3::after,
@@ -24,14 +31,9 @@ h4::after {
   position: absolute;
   bottom: -5px;
   left: 0;
-  width: 60%;
+  width: 30%;
   height: 1px;
-  background-color: #ccc;
-  padding: 1px;
-}
-
-p {
-  line-height: 1.5;
+  background-color: #c0810d;
 }
 
 @media screen and (orientation: portrait) {

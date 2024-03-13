@@ -8,10 +8,6 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-  return (
-    <div>
-      <ImageGallery items={galleryImages} />
-    </div>
-  );
+  return <ImageGallery items={galleryImages} />;
 };
 export default PhotoCarousel;
