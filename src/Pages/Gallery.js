@@ -14,7 +14,11 @@ const Gallery = () => {
     if (galleryData.length === 0) fetchData();
   }, [galleryData, instance]);
 
-  return <ImageMasonry data={galleryData} />;
+  return( 
+  <div>
+      <ImageMasonry data={galleryData} />
+  </div>);
+  
 };
 
 export default Gallery;

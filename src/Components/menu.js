@@ -80,7 +80,7 @@ export default function TemporaryDrawer() {
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="fixed" color="primary" sx={{ top: 0 }}>
         <Toolbar>
           <IconButton
             size="large"

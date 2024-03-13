@@ -1,4 +1,5 @@
 import Menu from "./Components/menu";
+import ErrorBoundary from "./Components/ErrorBoundary";
 import Back from "./Components/Back";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,11 +20,13 @@ const App = () => {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Container maxWidth="xl" disableGutters>
+      <ErrorBoundary>
         <Menu />
         <Routes />
         <Back />
         <ProTip />
         <Footer />
+        </ErrorBoundary>
       </Container>
     </ThemeProvider>
   );

@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 
 const Footer = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar sx={{ justifyContent: "center", b: 0 }}>
         <IconButton
           href="https://www.instagram.com/alessandro.portfolio"

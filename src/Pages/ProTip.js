@@ -17,8 +17,8 @@ export default function ProTip() {
       <Typography sx={{ mt: 3, mb: 3 }} color="text.secondary">
         <LightBulbIcon sx={{ mr: 1, verticalAlign: "middle" }} />
         Desenvolvido em:{" "}
-        <Link href="https://react.dev/learn/installation">React</Link> e{" "}
-        <Link href="https://www.flickr.com/services/api/">Flickr API </Link>.
+        <Link href="https://react.dev/learn/installation">React</Link>{" "}e{" "}
+        <Link href="https://www.flickr.com/services/api/">Flickr API</Link>.
       </Typography>
       
     </Box>
