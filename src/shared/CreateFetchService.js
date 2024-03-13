@@ -9,7 +9,7 @@ function CreateFetchService() {
 			}
 			return response.json();
 		} catch (error) {
-			throw new Error(TryError(error));
+			throw new Error(TryError(error.status));
 		}
 	}
 
