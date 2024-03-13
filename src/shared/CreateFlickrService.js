@@ -16,9 +16,17 @@ const CreateFlickrService = () => {
       return data.photoset.photo;
   };
 
+  const listarFotosRecentes = async (id) => {
+    
+    const url = `https://portfolio-api-flickr.netlify.app/.netlify/functions/api/latest-photos`;
+    const data = await fetchService.get(url);
+    return data.photos.photo;
+};
+
   return {
     listarAlbuns,
     listarFotos,
+    listarFotosRecentes
   };
 };
 
