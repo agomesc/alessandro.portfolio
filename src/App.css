@@ -45,7 +45,7 @@ h4::after {
 
 @media screen and (orientation: landscape) {
   img {
-    display: inline-flex;
+    display: grid;
   }
 }
 

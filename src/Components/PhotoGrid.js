@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const PhotoGrid = ({ itemData }) => {
-
   function srcset(image, size, rows = 1, cols = 1) {
     return {
       src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
@@ -28,20 +27,24 @@ const PhotoGrid = ({ itemData }) => {
         Atualizações
       </Typography>
       <ImageList
-      sx={{ width: 600, height: "auto" }}
-      variant="quilted"
-      cols={4}
-      rowHeight={121}
-    >
+        sx={{ width: "100%", height: "auto"  }}
+        style={{ display: 'flex', flexWrap: 'wrap' }}
+        variant="quilted"
+        cols={4}
+        rowHeight={100}
+      >
         {itemData.map((item) => (
-           <ImageListItem key={item.id} cols={item.cols || 1} rows={item.rows || 1}>
+          <ImageListItem
+            key={item.id}
+            cols={item.cols || 1}
+            rows={item.rows || 1}
+          >
             <img
-               {...srcset(item.url, 121, item.rows, item.cols)}
-               alt={item.title}
-               loading="lazy"
-               media="photo"
+              {...srcset(item.url, 100, item.rows, item.cols)}
+              alt={item.title}
+              loading="lazy"
+              media="photo"
             />
-            <ImageListItemBar title={item.title} />
           </ImageListItem>
         ))}
       </ImageList>

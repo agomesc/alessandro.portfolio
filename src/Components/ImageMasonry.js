@@ -66,6 +66,7 @@ const ImageMasonry = ({ data }) => {
                   width: "100%",
                   height: "auto",
                   cursor: "pointer",
+                  flexWrap: 'wrap'
                 }}
               />
               <LabelBottom>{item.description}</LabelBottom>
