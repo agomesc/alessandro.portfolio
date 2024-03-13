@@ -6,26 +6,42 @@ import Masonry from "@mui/lab/Masonry";
 import Typography from "@mui/material/Typography";
 import PhotoModal from "./PhotoModal"; // Importe o componente
 
-const Label = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(0.5),
+const Label = styled(Paper)(() => ({
+  position: "absolute",
+  content: '""',
+  top: 0,
+  left: 0,
+  width: "auto",
+  height: "10%",
+  backgroundColor: "rgba(2, 2, 2, 0.75)",
+  color: "#fff",
   textAlign: "center",
-  color: theme.palette.text.secondary,
-  borderBottomLeftRadius: 0,
-  borderBottomRightRadius: 0,
+  padding: "20px",
+  display: "flex",
+  alignItems: "center", // Alinhamento vertical
+  borderRadius: 0, // Removi o arredondamento das bordas
+  textTransform: "uppercase",
 }));
+
+const GalleryContainer = styled(Paper)(() => ({
+  position: "relative",
+}));
+
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
   return (
-    <Box sx={{ mt: 10 }}>
+    <Box sx={{ mt: 10, p: 0 }}>
       <Typography sx={{ mt: 5, mb: 3 }} variant="h4">
         Minhas Fotos
       </Typography>
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {photos.map((item, index) => (
-            <div key={index} onClick={() => setShowModal(true)}>
+            <GalleryContainer
+              className="image-container"
+              key={index}
+              onClick={() => setShowModal(true)}
+            >
               <Label>{item.title}</Label>
               <img
                 srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
@@ -40,7 +56,7 @@ const PhotoGallery = ({ photos }) => {
                   cursor: "pointer",
                 }}
               />
-            </div>
+            </GalleryContainer>
           ))}
         </Masonry>
       )}
