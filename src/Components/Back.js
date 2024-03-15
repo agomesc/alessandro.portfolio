@@ -12,8 +12,12 @@ const Back = () => {
     zIndex: 1000,
   };
 
+  const goBack =() => {
+    window.history.back();
+  }
+
   return (
-    <Link to="/" style={backButtonStyle}>
+    <Link onClick={goBack} style={backButtonStyle}>
       <IconButton>
         <ArrowBackIosIcon />
       </IconButton>
