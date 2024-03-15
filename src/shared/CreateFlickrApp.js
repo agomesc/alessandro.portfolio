@@ -50,8 +50,6 @@ const CreateFlickrApp = () => {
       views: data.views
     });
     
-    console.log(itemData);
-
     return itemData;
   };
 
