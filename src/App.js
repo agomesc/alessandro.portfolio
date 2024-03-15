@@ -4,7 +4,6 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Routes from "./routes";
-import ProTip from "./Pages/ProTip";
 import Footer from "./Pages/Footer";
 import "./App.css";
 
@@ -22,7 +21,6 @@ const App = () => {
         <Menu />
         <Routes />
         <Back />
-        <ProTip />
         <Footer />
       </Container>
     </ThemeProvider>

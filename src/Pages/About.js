@@ -1,5 +1,6 @@
 import PhotoDescription from "../Components/PhotoDescription";
 import minhaImagem from "../images/Eu.png";
+import ProTip from "./ProTip";
 
 const About = () => {
   const minhaDescricao = `Me chamo Alessandro, 
@@ -9,7 +10,10 @@ const About = () => {
     Hoje sou um amante da fotografia, com muito orgulho, registrando momentos importantes da vida das pessoas e o resultado dessa trajetória está refletido em meu portfólio que apresento a vocês.`;
 
   return (
-    <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
+    <>
+      <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
+      <ProTip />
+    </>
   );
 };
 export default About;
