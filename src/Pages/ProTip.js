@@ -22,6 +22,9 @@ export default function ProTip() {
         <Typography variant="body1" sx={{ textAlign: "center" }}>
           Desenvolvedor: Alessandro G
         </Typography>
+        <Typography variant="body1" sx={{ textAlign: "center" }}>
+          Todos os direitos reservados
+        </Typography>
       </Typography>
     </Box>
   );

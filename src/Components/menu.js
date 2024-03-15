@@ -17,7 +17,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoIcon from "@mui/icons-material/Info";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import ArtTrackIcon from "@mui/icons-material/ArtTrack";
-import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
@@ -54,7 +54,11 @@ export default function TemporaryDrawer() {
     });
   });
 
-  items.push({ route: "/LatestPhotos", description: "Atualizações", icon: <DynamicFeedIcon /> });
+  items.push({
+    route: "/LatestPhotos",
+    description: "Atualizações",
+    icon: <DynamicFeedIcon />,
+  });
   items.push({ route: "/About", description: "Sobre", icon: <InfoIcon /> });
 
   const DrawerList = (
