@@ -16,7 +16,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 3, mb: 3 }} variant="h4">
+      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Sobre?
       </Typography>
       <Grid>
