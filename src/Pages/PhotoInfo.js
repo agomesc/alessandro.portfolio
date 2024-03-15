@@ -4,19 +4,19 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 
 const PhotoInfo = () => {
-    const { id } = useParams();
-    const [galleryData, setGalleryData] = useState([]);
-    const instance = CreateFlickrApp();
-  
-    useEffect(() => {
-      async function fetchData() {
-        const data = await instance.getPhotoInfo(id);
-        setGalleryData(data);
-      }
-      if (galleryData.length === 0) fetchData();
-    }, [galleryData, id, instance]);
-  
-    return (<PhotoDashboard photoData={galleryData} />);
+		const { id } = useParams();
+		const [galleryData, setGalleryData] = useState([]);
+		const instance = CreateFlickrApp();
+	
+		useEffect(() => {
+			async function fetchData() {
+				const data = await instance.getPhotoInfo(id);
+				setGalleryData(data);
+			}
+			if (galleryData.length === 0) fetchData();
+		}, [galleryData, id, instance]);
+	
+		return (<PhotoDashboard photoData={galleryData} />);
 };
 
 export default PhotoInfo;

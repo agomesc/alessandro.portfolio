@@ -6,27 +6,27 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
 const Footer = () => {
-  return (
-    <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-      <Toolbar sx={{ justifyContent: "center", b: 0 }}>
-        <IconButton
-          href="https://www.instagram.com/alessandro.portfolio"
-          target="_blank"
-        >
-          <FaInstagram />
-        </IconButton>
-        <IconButton href="https://www.flickr.com/agomesc" target="_blank">
-          <FaFlickr /> {/* Ícone do Flickr */}
-        </IconButton>
-        <IconButton
-          href="https://500px.com/p/alessandrogomescunha?view=photos"
-          target="_blank"
-        >
-          <Fa500Px /> {/* Ícone do 500px */}
-        </IconButton>
-      </Toolbar>
-    </AppBar>
-  );
+	return (
+		<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+			<Toolbar sx={{ justifyContent: "center", b: 0 }}>
+				<IconButton
+					href="https://www.instagram.com/alessandro.portfolio"
+					target="_blank"
+				>
+					<FaInstagram />
+				</IconButton>
+				<IconButton href="https://www.flickr.com/agomesc" target="_blank">
+					<FaFlickr /> {/* Ícone do Flickr */}
+				</IconButton>
+				<IconButton
+					href="https://500px.com/p/alessandrogomescunha?view=photos"
+					target="_blank"
+				>
+					<Fa500Px /> {/* Ícone do 500px */}
+				</IconButton>
+			</Toolbar>
+		</AppBar>
+	);
 };
 
 export default Footer;

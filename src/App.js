@@ -8,22 +8,22 @@ import Footer from "./Pages/Footer";
 import "./App.css";
 
 const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
+	palette: {
+		mode: "dark",
+	},
 });
 
 const App = () => {
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Container maxWidth="xl" disableGutters>
-        <Menu />
-        <Routes />
-        <Back />
-        <Footer />
-      </Container>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={darkTheme}>
+			<CssBaseline />
+			<Container maxWidth="xl" disableGutters>
+				<Menu />
+				<Routes />
+				<Back />
+				<Footer />
+			</Container>
+		</ThemeProvider>
+	);
 };
 export default App;
