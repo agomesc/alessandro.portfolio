@@ -19,21 +19,19 @@ const PhotoDashboard = ({ photoData }) => {
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Informações da Foto
       </Typography>
-      <Paper elevation={3} sx={{ p: 2, alignContent: "center",
-        alignItems: "center"
-         }}>
+      <Paper elevation={3} sx={{ p: 2}}>
       <img
         src={photoData.url}
         alt={photoData.title}
         media="photo"
         loading="lazy"
-        style={{ maxWidth: "100%", position:"flex" }}
+        style={{ maxWidth: "100%", position:"flex", margin: "0 auto" }}
       />
       
-      <div>
+    
         <p>Descrição: {photoData.description}</p>
         <p>Localização: {photoData.location}</p>
-      </div>
+    
       <Link target="_new" to={photoData.photopage}>
         <IconButton>
           <FaFlickr />
