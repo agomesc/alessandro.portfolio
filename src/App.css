@@ -1,3 +1,4 @@
+/* Reset de estilos globais */
 * {
   margin: 0;
   padding: 0;
@@ -36,6 +37,7 @@ h4::after {
   background-color: #c0810d;
 }
 
+/* Estilos para dispositivos móveis (orientação retrato) */
 @media screen and (orientation: portrait) {
   img {
     display: flex;
@@ -43,18 +45,19 @@ h4::after {
   }
 }
 
+/* Estilos para dispositivos móveis (orientação paisagem) */
 @media screen and (orientation: landscape) {
   img {
     display: grid;
   }
 }
 
-/* ImageWithOverlay.css */
-
+/* Estilos para a classe .image-container */
 .image-container {
   position: relative;
 }
 
+/* Estilos para a classe .overlay */
 .overlay {
   position: absolute;
   top: 0;

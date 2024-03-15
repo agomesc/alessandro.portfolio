@@ -5,6 +5,9 @@ import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import Typography from "@mui/material/Typography";
 import PhotoModal from "./PhotoModal"; // Importe o componente
+import IconButton from "@mui/material/IconButton";
+import InfoIcon from '@mui/icons-material/Info';
+import { Link } from "react-router-dom";
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -30,8 +33,16 @@ const GalleryContainer = styled(Paper)(() => ({
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
   return (
-    <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
-      <Typography sx={{ mt:10, mb: 3 }} variant="h4">
+    <Box
+      sx={{
+        p: 0,
+        width: "80%",
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
+    >
+      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Minhas Fotos
       </Typography>
       {!showModal && (
@@ -57,6 +68,11 @@ const PhotoGallery = ({ photos }) => {
                   cursor: "pointer",
                 }}
               />
+              <Link to={`/PhotoInfo/${item.id}`}>
+                <IconButton>
+                  <InfoIcon />
+                </IconButton>
+              </Link>
             </GalleryContainer>
           ))}
         </Masonry>

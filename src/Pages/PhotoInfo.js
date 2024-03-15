@@ -1,25 +1,22 @@
-import PhotoGrid from "../Components/PhotoGrid"; // Importe o componente
+import PhotoDashboard from "../Components/PhotoDashboard"; // Importe o componente
 import React, { useEffect, useState } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import { useParams } from "react-router-dom";
 
-const LatestPhotos = () => {
-  
+const PhotoInfo = () => {
+    const { id } = useParams();
     const [galleryData, setGalleryData] = useState([]);
     const instance = CreateFlickrApp();
   
     useEffect(() => {
       async function fetchData() {
-        const data = await instance.getLatestPhotos();
+        const data = await instance.getPhotoInfo(id);
         setGalleryData(data);
       }
       if (galleryData.length === 0) fetchData();
-    }, [galleryData, instance]);
+    }, [galleryData, id, instance]);
   
-    return (
-    <div>
-      <PhotoGrid itemData={galleryData} />
-    </div>
-  );
+    return (<PhotoDashboard photoData={galleryData} />);
 };
 
-export default LatestPhotos;
+export default PhotoInfo;
