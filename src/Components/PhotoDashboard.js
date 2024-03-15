@@ -1,34 +1,40 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
-import { Box, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FaFlickr } from "react-icons/fa";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Box from '@mui/material/Box';
 
 const PhotoDashboard = ({ photoData }) => {
   return (
     <Box
-      sx={{
-        p: 0,
-        width: "80%",
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-      }}
-    >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-        Informações da Foto
-      </Typography>
-      <Paper elevation={3} sx={{ p: 2, position: "relative" }}>
-        <img
-          src={photoData.url}
-          alt={photoData.title}
-          media="photo"
-          loading="lazy"
-          style={{ maxWidth: "100%", position: "flex", margin: "0 auto" }}
-        />
-      
-
+    sx={{
+      p: 0,
+      width: "80%",
+      alignContent: "center",
+      alignItems: "center",
+      margin: "0 auto",
+    }}
+  >
+    <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+    Informações da Foto
+  </Typography>
+    <Card sx={{ maxWidth:400 }}>
+    
+       <CardMedia
+        sx={{ height: 300 }}
+        image={photoData.url}
+        lazy="load"
+        title={photoData.title}
+      />
+      <CardContent>
+      <Typography variant="body2" gutterBottom>
+          Titulo: {photoData.title}
+        </Typography>
         <Typography variant="body2" gutterBottom>
           Descrição: {photoData.description}
         </Typography>
@@ -42,13 +48,18 @@ const PhotoDashboard = ({ photoData }) => {
           Visualizações: {photoData.views}
         </Typography>
 
+        
+        </CardContent>
+        <CardActions>
+
+        </CardActions>
         <Link target="_new" to={photoData.photopage}>
           <IconButton>
             <FaFlickr />
           </IconButton>
         </Link>
-        </Paper>
-    </Box>
+        </Card>
+        </Box>
   );
 };
 

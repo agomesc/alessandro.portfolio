@@ -53,7 +53,14 @@ const PhotoGallery = ({ photos }) => {
               key={index}
               onClick={() => setShowModal(true)}
             >
-              <Label>{item.title}</Label>
+              <Label>{item.title}
+              <Link to={`/PhotoInfo/${item.id}`}>
+                <IconButton>
+                  <InfoIcon />
+                </IconButton>
+              </Link>
+              </Label>
+
               <img
                 srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
                 src={`${item.url}?w=162&auto=format`}
@@ -68,11 +75,7 @@ const PhotoGallery = ({ photos }) => {
                   cursor: "pointer",
                 }}
               />
-              <Link to={`/PhotoInfo/${item.id}`}>
-                <IconButton>
-                  <InfoIcon />
-                </IconButton>
-              </Link>
+              
             </GalleryContainer>
           ))}
         </Masonry>

@@ -44,11 +44,14 @@ const CreateFlickrApp = () => {
       url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,
       description : data.description._content,
       location : data.owner.location,
-      title: data.title,
+      title: data.title._content,
       taken: data.dates.taken,
       photopage: data.urls.url[0]._content,
       views: data.views
     });
+    
+    console.log(itemData);
+
     return itemData;
   };
 
