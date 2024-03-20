@@ -1,11 +1,11 @@
 // routes.js
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Gallery from "./Pages/Gallery";
-import Photos from "./Pages/Photos";
-import About from "./Pages/About";
-import LatestPhotos from "./Pages/LatestPhotos";
-import PhotoInfo from "./Pages/PhotoInfo";
+import Gallery from "./Views/Gallery";
+import Photos from "./Views/Photos";
+import About from "./Views/About";
+import LatestPhotos from "./Views/LatestPhotos";
+import PhotoInfo from "./Views/PhotoInfo";
 
 const AppRoutes = () => {
   return (
