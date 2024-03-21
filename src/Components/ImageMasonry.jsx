@@ -53,22 +53,24 @@ const ImageMasonry = ({ data }) => {
           <NavLink key={index} to={`/Photos/${item.id}`}>
             <GalleryContainer>
               <Label>{item.title}</Label>
-              <img
-                srcSet={`${item.img}?w=500&auto=format&dpr=2 2x`}
-                src={`${item.img}?w=375&auto=format`}
-                alt={item.title}
-                media="photo"
-                loading="lazy"
-                style={{
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                  display: "flex",
-                  width: "100%",
-                  height: "auto",
-                  cursor: "pointer",
-                  flexWrap: 'wrap'
-                }}
-              />
+              <nav>
+                <img
+                  srcSet={`${item.img}?w=500&auto=format&dpr=2 2x`}
+                  src={`${item.img}?w=375&auto=format`}
+                  alt={item.title}
+                  media="photo"
+                  loading="lazy"
+                  style={{
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    display: "flex",
+                    width: "100%",
+                    height: "auto",
+                    cursor: "pointer",
+                    flexWrap: 'wrap'
+                  }}
+                />
+              </nav>
               <LabelBottom>{item.description}</LabelBottom>
             </GalleryContainer>
           </NavLink>

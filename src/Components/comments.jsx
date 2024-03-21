@@ -109,7 +109,6 @@ function CommentBox({ itemID }) {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
-        height:"100%"
       }}
     >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">

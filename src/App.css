@@ -12,7 +12,7 @@ body {
   font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
   background-color: #222;
   color: #fff; /* Cor do texto */
-  height: 100%;
+  padding-bottom: 70px;
 }
 
 
@@ -41,18 +41,18 @@ h4::after {
 }
 
 a {
-  color: #007BFF; /* Cor do link */
+  color: #ccc; /* Cor do link */
   text-decoration: none; /* Remove o sublinhado */
   font-weight: 600; /* Torna o texto um pouco mais grosso */
   transition: color 0.3s ease; /* Suaviza a transição de cor */
 }
 
 a:hover {
-  color: #0056b3; /* Cor do link quando o mouse passa por cima */
+  color: #c0810d; /* Cor do link quando o mouse passa por cima */
 }
 
 a:active {
-  color: #003367; /* Cor do link quando é clicado */
+  color: #fff; /* Cor do link quando é clicado */
 }
 
 
