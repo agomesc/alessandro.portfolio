@@ -5,18 +5,14 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Box from "@mui/material/Box";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from '../firebaseConfig';
+import { Card } from '@mui/material';
 
 
 const app = initializeApp(firebaseConfig);
@@ -128,42 +124,31 @@ function CommentBox({ itemID }) {
           variant="outlined"
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary">Enviar comentário</Button>
+        <Button sx={{ mb: 2, mt: 2 }} type="submit" variant="contained" color="primary">Enviar comentário</Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <MuiAlert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
           {message}
         </MuiAlert>
       </Snackbar>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Comentário</TableCell>
-              <TableCell align="left">Usuário</TableCell>
-              <TableCell align="left">Nome</TableCell>
-              <TableCell align="left">Foto</TableCell>
-              <TableCell align="left">Data</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {comments.map((comment, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row">
-                  {comment.text}
-                </TableCell>
-                <TableCell align="left">{comment.userId}</TableCell>
-                <TableCell align="left">{comment.userName}</TableCell>
 
-                <TableCell align="left">
-                  <Avatar alt={comment.userName} src={comment.userPhoto} /> {/* Exiba a foto do usuário aqui */}
-                </TableCell>
-                <TableCell align="left">{new Date(comment.timestamp).toLocaleString()}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {comments.map((comment, index) => (
+        <Card key={index} sx={{ mb: 2, mt: 2, p: 1 }}>
+          <CardHeader
+            avatar={
+              <Avatar alt={comment.userName} src={comment.userPhoto} />
+            }
+            title={comment.userName}
+            subheader={new Date(comment.timestamp).toLocaleString()}
+          />
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              {comment.text}
+            </Typography>
+          </CardContent>
+        </Card>
+      ))}
+
     </Box>
   );
 }
