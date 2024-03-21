@@ -2,11 +2,13 @@ import PhotoDashboard from "../Components/PhotoDashboard"; // Importe o componen
 import React, { useEffect, useState } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
+import CommentBox from "../Components/comments";
 
 const PhotoInfo = () => {
 		const { id } = useParams();
 		const [galleryData, setGalleryData] = useState([]);
 		const instance = CreateFlickrApp();
+		let randomNumber = Math.random();
 	
 		useEffect(() => {
 			async function fetchData() {
@@ -16,7 +18,10 @@ const PhotoInfo = () => {
 			if (galleryData.length === 0) fetchData();
 		}, [galleryData, id, instance]);
 	
-		return (<PhotoDashboard photoData={galleryData} />);
+		return (<>
+			 <PhotoDashboard photoData={galleryData} />
+			<CommentBox itemID={randomNumber} />
+		</>);
 };
 
 export default PhotoInfo;
