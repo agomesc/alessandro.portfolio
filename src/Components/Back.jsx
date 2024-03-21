@@ -5,24 +5,26 @@ import { Link } from "react-router-dom";
 
 
 const Back = () => {
-  const backButtonStyle = {
-    position: "fixed",
-    bottom: "70px",
-    right: "20px",
-    zIndex: 1000,
-  };
+	const backButtonStyle = {
+		position: "fixed",
+		bottom: "70px",
+		right: "20px",
+		zIndex: 1000,
+	};
 
-  const goBack =() => {
-    window.history.back();
-  }
+	const goBack =() => {
+		window.history.back();
+	}
 
-  return (
-    <Link onClick={goBack} style={backButtonStyle}>
-      <IconButton>
-        <ArrowBackIosIcon />
-      </IconButton>
-    </Link>
-  );
+	return (
+		<nav>
+			<Link onClick={goBack} style={backButtonStyle}>
+				<IconButton>
+					<ArrowBackIosIcon />
+				</IconButton>
+			</Link>
+		</nav>
+	);
 };
 
 export default Back;

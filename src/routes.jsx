@@ -6,11 +6,13 @@ import Photos from "./Views/Photos";
 import About from "./Views/About";
 import LatestPhotos from "./Views/LatestPhotos";
 import PhotoInfo from "./Views/PhotoInfo";
+import Login from "./Views/auth/index";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<Gallery />} />
+      <Route path="/Login" element={<Login />} />
       <Route path="/Gallery" element={<Gallery />} />
       <Route path="/LatestPhotos" element={<LatestPhotos />} />
       <Route path="/Photos/:id" element={<Photos />} />
