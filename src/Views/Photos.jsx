@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import PhotoGallery from "../Components/PhotoGallery";
+import CommentBox from "../Components/comments";
 import { useParams } from "react-router-dom";
 
 const Photos = () => {
@@ -16,7 +17,10 @@ const Photos = () => {
 		if (galleryData.length === 0) fetchData();
 	}, [galleryData, id, instance]);
 
-	return <PhotoGallery photos={galleryData} />;
+	return (<>
+		<PhotoGallery photos={galleryData} />
+		<CommentBox itemID={id} />
+	</>);
 };
 
 export default Photos;
