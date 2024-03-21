@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
 import Button from '@mui/material/Button';
@@ -16,24 +15,15 @@ import Paper from '@mui/material/Paper';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { firebaseConfig } from '../firebaseConfig';
 
-// Inicialize o Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyAl75-7cxK0okEbOEnpEABmzmEJr_aQv-I",
-    authDomain: "alessandro-portfolio.firebaseapp.com",
-    databaseURL: "https://alessandro-portfolio-default-rtdb.firebaseio.com",
-    projectId: "alessandro-portfolio",
-    storageBucket: "alessandro-portfolio.appspot.com",
-    messagingSenderId: "1077155633264",
-    appId: "1:1077155633264:web:176463c5c50b9a28427cb5",
-    measurementId: "G-WG3E4CSVFR"
-};
+
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const auth = getAuth(app);
 
-function CommentBox({itemID}) {
+function CommentBox({ itemID }) {
   const [comment, setComment] = useState('');
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
@@ -54,36 +44,25 @@ function CommentBox({itemID}) {
     return () => {
       unsubscribe();
     };
-  }, [db]);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Usuário está logado
+        setUser(user);
+      } else {
+        // Usuário está deslogado
+        setUser(null);
+      }
+    });
+
+    // Limpar a inscrição ao desmontar
+    return () => unsubscribe();
+  }, []);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
-  };
-
-  const handleLogin = async () => {
-    debugger
-    
-        signInWithPopup(auth, provider)
-        .then((result) => {
-          // O token de acesso do Google pode ser acessado aqui, se necessário
-          //const credential = GoogleAuthProvider.credentialFromResult(result);
-          //const token = credential.accessToken;
-      
-          // As informações do usuário logado
-          const user = result.user;
-          setUser(user);
-          console.log(user);
-        })
-        .catch((error) => {
-          // Lidar com erros aqui
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(`Erro ao fazer login com o Google: ${errorCode} ${errorMessage}`);
-          setMessage(`Erro ao fazer login com o Google: ${errorCode} ${errorMessage}`);
-          setSeverity('error');
-          setOpen(true);
-        });
-    
   };
 
   const handleSubmit = async (event) => {
@@ -93,7 +72,7 @@ function CommentBox({itemID}) {
       setMessage('Por favor, faça login para comentar.');
       setSeverity('warning');
       setOpen(true);
-      return;
+      window.location.href = '/Login';
     }
 
     try {
@@ -101,9 +80,9 @@ function CommentBox({itemID}) {
         text: comment,
         userId: user.uid,
         timestamp: Date.now(),
-        itemID:itemID, 
-        userName: user.displayName, 
-        userPhoto: user.photoURL, 
+        itemID: itemID,
+        userName: user.displayName,
+        userPhoto: user.photoURL,
       });
       console.log('Comentário adicionado com ID: ', docRef.id);
       setMessage('Comentário adicionado com sucesso!');
@@ -139,7 +118,7 @@ function CommentBox({itemID}) {
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Comentários
       </Typography>
-      
+
       <form onSubmit={handleSubmit}>
         <TextField
           value={comment}
@@ -149,7 +128,6 @@ function CommentBox({itemID}) {
           variant="outlined"
           fullWidth
         />
-        <Button variant="contained" color="primary" onClick={handleLogin}>Login com Google</Button>
         <Button type="submit" variant="contained" color="primary">Enviar comentário</Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -175,8 +153,8 @@ function CommentBox({itemID}) {
                   {comment.text}
                 </TableCell>
                 <TableCell align="left">{comment.userId}</TableCell>
-                <TableCell align="left">{comment.userName}</TableCell> 
-                
+                <TableCell align="left">{comment.userName}</TableCell>
+
                 <TableCell align="left">
                   <Avatar alt={comment.userName} src={comment.userPhoto} /> {/* Exiba a foto do usuário aqui */}
                 </TableCell>
@@ -186,7 +164,7 @@ function CommentBox({itemID}) {
           </TableBody>
         </Table>
       </TableContainer>
-      </Box>
+    </Box>
   );
 }
 

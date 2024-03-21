@@ -19,9 +19,18 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import ArtTrackIcon from "@mui/icons-material/ArtTrack";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import { Link } from "react-router-dom";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { firebaseConfig } from '../firebaseConfig';
+import { initializeApp } from "firebase/app";
+import Avatar from '@mui/material/Avatar';
+import LogoutIcon from '@mui/icons-material/Logout';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 export default function TemporaryDrawer() {
 	const [open, setOpen] = React.useState(false);
+	const [user, setUser] = useState(null);
 	const [galleryData, setGalleryData] = useState([]);
 	const instance = CreateFlickrApp();
 
@@ -34,6 +43,17 @@ export default function TemporaryDrawer() {
 		if (galleryData.length === 0) fetchData();
 	}, [galleryData, instance]);
 
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			if (user) {
+				setUser(user);
+			} else {
+				setUser(null);
+			}
+		});
+		return () => unsubscribe();
+	}, []);
+
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
@@ -45,6 +65,16 @@ export default function TemporaryDrawer() {
 			icon: <PhotoLibraryIcon />,
 		},
 	];
+
+	const handleLogout = () => {
+		signOut(auth).then(() => {
+			// Sign-out successful.
+			console.log('Usuário deslogado');
+		}).catch((error) => {
+			// An error happened.
+			console.error('Erro ao deslogar', error);
+		});
+	};
 
 	// eslint-disable-next-line array-callback-return
 	galleryData.map((item) => {
@@ -104,21 +134,38 @@ export default function TemporaryDrawer() {
 						Alessandro - Portfólio
 					</Typography>
 					{
-						<div>
-							<nav>
-							<Link to="/Login">
-							<IconButton
-								size="large"
-								aria-label="account of current user"
-								aria-controls="menu-appbar"
-								aria-haspopup="true"
-								color="inherit"
-							>
-								<AccountCircle />
-							</IconButton>
-							</Link>
-							</nav>
-						</div>
+						user ? (
+							<div style={{ display: 'flex', alignContent: "center", alignItems: "center" }}>
+								<Avatar alt={user.userName} src={user.photoURL} /> {/* Exiba a foto do usuário aqui */}
+								<nav>
+									<IconButton onClick={handleLogout}
+										size="large"
+										aria-label="account of current user"
+										aria-controls="menu-appbar"
+										aria-haspopup="true"
+										color="inherit"
+									>
+										<LogoutIcon />
+									</IconButton>
+								</nav>
+							</div>
+						) : (
+							<div>
+								<nav>
+									<Link to="/Login">
+										<IconButton
+											size="large"
+											aria-label="account of current user"
+											aria-controls="menu-appbar"
+											aria-haspopup="true"
+											color="inherit"
+										>
+											<AccountCircle />
+										</IconButton>
+									</Link>
+								</nav>
+							</div>
+						)
 					}
 				</Toolbar>
 			</AppBar>
