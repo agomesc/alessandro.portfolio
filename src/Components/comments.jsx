@@ -134,15 +134,12 @@ function CommentBox({ itemID }) {
 
       {comments.map((comment, index) => (
         <Card key={index} sx={{ mb: 2, mt: 2, p: 1 }}>
-          <CardHeader
-            avatar={
-              <Avatar alt={comment.userName} src={comment.userPhoto} />
-            }
+          <CardHeader avatar={<Avatar alt={comment.userName} src={comment.userPhoto} />}
             title={comment.userName}
             subheader={new Date(comment.timestamp).toLocaleString()}
           />
           <CardContent>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
               {comment.text}
             </Typography>
           </CardContent>
