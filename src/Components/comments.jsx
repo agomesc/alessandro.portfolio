@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
@@ -26,9 +26,14 @@ function CommentBox({ itemID }) {
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
+  const [getiID, setID] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
+
+    setID(itemID);
+
+    const q = query(collection(db, 'comments'), where('itemID', '==', getiID),
+      orderBy('timestamp', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const comments = [];
       querySnapshot.forEach((doc) => {
@@ -40,7 +45,7 @@ function CommentBox({ itemID }) {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [getiID, itemID]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -109,6 +114,7 @@ function CommentBox({ itemID }) {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
+        marginBottom: 30
       }}
     >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
