@@ -27,6 +27,7 @@ function CommentBox({ itemID }) {
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
   const [getiID, setID] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
 
@@ -52,8 +53,10 @@ function CommentBox({ itemID }) {
       if (user) {
         // Usuário está logado
         setUser(user);
+        setIsLoggedIn(true);
       } else {
         // Usuário está deslogado
+        setIsLoggedIn(false);
         setUser(null);
       }
     });
@@ -129,8 +132,9 @@ function CommentBox({ itemID }) {
           rows={4}
           variant="outlined"
           fullWidth
+          disabled={!isLoggedIn}
         />
-        <Button sx={{ mb: 2, mt: 2 }} type="submit" variant="contained" color="primary">Enviar comentário</Button>
+        <Button sx={{ mb: 2, mt: 2 }} type="submit" disabled={!isLoggedIn} variant="contained" color="primary">Enviar comentário</Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <MuiAlert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
