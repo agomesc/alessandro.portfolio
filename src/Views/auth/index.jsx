@@ -29,7 +29,7 @@ function Login() {
 
     // Limpar a inscrição ao desmontar
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
@@ -45,7 +45,7 @@ function Login() {
         setMessage('Login realizado com sucesso!');
         setSeverity('success');
         setOpen(true);
-        window.location.href='/';
+        window.history.back();
 
       })
       .catch((error) => {
@@ -78,17 +78,29 @@ function Login() {
       }}
     >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-        Login
+        {user ? "Bem-vindo!" : "Login"}
       </Typography>
 
-      <Button
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleGoogleLogin}
-      >
-        Entrar com Google
-      </Button>
+      {user ? (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            auth.signOut();
+            setUser(null);
+          }}
+        >
+          Logoff
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleGoogleLogin}
+        >
+          Entrar com Google
+        </Button>
+      )}
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity}>
