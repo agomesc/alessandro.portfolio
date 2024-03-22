@@ -133,6 +133,7 @@ function CommentBox({ itemID }) {
           variant="outlined"
           fullWidth
           disabled={!isLoggedIn}
+          placeholder={!isLoggedIn ? 'Caro visitante, Sua opinião é muito importante para nós! Convidamos você a compartilhar seus pensamentos ou experiências relacionadas à sua visita. Por favor, faça login através do ícone do usuário no menu superior para deixar seu comentário. Agradecemos por dedicar um momento para nos ajudar a melhorar!' : ''}
         />
         <Button sx={{ mb: 2, mt: 2 }} type="submit" disabled={!isLoggedIn} variant="contained" color="primary">Enviar comentário</Button>
       </form>
