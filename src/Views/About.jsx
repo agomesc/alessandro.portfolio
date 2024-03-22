@@ -3,7 +3,6 @@ import minhaImagem from "../images/Eu.png";
 import ProTip from "./ProTip";
 import CommentBox from "../Components/comments";
 const About = () => {
-	let randomNumber = Math.random();
 	const minhaDescricao = `Me chamo Alessandro, 
 		brasileiro, formado em Análise de Sistemas e pós-graduado em Engenharia de Software pela UFRJ, trabalho desde 1994 com tecnologia.
 		Minha história com a fotografia começa mais ou menos assim... Minha mãe sempre fotografou, a mim e a meus irmãos, quando éramos crianças, como forma de guardar nossos momentos da infância e no ano de 2003 eu acabei ganhando a minha primeira máquina digital em um bingo numa festa de trabalho. Desde então, nunca mais me desapeguei da fotografia.
@@ -13,7 +12,7 @@ const About = () => {
 	return (
 		<>
 			<PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
-			<CommentBox itemID={randomNumber} />
+			<CommentBox itemID="About" />
 			<ProTip />
 		</>
 	);
