@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, Snackbar } from "@mui/material";
 import Alert from '@mui/material/Alert';
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { firebaseConfig } from '../../firebaseConfig';
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+import { auth, provider } from '../../firebaseConfig';
+import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 
 function Login() {
 

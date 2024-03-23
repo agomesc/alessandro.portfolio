@@ -19,14 +19,10 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import ArtTrackIcon from "@mui/icons-material/ArtTrack";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import { Link } from "react-router-dom";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { firebaseConfig } from '../firebaseConfig';
-import { initializeApp } from "firebase/app";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
 import LogoutIcon from '@mui/icons-material/Logout';
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 export default function TemporaryDrawer() {
 	const [open, setOpen] = React.useState(false);
@@ -135,11 +131,11 @@ export default function TemporaryDrawer() {
 					</Typography>
 					{
 						user ? (
-							<div style={{ display: 'flex', alignContent: "center", alignItems: "center" }}>
-								<Avatar alt={user.userName} src={user.photoURL} /> {/* Exiba a foto do usuário aqui */}
+							<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft:10 }}>
+								<Avatar alt={user.userName} src={user.photoURL} /> 
 								<nav>
 									<IconButton onClick={handleLogout}
-										size="large"
+										size="small"
 										aria-label="account of current user"
 										aria-controls="menu-appbar"
 										aria-haspopup="true"
@@ -154,7 +150,7 @@ export default function TemporaryDrawer() {
 								<nav>
 									<Link to="/Login">
 										<IconButton
-											size="large"
+											size="medium"
 											aria-label="account of current user"
 											aria-controls="menu-appbar"
 											aria-haspopup="true"

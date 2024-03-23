@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
@@ -10,14 +9,9 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { firebaseConfig } from '../firebaseConfig';
 import { Card } from '@mui/material';
-
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from '../firebaseConfig';
 
 function CommentBox({ itemID }) {
   const [comment, setComment] = useState('');
