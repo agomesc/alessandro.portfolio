@@ -12,11 +12,11 @@ const Gallery = () => {
 			const data = await instance.getGallery();
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		fetchData();
 	}, [galleryData, instance]);
 
 	return (<><ImageMasonry data={galleryData} />
 		<CommentBox itemID="Gallery" /></>)
 };
 
-export default Gallery;
+export default React.memo(Gallery);
