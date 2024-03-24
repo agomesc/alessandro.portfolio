@@ -33,7 +33,6 @@ function Login() {
         //const credential = GoogleAuthProvider.credentialFromResult(result);
         //const token = credential.accessToken;
 
-        // As informações do usuário logado
         const user = result.user;
         setUser(user);
         console.log(user);
@@ -88,13 +87,13 @@ function Login() {
           Logoff
         </Button>
       ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleGoogleLogin}
-        >
-          Entrar com Google
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleGoogleLogin}
+          >
+            Entrar com Google
+          </Button>
       )}
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -102,7 +101,6 @@ function Login() {
           {message}
         </Alert>
       </Snackbar>
-
     </Box>
   );
 }

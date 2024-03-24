@@ -23,6 +23,7 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PolicyIcon from '@mui/icons-material/Policy';
 
 export default function TemporaryDrawer() {
 	const [open, setOpen] = React.useState(false);
@@ -86,6 +87,8 @@ export default function TemporaryDrawer() {
 		description: "Atualizações",
 		icon: <DynamicFeedIcon />,
 	});
+	
+	items.push({ route: "/Privacidade", description: "Política de Privacidade", icon: <PolicyIcon /> });
 	items.push({ route: "/About", description: "Sobre", icon: <InfoIcon /> });
 	items.push({ route: "/Login", description: "Login", icon: <AccountCircle /> });
 

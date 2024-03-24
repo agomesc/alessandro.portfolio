@@ -7,6 +7,7 @@ import About from "./Views/About";
 import LatestPhotos from "./Views/LatestPhotos";
 import PhotoInfo from "./Views/PhotoInfo";
 import Login from "./Views/auth/index";
+import Privacidade from "../src/Views/Privacidade";
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
       <Route path="/LatestPhotos" element={<LatestPhotos />} />
       <Route path="/Photos/:id" element={<Photos />} />
       <Route path="/PhotoInfo/:id" element={<PhotoInfo />} />
+      <Route path="/Privacidade/" element={<Privacidade />} />
       <Route path="/About" element={<About />} />
     </Routes>
   );
