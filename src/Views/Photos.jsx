@@ -14,7 +14,7 @@ const Photos = () => {
 			const data = await instance.getPhotos(id);
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		fetchData();
 	}, [galleryData, id, instance]);
 
 	return (<>
@@ -23,4 +23,4 @@ const Photos = () => {
 	</>);
 };
 
-export default Photos;
+export default  React.memo(Photos);

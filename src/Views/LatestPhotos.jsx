@@ -12,7 +12,7 @@ const LatestPhotos = () => {
 				const data = await instance.getLatestPhotos();
 				setGalleryData(data);
 			}
-			if (galleryData.length === 0) fetchData();
+			fetchData();
 		}, [galleryData, instance]);
 	
 		return (
@@ -22,4 +22,4 @@ const LatestPhotos = () => {
 	);
 };
 
-export default LatestPhotos;
+export default  React.memo(LatestPhotos);
