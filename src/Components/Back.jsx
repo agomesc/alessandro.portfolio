@@ -20,7 +20,7 @@ const Back = () => {
 		<nav>
 			<Link onClick={goBack} style={backButtonStyle}>
 				<IconButton>
-					<ArrowBackIosNewOutlinedIcon fontSize="large" />
+					<ArrowBackIosNewOutlinedIcon />
 				</IconButton>
 			</Link>
 		</nav>

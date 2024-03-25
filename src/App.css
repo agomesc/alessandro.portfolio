@@ -7,9 +7,10 @@
 
 /* Estilos Globais */
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   font-weight: 400;
-  font-size: 92px; /* Ajuste o tamanho da fonte conforme necessário */
   background-color: #222;
   color: #fff; /* Cor do texto */
   padding-bottom: 70px;
