@@ -54,11 +54,13 @@ const PhotoGallery = ({ photos }) => {
               onClick={() => setShowModal(true)}
             >
               <Label>{item.title}
-              <Link to={`/PhotoInfo/${item.id}`}>
-                <IconButton>
-                  <InfoIcon />
-                </IconButton>
-              </Link>
+                <nav>
+                  <Link to={`/PhotoInfo/${item.id}`}>
+                    <IconButton>
+                      <InfoIcon />
+                    </IconButton>
+                  </Link>
+                </nav>
               </Label>
 
               <img
@@ -75,7 +77,7 @@ const PhotoGallery = ({ photos }) => {
                   cursor: "pointer",
                 }}
               />
-              
+
             </GalleryContainer>
           ))}
         </Masonry>

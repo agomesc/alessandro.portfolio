@@ -1,6 +1,6 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { Link } from "react-router-dom";
 
 
@@ -20,7 +20,7 @@ const Back = () => {
 		<nav>
 			<Link onClick={goBack} style={backButtonStyle}>
 				<IconButton>
-					<ArrowBackIosIcon />
+					<ArrowBackIosNewOutlinedIcon fontSize="large" />
 				</IconButton>
 			</Link>
 		</nav>

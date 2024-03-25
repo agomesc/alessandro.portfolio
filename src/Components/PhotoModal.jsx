@@ -7,7 +7,7 @@ import PhotoCarousel from "./PhotoCarousel"; // Importe o componente PhotoCarous
 const PhotoModal = ({ photos, onClose }) => {
   return (
     <Box>
-      <IconButton onClick={onClose}>
+      <IconButton sx={{ mb: 3, mt: 0 }}  onClick={onClose}>
         <CloseIcon />
       </IconButton>
       <PhotoCarousel photos={photos} onClose={onClose} />

@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 const Label = styled(Paper)(() => ({
   position: "absolute",
   content: '""',
+  fontsize:12,
   top: 0,
   left: 0,
   width: "auto",
@@ -25,6 +26,7 @@ const Label = styled(Paper)(() => ({
 const LabelBottom = styled(Paper)(() => ({
   position: "absolute",
   content: '""',
+  fontsize:10,
   Bottom: -10,
   left: 0,
   width: "100%",
