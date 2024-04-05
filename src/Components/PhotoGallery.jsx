@@ -24,6 +24,7 @@ const Label = styled(Paper)(() => ({
   alignItems: "center", // Alinhamento vertical
   borderRadius: 0, // Removi o arredondamento das bordas
   textTransform: "uppercase",
+  fontSize:12
 }));
 
 const GalleryContainer = styled(Paper)(() => ({
