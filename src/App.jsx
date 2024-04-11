@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Routes from "./routes";
 import Footer from "./Views/Footer";
+import "./index.css";
 
 const darkTheme = createTheme({
 	palette: {

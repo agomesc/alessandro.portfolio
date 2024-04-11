@@ -24,6 +24,7 @@ import { auth } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PolicyIcon from '@mui/icons-material/Policy';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export default function TemporaryDrawer() {
 	const [open, setOpen] = React.useState(false);
@@ -89,6 +90,7 @@ export default function TemporaryDrawer() {
 	});
 	
 	items.push({ route: "/Privacidade", description: "Política de Privacidade", icon: <PolicyIcon /> });
+	items.push({ route: "/Transparencia", description: "Transparência", icon: <AdminPanelSettingsIcon /> });
 	items.push({ route: "/About", description: "Sobre", icon: <InfoIcon /> });
 	items.push({ route: "/Login", description: "Login", icon: <AccountCircle /> });
 

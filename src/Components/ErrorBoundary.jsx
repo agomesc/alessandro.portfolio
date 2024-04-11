@@ -22,7 +22,6 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      // Você pode personalizar a mensagem de erro aqui.
       return <MessageSnackbar message={this.error} severity="info" />
     }
 
