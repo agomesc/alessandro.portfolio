@@ -14,6 +14,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<Gallery />} />
+      <Route path="/Home" element={<Gallery />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Gallery" element={<Gallery />} />
       <Route path="/LatestPhotos" element={<LatestPhotos />} />
