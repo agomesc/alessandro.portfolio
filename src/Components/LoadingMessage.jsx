@@ -30,7 +30,6 @@ const LoadingMessage = () => {
         }
       }}
     >
-      <div>Aguarde, carregando...</div>
     </Box>
   );
 };
