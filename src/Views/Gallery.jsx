@@ -1,7 +1,12 @@
 import ImageMasonry from "../Components/ImageMasonry";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import React, { useEffect, useState } from "react";
-import CommentBox from "../Components/comments";
+import React, { useEffect, useState, Suspense, lazy } from "react";
+
+const CommentBox = lazy(() => import("../Components/comments"));
+
+const LoadingMessage = () => (
+	<div>Aguarde, carregando...</div>
+);
 
 const Gallery = () => {
 	const [galleryData, setGalleryData] = useState([]);
@@ -15,8 +20,9 @@ const Gallery = () => {
 		fetchData();
 	}, [galleryData, instance]);
 
-	return (<><ImageMasonry data={galleryData} />
-		<CommentBox itemID="Gallery" /></>)
+	return (<><Suspense fallback={<LoadingMessage />}><ImageMasonry data={galleryData} />
+		<CommentBox itemID="Gallery" />
+	</Suspense></>)
 };
 
 export default React.memo(Gallery);

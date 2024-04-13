@@ -1,7 +1,14 @@
-import PhotoDescription from "../Components/PhotoDescription";
+import React, { Suspense, lazy } from 'react';
 import minhaImagem from "../images/Eu.png";
-import ProTip from "./ProTip";
-import CommentBox from "../Components/comments";
+
+const PhotoDescription = lazy(() => "../Components/PhotoDescription");
+const CommentBox = lazy(() => "../Components/comments");
+const ProTip = lazy(() => import("./ProTip"));
+
+const LoadingMessage = () => (
+	<div>Aguarde, carregando...</div>
+);
+
 const About = () => {
 	const minhaDescricao = `Me chamo Alessandro, 
 		brasileiro, formado em Análise de Sistemas e pós-graduado em Engenharia de Software pela UFRJ, trabalho desde 1994 com tecnologia.
@@ -11,9 +18,11 @@ const About = () => {
 
 	return (
 		<>
-			<PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
-			<CommentBox itemID="About" />
-			<ProTip />
+			<Suspense fallback={<LoadingMessage />}>
+				<PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
+				<CommentBox itemID="About" />
+				<ProTip />
+			</Suspense>
 		</>
 	);
 };

@@ -1,8 +1,13 @@
-import PhotoDashboard from "../Components/PhotoDashboard"; // Importe o componente
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
+
+const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
+
+const LoadingMessage = () => (
+	<div>Aguarde, carregando...</div>
+);
 
 const PhotoInfo = () => {
 	const { id } = useParams();
@@ -16,10 +21,12 @@ const PhotoInfo = () => {
 		}
 		fetchData();
 	}, [galleryData, id, instance]);
-
+	
 	return (<>
+	<Suspense fallback={<LoadingMessage />}>
 		<PhotoDashboard photoData={galleryData} />
 		<CommentBox itemID={id} />
+		</Suspense>
 	</>);
 };
 

@@ -1,6 +1,11 @@
-import PhotoGrid from "../Components/PhotoGrid"; // Importe o componente
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+
+const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
+
+const LoadingMessage = () => (
+	<div>Aguarde, carregando...</div>
+);
 
 const LatestPhotos = () => {
 	
@@ -17,7 +22,9 @@ const LatestPhotos = () => {
 	
 		return (
 		<div>
-			<PhotoGrid itemData={galleryData} />
+			<Suspense fallback={<LoadingMessage />}>
+				<PhotoGrid itemData={galleryData} />
+			</Suspense>
 		</div>
 	);
 };

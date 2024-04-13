@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import PhotoGallery from "../Components/PhotoGallery";
-import CommentBox from "../Components/comments";
 import { useParams } from "react-router-dom";
+
+const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
+const CommentBox = lazy(() => import("../Components/comments"));
+
+const LoadingMessage = () => (
+	<div>Aguarde, carregando...</div>
+);
 
 const Photos = () => {
 	const { id } = useParams();
@@ -18,8 +23,10 @@ const Photos = () => {
 	}, [galleryData, id, instance]);
 
 	return (<>
+	<Suspense fallback={<LoadingMessage />}>
 		<PhotoGallery photos={galleryData} />
 		<CommentBox itemID={id} />
+		</Suspense>
 	</>);
 };
 

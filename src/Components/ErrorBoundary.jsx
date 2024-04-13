@@ -17,7 +17,6 @@ class ErrorBoundary extends Component {
     this.error = error;
     this.errorInfo = errorInfo;
     console.error('Erro capturado:', error, errorInfo);
-    debugger
   }
 
   render() {
