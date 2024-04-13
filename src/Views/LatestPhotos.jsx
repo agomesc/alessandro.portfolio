@@ -1,11 +1,8 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
-
-const LoadingMessage = () => (
-	<div>Aguarde, carregando...</div>
-);
 
 const LatestPhotos = () => {
 	

@@ -2,12 +2,9 @@ import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
-
-const LoadingMessage = () => (
-	<div>Aguarde, carregando...</div>
-);
 
 const PhotoInfo = () => {
 	const { id } = useParams();

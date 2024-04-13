@@ -1,12 +1,9 @@
 import ImageMasonry from "../Components/ImageMasonry";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy } from "react";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const CommentBox = lazy(() => import("../Components/comments"));
-
-const LoadingMessage = () => (
-	<div>Aguarde, carregando...</div>
-);
 
 const Gallery = () => {
 	const [galleryData, setGalleryData] = useState([]);

@@ -1,13 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import minhaImagem from "../images/Eu.png";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoDescription = lazy(() => "../Components/PhotoDescription");
 const CommentBox = lazy(() => "../Components/comments");
 const ProTip = lazy(() => import("./ProTip"));
-
-const LoadingMessage = () => (
-	<div>Aguarde, carregando...</div>
-);
 
 const About = () => {
 	const minhaDescricao = `Me chamo Alessandro, 
