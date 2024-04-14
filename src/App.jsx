@@ -3,8 +3,8 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
+import LoadingMessage from "./Components/LoadingMessage";
 
-// Lazy load dos componentes
 const Menu = lazy(() => import("./Components/menu"));
 const Routes = lazy(() => import("./routes"));
 const Back = lazy(() => import("./Components/Back"));
@@ -15,10 +15,6 @@ const darkTheme = createTheme({
 		mode: "dark",
 	},
 });
-
-const LoadingMessage = () => (
-	<div>Aguarde, carregando...</div>
-);
 
 const App = () => {
 	return (

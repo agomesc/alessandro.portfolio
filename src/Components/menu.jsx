@@ -25,6 +25,7 @@ import Avatar from '@mui/material/Avatar';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PolicyIcon from '@mui/icons-material/Policy';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import HomeIcon from '@mui/icons-material/Home';
 
 export default function TemporaryDrawer() {
 	const [open, setOpen] = React.useState(false);
@@ -58,8 +59,15 @@ export default function TemporaryDrawer() {
 
 	const items = [
 		{
+			route: "/Home",
+			description: "Home",
+			chid: false,
+			icon: <HomeIcon />,
+		},
+		{
 			route: "/Gallery",
 			description: "Minhas Galerias",
+			chid: false,
 			icon: <PhotoLibraryIcon />,
 		},
 	];
@@ -79,6 +87,7 @@ export default function TemporaryDrawer() {
 		items.push({
 			route: `/Photos/${item.id}?`,
 			description: item.title,
+			chid: false,
 			icon: <ArtTrackIcon />,
 		});
 	});
@@ -86,16 +95,18 @@ export default function TemporaryDrawer() {
 	items.push({
 		route: "/LatestPhotos",
 		description: "Atualizações",
+		chid: false,
 		icon: <DynamicFeedIcon />,
 	});
 	
-	items.push({ route: "/Privacidade", description: "Política de Privacidade", icon: <PolicyIcon /> });
-	items.push({ route: "/Transparencia", description: "Transparência", icon: <AdminPanelSettingsIcon /> });
-	items.push({ route: "/About", description: "Sobre", icon: <InfoIcon /> });
-	items.push({ route: "/Login", description: "Login", icon: <AccountCircle /> });
+	items.push({ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> });
+	items.push({ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> });
+	items.push({ route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> });
+	items.push({ route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> });
 
 	const DrawerList = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+			
 			<List>
 				{items.map((item, index) => (
 					<ListItem key={index} disablePadding>
