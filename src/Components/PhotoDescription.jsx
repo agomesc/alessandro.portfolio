@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
 const PhotoDescription = ({ imageUrl, description }) => {
   return (
@@ -19,6 +20,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Sobre?
       </Typography>
+      <Paper elevation={3}>
       <Grid>
         <Grid item>
           <Card
@@ -40,6 +42,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
           </Card>
         </Grid>
       </Grid>
+      </Paper>
     </Box>
   );
 };

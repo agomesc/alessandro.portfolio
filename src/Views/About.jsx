@@ -2,8 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import minhaImagem from "../images/Eu.png";
 import LoadingMessage from "../Components/LoadingMessage";
 
-const PhotoDescription = lazy(() => "../Components/PhotoDescription");
-const CommentBox = lazy(() => "../Components/comments");
+const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
+const CommentBox = lazy(() => import("../Components/comments"));
 const ProTip = lazy(() => import("./ProTip"));
 
 const About = () => {

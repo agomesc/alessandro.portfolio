@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Paper } from "@mui/material";
 const Privacidade = () => {
 
     const descricao = `Política Privacidade
@@ -40,8 +40,9 @@ const Privacidade = () => {
                 }}
             >
                 <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>{descricao}</Typography>
-
+                <Paper elevation={3}>
+                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>{descricao}</Typography>
+                </Paper>
             </Box>
         </>
     );
