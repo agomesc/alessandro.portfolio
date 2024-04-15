@@ -3,6 +3,7 @@ import Link from "@mui/material/Link";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Paper from '@mui/material/Paper';
 
 function LightBulbIcon(props) {
 	return (
@@ -15,17 +16,19 @@ function LightBulbIcon(props) {
 export default function ProTip() {
 	return (
 		<Box sx={{ pt: 4, display: "fixed", justifyContent: "center" }}>
-			<Typography sx={{ mt: 3, mb: 3 }} color="text.secondary">
-				<LightBulbIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-				<Link href="https://react.dev/learn/installation">React</Link> e{" "}
-				<Link href="https://www.flickr.com/services/api/">Flickr API</Link>.
-				<Typography variant="body1" sx={{ textAlign: "center" }}>
-					Desenvolvedor: Alessandro G
+			<Paper elevation={3}>
+				<Typography sx={{ mt: 3, mb: 3, p:2 }} color="text.secondary">
+					<LightBulbIcon sx={{ mr: 1, verticalAlign: "center" }} />
+					<Link href="https://react.dev/learn/installation">Node.js, React</Link> e{" "}
+					<Link href="https://www.flickr.com/services/api/">Flickr API</Link>.
+					<Typography variant="body1" sx={{ textAlign: "center" }}>
+						Desenvolvedor: Alessandro G
+					</Typography>
+					<Typography variant="body1" sx={{ textAlign: "center" }}>
+						Alessandro Portfólio. Todos os direitos reservados.
+					</Typography>
 				</Typography>
-				<Typography variant="body1" sx={{ textAlign: "center" }}>
-					Todos os direitos reservados
-				</Typography>
-			</Typography>
+			</Paper>
 		</Box>
 	);
 }

@@ -4,7 +4,6 @@ import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
 const CommentBox = lazy(() => import("../Components/comments"));
-const ProTip = lazy(() => import("./ProTip"));
 
 const About = () => {
 	const minhaDescricao = `Me chamo Alessandro, 
@@ -18,7 +17,6 @@ const About = () => {
 			<Suspense fallback={<LoadingMessage />}>
 				<PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
 				<CommentBox itemID="About" />
-				<ProTip />
 			</Suspense>
 		</>
 	);

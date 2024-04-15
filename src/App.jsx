@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
 import LoadingMessage from "./Components/LoadingMessage";
+const ProTip = lazy(() => import("./Views/ProTip"));
 
 const Menu = lazy(() => import("./Components/menu"));
 const Routes = lazy(() => import("./routes"));
@@ -25,6 +26,7 @@ const App = () => {
 					<Menu />
 					<Routes />
 					<Back />
+					<ProTip />
 					<Footer />
 				</Suspense>
 			</Container>
