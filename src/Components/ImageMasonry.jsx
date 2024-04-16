@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
+import ImageComponent from "./ImageComponent";
+
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -57,22 +59,7 @@ const ImageMasonry = ({ data }) => {
             <GalleryContainer>
               <Label>{item.title}</Label>
               <nav>
-                <img
-                  srcSet={`${item.img}?w=500&auto=format&dpr=2 2x`}
-                  src={`${item.img}?w=375&auto=format`}
-                  alt={item.title}
-                  media="photo"
-                  loading="lazy"
-                  style={{
-                    borderBottomLeftRadius: 0,
-                    borderBottomRightRadius: 0,
-                    display: "flex",
-                    width: "100%",
-                    height: "auto",
-                    cursor: "pointer",
-                    flexWrap: 'wrap'
-                  }}
-                />
+                <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
               </nav>
               <LabelBottom>{item.description}</LabelBottom>
             </GalleryContainer>

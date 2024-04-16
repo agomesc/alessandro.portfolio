@@ -8,6 +8,8 @@ import PhotoModal from "./PhotoModal"; // Importe o componente
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
+import ImageComponent from "../Components/ImageComponent"
+import zIndex from "@mui/material/styles/zIndex";
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -54,7 +56,7 @@ const PhotoGallery = ({ photos }) => {
               key={index}
               onClick={() => setShowModal(true)}
             >
-              <Label>{item.title}
+              <Label style={{zIndex:2}}>{item.title}
                 <nav>
                   <Link to={`/PhotoInfo/${item.id}`}>
                     <IconButton>
@@ -63,22 +65,7 @@ const PhotoGallery = ({ photos }) => {
                   </Link>
                 </nav>
               </Label>
-
-              <img
-                srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
-                src={`${item.url}?w=162&auto=format`}
-                alt={item.title}
-                loading="lazy"
-                media="photo"
-                style={{
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                  display: "block",
-                  width: "100%",
-                  cursor: "pointer",
-                }}
-              />
-
+              <ImageComponent src={item.url} alt={item.title}></ImageComponent>
             </GalleryContainer>
           ))}
         </Masonry>
