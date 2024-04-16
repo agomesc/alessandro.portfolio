@@ -14,7 +14,7 @@ const Gallery = () => {
 			const data = await instance.getGallery();
 			setGalleryData(data);
 		}
-		fetchData();
+		if (galleryData.length === 0) fetchData();
 	}, [galleryData, instance]);
 
 	return (<><Suspense fallback={<LoadingMessage />}><ImageMasonry data={galleryData} />

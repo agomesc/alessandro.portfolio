@@ -14,7 +14,7 @@ const LatestPhotos = () => {
 				const data = await instance.getLatestPhotos();
 				setGalleryData(data);
 			}
-			fetchData();
+			if (galleryData.length===0) fetchData();
 		}, [galleryData, instance]);
 	
 		return (

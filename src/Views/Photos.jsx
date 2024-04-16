@@ -16,15 +16,15 @@ const Photos = () => {
 			const data = await instance.getPhotos(id);
 			setGalleryData(data);
 		}
-		fetchData();
+		if (galleryData.length === 0) fetchData();
 	}, [galleryData, id, instance]);
 
 	return (<>
-	<Suspense fallback={<LoadingMessage />}>
-		<PhotoGallery photos={galleryData} />
-		<CommentBox itemID={id} />
+		<Suspense fallback={<LoadingMessage />}>
+			<PhotoGallery photos={galleryData} />
+			<CommentBox itemID={id} />
 		</Suspense>
 	</>);
 };
 
-export default  React.memo(Photos);
+export default React.memo(Photos);

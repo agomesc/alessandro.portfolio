@@ -27,7 +27,7 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 
-export default function TemporaryDrawer() {
+const TemporaryDrawer = () => {
 	const [open, setOpen] = React.useState(false);
 	const [user, setUser] = useState(null);
 	const [galleryData, setGalleryData] = useState([]);
@@ -98,7 +98,7 @@ export default function TemporaryDrawer() {
 		chid: false,
 		icon: <DynamicFeedIcon />,
 	});
-	
+
 	items.push({ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> });
 	items.push({ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> });
 	items.push({ route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> });
@@ -106,7 +106,7 @@ export default function TemporaryDrawer() {
 
 	const DrawerList = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-			
+
 			<List>
 				{items.map((item, index) => (
 					<ListItem key={index} disablePadding>
@@ -147,8 +147,8 @@ export default function TemporaryDrawer() {
 					</Typography>
 					{
 						user ? (
-							<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft:10 }}>
-								<Avatar alt={user.userName} src={user.photoURL} /> 
+							<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
+								<Avatar alt={user.userName} src={user.photoURL} />
 								<nav>
 									<IconButton onClick={handleLogout}
 										size="small"
@@ -187,3 +187,5 @@ export default function TemporaryDrawer() {
 		</div>
 	);
 }
+
+export default React.memo(TemporaryDrawer);
