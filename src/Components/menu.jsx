@@ -12,6 +12,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import Collapse from "@mui/material/Collapse";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoIcon from "@mui/icons-material/Info";
@@ -26,9 +27,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PolicyIcon from '@mui/icons-material/Policy';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const TemporaryDrawer = () => {
 	const [open, setOpen] = React.useState(false);
+	const [openSub, setOpenSub] = React.useState(false);
 	const [user, setUser] = useState(null);
 	const [galleryData, setGalleryData] = useState([]);
 	const instance = CreateFlickrApp();
@@ -57,6 +61,10 @@ const TemporaryDrawer = () => {
 		setOpen(newOpen);
 	};
 
+	const handleClick = () => {
+		setOpenSub(!openSub);
+	};
+
 	const items = [
 		{
 			route: "/Home",
@@ -65,7 +73,8 @@ const TemporaryDrawer = () => {
 			icon: <HomeIcon />,
 		},
 		{
-			route: "/Gallery",
+			// eslint-disable-next-line no-script-url
+			route: "JavaScript:void(0);",
 			description: "Minhas Galerias",
 			chid: false,
 			icon: <PhotoLibraryIcon />,
@@ -87,7 +96,7 @@ const TemporaryDrawer = () => {
 		items.push({
 			route: `/Photos/${item.id}?`,
 			description: item.title,
-			chid: false,
+			chid: true,
 			icon: <ArtTrackIcon />,
 		});
 	});
@@ -106,24 +115,56 @@ const TemporaryDrawer = () => {
 
 	const DrawerList = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-
+			<Divider />
 			<List>
-				{items.map((item, index) => (
-					<ListItem key={index} disablePadding>
-						<ListItemButton component="a" href={item.route}>
-							<ListItemIcon
-								size="small"
-								edge="start"
-								color="inherit"
-								aria-label="menu"
-							>
-								{item.icon}
-							</ListItemIcon>
-							<ListItemText primary={item.description} />
-						</ListItemButton>
-					</ListItem>
-				))}
+				{items.map((item, index) => {
+					const isChild = item.chid;
+					const hasChildren = items[index + 1] && items[index + 1].chid;
+
+					if (!isChild) {
+						return (
+							<ListItem key={index} disablePadding>
+								<ListItemButton
+									component="a"
+									href={item.route}
+									onClick={(event) => {
+										event.stopPropagation();
+										handleClick(index);
+									}}
+								>
+									<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
+										{item.icon}
+									</ListItemIcon>
+									<ListItemText primary={item.description} />
+									{hasChildren && (openSub ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
+								</ListItemButton>
+							</ListItem>
+						);
+					} else {
+						return (
+							<Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
+								<List component="div" disablePadding>
+									<ListItemButton
+										sx={{ pl: 4 }}
+										component="a"
+										href={item.route}
+										onClick={(event) => {
+											// Impede que o evento de clique se propague
+											event.stopPropagation();
+										}}
+									>
+										<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
+											{item.icon}
+										</ListItemIcon>
+										<ListItemText primary={item.description} />
+									</ListItemButton>
+								</List>
+							</Collapse>
+						);
+					}
+				})}
 			</List>
+
 			<Divider />
 		</Box>
 	);
