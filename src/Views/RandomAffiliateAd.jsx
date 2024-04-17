@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
+import Box from "@mui/material/Box";
 import { Paper, Typography } from '@mui/material';
 
 const RandomAffiliateAd = () => {
@@ -23,15 +24,15 @@ const RandomAffiliateAd = () => {
   }, []);
 
   return (
-    <Paper style={{ padding: '20px', margin: '20px' }}>
-      {randomAd ? (
-        <>
-           <div dangerouslySetInnerHTML={{ __html: randomAd.text }} />
-        </>
-      ) : (
-        <Typography variant="body1">Carregando anúncio...</Typography>
-      )}
-    </Paper>
+    <Box sx={{ pt: 4, display: "fixed", justifyContent: "center" }}>
+      <Paper style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
+        {randomAd ? (
+          <div dangerouslySetInnerHTML={{ __html: randomAd.text }} />
+        ) : (
+          <Typography variant="body1">Carregando anúncio...</Typography>
+        )}
+      </Paper>
+    </Box>
   );
 };
 
