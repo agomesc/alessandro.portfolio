@@ -29,6 +29,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const TemporaryDrawer = () => {
 	const [open, setOpen] = React.useState(false);
@@ -108,6 +109,8 @@ const TemporaryDrawer = () => {
 		icon: <DynamicFeedIcon />,
 	});
 
+	
+	items.push({ route: "/AffiliateAdList", description: "Seleção de Ofertas", chid: false, icon: <AddShoppingCartIcon /> });
 	items.push({ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> });
 	items.push({ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> });
 	items.push({ route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> });
