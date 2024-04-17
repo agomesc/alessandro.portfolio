@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.0",
     "@firebase/auth": "^1.6.2",
     "@fontsource/roboto": "^5.0.8",
+    "@microlink/react": "^5.5.18",
     "@mui/lab": "^5.0.0-alpha.166",
     "@mui/material": "^5.15.11",
     "@testing-library/jest-dom": "^5.17.0",

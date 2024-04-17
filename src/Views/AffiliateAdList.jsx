@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { List, ListItem, Paper } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import LinkPreview from '../Components/LinkPreview'
 
 const AffiliateAdList = () => {
     const [ads, setAds] = useState([]);
@@ -14,8 +15,9 @@ const AffiliateAdList = () => {
             const adsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
-                createdAt: doc.data().createdAt?.toDate().toLocaleString() // Formata a data
-            }));
+                createdAt: doc.data().createdAt?.toDate().toLocaleString(),
+                // Supõe-se que a propriedade isActive seja um booleano
+            })).filter(ad => ad.isActive); // Filtra apenas os anúncios ativos
             setAds(adsData);
         };
 
@@ -31,7 +33,11 @@ const AffiliateAdList = () => {
                 <List>
                     {ads.map((ad) => (
                         <ListItem key={ad.id}>
-                            <div dangerouslySetInnerHTML={{ __html: ad.text }} />
+                            {ad.isLink ? (
+                                <LinkPreview url={ad.text} />
+                            ) : (
+                                <div dangerouslySetInnerHTML={{ __html: ad.text }} />
+                            )}
                         </ListItem>
                     ))}
                 </List>

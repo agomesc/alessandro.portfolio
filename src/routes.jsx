@@ -26,7 +26,6 @@ const AppRoutes = () => {
       <Route path="/Transparencia" element={<Transparencia />} />
       {/* <Route path="/AffiliateAd" element={<AffiliateAd  />} /> */}
       <Route path="/AffiliateAdList" element={<AffiliateAdList  />} />
-      
       <Route path="/About" element={<About />} />
     </Routes>
   );

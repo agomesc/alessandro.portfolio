@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
 import LoadingMessage from "./Components/LoadingMessage";
 import RandomAffiliateAd from "./Views/RandomAffiliateAd"
+
 const ProTip = lazy(() => import("./Views/ProTip"));
 
 const Menu = lazy(() => import("./Components/menu"));

@@ -5,16 +5,19 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const AffiliateAd = () => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
+  const [isLink, setIsLink] = useState(true); // Novo estado para 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -33,6 +36,13 @@ const AffiliateAd = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,7 +59,8 @@ const AffiliateAd = () => {
         title,
         text,
         createdAt: serverTimestamp(),
-        isActive
+        isActive,
+        isLink, 
       });
       console.log('Documento adicionado com sucesso!');
       // Limpar o formulário após o envio
@@ -91,10 +102,21 @@ const AffiliateAd = () => {
             label="Ativo"
           />
         </FormGroup>
-        <Button type="submit" variant="contained" color="primary">
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch checked={isLink} onChange={(e) => setIsLink(e.target.checked)} />}
+            label="É Link"
+          />
+        </FormGroup>
+        <Button type="submit" variant="contained" color="primary" disabled={!isLoggedIn}>
           Salvar
         </Button>
       </form>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <MuiAlert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </MuiAlert>
+      </Snackbar>
     </Box>
   );
 };
