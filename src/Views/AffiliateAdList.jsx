@@ -23,11 +23,11 @@ const AffiliateAdList = () => {
     }, []);
 
     return (
-        <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+        <Box sx={{ p: 0, width: "80%", height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
             <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
-            <Paper style={{ maxHeight: 400, overflow: 'auto' }}>
+            <Paper style={{ minHeightHeight: 400 }}>
                 <List>
                     {ads.map((ad) => (
                         <ListItem key={ad.id}>

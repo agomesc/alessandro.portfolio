@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
 import LoadingMessage from "./Components/LoadingMessage";
+import RandomAffiliateAd from "./Views/RandomAffiliateAd"
 const ProTip = lazy(() => import("./Views/ProTip"));
 
 const Menu = lazy(() => import("./Components/menu"));
@@ -25,6 +26,7 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<Menu />
 					<Routes />
+					<RandomAffiliateAd />
 					<Back />
 					<ProTip />
 					<Footer />

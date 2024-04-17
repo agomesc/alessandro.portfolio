@@ -12,6 +12,9 @@ const AffiliateAd = () => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,8 +33,17 @@ const AffiliateAd = () => {
     return () => unsubscribe();
   }, []);
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!user) {
+      setMessage('Por favor, faça login para comentar.');
+      setSeverity('warning');
+      setOpen(true);
+      window.location.href = '/Login';
+    }
+
     try {
       await addDoc(collection(db, 'AffiliateAd'), {
         title,
