@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import Box from "@mui/material/Box";
 import { Paper, Typography } from '@mui/material';
 import LinkPreview from '../Components/LinkPreview'
+import { Link } from "react-router-dom";
 
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
@@ -29,9 +30,9 @@ const RandomAffiliateAd = () => {
     <Box sx={{ pt: 4, display: "fixed", justifyContent: "center" }}>
       <Paper style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
         {randomAd ? (randomAd.isLink ? (
-          <div>
-            <LinkPreview url={randomAd.text} />
-          </div>
+             <Link target='_blank' to={randomAd.text}>
+                <LinkPreview url={randomAd.text} />
+             </Link>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: randomAd.text }} />
         )

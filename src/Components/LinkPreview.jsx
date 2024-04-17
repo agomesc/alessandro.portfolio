@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import Box from "@mui/material/Box";
+import Paper from '@mui/material/Paper';
+import Typography from "@mui/material/Typography";
+import ImageComponent from "./ImageComponent";
 
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
@@ -28,16 +32,29 @@ const LinkPreview = ({ url }) => {
         return <div>Pré-visualização não disponível.</div>;
     }
 
-    return (
-        <div>
-            <div>
-                <strong>Título:</strong> {previewData.title}
-            </div>
-            <div>
-                <strong>Descrição:</strong> {previewData.description}
-            </div>
-            <img src={previewData.image.url} alt="Imagem de pré-visualização" />
-        </div>
+    return (<>
+        <Box sx={{
+            p: 0,
+            width: "40%",
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+            marginBottom: 30,
+            maxHeight:250
+        }}>
+            <Paper elevation={3}>
+                <nav>
+                    <ImageComponent src={previewData.image.url} alt={previewData.description} maxWidth="150px" ></ImageComponent>
+                    <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
+                        {previewData.title}
+                    </Typography>
+                    <Typography variant="subtitle2" sx={{ textAlign: "left" }}>
+                        {previewData.description}
+                    </Typography>
+                </nav>
+            </Paper>
+        </Box>
+    </>
     );
 };
 
