@@ -34,15 +34,18 @@ const LinkPreview = ({ url }) => {
 
     return (<>
         <Box sx={{
-            p: 0,
-            width: "40%",
+            p: 10,
+            width: "auto",
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",
             marginBottom: 30,
-            maxHeight:250
+            maxHeight:250,
+            maxWidth:"80%"
         }}>
-            <Paper elevation={3}>
+            <Paper elevation={3} sx={{
+            p: 2,
+        }}>
                 <nav>
                     <ImageComponent src={previewData.image.url} alt={previewData.description} maxWidth="150px" ></ImageComponent>
                     <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
