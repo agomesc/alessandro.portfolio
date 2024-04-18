@@ -29,10 +29,10 @@ const AffiliateAdList = () => {
             <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
-            <Paper style={{ minHeightHeight: 400 }}>
+            <Paper >
                 <List>
                     {ads.map((ad) => (
-                        <ListItem key={ad.id}>
+                        <ListItem key={ad.id} style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
                             {ad.isLink ? (
                                 <LinkPreview url={ad.text} />
                             ) : (
