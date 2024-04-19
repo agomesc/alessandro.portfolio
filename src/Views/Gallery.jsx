@@ -17,9 +17,11 @@ const Gallery = () => {
 		if (galleryData.length === 0) fetchData();
 	}, [galleryData, instance]);
 
-	return (<><Suspense fallback={<LoadingMessage />}><ImageMasonry data={galleryData} />
-		<CommentBox itemID="Gallery" />
-	</Suspense></>)
+	return (<>
+		<Suspense fallback={<LoadingMessage />}>
+			<ImageMasonry data={galleryData} />
+			<CommentBox itemID="Gallery" />
+		</Suspense></>)
 };
 
 export default React.memo(Gallery);
