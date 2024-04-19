@@ -16,7 +16,7 @@ const Footer = () => {
 					<FaInstagram />
 				</IconButton>
 				<IconButton href="https://www.flickr.com/agomesc" target="_blank">
-					<FaFlickr /> {/* Ícone do Flickr */}
+					<FaFlickr /> 
 				</IconButton>
 				<IconButton
 					href="https://500px.com/p/alessandrogomescunha?view=photos"

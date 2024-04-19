@@ -9,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import ImageComponent from "../Components/ImageComponent"
-import zIndex from "@mui/material/styles/zIndex";
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
