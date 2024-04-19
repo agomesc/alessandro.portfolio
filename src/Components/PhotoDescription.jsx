@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import ImageComponent from "./ImageComponent";
 
 const PhotoDescription = ({ imageUrl, description }) => {
   return (
@@ -21,27 +22,22 @@ const PhotoDescription = ({ imageUrl, description }) => {
         Sobre?
       </Typography>
       <Paper elevation={3}>
-      <Grid>
-        <Grid item>
-          <Card
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              padding: "10px",
-            }}
-          >
-            <img
-              src={imageUrl}
-              alt="Foto"
-              loading="lazy"
-              style={{ width: "100px", marginRight: "20px" }}
-            />
-            <Typography variant="body2" style={{ textAlign: "justify" }}>
-              {description}
-            </Typography>
-          </Card>
+        <Grid>
+          <Grid item>
+            <Card
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                padding: "10px",
+              }}
+            >
+              <ImageComponent src={imageUrl} alt={description} ></ImageComponent>
+              <Typography variant="body2" style={{ textAlign: "justify" }}>
+                {description}
+              </Typography>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
       </Paper>
     </Box>
   );
