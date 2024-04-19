@@ -9,7 +9,7 @@ import PhotoInfo from "./Views/PhotoInfo";
 import Login from "./Views/auth/index";
 import Privacidade from "../src/Views/Privacidade";
 import Transparencia from "../src/Views/Transparencia";
-// import AffiliateAd  from "./Views/AffiliateAd";
+import AffiliateAd  from "./Views/AffiliateAd";
 import AffiliateAdList  from "./Views/AffiliateAdList";
 
 const AppRoutes = () => {
@@ -24,7 +24,7 @@ const AppRoutes = () => {
       <Route path="/PhotoInfo/:id" element={<PhotoInfo />} />
       <Route path="/Privacidade/" element={<Privacidade />} />
       <Route path="/Transparencia" element={<Transparencia />} />
-      {/* <Route path="/AffiliateAd" element={<AffiliateAd  />} /> */}
+      <Route path="/AffiliateAd" element={<AffiliateAd  />} />
       <Route path="/AffiliateAdList" element={<AffiliateAdList  />} />
       <Route path="/About" element={<About />} />
     </Routes>
