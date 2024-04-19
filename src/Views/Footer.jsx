@@ -1,7 +1,7 @@
 // Footer.js
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import { FaInstagram, FaFlickr, Fa500Px } from "react-icons/fa"; //
+import { FaInstagram, FaFlickr, Fa500Px, FaTwitter } from "react-icons/fa"; //
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
@@ -22,8 +22,16 @@ const Footer = () => {
 					href="https://500px.com/p/alessandrogomescunha?view=photos"
 					target="_blank"
 				>
-					<Fa500Px /> {/* Ícone do 500px */}
+					<Fa500Px /> 
 				</IconButton>
+				<IconButton
+					href="https://twitter.com/AlePortolio"
+					target="_blank"
+				>
+					<FaTwitter />
+				</IconButton>
+
+				
 			</Toolbar>
 		</AppBar>
 	);
