@@ -38,15 +38,16 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<MetaTagsProvider>
 						<SocialMetaTags />
-					</MetaTagsProvider>
 
-					<Menu />
-					<Routes />
-					<SocialShareBar
-						url={urlAtual}
-						title="Confira o meu trabalho!"
-					/>
-					<RandomAffiliateAd />
+
+						<Menu />
+						<Routes />
+						<SocialShareBar
+							url={urlAtual}
+							title="Confira o meu trabalho!"
+						/>
+						<RandomAffiliateAd />
+					</MetaTagsProvider>
 					<Back />
 					<ProTip />
 					<Footer />

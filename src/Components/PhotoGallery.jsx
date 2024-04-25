@@ -9,9 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage";
+import { useMetaTags } from "./MetaTagsContext"
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
-const { useMetaTags } = lazy(() => import("./MetaTagsContext"));;
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -25,8 +25,8 @@ const Label = styled(Paper)(() => ({
   textAlign: "center",
   padding: "20px",
   display: "flex",
-  alignItems: "center", 
-  borderRadius: 0, 
+  alignItems: "center",
+  borderRadius: 0,
   textTransform: "uppercase",
   fontSize: 12
 }));
@@ -34,6 +34,7 @@ const Label = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
 }));
+
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
