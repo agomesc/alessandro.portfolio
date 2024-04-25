@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useEffect } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -9,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage";
-import { useMetaTags } from "./MetaTagsContext"
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
 
@@ -38,16 +37,6 @@ const GalleryContainer = styled(Paper)(() => ({
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
-  const { setMetaTags } = useMetaTags();
-
-  useEffect(() => {
-    setMetaTags({
-      title: 'Novo Título',
-      description: 'Nova Descrição',
-      image: 'https://meusite.com/nova-imagem.jpg',
-      url: 'https://meusite.com/nova-pagina'
-    });
-  }, [setMetaTags]);
 
   return (
     <Suspense fallback={<LoadingMessage />}>
