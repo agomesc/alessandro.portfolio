@@ -37,8 +37,6 @@ const CreateFlickrApp = () => {
 	const getPhotoInfo = async (id) => {
 		const data = await instance.listarInformacoes(id);
 
-		console.log('data', data);
-
 		const itemData = ({
 			id: data.id,
 			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,

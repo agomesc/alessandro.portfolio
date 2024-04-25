@@ -1,12 +1,10 @@
 import React from 'react';
-import { Helmet } from 'react-helmet'; // Você precisará instalar essa biblioteca
 
 function SocialMetaTags({ title, description, image, url }) {
   return (
-    <Helmet>
+    <>
       <title>{title}</title>
       <meta name="description" content={description} />
-
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
@@ -18,7 +16,7 @@ function SocialMetaTags({ title, description, image, url }) {
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={image} />
-    </Helmet>
+    </>
   );
 }
 
