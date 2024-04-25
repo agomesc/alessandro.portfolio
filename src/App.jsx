@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -22,7 +22,6 @@ const minhaDescricao = `Me chamo Alessandro,
 		Hoje sou um amante da fotografia, com muito orgulho, registrando momentos importantes da vida das pessoas e o resultado dessa trajetória está refletido em meu portfólio que apresento a vocês.`;
 
 const title = "Alessandro Portfólio"
-const url = window.location.href;
 
 const darkTheme = createTheme({
 	palette: {
@@ -31,17 +30,25 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
+
+	const [urlAtual, setUrlAtual] = useState('');
+
+	useEffect(() => {
+		setUrlAtual(window.location.href);
+	  }, []);
+	
+
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
-			<SocialMetaTags title={title} description={minhaDescricao} image={logo} url={url} />
+			<SocialMetaTags title={title} description={minhaDescricao} image={logo} url={urlAtual} />
 			<Container maxWidth="xl" disableGutters>
 				<Suspense fallback={<LoadingMessage />}>
 					<Menu />
 					<Routes />
 					<SocialShareBar
-						url={window.location.href}
-						title="Confira meu trabalho!"
+						url={urlAtual}
+						title="Confira o meu trabalho!"
 					/>
 					<RandomAffiliateAd />
 					<Back />
