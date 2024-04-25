@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage";
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
-const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
+const { useMetaTags } = lazy(() => import("./MetaTagsContext"));;
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -25,8 +25,8 @@ const Label = styled(Paper)(() => ({
   textAlign: "center",
   padding: "20px",
   display: "flex",
-  alignItems: "center", // Alinhamento vertical
-  borderRadius: 0, // Removi o arredondamento das bordas
+  alignItems: "center", 
+  borderRadius: 0, 
   textTransform: "uppercase",
   fontSize: 12
 }));
@@ -37,9 +37,19 @@ const GalleryContainer = styled(Paper)(() => ({
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
+  const { setMetaTags } = useMetaTags();
+
+  useEffect(() => {
+    setMetaTags({
+      title: 'Novo Título',
+      description: 'Nova Descrição',
+      image: 'https://meusite.com/nova-imagem.jpg',
+      url: 'https://meusite.com/nova-pagina'
+    });
+  }, [setMetaTags]);
+
   return (
     <Suspense fallback={<LoadingMessage />}>
-      <SocialMetaTags description={""} title={"Minhas Fotos"} image={""} url="" />
       <Box
         sx={{
           p: 0,

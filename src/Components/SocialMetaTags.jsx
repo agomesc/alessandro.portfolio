@@ -1,21 +1,24 @@
 import React from 'react';
+import { useMetaTags } from './MetaTagsContext';
 
-function SocialMetaTags({ title, description, image, url }) {
+function SocialMetaTags() {
+  const { metaTags } = useMetaTags();
+
   return (
     <>
-      <title>{title}</title>
-      <meta name="description" content={description} />
+      <title>{metaTags.title}</title>
+      <meta name="description" content={metaTags.description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
+      <meta property="og:url" content={metaTags.url} />
+      <meta property="og:title" content={metaTags.title} />
+      <meta property="og:description" content={metaTags.description} />
+      <meta property="og:image" content={metaTags.image} />
 
-      <meta property="twitter:card" content={image} />
-      <meta property="twitter:url" content={url} />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
+      <meta property="twitter:card" content={metaTags.image} />
+      <meta property="twitter:url" content={metaTags.url} />
+      <meta property="twitter:title" content={metaTags.title} />
+      <meta property="twitter:description" content={metaTags.description} />
+      <meta property="twitter:image" content={metaTags.image} />
     </>
   );
 }
