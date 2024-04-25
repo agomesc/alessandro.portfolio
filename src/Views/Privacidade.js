@@ -1,3 +1,4 @@
+import React from "react";
 import { Typography, Box, Paper } from "@mui/material";
 const Privacidade = () => {
 
@@ -47,4 +48,4 @@ const Privacidade = () => {
         </>
     );
 };
-export default Privacidade;
+export default  React.memo(Privacidade);

@@ -121,6 +121,6 @@ const AffiliateAd = () => {
   );
 };
 
-export default AffiliateAd;
+export default  React.memo(AffiliateAd);
 
 

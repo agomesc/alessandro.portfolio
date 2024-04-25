@@ -43,4 +43,4 @@ const RandomAffiliateAd = () => {
   );
 };
 
-export default RandomAffiliateAd;
+export default  React.memo(RandomAffiliateAd);

@@ -46,4 +46,4 @@ const AffiliateAdList = () => {
     );
 };
 
-export default AffiliateAdList;
+export default  React.memo(AffiliateAdList);

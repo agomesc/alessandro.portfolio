@@ -59,4 +59,4 @@ const Transparencia = () => {
   );
 };
 
-export default Transparencia;
+export default  React.memo(Transparencia);

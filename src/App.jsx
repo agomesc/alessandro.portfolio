@@ -2,9 +2,9 @@ import React, { Suspense, lazy } from 'react';
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import "./App.css";
 import RandomAffiliateAd from "./Views/RandomAffiliateAd"
 import logo from "./images/logo_192.png"
+import "./App.css";
 
 const ProTip = lazy(() => import("./Views/ProTip"));
 const Menu = lazy(() => import("./Components/menu"));
@@ -41,7 +41,7 @@ const App = () => {
 					<Routes />
 					<SocialShareBar
 						url={window.location.href}
-						title="Confira esta página incrível!"
+						title="Confira meu trabalho!"
 					/>
 					<RandomAffiliateAd />
 					<Back />
@@ -53,4 +53,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default  React.memo(App);
