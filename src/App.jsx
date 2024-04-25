@@ -11,6 +11,7 @@ const Menu = lazy(() => import("./Components/menu"));
 const LoadingMessage = lazy(() => import("./Components/LoadingMessage"));
 const Routes = lazy(() => import("./routes"));
 const Back = lazy(() => import("./Components/Back"));
+const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
 const SocialMetaTags = lazy(() => import("./Components/SocialMetaTags"));
 
@@ -38,6 +39,10 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<Menu />
 					<Routes />
+					<SocialShareBar
+						url={window.location.href}
+						title="Confira esta página incrível!"
+					/>
 					<RandomAffiliateAd />
 					<Back />
 					<ProTip />
