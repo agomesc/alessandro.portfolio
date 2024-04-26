@@ -21,12 +21,12 @@ const CreateFlickrService = () => {
 	};
 
 	const listarInformacoes = async (id) => {
-		
+
 		const url = `https://portfolio-api-flickr.netlify.app/.netlify/functions/api/photo-info/${id}`;
 		const data = await fetchService.get(url);
 
 		return data.photo;
-};
+	};
 
 	return {
 		listarAlbuns,

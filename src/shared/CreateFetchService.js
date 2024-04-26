@@ -22,6 +22,8 @@ function CreateFetchService() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-cache",
+				"Connection": "keep-alive"
 			},
 			body: JSON.stringify(data),
 		};

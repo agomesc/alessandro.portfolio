@@ -40,14 +40,14 @@ const CreateFlickrApp = () => {
 		const itemData = ({
 			id: data.id,
 			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,
-			description : data.description._content,
-			location : data.owner.location,
+			description: data.description._content,
+			location: data.owner.location,
 			title: data.title._content,
 			taken: data.dates.taken,
 			photopage: data.urls.url[0]._content,
 			views: data.views
 		});
-		
+
 		return itemData;
 	};
 
@@ -55,7 +55,7 @@ const CreateFlickrApp = () => {
 		getGallery,
 		getPhotos,
 		getLatestPhotos,
-	getPhotoInfo
+		getPhotoInfo
 	};
 };
 
