@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import { List, ListItem, Paper } from '@mui/material';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import LinkPreview from '../Components/LinkPreview'
+import LinkPreview from '../Components/LinkPreview';
 
 const AffiliateAdList = () => {
     const [ads, setAds] = useState([]);
@@ -16,34 +17,55 @@ const AffiliateAdList = () => {
                 id: doc.id,
                 ...doc.data(),
                 createdAt: doc.data().createdAt?.toDate().toLocaleString(),
-                // Supõe-se que a propriedade isActive seja um booleano
-            })).filter(ad => ad.isActive); // Filtra apenas os anúncios ativos
+            }));
             setAds(adsData);
         };
 
         fetchAds();
     }, []);
 
+    const handleDelete = async (id) => {
+        const docRef = doc(db, 'AffiliateAd', id);
+        await deleteDoc(docRef);
+        // Atualiza o estado local após a exclusão
+        setAds(ads.filter((ad) => ad.id !== id));
+    };
+
     return (
         <Box sx={{ p: 0, width: "80%", height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
             <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
-            <Paper >
-                <List>
-                    {ads.map((ad) => (
-                        <ListItem key={ad.id} style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
-                            {ad.isLink ? (
-                                <LinkPreview url={ad.text} />
-                            ) : (
-                                <div dangerouslySetInnerHTML={{ __html: ad.text }} />
-                            )}
-                        </ListItem>
-                    ))}
-                </List>
-            </Paper>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Ad Content</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {ads.map((ad) => (
+                            <TableRow key={ad.id}>
+                                <TableCell component="th" scope="row">
+                                    {ad.isLink ? (
+                                        <LinkPreview url={ad.text} />
+                                    ) : (
+                                        <div dangerouslySetInnerHTML={{ __html: ad.text }} />
+                                    )}
+                                </TableCell>
+                                <TableCell align="right">
+                                    <IconButton onClick={() => handleDelete(ad.id)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 };
 
-export default  React.memo(AffiliateAdList);
+export default React.memo(AffiliateAdList);
