@@ -1,19 +1,18 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
+import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import RandomAffiliateAd from "./Views/RandomAffiliateAd"
-import "./App.css";
 import { MetaTagsProvider } from './Components/MetaTagsContext';
 
-const ProTip = lazy(() => import("./Views/ProTip"));
-const Menu = lazy(() => import("./Components/menu"));
-const LoadingMessage = lazy(() => import("./Components/LoadingMessage"));
 const Routes = lazy(() => import("./routes"));
+const ProTip = lazy(() => import("./Views/ProTip"));
+const Menu = lazy(() => import("./Views/menu"));
+const LoadingMessage = lazy(() => import("./Components/LoadingMessage"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
-
 const SocialMetaTags = lazy(() => import("./Components/SocialMetaTags"));
 
 const darkTheme = createTheme({
@@ -23,13 +22,11 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
-
 	const [urlAtual, setUrlAtual] = useState('');
 
 	useEffect(() => {
 		setUrlAtual(window.location.href);
 	}, []);
-
 
 	return (
 		<ThemeProvider theme={darkTheme}>
@@ -38,8 +35,6 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<MetaTagsProvider>
 						<SocialMetaTags />
-
-
 						<Menu />
 						<Routes />
 						<SocialShareBar
@@ -53,7 +48,6 @@ const App = () => {
 					<Footer />
 				</Suspense>
 			</Container>
-
 		</ThemeProvider>
 	);
 };

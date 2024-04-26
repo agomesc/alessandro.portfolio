@@ -21,4 +21,4 @@ const About = () => {
 		</>
 	);
 };
-export default  React.memo(About);
+export default React.memo(About);

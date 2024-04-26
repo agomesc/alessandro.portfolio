@@ -4,7 +4,6 @@ import { useMetaTags } from './MetaTagsContext';
 
 function SocialMetaTags() {
   const { metaTags } = useMetaTags();
-
   return (
     <Helmet>
       <title>{metaTags.title}</title>
@@ -14,7 +13,6 @@ function SocialMetaTags() {
       <meta property="og:title" content={metaTags.title} />
       <meta property="og:description" content={metaTags.description} />
       <meta property="og:image" content={metaTags.image} />
-
       <meta property="twitter:card" content={metaTags.image} />
       <meta property="twitter:url" content={metaTags.url} />
       <meta property="twitter:title" content={metaTags.title} />

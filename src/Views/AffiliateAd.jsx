@@ -60,7 +60,7 @@ const AffiliateAd = () => {
         text,
         createdAt: serverTimestamp(),
         isActive,
-        isLink, 
+        isLink,
       });
       console.log('Documento adicionado com sucesso!');
       // Limpar o formulário após o envio
@@ -121,6 +121,6 @@ const AffiliateAd = () => {
   );
 };
 
-export default  React.memo(AffiliateAd);
+export default React.memo(AffiliateAd);
 
 
