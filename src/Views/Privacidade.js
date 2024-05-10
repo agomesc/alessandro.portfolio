@@ -41,11 +41,13 @@ const Privacidade = () => {
                 }}
             >
                 <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
-                <Paper elevation={3}>
-                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>{descricao}</Typography>
+                <Paper elevation={2}>
+                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
+                        {descricao}
+                    </Typography>
                 </Paper>
             </Box>
         </>
     );
 };
-export default  React.memo(Privacidade);
+export default React.memo(Privacidade);

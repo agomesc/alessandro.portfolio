@@ -7,7 +7,6 @@ function SocialMetaTags() {
   return (
     <Helmet>
       <title>{metaTags.title}</title>
-      <meta name="description" content={metaTags.description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={metaTags.url} />
       <meta property="og:title" content={metaTags.title} />

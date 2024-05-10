@@ -32,7 +32,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
               }}
             >
               <ImageComponent src={imageUrl} alt={description} ></ImageComponent>
-              <Typography variant="body2" style={{ textAlign: "justify" }}>
+              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
                 {description}
               </Typography>
             </Card>

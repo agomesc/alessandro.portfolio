@@ -69,7 +69,7 @@ const PhotoGallery = ({ photos }) => {
                     </Link>
                   </nav>
                 </Label>
-                <ImageComponent src={item.url} alt={item.title}></ImageComponent>
+                <ImageComponent src={item.url} alt={item.title} ></ImageComponent>
               </GalleryContainer>
             ))}
           </Masonry>
