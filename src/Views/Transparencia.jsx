@@ -17,7 +17,7 @@ const Transparencia = () => {
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Página de Transparência
       </Typography>
-      <Paper elevation={3}>
+      <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
         <Box marginBottom={2}>
           <Typography variant="h6">Quem Somos</Typography>
           <Typography paragraph>
