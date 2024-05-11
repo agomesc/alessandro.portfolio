@@ -11,7 +11,7 @@ const SocialShareBar = ({ url, title }) => {
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', padding: '5px' }}>
       {socialNetworks.map((network) => (
         <a key={network.name} href={network.shareUrl} target="_blank" rel="noopener noreferrer" title={`Compartilhar no ${network.name}`}>
           {network.icon}

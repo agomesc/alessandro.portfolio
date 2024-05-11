@@ -28,11 +28,11 @@ const PhotoDescription = ({ imageUrl, description }) => {
               style={{
                 display: "flex",
                 alignItems: "flex-start",
-                padding: "10px",
+                padding: 5,
               }}
             >
               <ImageComponent src={imageUrl} alt={description} ></ImageComponent>
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
+              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', p: 5 }}>
                 {description}
               </Typography>
             </Card>

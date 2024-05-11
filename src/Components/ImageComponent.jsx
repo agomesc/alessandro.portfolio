@@ -11,13 +11,14 @@ const ImageComponent = ({ src, alt, maxWidth }) => (
       style={{
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        display: "flex",
+        display: "flex-box",
         maxWidth: maxWidth,
         width: "100%",
         height: "auto",
         cursor: "pointer",
         flexWrap: 'wrap',
-        zIndex: -1000
+        zIndex: -1000,
+        minWidth: '80px',
       }}
       loading="lazy"
     />
