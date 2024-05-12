@@ -59,6 +59,7 @@ const TemporaryDrawer = () => {
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
+		setOpenSub(openSub);
 	};
 
 	const handleClick = () => {
@@ -149,7 +150,6 @@ const TemporaryDrawer = () => {
 										component="a"
 										href={item.route}
 										onClick={(event) => {
-											// Impede que o evento de clique se propague
 											event.stopPropagation();
 										}}
 									>
