@@ -1,10 +1,15 @@
 import CreateFlickrService from "../shared/CreateFlickrService";
 //https://www.flickr.com/services/api/flickr.photos.getSizes.html
 const CreateFlickrApp = () => {
-	const instance = CreateFlickrService();
+
+
+	const apiKey = process.env.REACT_APP_FLICKR_API_KEY;
+	const userID = process.env.REACT_APP_USER_ID;
+
+	const instance = CreateFlickrService(apiKey);
 
 	const getGallery = async () => {
-		const data = await instance.listarAlbuns();
+		const data = await instance.listarAlbuns(userID);
 		const itemData = data.map((album) => ({
 			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
 			title: album.title._content,
@@ -35,6 +40,7 @@ const CreateFlickrApp = () => {
 	};
 
 	const getPhotoInfo = async (id) => {
+
 		const data = await instance.listarInformacoes(id);
 
 		const itemData = ({
