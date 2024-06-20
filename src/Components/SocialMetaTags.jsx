@@ -6,7 +6,7 @@ function SocialMetaTags() {
 
   const { metaTags } = useMetaTags();
   const host = window.location.hostname;
-  const port = window.location.port || 3000; // Use a porta 3000 se não houver porta especificada
+  const port = window.location.port;
   const url = `http://${host}:${port}`;
   const image = url + metaTags.image;
   return (

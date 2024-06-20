@@ -18,6 +18,14 @@ function CreateFetchService() {
 	}
 
 	async function post(url, data) {
+
+		const cacheKey = `${url}-${JSON.stringify(data)}`;
+		const cachedResponse = sessionStorage.getItem(cacheKey);
+
+		if (cachedResponse) {
+			return JSON.parse(cachedResponse);
+		}
+
 		const options = {
 			method: "POST",
 			headers: {
@@ -27,7 +35,9 @@ function CreateFetchService() {
 			},
 			body: JSON.stringify(data),
 		};
-		return fetchWithInterceptor(url, options);
+		const response = await fetchWithInterceptor(url, options);
+		sessionStorage.setItem(cacheKey, JSON.stringify(response));
+		return response;
 	}
 	return {
 		get,

@@ -14,18 +14,11 @@ const title = "Alessandro Portfólio"
 
 export const MetaTagsProvider = ({ children }) => {
 
-    const [urlAtual, setUrlAtual] = useState('');
-
-    useEffect(() => {
-        setUrlAtual(window.location.href);
-    }, []);
-
-
     const [metaTags, setMetaTags] = useState({
         title: title,
         description: minhaDescricao,
         image: logo,
-        url: urlAtual
+        url: window.location.href
     });
 
     return (
