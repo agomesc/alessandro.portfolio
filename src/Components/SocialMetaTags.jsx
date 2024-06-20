@@ -5,9 +5,7 @@ import { useMetaTags } from './MetaTagsContext';
 function SocialMetaTags() {
   const { metaTags } = useMetaTags();
   const host = window.location.hostname;
-  const port = window.location.port;
-  const url = `http://${host}:${port}`;
-  const image = url + metaTags.image;
+  const image = host + metaTags.image;
 
   return (
     <Helmet>
