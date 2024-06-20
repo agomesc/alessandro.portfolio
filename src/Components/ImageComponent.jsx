@@ -11,10 +11,9 @@ const ImageComponent = ({ src, alt, maxWidth }) => (
       style={{
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        display: "flex-box",
+        display: "block",
         maxWidth: maxWidth,
         minWidth: '80px',
-        minHeight: '80px',
         width: "100%",
         height: "auto",
         cursor: "pointer",
