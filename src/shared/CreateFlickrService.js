@@ -20,8 +20,8 @@ const CreateFlickrService = (apiKey) => {
 		return data.comments.comment;
 	};
 
-	const listarUltimasFotos = async () => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=${apiKey}&format=json&nojsoncallback=1`;
+	const listarFotosRecentes = async (userId) => {
+		const url = `https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`
 		const response = await fetch(url);
 		const data = await response.json();
 		return data.photos.photo;
@@ -39,7 +39,7 @@ const CreateFlickrService = (apiKey) => {
 		listarAlbuns,
 		listarFotos,
 		listarComentarios,
-		listarUltimasFotos,
+		listarFotosRecentes,
 		listarInformacoes
 	};
 };
