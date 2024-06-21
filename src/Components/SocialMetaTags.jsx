@@ -2,10 +2,14 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useMetaTags } from './MetaTagsContext';
 
+// https://cards-dev.twitter.com/validator
+
 function SocialMetaTags() {
   const { metaTags } = useMetaTags();
-  const host = window.location.hostname;
-  const image = host + metaTags.image;
+  const image = `${window.location.protocol}//${window.location.host}${metaTags.image}`;
+
+  console.log(metaTags);
+  console.log(image);
 
   return (
     <Helmet>
@@ -17,9 +21,8 @@ function SocialMetaTags() {
       <meta property="og:description" content={metaTags.description} />
       <meta property="og:image" content={image} />
       <meta property="og:image:type" content="image/jpeg" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-
+      <meta property="og:image:width" content="400" />
+      <meta property="og:image:height" content="300" />
 
       <meta name="twitter:card" content={image} />
       <meta name="twitter:title" content={metaTags.title} />

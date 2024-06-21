@@ -12,20 +12,18 @@ import Box from "@mui/material/Box";
 import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
 import LoadingMessage from "../Components/LoadingMessage";
-import { Helmet  } from 'react-helmet';
 
 const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
 
 const PhotoDashboard = ({ photoData }) => {
 
   const title = photoData.title;
+  console.log('photoData', photoData);
 
   return (
     <>
       <Suspense fallback={<LoadingMessage />}>
-        <Helmet>
-          <SocialMetaTags title={title} description={title} image={photoData.url} url={window.location.href} />
-        </Helmet>
+        <SocialMetaTags title={title} description={title} image={photoData.url} url={window.location.href} />
         <Box
           sx={{
             p: 0,
