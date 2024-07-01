@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import logo from "../images/logo_192.png"
 
 const MetaTagsContext = createContext();
@@ -11,13 +11,12 @@ const minhaDescricao = `Me chamo Alessandro,
 
 const title = "Alessandro Portfólio"
 
-
 export const MetaTagsProvider = ({ children }) => {
 
     const [metaTags, setMetaTags] = useState({
         title: title,
         description: minhaDescricao,
-        image: logo,
+        image: `${window.location.protocol}//${window.location.host}${logo}`,
         url: window.location.href
     });
 
