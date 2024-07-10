@@ -41,7 +41,7 @@ const App = () => {
 							url={urlAtual}
 							title="Confira o meu trabalho!"
 						/>
-						<RandomAffiliateAd />
+						{/* <RandomAffiliateAd /> */}
 					</MetaTagsProvider>
 					<Back />
 					<ProTip />
