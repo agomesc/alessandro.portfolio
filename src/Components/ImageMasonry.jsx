@@ -6,31 +6,11 @@ import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import ImageComponent from "./ImageComponent";
 
-
-const Label = styled(Paper)(() => ({
+const LabelTop = styled(Paper)(() => ({
   position: "absolute",
   content: '""',
-  fontsize:12,
+  fontsize: 10,
   top: 0,
-  left: 0,
-  width: "auto",
-  height: "10%",
-  backgroundColor: "rgba(2, 2, 2, 0.75)",
-  color: "#fff",
-  textAlign: "center",
-  padding: "20px",
-  display: "flex",
-  alignItems: "center", // Alinhamento vertical
-  borderRadius: 0, // Removi o arredondamento das bordas
-  textTransform: "uppercase",
-  fontSize:12
-}));
-
-const LabelBottom = styled(Paper)(() => ({
-  position: "absolute",
-  content: '""',
-  fontsize:10,
-  Bottom: -10,
   left: 0,
   width: "100%",
   height: "auto",
@@ -41,6 +21,7 @@ const LabelBottom = styled(Paper)(() => ({
   display: "flex",
   alignItems: "center", // Alinhamento vertical
   borderRadius: 0, // Removi o arredondamento das bordas
+  zIndex: 2,
 }));
 
 const GalleryContainer = styled(Paper)(() => ({
@@ -55,15 +36,12 @@ const ImageMasonry = ({ data }) => {
       </Typography>
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
         {data.map((item, index) => (
-          <NavLink key={index} to={`/Photos/${item.id}`}>
-            <GalleryContainer>
-              <Label>{item.title}</Label>
-              <nav>
-                <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
-              </nav>
-              <LabelBottom>{item.description}</LabelBottom>
-            </GalleryContainer>
-          </NavLink>
+          <GalleryContainer>
+            <NavLink key={index} to={`/Photos/${item.id}`}>
+              <LabelTop>{item.title}</LabelTop>
+              <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
+            </NavLink>
+          </GalleryContainer>
         ))}
       </Masonry>
     </Box>

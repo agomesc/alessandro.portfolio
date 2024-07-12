@@ -1,54 +1,60 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { ImageList, ImageListItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import LoadingMessage from "./LoadingMessage";
 
 const PhotoGrid = ({ itemData }) => {
+
+  const ImageComponent = lazy(() => import("./ImageComponent"));
+
   function srcset(image, size, rows = 1, cols = 1) {
     return {
       src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-      srcSet: `${image}?w=${size * cols}&h=${
-        size * rows
-      }&fit=crop&auto=format&dpr=2 2x`,
+      srcSet: `${image}?w=${size * cols}&h=${size * rows
+        }&fit=crop&auto=format&dpr=2 2x`,
     };
   }
 
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: "80%",
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-      }}
-    >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-        Atualizações
-      </Typography>
-      <ImageList
-        sx={{ width: "100%", height: "auto"  }}
-        style={{ display: 'flex', flexWrap: 'wrap' }}
-        variant="quilted"
-        cols={4}
-        rowHeight={100}
+    <Suspense fallback={<LoadingMessage />}>
+      <Box
+        sx={{
+          p: 0,
+          width: "80%",
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+        }}
       >
-        {itemData.map((item) => (
-          <ImageListItem
-            key={item.id}
-            cols={item.cols || 1}
-            rows={item.rows || 1}
-          >
-            <img
-              {...srcset(item.url, 100, item.rows, item.cols)}
-              alt={item.title}
-              loading="lazy"
-              media="photo"
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </Box>
+        <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+          Atualizações
+        </Typography>
+        <ImageList
+          sx={{ width: "100%", height: "auto" }}
+          style={{ display: 'flex', flexWrap: 'wrap' }}
+          variant="quilted"
+          cols={4}
+          rowHeight={100}
+        >
+          {itemData.map((item) => (
+            <ImageListItem
+              key={item.id}
+              cols={item.cols || 1}
+              rows={item.rows || 1}
+            >
+              <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
+              <img
+                {...srcset(item.url, 100, item.rows, item.cols)}
+                alt={item.title}
+                loading="lazy"
+                media="photo"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Box>
+    </Suspense>
   );
 };
 
