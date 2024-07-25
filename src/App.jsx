@@ -3,7 +3,7 @@ import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import RandomAffiliateAd from "./Views/RandomAffiliateAd"
+// import RandomAffiliateAd from "./Views/RandomAffiliateAd"
 import { MetaTagsProvider } from './Components/MetaTagsContext';
 
 const Routes = lazy(() => import("./routes"));
@@ -35,14 +35,15 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<MetaTagsProvider>
 						<SocialMetaTags />
-						<Menu />
-						<Routes />
-						<SocialShareBar
-							url={urlAtual}
-							title="Confira o meu trabalho!"
-						/>
-						{/* <RandomAffiliateAd /> */}
 					</MetaTagsProvider>
+					<Menu />
+					<Routes />
+					<SocialShareBar
+						url={urlAtual}
+						title="Confira o meu trabalho!"
+					/>
+					{/* <RandomAffiliateAd /> */}
+
 					<Back />
 					<ProTip />
 					<Footer />
