@@ -1,14 +1,11 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useMetaTags } from './MetaTagsContext';
-
-// https://cards-dev.twitter.com/validator
 
 function SocialMetaTags() {
   const { metaTags } = useMetaTags();
 
   return (
-    <Helmet>
+    <div>
       <title>{metaTags.title}</title>
       <meta property="og:type" content="website" />
       <meta property="og:title" content={metaTags.title} />
@@ -25,7 +22,7 @@ function SocialMetaTags() {
       <meta name="twitter:description" content={metaTags.description} />
       <meta name="twitter:image" content={metaTags.image} />
       <meta name="twitter:creator" content="@AlePortolio" />
-    </Helmet>
+    </div>
   );
 }
 
