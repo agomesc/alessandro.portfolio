@@ -17,15 +17,15 @@ export default function ProTip() {
 	return (
 		<Box sx={{ pt: 4, display: "fixed", justifyContent: "center" }}>
 			<Paper elevation={3}>
-				<Typography sx={{ mt: 3, mb: 3, p:2 }} color="text.secondary">
+				<Typography sx={{ mt: 3, mb: 3, p: 2 }} color="text.secondary">
 					<LightBulbIcon sx={{ mr: 1, verticalAlign: "center" }} />
-					<Link href="https://react.dev/learn/installation">Node.js, React</Link> e{" "}
 					<Link href="https://www.flickr.com/services/api/">Flickr API</Link>.
 					<Typography variant="body1" sx={{ textAlign: "center" }}>
 						Desenvolvedor: Alessandro G
 					</Typography>
 					<Typography variant="body1" sx={{ textAlign: "center" }}>
-						Alessandro Portfólio. Todos os direitos reservados.
+						Alessandro Portfólio.
+						Todos os direitos reservados.
 					</Typography>
 				</Typography>
 			</Paper>
