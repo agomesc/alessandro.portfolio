@@ -1,11 +1,13 @@
 import React from 'react';
 import { useMetaTags } from './MetaTagsContext';
+import { Helmet } from 'react-helmet';
+
 
 function SocialMetaTags() {
   const { metaTags } = useMetaTags();
 
   return (
-    <div>
+    <Helmet >
       <title>{metaTags.title}</title>
       <meta property="og:type" content="website" />
       <meta property="og:title" content={metaTags.title} />
@@ -22,7 +24,7 @@ function SocialMetaTags() {
       <meta name="twitter:description" content={metaTags.description} />
       <meta name="twitter:image" content={metaTags.image} />
       <meta name="twitter:creator" content="@AlePortolio" />
-    </div>
+    </Helmet >
   );
 }
 
