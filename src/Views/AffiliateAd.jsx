@@ -22,17 +22,13 @@ const AffiliateAd = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Usuário está logado
         setUser(user);
         setIsLoggedIn(true);
       } else {
-        // Usuário está deslogado
         setIsLoggedIn(false);
         setUser(null);
       }
     });
-
-    // Limpar a inscrição ao desmontar
     return () => unsubscribe();
   }, []);
 
@@ -121,6 +117,6 @@ const AffiliateAd = () => {
   );
 };
 
-export default React.memo(AffiliateAd);
+export default AffiliateAd;
 
 

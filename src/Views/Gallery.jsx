@@ -1,8 +1,9 @@
-import ImageMasonry from "../Components/ImageMasonry";
+
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
 
+const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
 
 const Gallery = () => {
@@ -24,4 +25,4 @@ const Gallery = () => {
 		</Suspense></>)
 };
 
-export default React.memo(Gallery);
+export default Gallery;

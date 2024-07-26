@@ -39,4 +39,4 @@ const PhotoInfo = () => {
 	</>);
 };
 
-export default React.memo(PhotoInfo);
+export default PhotoInfo;

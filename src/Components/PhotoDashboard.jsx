@@ -18,7 +18,6 @@ const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
 const PhotoDashboard = ({ photoData }) => {
 
   const title = photoData.title;
-  console.log('photoData', photoData);
 
   return (
     <>

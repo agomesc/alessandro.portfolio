@@ -144,7 +144,7 @@ function CommentBox({ itemID }) {
             subheader={new Date(comment.timestamp).toLocaleString()}
           />
           <CardContent>
-            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
+            <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
               {comment.text}
             </Typography>
           </CardContent>

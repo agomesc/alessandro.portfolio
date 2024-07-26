@@ -16,13 +16,13 @@ const Footer = () => {
 					<FaInstagram />
 				</IconButton>
 				<IconButton href="https://www.flickr.com/agomesc" target="_blank">
-					<FaFlickr /> 
+					<FaFlickr />
 				</IconButton>
 				<IconButton
 					href="https://500px.com/p/alessandrogomescunha?view=photos"
 					target="_blank"
 				>
-					<Fa500Px /> 
+					<Fa500Px />
 				</IconButton>
 				<IconButton
 					href="https://twitter.com/AlePortolio"
@@ -31,10 +31,10 @@ const Footer = () => {
 					<FaTwitter />
 				</IconButton>
 
-				
+
 			</Toolbar>
 		</AppBar>
 	);
 };
 
-export default  React.memo(Footer);
+export default Footer;

@@ -16,7 +16,7 @@ const RandomAffiliateAd = () => {
         id: doc.id,
         ...doc.data(),
         createdAt: doc.data().createdAt?.toDate().toLocaleString()
-      })).filter(ad => ad.isActive); 
+      })).filter(ad => ad.isActive);
 
       const randomIndex = Math.floor(Math.random() * adsData.length);
       setRandomAd(adsData[randomIndex]);
@@ -26,12 +26,12 @@ const RandomAffiliateAd = () => {
   }, []);
 
   return (
-    <Box sx={{ pt: 4, display: "fixed", justifyContent: "center",  width: "80%",  alignContent: "center", margin: "0 auto" }}>
+    <Box sx={{ pt: 4, display: "fixed", justifyContent: "center", width: "80%", alignContent: "center", margin: "0 auto" }}>
       <Paper style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
         {randomAd ? (randomAd.isLink ? (
-             <Link target='_blank' to={randomAd.text}>
-                <LinkPreview url={randomAd.text} />
-             </Link>
+          <Link target='_blank' to={randomAd.text}>
+            <LinkPreview url={randomAd.text} />
+          </Link>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: randomAd.text }} />
         )
@@ -43,4 +43,4 @@ const RandomAffiliateAd = () => {
   );
 };
 
-export default  React.memo(RandomAffiliateAd);
+export default RandomAffiliateAd;

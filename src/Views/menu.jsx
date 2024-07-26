@@ -183,7 +183,7 @@ const TemporaryDrawer = () => {
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+					<Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
 						Alessandro - Portfólio
 					</Typography>
 					{
@@ -229,4 +229,4 @@ const TemporaryDrawer = () => {
 	);
 }
 
-export default React.memo(TemporaryDrawer);
+export default TemporaryDrawer;

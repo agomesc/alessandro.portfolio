@@ -5,19 +5,19 @@ import LoadingMessage from "../Components/LoadingMessage";
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 
 const LatestPhotos = () => {
-	
-		const [galleryData, setGalleryData] = useState([]);
-		const instance = CreateFlickrApp();
-	
-		useEffect(() => {
-			async function fetchData() {
-				const data = await instance.getLatestPhotos();
-				setGalleryData(data);
-			}
-			if (galleryData.length===0) fetchData();
-		}, [galleryData, instance]);
-	
-		return (
+
+	const [galleryData, setGalleryData] = useState([]);
+	const instance = CreateFlickrApp();
+
+	useEffect(() => {
+		async function fetchData() {
+			const data = await instance.getLatestPhotos();
+			setGalleryData(data);
+		}
+		if (galleryData.length === 0) fetchData();
+	}, [galleryData, instance]);
+
+	return (
 		<div>
 			<Suspense fallback={<LoadingMessage />}>
 				<PhotoGrid itemData={galleryData} />
@@ -26,4 +26,4 @@ const LatestPhotos = () => {
 	);
 };
 
-export default  React.memo(LatestPhotos);
+export default LatestPhotos;

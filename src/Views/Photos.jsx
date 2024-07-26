@@ -27,4 +27,4 @@ const Photos = () => {
 	</>);
 };
 
-export default React.memo(Photos);
+export default Photos;

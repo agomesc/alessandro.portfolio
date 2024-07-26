@@ -35,7 +35,6 @@ function Login() {
 
         const user = result.user;
         setUser(user);
-        console.log(user);
         setMessage('Login realizado com sucesso!');
         setSeverity('success');
         setOpen(true);
@@ -87,13 +86,13 @@ function Login() {
           Logoff
         </Button>
       ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleGoogleLogin}
-          >
-            Entrar com Google
-          </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleGoogleLogin}
+        >
+          Entrar com Google
+        </Button>
       )}
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

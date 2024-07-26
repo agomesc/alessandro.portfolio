@@ -19,37 +19,37 @@ const Transparencia = () => {
       </Typography>
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
 
-        <Typography variant="h6">Quem Somos</Typography>
+        <Typography variant="subtitle1">Quem Somos</Typography>
         <Typography paragraph>
           Somos apaixonados por fotografia e nosso site é dedicado a compartilhar nosso trabalho com o mundo. (Alessandrp Portfólio.)
         </Typography>
 
 
-        <Typography variant="h6">Contato</Typography>
+        <Typography variant="subtitle1">Contato</Typography>
         <Typography paragraph>
           Para qualquer dúvida ou informações, entre em contato conosco através do e-mail: olhofotografico@outlook.com.
         </Typography>
 
 
-        <Typography variant="h6">Política de Privacidade</Typography>
+        <Typography variant="subtitle1">Política de Privacidade</Typography>
         <Typography paragraph>
           Valorizamos a privacidade dos nossos visitantes. (<Link href="Privacidade">Termo de Serviço e Privacidade</Link>)
         </Typography>
 
 
-        <Typography variant="h6">Termos de Serviço</Typography>
+        <Typography variant="subtitle1">Termos de Serviço</Typography>
         <Typography paragraph>
           Ao acessar nosso site, você concorda com nossos termos de serviço. (<Link href="Privacidade">Termo de Serviço e Privacidade</Link>)
         </Typography>
 
 
-        <Typography variant="h6">Monetização</Typography>
+        <Typography variant="subtitle1">Monetização</Typography>
         <Typography paragraph>
           Nosso site é monetizado através de anúncios do Google AdSense e outras parcerias publicitárias. (Os anúncios são integrados ao conteúdo.)
         </Typography>
 
 
-        <Typography variant="h6">Direitos Autorais</Typography>
+        <Typography variant="subtitle1">Direitos Autorais</Typography>
         <Typography paragraph>
           O conteúdo deste site é protegido por direitos autorais.
         </Typography>
@@ -59,4 +59,4 @@ const Transparencia = () => {
   );
 };
 
-export default React.memo(Transparencia);
+export default Transparencia;

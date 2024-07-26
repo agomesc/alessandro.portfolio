@@ -48,4 +48,4 @@ const Privacidade = () => {
         </>
     );
 };
-export default React.memo(Privacidade);
+export default Privacidade;
