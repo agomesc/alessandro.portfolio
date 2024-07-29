@@ -40,18 +40,18 @@ const LinkPreview = ({ url }) => {
             alignItems: "center",
             margin: "0 auto",
             marginBottom: 30,
-            maxHeight:250,
-            maxWidth:"80%"
+            maxHeight: 250,
+            maxWidth: "80%"
         }}>
             <Paper elevation={3} sx={{
-            p: 2,
-        }}>
+                p: 2,
+            }}>
                 <nav>
                     <ImageComponent src={previewData.image.url} alt={previewData.description} maxWidth="150px" ></ImageComponent>
                     <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
                         {previewData.title}
                     </Typography>
-                    <Typography variant="subtitle2" sx={{ textAlign: "left" }}>
+                    <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
                         {previewData.description}
                     </Typography>
                 </nav>

@@ -1,12 +1,10 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense } from "react";
 import { ImageList, ImageListItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LoadingMessage from "./LoadingMessage";
 
 const PhotoGrid = ({ itemData }) => {
-
-  const ImageComponent = lazy(() => import("./ImageComponent"));
 
   function srcset(image, size, rows = 1, cols = 1) {
     return {
@@ -43,7 +41,6 @@ const PhotoGrid = ({ itemData }) => {
               cols={item.cols || 1}
               rows={item.rows || 1}
             >
-              <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
               <img
                 {...srcset(item.url, 100, item.rows, item.cols)}
                 alt={item.title}

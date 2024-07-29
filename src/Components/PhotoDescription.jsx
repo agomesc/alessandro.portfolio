@@ -18,7 +18,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+      <Typography sx={{ mt: 10, mb: 3 }} variant="h3">
         Sobre?
       </Typography>
       <Paper elevation={3}>
@@ -32,7 +32,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
               }}
             >
               <ImageComponent src={imageUrl} alt={description} ></ImageComponent>
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', p: 5 }}>
+              <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', p: 5 }}>
                 {description}
               </Typography>
             </Card>

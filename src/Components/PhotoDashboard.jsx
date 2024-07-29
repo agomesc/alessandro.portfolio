@@ -52,19 +52,19 @@ const PhotoDashboard = ({ photoData }) => {
               title={photoData.title}
             />
             <CardContent>
-              <Typography variant="body2" gutterBottom>
+              <Typography variant="body1" gutterBottom>
                 Titulo: {photoData.title}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography variant="body1" gutterBottom>
                 Descrição: {photoData.description}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography variant="body1" gutterBottom>
                 Localização: {photoData.location}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography variant="body1" gutterBottom>
                 Data da Foto: {photoData.taken}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography variant="body1" gutterBottom>
                 Visualizações: {photoData.views}
               </Typography>
             </CardContent>

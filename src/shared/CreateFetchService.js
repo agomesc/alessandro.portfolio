@@ -82,15 +82,4 @@ function TryError(status) {
 	}
 }
 
-// Fazendo uma requisição GET
-// fetchService.get('https://jsonplaceholder.typicode.com/todos/1')
-//   .then(data => console.log('Dados recebidos:', data))
-//   .catch(error => console.error('Erro:', error));
-
-// // Fazendo uma requisição POST
-// const postData = { title: 'Novo Post', body: 'Conteúdo do post' };
-// fetchService.post('https://jsonplaceholder.typicode.com/posts', postData)
-//   .then(data => console.log('Post criado:', data))
-//   .catch(error => console.error('Erro:', error));
-
 export default CreateFetchService;

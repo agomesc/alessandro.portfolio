@@ -18,11 +18,11 @@ const LatestPhotos = () => {
 	}, [galleryData, instance]);
 
 	return (
-		<div>
+		<>
 			<Suspense fallback={<LoadingMessage />}>
 				<PhotoGrid itemData={galleryData} />
 			</Suspense>
-		</div>
+		</>
 	);
 };
 
