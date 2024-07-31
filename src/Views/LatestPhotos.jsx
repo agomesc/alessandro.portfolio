@@ -20,7 +20,7 @@ const LatestPhotos = () => {
 	}, [galleryData, instance]);
 
 	const title = 'Atualizações';
-	const description = 'últimas Atualizações';
+	const description = 'Últimas Atualizações';
 
 	return (
 		<>
