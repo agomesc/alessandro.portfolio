@@ -24,7 +24,11 @@ const Gallery = () => {
 
 	return (<>
 
-		<SocialMetaTags title={randomItem?.title} url={window.location.href} description={randomItem?.description} imageUrl={randomItem?.img} />
+		<SocialMetaTags title={randomItem?.title}
+			url={window.location.href}
+			description={randomItem?.description}
+			imageUrl={randomItem?.img}
+		/>
 		<Suspense fallback={<LoadingMessage />}>
 			<ImageMasonry data={galleryData} />
 			<CommentBox itemID="Gallery" />

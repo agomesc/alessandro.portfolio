@@ -59,7 +59,7 @@ const AffiliateAd = () => {
         isLink,
       });
       console.log('Documento adicionado com sucesso!');
-      // Limpar o formulário após o envio
+
       setTitle('');
       setText('');
       setIsActive(false);

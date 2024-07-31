@@ -1,6 +1,12 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Typography, Box, Paper } from "@mui/material";
+import LoadingMessage from "../Components/LoadingMessage";
+import logo from "../images/logo_192.png"
+
+
 const Privacidade = () => {
+
+    const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
     const descricao = `Política Privacidade
     A sua privacidade é importante para nós. É política do Alessandro Portfólio respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site Alessandro Portfólio, e outros sites que possuímos e operamos.
@@ -29,22 +35,27 @@ const Privacidade = () => {
     
     Esta política é efetiva a partir de 24 March 2024 20:53`;
 
+    const title = 'Privacidade';
+
     return (
         <>
-            <Box
-                sx={{
-                    p: 0,
-                    width: "80%",
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                }}
-            >
-                <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
-                <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
-                    {descricao}
-                </Paper>
-            </Box>
+            <SocialMetaTags title={title} url={window.location.href} description={descricao} imageUrl={logo} />
+            <Suspense fallback={<LoadingMessage />}>
+                <Box
+                    sx={{
+                        p: 0,
+                        width: "80%",
+                        alignContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto",
+                    }}
+                >
+                    <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
+                    <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
+                        {descricao}
+                    </Paper>
+                </Box>
+            </Suspense>
         </>
     );
 };

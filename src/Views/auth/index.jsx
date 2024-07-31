@@ -14,15 +14,12 @@ function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Usuário está logado
         setUser(user);
       } else {
-        // Usuário está deslogado
         setUser(null);
       }
     });
 
-    // Limpar a inscrição ao desmontar
     return () => unsubscribe();
   }, []);
 
@@ -42,7 +39,6 @@ function Login() {
 
       })
       .catch((error) => {
-        // Lidar com erros aqui
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(`Erro ao fazer login com o Google: ${errorCode} ${errorMessage}`);
