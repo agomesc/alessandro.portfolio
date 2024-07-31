@@ -13,16 +13,11 @@ import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
 import LoadingMessage from "../Components/LoadingMessage";
 
-const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
-
 const PhotoDashboard = ({ photoData }) => {
-
-  const title = photoData.title;
 
   return (
     <>
       <Suspense fallback={<LoadingMessage />}>
-        <SocialMetaTags title={title} description={title} image={photoData.url} url={window.location.href} />
         <Box
           sx={{
             p: 0,

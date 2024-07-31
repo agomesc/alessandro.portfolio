@@ -3,8 +3,6 @@ import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-// import RandomAffiliateAd from "./Views/RandomAffiliateAd"
-import { MetaTagsProvider } from './Components/MetaTagsContext';
 
 const Routes = lazy(() => import("./routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
@@ -13,7 +11,6 @@ const LoadingMessage = lazy(() => import("./Components/LoadingMessage"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
-const SocialMetaTags = lazy(() => import("./Components/SocialMetaTags"));
 
 const darkTheme = createTheme({
 	palette: {
@@ -33,19 +30,13 @@ const App = () => {
 			<CssBaseline />
 			<Container maxWidth="xl" disableGutters>
 				<Suspense fallback={<LoadingMessage />}>
-					<MetaTagsProvider>
-						<SocialMetaTags />
-						<Menu />
-						<Routes />
-					</MetaTagsProvider>
+					<Menu />
+					<Routes />
 					<SocialShareBar
 						url={urlAtual}
 						title="Confira o meu trabalho!"
 					/>
-					{/* <RandomAffiliateAd /> */}
-
 					<Back />
-
 					<ProTip />
 					<Footer />
 				</Suspense>
