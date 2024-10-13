@@ -11,7 +11,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const PhotoInfo = () => {
 
 	const { id } = useParams();
-	const [galleryData, setGalleryData] = useState([]);
+	const [galleryData, setGalleryData] = useState(null);
 	const instance = CreateFlickrApp();
 
 	useEffect(() => {
@@ -19,16 +19,31 @@ const PhotoInfo = () => {
 			const data = await instance.getPhotoInfo(id);
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		if (!galleryData) fetchData();
 	}, [galleryData, id, instance]);
 
-	return (<>
-		<SocialMetaTags title={galleryData?.title} url={window.location.href} description={galleryData?.description} imageUrl={galleryData?.url} />
-		<Suspense fallback={<LoadingMessage />}>
-			<PhotoDashboard photoData={galleryData} />
-			<CommentBox itemID={id} />
-		</Suspense>
-	</>);
+	return (
+		<>
+			{galleryData ? (
+				<SocialMetaTags
+					title={galleryData?.title || "Default Title"}
+					url={window.location.href}
+					description={galleryData?.description || "Default description"}
+					imageUrl={galleryData?.url || "default-image-url.jpg"}
+				/>
+			) : null}
+
+			<Suspense fallback={<LoadingMessage />}>
+				{galleryData ? (
+					<>
+						<PhotoDashboard photoData={galleryData} />
+						<CommentBox itemID={id} />
+					</>
+				) : <LoadingMessage />}
+			</Suspense>
+		</>
+	);
+
 };
 
 export default PhotoInfo;
