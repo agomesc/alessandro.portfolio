@@ -18,6 +18,11 @@ const LatestPhotos = () => {
 		fetchData();
 	}, [instance]);
 
+	if (!galleryData) {
+		return <LoadingMessage />;
+	}
+
+
 	const title = 'Atualizações';
 	const description = 'Últimas Atualizações';
 

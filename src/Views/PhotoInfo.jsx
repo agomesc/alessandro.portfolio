@@ -17,8 +17,8 @@ const PhotoInfo = () => {
 			const data = await instance.getPhotoInfo(id);
 			setGalleryData(data);
 		}
-		if (!galleryData) fetchData();
-	}, [galleryData, id, instance]);
+		fetchData();
+	}, [id, instance]); // Remove galleryData from dependencies
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -31,7 +31,6 @@ const PhotoInfo = () => {
 				description={galleryData.description || "Default description"}
 				url={galleryData.url || "default-image-url.jpg"}
 			/>
-
 			<Suspense fallback={<LoadingMessage />}>
 				<PhotoDashboard photoData={galleryData} />
 				<CommentBox itemID={id} />
