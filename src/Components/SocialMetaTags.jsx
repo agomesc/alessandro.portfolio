@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 const SocialMetaTags = ({ title, description, url }) => {
@@ -24,6 +24,8 @@ const SocialMetaTags = ({ title, description, url }) => {
 
   return (
     <Helmet>
+      <title>{title}</title>
+      <meta name="description" content={description} />
       <meta property="og:title" content={title} />
       <meta property="og:url" content={currentUrl} />
       <meta property="og:description" content={description} />
