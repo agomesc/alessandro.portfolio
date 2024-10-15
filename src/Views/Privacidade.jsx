@@ -1,12 +1,10 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import { Typography, Box, Paper } from "@mui/material";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png"
-
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const Privacidade = () => {
-
-    const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
     const descricao = `Política Privacidade
     A sua privacidade é importante para nós. É política do Alessandro Portfólio respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site Alessandro Portfólio, e outros sites que possuímos e operamos.

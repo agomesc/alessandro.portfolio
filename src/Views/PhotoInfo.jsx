@@ -3,10 +3,9 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
 import LoadingMessage from "../Components/LoadingMessage";
-
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const PhotoInfo = () => {
 	const { id } = useParams();
@@ -27,7 +26,6 @@ const PhotoInfo = () => {
 
 	return (
 		<>
-			{/* Renderiza apenas quando os dados estão prontos */}
 			<SocialMetaTags
 				title={galleryData.title || "Default Title"}
 				description={galleryData.description || "Default description"}

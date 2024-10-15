@@ -2,13 +2,13 @@ import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png"
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const LatestPhotos = () => {
 
-	const [galleryData, setGalleryData] = useState([]);
+	const [galleryData, setGalleryData] = useState(null);
 	const instance = CreateFlickrApp();
 
 	useEffect(() => {
@@ -16,7 +16,7 @@ const LatestPhotos = () => {
 			const data = await instance.getLatestPhotos();
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		if (!galleryData) fetchData();
 	}, [galleryData, instance]);
 
 	const title = 'Atualizações';

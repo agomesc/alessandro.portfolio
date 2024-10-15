@@ -1,14 +1,13 @@
-
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Gallery = () => {
-	const [galleryData, setGalleryData] = useState([]);
+	const [galleryData, setGalleryData] = useState(null);
 	const instance = CreateFlickrApp();
 
 	useEffect(() => {
@@ -16,22 +15,33 @@ const Gallery = () => {
 			const data = await instance.getGallery();
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		if (!galleryData) fetchData();
 	}, [galleryData, instance]);
 
-	const randomIndex = Math.floor(Math.random() * galleryData.length);
+	// Adiciona uma verificação se galleryData ainda está null ou indefinido
+	if (!galleryData) {
+		return <LoadingMessage />;
+	}
+
+	// Garante que existe pelo menos um item no array antes de calcular o randomIndex
+	const randomIndex = galleryData.length > 0 ? Math.floor(Math.random() * galleryData.length) : 0;
 	const randomItem = galleryData[randomIndex];
 
-	return (<>
+	return (
+		<>
+			{/* Garante que randomItem tem dados antes de passar para SocialMetaTags */}
+			<SocialMetaTags
+				title={randomItem?.title || "Default Title"}
+				description={randomItem?.description || "Default description"}
+				url={randomItem?.img || "default-image-url.jpg"}
+			/>
 
-		<SocialMetaTags title={randomItem?.title}
-			description={randomItem?.description}
-			url={randomItem?.img}
-		/>
-		<Suspense fallback={<LoadingMessage />}>
-			<ImageMasonry data={galleryData} />
-			<CommentBox itemID="Gallery" />
-		</Suspense></>)
+			<Suspense fallback={<LoadingMessage />}>
+				<ImageMasonry data={galleryData} />
+				<CommentBox itemID="Gallery" />
+			</Suspense>
+		</>
+	);
 };
 
 export default Gallery;

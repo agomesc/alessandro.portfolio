@@ -2,15 +2,14 @@ import React, { useEffect, useState, Suspense, lazy } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import LoadingMessage from "../Components/LoadingMessage";
-
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
 const CommentBox = lazy(() => import("../Components/comments"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Photos = () => {
 	const { id } = useParams();
-	const [galleryData, setGalleryData] = useState([]);
+	const [galleryData, setGalleryData] = useState(null);
 	const instance = CreateFlickrApp();
 
 	useEffect(() => {
@@ -18,19 +17,33 @@ const Photos = () => {
 			const data = await instance.getPhotos(id);
 			setGalleryData(data);
 		}
-		if (galleryData.length === 0) fetchData();
+		if (!galleryData) fetchData();
 	}, [galleryData, id, instance]);
 
-	const randomIndex = Math.floor(Math.random() * galleryData.length);
-	const randomItem = galleryData[randomIndex];
+	// Verifica se `galleryData` está carregado antes de acessar suas propriedades
+	if (!galleryData) {
+		return <LoadingMessage />;
+	}
 
-	return (<>
-		<SocialMetaTags title={randomItem?.title} url={randomItem?.url} description={randomItem?.title} />
-		<Suspense fallback={<LoadingMessage />}>
-			<PhotoGallery photos={galleryData} />
-			<CommentBox itemID={id} />
-		</Suspense>
-	</>);
+	// Garante que o array de fotos não está vazio
+	const randomIndex = galleryData.length > 0 ? Math.floor(Math.random() * galleryData.length) : 0;
+	const randomItem = galleryData.length > 0 ? galleryData[randomIndex] : {};
+
+	return (
+		<>
+			{/* Renderiza as meta tags com fallback para valores padrões */}
+			<SocialMetaTags
+				title={randomItem?.title || "Default Title"}
+				url={randomItem?.url || "default-image-url.jpg"}
+				description={randomItem?.title || "Default description"}
+			/>
+
+			<Suspense fallback={<LoadingMessage />}>
+				<PhotoGallery photos={galleryData} />
+				<CommentBox itemID={id} />
+			</Suspense>
+		</>
+	);
 };
 
 export default Photos;

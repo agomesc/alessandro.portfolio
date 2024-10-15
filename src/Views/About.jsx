@@ -1,10 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import minhaImagem from "../images/Eu.png";
 import LoadingMessage from "../Components/LoadingMessage";
+import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
 const CommentBox = lazy(() => import("../Components/comments"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const About = () => {
 
