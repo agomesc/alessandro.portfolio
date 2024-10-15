@@ -39,7 +39,7 @@ const Privacidade = () => {
 
     return (
         <>
-            <SocialMetaTags title={title} url={window.location.href} description={descricao} imageUrl={logo} />
+            <SocialMetaTags title={title} url={logo} description={descricao} />
             <Suspense fallback={<LoadingMessage />}>
                 <Box
                     sx={{

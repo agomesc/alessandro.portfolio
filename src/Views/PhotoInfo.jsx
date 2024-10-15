@@ -9,7 +9,6 @@ const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const PhotoInfo = () => {
-
 	const { id } = useParams();
 	const [galleryData, setGalleryData] = useState(null);
 	const instance = CreateFlickrApp();
@@ -22,28 +21,25 @@ const PhotoInfo = () => {
 		if (!galleryData) fetchData();
 	}, [galleryData, id, instance]);
 
+	if (!galleryData) {
+		return <LoadingMessage />;
+	}
+
 	return (
 		<>
-			{galleryData ? (
-				<SocialMetaTags
-					title={galleryData?.title || "Default Title"}
-					url={window.location.href}
-					description={galleryData?.description || "Default description"}
-					imageUrl={galleryData?.url || "default-image-url.jpg"}
-				/>
-			) : null}
+			{/* Renderiza apenas quando os dados estão prontos */}
+			<SocialMetaTags
+				title={galleryData.title || "Default Title"}
+				description={galleryData.description || "Default description"}
+				url={galleryData.url || "default-image-url.jpg"}
+			/>
 
 			<Suspense fallback={<LoadingMessage />}>
-				{galleryData ? (
-					<>
-						<PhotoDashboard photoData={galleryData} />
-						<CommentBox itemID={id} />
-					</>
-				) : <LoadingMessage />}
+				<PhotoDashboard photoData={galleryData} />
+				<CommentBox itemID={id} />
 			</Suspense>
 		</>
 	);
-
 };
 
 export default PhotoInfo;

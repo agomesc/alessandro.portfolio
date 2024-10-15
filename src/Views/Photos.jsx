@@ -25,7 +25,7 @@ const Photos = () => {
 	const randomItem = galleryData[randomIndex];
 
 	return (<>
-		<SocialMetaTags title={randomItem?.title} url={window.location.href} description={randomItem?.title} imageUrl={randomItem?.url} />
+		<SocialMetaTags title={randomItem?.title} url={randomItem?.url} description={randomItem?.title} />
 		<Suspense fallback={<LoadingMessage />}>
 			<PhotoGallery photos={galleryData} />
 			<CommentBox itemID={id} />

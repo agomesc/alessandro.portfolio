@@ -18,7 +18,7 @@ const About = () => {
 
 	return (
 		<>
-			<SocialMetaTags title={title} url={window.location.href} description={minhaDescricao} imageUrl={minhaImagem} />
+			<SocialMetaTags title={title} url={minhaImagem} description={minhaDescricao} />
 			<Suspense fallback={<LoadingMessage />}>
 				<PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
 				<CommentBox itemID="About" />
