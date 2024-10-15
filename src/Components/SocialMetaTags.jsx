@@ -3,10 +3,24 @@ import { Helmet } from 'react-helmet';
 
 const SocialMetaTags = ({ title, description, url }) => {
   const [currentUrl, setCurrentUrl] = useState('');
+  const [isDomLoaded, setIsDomLoaded] = useState(false);
 
   useEffect(() => {
-    setCurrentUrl(window.location.href);
+    const handleDomLoaded = () => {
+      setCurrentUrl(window.location.href);
+      setIsDomLoaded(true); // DOM está carregada
+    };
+
+    if (document.readyState === 'complete') {
+      handleDomLoaded(); // DOM já estava carregada
+    } else {
+      window.addEventListener('load', handleDomLoaded); // Aguardando a DOM carregar
+    }
+
+    return () => window.removeEventListener('load', handleDomLoaded); // Limpeza
   }, []);
+
+  if (!isDomLoaded) return null; // Aguarda o DOM estar carregado antes de renderizar o componente
 
   return (
     <Helmet>
