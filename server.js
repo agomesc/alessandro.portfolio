@@ -41,16 +41,18 @@ app.get('/*', (req, res) => {
   });
 });
 
-function updateHtmlContent(app, helmet) {
+function updateHtmlContent(appString, helmet) {
   return `
     <!DOCTYPE html>
     <html lang="en">
       <head>
         ${helmet.title.toString()}
         ${helmet.meta.toString()}
+        ${helmet.link.toString()}
+        ${helmet.script.toString()}
       </head>
       <body>
-        <div id="root">${app}</div>
+        <div id="root">${appString}</div>
       </body>
     </html>
   `;
