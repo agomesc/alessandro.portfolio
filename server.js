@@ -3,6 +3,7 @@ require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react']
 });
 require('@babel/polyfill');
+require('ignore-styles');  // Adicione isso para ignorar arquivos CSS
 
 const express = require('express');
 const fs = require('fs');
@@ -18,11 +19,13 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, 'build')));
 
 app.get('/*', (req, res) => {
+  console.log(`Received request for ${req.url}`);
+
   const context = {};
   const appString = ReactDOMServer.renderToString(
-    <StaticRouter location={req.url} context={context}>
-      <App />
-    </StaticRouter>
+    React.createElement(StaticRouter, { location: req.url, context: context },
+      React.createElement(App)
+    )
   );
   const helmet = Helmet.renderStatic();
 
@@ -35,8 +38,10 @@ app.get('/*', (req, res) => {
     }
 
     let updated = data.replace('<div id="root"></div>', `<div id="root">${appString}</div>`);
+    console.log('HTML atualizado:', updated);
     updated = updateHtmlContent(updated, helmet);
 
+    console.log('Enviando resposta atualizada');
     return res.send(updated);
   });
 });
@@ -44,7 +49,7 @@ app.get('/*', (req, res) => {
 function updateHtmlContent(appString, helmet) {
   return `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         ${helmet.title.toString()}
         ${helmet.meta.toString()}
