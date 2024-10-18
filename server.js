@@ -3,7 +3,7 @@ require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react']
 });
 require('@babel/polyfill');
-require('ignore-styles');  // Adicione isso para ignorar arquivos CSS
+require('ignore-styles');
 
 const express = require('express');
 const fs = require('fs');
@@ -22,11 +22,19 @@ app.get('/*', (req, res) => {
   console.log(`Received request for ${req.url}`);
 
   const context = {};
-  const appString = ReactDOMServer.renderToString(
-    React.createElement(StaticRouter, { location: req.url, context: context },
-      React.createElement(App)
-    )
-  );
+  let appString;
+
+  try {
+    appString = ReactDOMServer.renderToString(
+      React.createElement(StaticRouter, { location: req.url, context: context },
+        React.createElement(App)
+      )
+    );
+  } catch (error) {
+    console.error('Erro ao renderizar no servidor:', error);
+    return res.status(500).send('Erro interno do servidor');
+  }
+
   const helmet = Helmet.renderStatic();
 
   const indexFile = path.resolve('./build/index.html');

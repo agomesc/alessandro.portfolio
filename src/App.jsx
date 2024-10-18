@@ -32,10 +32,7 @@ const App = () => {
 				<Suspense fallback={<LoadingMessage />}>
 					<Menu />
 					<Routes />
-					<SocialShareBar
-						url={urlAtual}
-						title="Confira o meu trabalho!"
-					/>
+					<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 					<Back />
 					<ProTip />
 					<Footer />
