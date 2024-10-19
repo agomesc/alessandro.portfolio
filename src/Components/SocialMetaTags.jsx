@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
-const SocialMetaTags = ({ initialTitle, initialDescription, initialUrl }) => {
-  const [title, setTitle] = useState(initialTitle);
-  const [description, setDescription] = useState(initialDescription);
-  const [url, setUrl] = useState(initialUrl);
+const SocialMetaTags = ({ title, description, url }) => {
+  const [metaTitle, setMetaTitle] = useState(title);
+  const [metaDescription, setMetaDescription] = useState(description);
+  const [metaUrl, setMetaUrl] = useState(url);
 
   useEffect(() => {
-    setTitle(initialTitle);
-    setDescription(initialDescription);
-    setUrl(initialUrl);
-  }, [initialTitle, initialDescription, initialUrl]);
+    setMetaTitle(title);
+    setMetaDescription(description);
+    setMetaUrl(url);
+  }, [title, description, url]);
 
   return (
     <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={url} />
+      <title>{metaTitle}</title>
+      <meta name="description" content={metaDescription} />
+      <meta property="og:title" content={metaTitle} />
+      <meta property="og:description" content={metaDescription} />
+      <meta property="og:image" content={metaUrl} />
       <meta property="og:url" content={window.location.href} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={url} />
+      <meta name="twitter:title" content={metaTitle} />
+      <meta name="twitter:description" content={metaDescription} />
+      <meta name="twitter:image" content={metaUrl} />
     </Helmet>
   );
 };
