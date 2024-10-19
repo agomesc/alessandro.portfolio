@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
@@ -29,6 +29,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import LoadingMessage from "../Components/LoadingMessage";
 
 const TemporaryDrawer = () => {
 	const [open, setOpen] = React.useState(false);
@@ -43,7 +44,7 @@ const TemporaryDrawer = () => {
 			setGalleryData(data);
 		}
 
-		if (galleryData.length === 0) fetchData();
+		if (!galleryData) fetchData();
 	}, [galleryData, instance]);
 
 	useEffect(() => {
@@ -114,61 +115,66 @@ const TemporaryDrawer = () => {
 	items.push({ route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> });
 
 	const DrawerList = (
-		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-			<Divider />
-			<List>
-				{items.map((item, index) => {
-					const isChild = item.chid;
-					const hasChildren = items[index + 1] && items[index + 1].chid;
+		<Suspense fallback={<LoadingMessage />}>
+			<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+				<Divider />
+				<List>
+					{items.map((item, index) => {
+						const isChild = item.chid;
+						const hasChildren = items[index + 1] && items[index + 1].chid;
 
-					if (!isChild) {
-						return (
-							<ListItem key={index} disablePadding>
-								<ListItemButton
-									component="a"
-									href={item.route}
-									onClick={(event) => {
-										event.stopPropagation();
-										setOpenSub(!openSub);
-										handleClick(index);
-									}}
-								>
-									<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
-										{item.icon}
-									</ListItemIcon>
-									<ListItemText primary={item.description} />
-									{hasChildren && (openSub ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
-								</ListItemButton>
-							</ListItem>
-						);
-					} else {
-						return (
-							<Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
-								<List component="div" disablePadding>
+						if (!isChild) {
+							return (
+								<ListItem key={index} disablePadding>
 									<ListItemButton
-										sx={{ pl: 4 }}
 										component="a"
 										href={item.route}
 										onClick={(event) => {
 											event.stopPropagation();
+											setOpenSub(!openSub);
+											handleClick(index);
 										}}
 									>
 										<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
 											{item.icon}
 										</ListItemIcon>
 										<ListItemText primary={item.description} />
+										{hasChildren && (openSub ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
 									</ListItemButton>
-								</List>
-							</Collapse>
-						);
-					}
-				})}
-			</List>
+								</ListItem>
+							);
+						} else {
+							return (
+								<Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
+									<List component="div" disablePadding>
+										<ListItemButton
+											sx={{ pl: 4 }}
+											component="a"
+											href={item.route}
+											onClick={(event) => {
+												event.stopPropagation();
+											}}
+										>
+											<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
+												{item.icon}
+											</ListItemIcon>
+											<ListItemText primary={item.description} />
+										</ListItemButton>
+									</List>
+								</Collapse>
+							);
+						}
+					})}
+				</List>
 
-			<Divider />
-		</Box>
+				<Divider />
+			</Box>
+		</Suspense>
 	);
 
+	if (!galleryData) {
+		return <LoadingMessage />;
+	}
 	return (
 		<div>
 			<AppBar position="fixed" color="primary" sx={{ top: 0 }}>

@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
-const SocialMetaTags = ({ title, description, url }) => {
+const SocialMetaTags = ({ initialTitle, initialDescription, initialUrl }) => {
+  const [title, setTitle] = useState(initialTitle);
+  const [description, setDescription] = useState(initialDescription);
+  const [url, setUrl] = useState(initialUrl);
+
+  useEffect(() => {
+    setTitle(initialTitle);
+    setDescription(initialDescription);
+    setUrl(initialUrl);
+  }, [initialTitle, initialDescription, initialUrl]);
+
   return (
     <Helmet>
       <title>{title}</title>

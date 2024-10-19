@@ -22,7 +22,6 @@ const LatestPhotos = () => {
 		return <LoadingMessage />;
 	}
 
-
 	const title = 'Atualizações';
 	const description = 'Últimas Atualizações';
 
