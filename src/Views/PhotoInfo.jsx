@@ -17,8 +17,8 @@ const PhotoInfo = () => {
 			const data = await instance.getPhotoInfo(id);
 			setGalleryData(data);
 		}
-		fetchData();
-	}, [id, instance]); // Remove galleryData from dependencies
+		if (!galleryData) fetchData();
+	}, [galleryData, id, instance]); // Remove galleryData from dependencies
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -26,12 +26,13 @@ const PhotoInfo = () => {
 
 	return (
 		<>
-			<SocialMetaTags
-				title={galleryData.title || "Default Title"}
-				description={galleryData.description || "Default description"}
-				url={galleryData.url || "default-image-url.jpg"}
-			/>
+
 			<Suspense fallback={<LoadingMessage />}>
+				<SocialMetaTags
+					title={galleryData.title || "Default Title"}
+					description={galleryData.description || "Default description"}
+					url={galleryData.url || "default-image-url.jpg"}
+				/>
 				<PhotoDashboard photoData={galleryData} />
 				<CommentBox itemID={id} />
 			</Suspense>

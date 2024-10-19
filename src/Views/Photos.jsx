@@ -31,15 +31,14 @@ const Photos = () => {
 
 	return (
 		<>
-			{/* Renderiza as meta tags com fallback para valores padrões */}
-			<SocialMetaTags
-				title={randomItem?.title || "Default Title"}
-				url={randomItem?.url || "default-image-url.jpg"}
-				description={randomItem?.title || "Default description"}
-			/>
-
 			<Suspense fallback={<LoadingMessage />}>
-				<PhotoGallery photos={galleryData} />
+				<SocialMetaTags
+					title={randomItem?.title || "Default Title"}
+					url={randomItem?.url || "default-image-url.jpg"}
+					description={randomItem?.title || "Default description"}
+				/>
+
+				{galleryData ? <PhotoGallery photos={galleryData} /> : <LoadingMessage />}
 				<CommentBox itemID={id} />
 			</Suspense>
 		</>

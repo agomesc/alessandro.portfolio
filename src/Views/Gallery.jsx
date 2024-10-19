@@ -29,15 +29,13 @@ const Gallery = () => {
 
 	return (
 		<>
-			{/* Garante que randomItem tem dados antes de passar para SocialMetaTags */}
-			<SocialMetaTags
-				title={randomItem?.title || "Default Title"}
-				description={randomItem?.description || "Default description"}
-				url={randomItem?.img || "default-image-url.jpg"}
-			/>
-
 			<Suspense fallback={<LoadingMessage />}>
-				<ImageMasonry data={galleryData} />
+				<SocialMetaTags
+					title={randomItem?.title || "Default Title"}
+					description={randomItem?.description || "Default description"}
+					url={randomItem?.img || "default-image-url.jpg"}
+				/>
+				{galleryData ? <ImageMasonry data={galleryData} /> : <LoadingMessage />}
 				<CommentBox itemID="Gallery" />
 			</Suspense>
 		</>

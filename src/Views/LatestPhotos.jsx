@@ -15,8 +15,8 @@ const LatestPhotos = () => {
 			const data = await instance.getLatestPhotos();
 			setGalleryData(data);
 		}
-		fetchData();
-	}, [instance]);
+		if (!galleryData) fetchData();
+	}, [galleryData, instance]);
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -28,8 +28,9 @@ const LatestPhotos = () => {
 
 	return (
 		<>
-			<SocialMetaTags title={title} url={logo} description={description} />
+
 			<Suspense fallback={<LoadingMessage />}>
+				<SocialMetaTags title={title} url={logo} description={description} />
 				{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
 			</Suspense>
 		</>
