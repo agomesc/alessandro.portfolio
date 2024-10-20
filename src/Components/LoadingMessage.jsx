@@ -8,21 +8,20 @@ const LoadingMessage = () => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      position="relative" // Adiciona posição relativa ao Box para posicionar absolutamente o spinner
       sx={{
+        position: 'relative',
         '&::before': {
           content: '""',
-          position: 'absolute', // Posiciona o spinner absolutamente
-          top: '50%', // Centraliza verticalmente
-          left: '50%', // Centraliza horizontalmente
-          display: 'block',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
           width: '50px',
           height: '50px',
           border: '6px solid #f3f3f3',
           borderTop: '6px solid #3498db',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite',
-          transform: 'translate(-50%, -50%)' // Ajusta a posição exata do centro
+          transform: 'translate(-50%, -50%)'
         },
         '@keyframes spin': {
           '0%': { transform: 'rotate(0deg)' },
@@ -30,6 +29,16 @@ const LoadingMessage = () => {
         }
       }}
     >
+      <Box
+        component="span"
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
+      </Box>
     </Box>
   );
 };
