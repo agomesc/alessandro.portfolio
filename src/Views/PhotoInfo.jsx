@@ -10,15 +10,30 @@ const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const PhotoInfo = () => {
 	const { id } = useParams();
 	const [galleryData, setGalleryData] = useState(null);
+	const [metaData, setMetaData] = useState({
+		title: "Alessandro Gomes Portfólio",
+		description: "Alessandro Gomes Portfólio",
+		url: "%PUBLIC_URL%/logo_512.png"
+	});
+
 	const instance = CreateFlickrApp();
 
 	useEffect(() => {
 		async function fetchData() {
 			const data = await instance.getPhotoInfo(id);
 			setGalleryData(data);
+
+			if (data) {
+				setMetaData({
+					title: data.title,
+					description: data.description,
+					url: data.url
+				});
+			}
 		}
-		if (!galleryData) fetchData();
-	}, [galleryData, id, instance]); // Remove galleryData from dependencies
+
+		fetchData();
+	}, [id, instance]);
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -26,12 +41,11 @@ const PhotoInfo = () => {
 
 	return (
 		<>
-
 			<Suspense fallback={<LoadingMessage />}>
 				<SocialMetaTags
-					title={galleryData.title || "Default Title"}
-					description={galleryData.description || "Default description"}
-					url={galleryData.url || "default-image-url.jpg"}
+					title={metaData.title}
+					description={metaData.description}
+					url={metaData.url}
 				/>
 				<PhotoDashboard photoData={galleryData} />
 				<CommentBox itemID={id} />
