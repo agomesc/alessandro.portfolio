@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
-const SocialMetaTags = ({ title, description, url, imageUrl }) => {
+const SocialMetaTags = ({ title, description, url }) => {
   const [metaTitle, setMetaTitle] = useState(title || ''); // Use default for empty title
   const [metaDescription, setMetaDescription] = useState(description || ''); // Default for empty description
   const [metaUrl, setMetaUrl] = useState(url || window.location.href); // Default to current URL
-  const [metaImageUrl, setMetaImageUrl] = useState(imageUrl || ''); // Default for empty image URL
+  const [metaImageUrl, setMetaImageUrl] = useState(url || ''); // Default for empty image URL
 
   // Fetch initial meta tags from index.html (if possible)
   useEffect(() => {
@@ -42,8 +42,8 @@ const SocialMetaTags = ({ title, description, url, imageUrl }) => {
     setMetaTitle(title);
     setMetaDescription(description);
     setMetaUrl(url);
-    setMetaImageUrl(imageUrl);
-  }, [title, description, url, imageUrl]); // Update on prop changes
+    setMetaImageUrl(url);
+  }, [title, description, url]); // Update on prop changes
 
   const ogLocale = 'pt-BR'; // Replace with your desired locale
 
