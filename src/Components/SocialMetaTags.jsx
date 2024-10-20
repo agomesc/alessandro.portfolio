@@ -16,6 +16,8 @@ const SocialMetaTags = ({ title, description, url }) => {
     <Helmet>
 
       <title>{metaTitle}</title>
+      <meta property="og:type" content="website" />
+      <meta property="og:logo" content="%PUBLIC_URL%/logo_512.png"></meta>
       <meta name="description" content={metaDescription} />
       <meta property="og:title" content={metaTitle} />
       <meta property="og:description" content={metaDescription} />
