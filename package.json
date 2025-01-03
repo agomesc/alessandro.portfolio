@@ -19,7 +19,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "firebase": "^10.9.0",
     "ignore-styles": "^5.0.1",
     "react": "^18.3.1",
@@ -35,8 +35,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node server.js",
+    "build": "npm run build",
     "server": "node server.js"
   },
   "eslintConfig": {
