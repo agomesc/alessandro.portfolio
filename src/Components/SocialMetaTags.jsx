@@ -7,13 +7,17 @@ const SocialMetaTags = ({ title, description, url }) => {
 
   useEffect(() => {
     const updateMetaTag = (name, content) => {
-      const element = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
-      if (element) {
-        element.setAttribute('content', content);
+      let element = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(name.includes('og:') || name.includes('twitter:') ? 'property' : 'name', name);
+        document.head.appendChild(element);
       }
+      element.setAttribute('content', content);
     };
 
     document.title = metaTitle;
+
     updateMetaTag('description', metaDescription);
     updateMetaTag('og:title', metaTitle);
     updateMetaTag('og:description', metaDescription);
@@ -22,6 +26,7 @@ const SocialMetaTags = ({ title, description, url }) => {
     updateMetaTag('twitter:title', metaTitle);
     updateMetaTag('twitter:description', metaDescription);
     updateMetaTag('twitter:image', metaUrl);
+
   }, [metaTitle, metaDescription, metaUrl]);
 
   useEffect(() => {
