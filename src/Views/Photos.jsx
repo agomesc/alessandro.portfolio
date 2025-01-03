@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import LoadingMessage from "../Components/LoadingMessage";
@@ -10,32 +10,33 @@ const CommentBox = lazy(() => import("../Components/comments"));
 const Photos = () => {
 	const { id } = useParams();
 	const [galleryData, setGalleryData] = useState(null);
-	const [metaData, setMetaData] = useState({
-		title: "Alessandro Gomes Portfólio",
-		description: "Alessandro Gomes Portfólio",
-		url: "%PUBLIC_URL%/logo_512.png"
-	});
+	const instance = useMemo(() => CreateFlickrApp(), []);
 
-	const instance = CreateFlickrApp();
+	const metaData = useMemo(() => {
+		if (galleryData && galleryData.length > 0) {
+			const randomIndex = Math.floor(Math.random() * galleryData.length);
+			const randomItem = galleryData[randomIndex];
+			return {
+				title: randomItem.title,
+				description: randomItem.title,
+				url: randomItem.url
+			};
+		}
+		return {
+			title: "Alessandro Gomes Portfólio",
+			description: "Alessandro Gomes Portfólio",
+			url: "%PUBLIC_URL%/logo_512.png"
+		};
+	}, [galleryData]);
+
+	const fetchData = useCallback(async () => {
+		const data = await instance.getPhotos(id);
+		setGalleryData(data);
+	}, [id, instance]);
 
 	useEffect(() => {
-		async function fetchData() {
-			const data = await instance.getPhotos(id);
-			setGalleryData(data);
-
-			if (data.length > 0) {
-				const randomIndex = Math.floor(Math.random() * data.length);
-				const randomItem = data[randomIndex];
-				setMetaData({
-					title: randomItem.title,
-					description: randomItem.title,
-					url: randomItem.url
-				});
-			}
-		}
-
 		if (!galleryData) fetchData();
-	}, [galleryData, id, instance]);
+	}, [fetchData, galleryData]);
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -56,4 +57,4 @@ const Photos = () => {
 	);
 };
 
-export default Photos;
+export default React.memo(Photos);

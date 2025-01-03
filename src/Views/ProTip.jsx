@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "@mui/material/Link";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
@@ -13,32 +13,33 @@ function LightBulbIcon(props) {
 	);
 }
 
-export default function ProTip() {
+const ProTip = () => {
+	const linkContent = useMemo(() => (
+		<>
+			Flickr API <LightBulbIcon sx={{ mr: 1, verticalAlign: "center" }} />
+		</>
+	), []);
+
 	return (
 		<Box sx={{ pt: 2, display: "fixed", justifyContent: "center" }}>
 			<Paper elevation={3}>
 				<Typography sx={{ mt: 2, mb: 2, p: 1 }} color="text.secondary">
-
 					<Typography variant="subtitle1">
 						Alessandro Portfólio.
 					</Typography>
-
 					<Typography variant="subtitle1">
 						Desenvolvedor: Alessandro G
 					</Typography>
-
 					<Typography variant="subtitle1">
 						Todos os direitos reservados.
 					</Typography>
-
 					<Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-						<Link href="https://www.flickr.com/services/api/">Flickr API <LightBulbIcon sx={{ mr: 1, verticalAlign: "center" }} /></Link>
+						<Link href="https://www.flickr.com/services/api/">{linkContent}</Link>
 					</Typography>
-
-
-
 				</Typography>
 			</Paper>
 		</Box>
 	);
 }
+
+export default React.memo(ProTip);

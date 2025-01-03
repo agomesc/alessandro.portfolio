@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
@@ -10,30 +10,31 @@ const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const PhotoInfo = () => {
 	const { id } = useParams();
 	const [galleryData, setGalleryData] = useState(null);
-	const [metaData, setMetaData] = useState({
-		title: "Alessandro Gomes Portfólio",
-		description: "Alessandro Gomes Portfólio",
-		url: "%PUBLIC_URL%/logo_512.png"
-	});
+	const instance = useMemo(() => CreateFlickrApp(), []);
 
-	const instance = CreateFlickrApp();
+	const metaData = useMemo(() => {
+		if (galleryData) {
+			return {
+				title: galleryData.title,
+				description: galleryData.description,
+				url: galleryData.url
+			};
+		}
+		return {
+			title: "Alessandro Gomes Portfólio",
+			description: "Alessandro Gomes Portfólio",
+			url: "%PUBLIC_URL%/logo_512.png"
+		};
+	}, [galleryData]);
+
+	const fetchData = useCallback(async () => {
+		const data = await instance.getPhotoInfo(id);
+		setGalleryData(data);
+	}, [id, instance]);
 
 	useEffect(() => {
-		async function fetchData() {
-			const data = await instance.getPhotoInfo(id);
-			setGalleryData(data);
-
-			if (data) {
-				setMetaData({
-					title: data.title,
-					description: data.description,
-					url: data.url
-				});
-			}
-		}
-
 		fetchData();
-	}, [id, instance]);
+	}, [fetchData]);
 
 	if (!galleryData) {
 		return <LoadingMessage />;
@@ -54,4 +55,4 @@ const PhotoInfo = () => {
 	);
 };
 
-export default PhotoInfo;
+export default React.memo(PhotoInfo);

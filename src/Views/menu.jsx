@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense, useMemo, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
@@ -32,11 +32,11 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import LoadingMessage from "../Components/LoadingMessage";
 
 const TemporaryDrawer = () => {
-	const [open, setOpen] = React.useState(false);
-	const [openSub, setOpenSub] = React.useState(false);
+	const [open, setOpen] = useState(false);
+	const [openSub, setOpenSub] = useState(false);
 	const [user, setUser] = useState(null);
 	const [galleryData, setGalleryData] = useState([]);
-	const instance = CreateFlickrApp();
+	const instance = useMemo(() => CreateFlickrApp(), []);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -44,75 +44,55 @@ const TemporaryDrawer = () => {
 			setGalleryData(data);
 		}
 
-		if (!galleryData) fetchData();
+		if (!galleryData.length) fetchData();
 	}, [galleryData, instance]);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			if (user) {
-				setUser(user);
-			} else {
-				setUser(null);
-			}
+			setUser(user || null);
 		});
 		return () => unsubscribe();
 	}, []);
 
-	const toggleDrawer = (newOpen) => () => {
+	const toggleDrawer = useCallback((newOpen) => () => {
 		setOpen(newOpen);
-	};
+	}, []);
 
-	const handleClick = () => {
+	const handleClick = useCallback(() => {
 		setOpenSub(!openSub);
-	};
+	}, [openSub]);
 
-	const items = [
-		{
-			route: "/Home",
-			description: "Home",
-			chid: false,
-			icon: <HomeIcon />,
-		},
-		{
-			// eslint-disable-next-line no-script-url
-			route: "JavaScript:void(0);",
-			description: "Minhas Galerias",
-			chid: false,
-			icon: <PhotoLibraryIcon />,
-		},
-	];
-
-	const handleLogout = () => {
+	const handleLogout = useCallback(() => {
 		signOut(auth).then(() => {
-			// Sign-out successful.
 			console.log('Usuário deslogado');
 		}).catch((error) => {
-			// An error happened.
 			console.error('Erro ao deslogar', error);
 		});
-	};
+	}, []);
 
-	// eslint-disable-next-line array-callback-return
-	galleryData.map((item) => {
-		items.push({
+	const items = useMemo(() => {
+		const baseItems = [
+			{ route: "/Home", description: "Home", chid: false, icon: <HomeIcon /> },
+			{ route: "JavaScript:void(0);", description: "Minhas Galerias", chid: false, icon: <PhotoLibraryIcon /> }
+		];
+
+		const galleryItems = galleryData.map((item) => ({
 			route: `/Photos/${item.id}?`,
 			description: item.title,
 			chid: true,
 			icon: <ArtTrackIcon />,
-		});
-	});
+		}));
 
-	items.push({
-		route: "/LatestPhotos",
-		description: "Atualizações",
-		chid: false,
-		icon: <DynamicFeedIcon />,
-	});
+		const additionalItems = [
+			{ route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
+			{ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
+			{ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
+			{ route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
+			{ route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> }
+		];
 
-	items.push({ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> });
-	items.push({ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> });
-	items.push({ route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> });
-	items.push({ route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> });
+		return [...baseItems, ...galleryItems, ...additionalItems];
+	}, [galleryData]);
 
 	const DrawerList = (
 		<Suspense fallback={<LoadingMessage />}>
@@ -132,7 +112,6 @@ const TemporaryDrawer = () => {
 										onClick={(event) => {
 											event.stopPropagation();
 											setOpenSub(!openSub);
-											handleClick(index);
 										}}
 									>
 										<ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
@@ -166,15 +145,15 @@ const TemporaryDrawer = () => {
 						}
 					})}
 				</List>
-
 				<Divider />
 			</Box>
 		</Suspense>
 	);
 
-	if (!galleryData) {
+	if (!galleryData.length) {
 		return <LoadingMessage />;
 	}
+
 	return (
 		<div>
 			<AppBar position="fixed" color="primary" sx={{ top: 0 }}>
@@ -192,47 +171,45 @@ const TemporaryDrawer = () => {
 					<Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
 						Alessandro - Portfólio
 					</Typography>
-					{
-						user ? (
-							<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
-								<Avatar alt={user.userName} src={user.photoURL} />
-								<nav>
-									<IconButton onClick={handleLogout}
-										size="small"
+					{user ? (
+						<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
+							<Avatar alt={user.displayName} src={user.photoURL} />
+							<nav>
+								<IconButton onClick={handleLogout}
+									size="small"
+									aria-label="account of current user"
+									aria-controls="menu-appbar"
+									aria-haspopup="true"
+									color="inherit"
+								>
+									<LogoutIcon />
+								</IconButton>
+							</nav>
+						</div>
+					) : (
+						<div>
+							<nav>
+								<Link to="/Login">
+									<IconButton
+										size="medium"
 										aria-label="account of current user"
 										aria-controls="menu-appbar"
 										aria-haspopup="true"
 										color="inherit"
 									>
-										<LogoutIcon />
+										<AccountCircle />
 									</IconButton>
-								</nav>
-							</div>
-						) : (
-							<div>
-								<nav>
-									<Link to="/Login">
-										<IconButton
-											size="medium"
-											aria-label="account of current user"
-											aria-controls="menu-appbar"
-											aria-haspopup="true"
-											color="inherit"
-										>
-											<AccountCircle />
-										</IconButton>
-									</Link>
-								</nav>
-							</div>
-						)
-					}
+								</Link>
+							</nav>
+						</div>
+					)}
 				</Toolbar>
 			</AppBar>
 			<Drawer open={open} onClose={toggleDrawer(false)}>
 				{DrawerList}
 			</Drawer>
 		</div>
-	);
+	)
 }
 
-export default TemporaryDrawer;
+export default React.memo(TemporaryDrawer);
