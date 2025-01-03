@@ -2,6 +2,16 @@ import React from 'react';
 import { Helmet } from "react-helmet";
 
 const SocialMetaTags = ({ title, description, url }) => {
+
+  const removeExistingMetaTags = () => {
+    const metaTags = document.querySelectorAll('meta[name="description"], meta[property^="og:"], meta[name^="twitter:"]');
+    metaTags.forEach(meta => meta.remove());
+  };
+
+  React.useEffect(() => {
+    removeExistingMetaTags();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -20,4 +30,3 @@ const SocialMetaTags = ({ title, description, url }) => {
 };
 
 export default SocialMetaTags;
-
