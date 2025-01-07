@@ -1,31 +1,30 @@
-// routes.js
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import Gallery from "./Views/Gallery";
-import Photos from "./Views/Photos";
-import About from "./Views/About";
-import LatestPhotos from "./Views/LatestPhotos";
-import PhotoInfo from "./Views/PhotoInfo";
-import Login from "./Views/auth/index";
-import Privacidade from "../src/Views/Privacidade";
-import Transparencia from "../src/Views/Transparencia";
-// import AffiliateAd  from "./Views/AffiliateAd";
-// import AffiliateAdList  from "./Views/AffiliateAdList";
+const Gallery = lazy(() => import("./Views/Gallery"));
+const Photos = lazy(() => import("./Views/Photos"));
+const About = lazy(() => import("./Views/About"));
+const LatestPhotos = lazy(() => import("./Views/LatestPhotos"));
+const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
+const Login = lazy(() => import("./Views/auth/index"));
+const Privacidade = lazy(() => import("../src/Views/Privacidade"));
+const Transparencia = lazy(() => import("../src/Views/Transparencia"));
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route exact path="/" element={<Gallery />} />
-      <Route path="/Home" element={<Gallery />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Gallery" element={<Gallery />} />
-      <Route path="/LatestPhotos" element={<LatestPhotos />} />
-      <Route path="/Photos/:id" element={<Photos />} />
-      <Route path="/PhotoInfo/:id" element={<PhotoInfo />} />
-      <Route path="/Privacidade/" element={<Privacidade />} />
-      <Route path="/Transparencia" element={<Transparencia />} />
-      <Route path="/About" element={<About />} />
-    </Routes>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Gallery />} />
+        <Route path="/home" element={<Gallery />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/latestphotos" element={<LatestPhotos />} />
+        <Route path="/photos/:id" element={<Photos />} />
+        <Route path="/photoinfo/:id" element={<PhotoInfo />} />
+        <Route path="/privacidade" element={<Privacidade />} />
+        <Route path="/transparencia" element={<Transparencia />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Suspense>
   );
 };
 export default AppRoutes;

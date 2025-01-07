@@ -36,4 +36,4 @@ const LatestPhotos = () => {
 	);
 };
 
-export default LatestPhotos;
+export default React.memo(LatestPhotos);
