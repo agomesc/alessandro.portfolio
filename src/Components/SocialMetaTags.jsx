@@ -29,4 +29,4 @@ const SocialMetaTags = ({ title, description, url }) => {
   );
 };
 
-export default SocialMetaTags;
+export default React.memo(SocialMetaTags);

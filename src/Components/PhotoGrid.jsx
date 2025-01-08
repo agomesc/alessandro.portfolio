@@ -55,4 +55,4 @@ const PhotoGrid = ({ itemData }) => {
   );
 };
 
-export default PhotoGrid;
+export default React.memo(PhotoGrid);

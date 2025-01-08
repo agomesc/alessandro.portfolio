@@ -25,4 +25,4 @@ const MainDrawer = ({ open, handleClose, children }) => {
   );
 };
 
-export default MainDrawer;
+export default React.memo(MainDrawer);

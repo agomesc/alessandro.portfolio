@@ -5,6 +5,7 @@ import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import ImageComponent from "./ImageComponent";
+import React from 'react';
 
 const LabelTop = styled(Paper)(() => ({
   position: "absolute",
@@ -48,4 +49,4 @@ const ImageMasonry = ({ data }) => {
   );
 };
 
-export default ImageMasonry;
+export default React.memo(ImageMasonry);

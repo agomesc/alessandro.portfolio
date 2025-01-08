@@ -61,4 +61,4 @@ const LinkPreview = ({ url }) => {
     );
 };
 
-export default LinkPreview;
+export default React.memo(LinkPreview);

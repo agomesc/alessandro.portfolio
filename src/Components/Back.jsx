@@ -12,7 +12,7 @@ const Back = () => {
 		zIndex: 1000,
 	};
 
-	const goBack =() => {
+	const goBack = () => {
 		window.history.back();
 	}
 
@@ -27,4 +27,4 @@ const Back = () => {
 	);
 };
 
-export default Back;
+export default React.memo(Back);

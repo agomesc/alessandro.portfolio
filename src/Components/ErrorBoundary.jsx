@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import MessageSnackbar from './MessageSnackbar';
 
 class ErrorBoundary extends Component {
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = { hasError: false };
-    this.error={};
+    this.error = {};
     this.errorInfo = {};
   }
 
@@ -28,4 +28,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default ErrorBoundary;
+export default React.memo(ErrorBoundary);

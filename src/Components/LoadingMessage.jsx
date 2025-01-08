@@ -43,4 +43,4 @@ const LoadingMessage = () => {
   );
 };
 
-export default LoadingMessage;
+export default React.memo(LoadingMessage);

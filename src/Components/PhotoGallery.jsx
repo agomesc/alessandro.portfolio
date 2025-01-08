@@ -82,4 +82,4 @@ const PhotoGallery = ({ photos }) => {
   );
 };
 
-export default PhotoGallery;
+export default React.memo(PhotoGallery);

@@ -10,4 +10,4 @@ const PhotoCarousel = ({ photos }) => {
 
   return <ImageGallery items={galleryImages} />;
 };
-export default PhotoCarousel;
+export default React.memo(PhotoCarousel);

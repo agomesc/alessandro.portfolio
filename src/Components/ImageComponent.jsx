@@ -25,4 +25,4 @@ const ImageComponent = ({ src, alt, maxWidth }) => (
   </div>
 );
 
-export default ImageComponent;
+export default React.memo(ImageComponent);

@@ -23,4 +23,4 @@ const MessageSnackbar = ({ message, severity }) => {
   );
 };
 
-export default MessageSnackbar;
+export default React.memo(MessageSnackbar);
