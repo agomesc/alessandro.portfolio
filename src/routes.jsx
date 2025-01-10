@@ -7,6 +7,9 @@ const LatestPhotos = lazy(() => import("./Views/LatestPhotos"));
 const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
 const Login = lazy(() => import("./Views/auth/index"));
 const Privacidade = lazy(() => import("../src/Views/Privacidade"));
+const ArticleCarousel = lazy(() => import("../src/Views/ArticleCarousel"));
+const ArticleForm = lazy(() => import("../src/Views/ArticleForm"));
+const ArticleDetailList = lazy(() => import("../src/Views/ArticleDetailList"));
 const Transparencia = lazy(() => import("../src/Views/Transparencia"));
 
 const AppRoutes = () => {
@@ -15,6 +18,11 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Gallery />} />
         <Route path="/home" element={<Gallery />} />
+        <Route exact path="/" element={<ArticleCarousel />} />
+        <Route path="/article/:id" element={<ArticleDetailList />} />
+        <Route path="/article/:id" element={<ArticleDetailList />} />
+        <Route path="/create" element={<ArticleForm />} />
+        <Route path="/edit/:id" element={<ArticleForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/latestphotos" element={<LatestPhotos />} />

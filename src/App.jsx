@@ -10,6 +10,7 @@ const Menu = lazy(() => import("./Views/menu"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
+const ArticleCarousel = lazy(() => import("./Views/ArticleCarousel"));
 
 const darkTheme = createTheme({
 	palette: {
@@ -30,6 +31,10 @@ const App = () => {
 			<Container maxWidth="xl" disableGutters>
 				<Menu />
 				<Routes />
+				<div>
+					<h1>Meus Artigos</h1>
+					<ArticleCarousel />
+				</div>
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 				<Back />
 				<ProTip />
