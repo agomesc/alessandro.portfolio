@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import Box from "@mui/material/Box";
 import { Paper, Typography, Button } from '@mui/material';
 
 const ArticleDetaiList = () => {
     const { id } = useParams();
-    const history = useHistory();
+    //const history = useHistory();
     const [article, setArticle] = useState(null);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const ArticleDetaiList = () => {
     const handleDelete = async () => {
         try {
             await deleteDoc(doc(db, 'articles', id));
-            history.push('/');
+            //history.push('/');
         } catch (error) {
             console.error('Erro ao deletar o artigo:', error);
         }

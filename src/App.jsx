@@ -31,10 +31,7 @@ const App = () => {
 			<Container maxWidth="xl" disableGutters>
 				<Menu />
 				<Routes />
-				<div>
-					<h1>Meus Artigos</h1>
-					<ArticleCarousel />
-				</div>
+				{/* <ArticleCarousel /> */}
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 				<Back />
 				<ProTip />

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { doc, getDoc, setDoc, addDoc, collection } from 'firebase/firestore';
-import { Box, Button, TextField, Paper } from '@mui/material';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Box, Button, TextField, Paper, Input } from '@mui/material';
 
 const ArticleForm = () => {
     const { id } = useParams();
-    const history = useHistory();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [image, setImage] = useState(null);
+    const [imageURL, setImageURL] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -18,6 +20,7 @@ const ArticleForm = () => {
                 if (docSnap.exists()) {
                     setTitle(docSnap.data().title);
                     setContent(docSnap.data().content);
+                    setImageURL(docSnap.data().imageURL);
                 }
             };
 
@@ -25,9 +28,18 @@ const ArticleForm = () => {
         }
     }, [id]);
 
+    const handleImageUpload = async (file) => {
+        if (file) {
+            const storageRef = ref(db, `images/${file.name}`);
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+            setImageURL(url);
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const articleData = { title, content, createdAt: new Date() };
+        const articleData = { title, content, imageURL, createdAt: new Date() };
 
         try {
             if (id) {
@@ -35,7 +47,6 @@ const ArticleForm = () => {
             } else {
                 await addDoc(collection(db, 'articles'), articleData);
             }
-            history.push('/');
         } catch (error) {
             console.error('Erro ao salvar o artigo:', error);
         }
@@ -62,6 +73,11 @@ const ArticleForm = () => {
                         margin="normal"
                         multiline
                         rows={4}
+                    />
+                    <Input
+                        type="file"
+                        onChange={(e) => handleImageUpload(e.target.files[0])}
+                        margin="normal"
                     />
                     <Button type="submit" variant="contained" color="primary">
                         {id ? 'Atualizar' : 'Criar'}

@@ -21,7 +21,7 @@ const AppRoutes = () => {
         <Route exact path="/" element={<ArticleCarousel />} />
         <Route path="/article/:id" element={<ArticleDetailList />} />
         <Route path="/article/:id" element={<ArticleDetailList />} />
-        <Route path="/create" element={<ArticleForm />} />
+        <Route path="/create/article/:id?" element={<ArticleForm />} />
         <Route path="/edit/:id" element={<ArticleForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/gallery" element={<Gallery />} />
