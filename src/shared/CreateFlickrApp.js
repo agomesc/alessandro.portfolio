@@ -4,11 +4,23 @@ const CreateFlickrApp = () => {
 
 	const apiKey = process.env.REACT_APP_FLICKR_API_KEY;
 	const userID = process.env.REACT_APP_USER_ID;
+	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
 
 	const instance = CreateFlickrService(apiKey);
 
 	const getGallery = async () => {
 		const data = await instance.listarAlbuns(userID);
+		const itemData = data.map((album) => ({
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
+			title: album.title._content,
+			id: album.id,
+			description: album.description._content,
+		}));
+		return itemData;
+	};
+
+	const getGalleryWork = async () => {
+		const data = await instance.listarAlbuns(userwORKID);
 		const itemData = data.map((album) => ({
 			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
 			title: album.title._content,
@@ -58,6 +70,7 @@ const CreateFlickrApp = () => {
 
 	return {
 		getGallery,
+		getGalleryWork,
 		getPhotos,
 		getLatestPhotos,
 		getPhotoInfo

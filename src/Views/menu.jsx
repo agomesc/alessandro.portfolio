@@ -58,9 +58,6 @@ const TemporaryDrawer = () => {
 		setOpen(newOpen);
 	}, []);
 
-	const handleClick = useCallback(() => {
-		setOpenSub(!openSub);
-	}, [openSub]);
 
 	const handleLogout = useCallback(() => {
 		signOut(auth).then(() => {
@@ -73,6 +70,7 @@ const TemporaryDrawer = () => {
 	const items = useMemo(() => {
 		const baseItems = [
 			{ route: "/Home", description: "Home", chid: false, icon: <HomeIcon /> },
+			// eslint-disable-next-line no-script-url
 			{ route: "JavaScript:void(0);", description: "Minhas Galerias", chid: false, icon: <PhotoLibraryIcon /> }
 		];
 
@@ -84,6 +82,7 @@ const TemporaryDrawer = () => {
 		}));
 
 		const additionalItems = [
+			{ route: "/GalleryWork", description: "Meus Trabalhos", chid: false, icon: <PhotoLibraryIcon /> },
 			{ route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
 			{ route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
 			{ route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
