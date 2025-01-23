@@ -20,11 +20,6 @@ const Gallery = () => {
                 url: randomItem.img
             };
         }
-        return {
-            title: "Alessandro Gomes Portfólio",
-            description: "Alessandro Gomes Portfólio",
-            url: "%PUBLIC_URL%/logo_512.png"
-        };
     }, [galleryData]);
 
     useEffect(() => {

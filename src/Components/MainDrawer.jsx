@@ -1,4 +1,3 @@
-// MyDrawer.js
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";

@@ -1,4 +1,3 @@
-// PhotoModal.js
 import React from "react";
 import { IconButton, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";

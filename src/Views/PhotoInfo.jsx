@@ -19,12 +19,7 @@ const PhotoInfo = () => {
 				description: galleryData.description,
 				url: galleryData.url
 			};
-		}
-		return {
-			title: "Alessandro Gomes Portfólio",
-			description: "Alessandro Gomes Portfólio",
-			url: "%PUBLIC_URL%/logo_512.png"
-		};
+		}	
 	}, [galleryData]);
 
 	const fetchData = useCallback(async () => {
