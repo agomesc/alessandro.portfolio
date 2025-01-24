@@ -19,7 +19,7 @@ const Gallery = () => {
                 description: randomItem.description,
                 url: randomItem.img
             };
-        }
+        };
     }, [galleryData]);
 
     useEffect(() => {

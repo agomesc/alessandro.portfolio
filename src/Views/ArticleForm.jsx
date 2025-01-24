@@ -9,7 +9,6 @@ const ArticleForm = () => {
     const { id } = useParams();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState('');
 
     useEffect(() => {
