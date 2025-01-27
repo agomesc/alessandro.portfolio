@@ -3,6 +3,7 @@ import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Helmet } from "react-helmet";
 
 const Routes = lazy(() => import("./routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
@@ -10,7 +11,7 @@ const Menu = lazy(() => import("./Views/menu"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
-const ArticleCarousel = lazy(() => import("./Views/ArticleCarousel"));
+
 
 const darkTheme = createTheme({
 	palette: {
@@ -29,13 +30,16 @@ const App = () => {
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
 			<Container maxWidth="xl" disableGutters>
-				<Menu />
-				<Routes />
-				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-				<Back />
-				<ProTip />
-				<Footer />
-			</Container>
+			<Helmet>
+        		<base href="/" />
+      		</Helmet>
+			<Menu />
+			<Routes />
+			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+			<Back />
+			<ProTip />
+			<Footer />
+		</Container>
 		</ThemeProvider>
 	);
 };
