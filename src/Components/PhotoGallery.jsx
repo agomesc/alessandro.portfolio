@@ -34,6 +34,11 @@ const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
 }));
 
+const StyledImageComponent = styled('img')({
+  width: '100%',
+  height: 'auto',
+  objectFit: 'contain', // Mantém a proporção das imagens
+});
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
@@ -69,7 +74,7 @@ const PhotoGallery = ({ photos }) => {
                     </Link>
                   </nav>
                 </Label>
-                <ImageComponent src={item.url} alt={item.title} ></ImageComponent>
+                <StyledImageComponent src={item.url} alt={item.title} />
               </GalleryContainer>
             ))}
           </Masonry>

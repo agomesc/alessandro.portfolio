@@ -34,7 +34,7 @@ const App = () => {
 					<base href="/" />
 				</Helmet>
 				<Menu />
-				<Container maxWidth="75%" disableGutters>
+				<Container maxWidth="80%" disableGutters>
 				<Routes />
 				</Container>
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
