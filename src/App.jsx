@@ -1,5 +1,6 @@
 import React, { lazy, useState, useEffect } from 'react';
 import "./App.css";
+import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Helmet } from "react-helmet";
@@ -29,16 +30,18 @@ const App = () => {
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
 			
-			<Helmet>
-        		<base href="/" />
-      		</Helmet>
-			<Menu />
-			<Routes />
-			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-			<Back />
-			<ProTip />
-			<Footer />
-		
+				<Helmet>
+					<base href="/" />
+				</Helmet>
+				<Menu />
+				<Container maxWidth="75%" disableGutters>
+				<Routes />
+				</Container>
+				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+				<Back />
+				<ProTip />
+				<Footer />
+			
 		</ThemeProvider>
 	);
 };
