@@ -2,6 +2,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
+import Box from "@mui/material/Box";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
@@ -38,16 +39,28 @@ const Gallery = () => {
     return (
         <>
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags
-                    title={metaData.title}
-                    description={metaData.description}
-                    url={metaData.url}
-                />
-                <ImageMasonry data={galleryData} />
-                <CommentBox itemID="Gallery" />
+                <Box
+                    sx={{
+                        p: 0,
+                        width: "80%",
+                        alignContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto",
+                    }}
+                >
+                    <SocialMetaTags
+                        title={metaData.title}
+                        description={metaData.description}
+                        url={metaData.url}
+                    />
+                    <ImageMasonry data={galleryData} />
+                    <CommentBox itemID="Gallery" />
+                </Box>
             </Suspense>
         </>
     );
 };
 
 export default React.memo(Gallery);
+
+

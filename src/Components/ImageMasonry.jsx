@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Masonry from "@mui/lab/Masonry";
+import { Masonry } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import ImageComponent from "./ImageComponent";
@@ -31,16 +31,24 @@ const GalleryContainer = styled(Paper)(() => ({
 
 const ImageMasonry = ({ data }) => {
   return (
-    <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+    <Box
+      sx={{
+        p: 0,
+        width: "80%",
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
+    >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Minhas Galerias
       </Typography>
-      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
-          <GalleryContainer>
+          <GalleryContainer className="image-container" key={index}>
             <NavLink key={index} to={`/Photos/${item.id}`}>
               <LabelTop>{item.title}</LabelTop>
-              <ImageComponent src={item.img} alt={item.title} ></ImageComponent>
+              <ImageComponent src={item.img} alt={item.title} />
             </NavLink>
           </GalleryContainer>
         ))}
