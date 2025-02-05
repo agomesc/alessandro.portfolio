@@ -22,6 +22,12 @@ html, body {
   height: 100%;
 }
 
+.container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Estilos dos Títulos */
 h1,
 h2,

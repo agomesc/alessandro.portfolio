@@ -6,7 +6,7 @@ const SocialShareBar = ({ url, title }) => {
     { name: 'Facebook', icon: <FaFacebook />, shareUrl: `https://www.facebook.com/sharer/sharer.php?u=${url}` },
     { name: 'Twitter', icon: <FaTwitter />, shareUrl: `https://twitter.com/intent/tweet?url=${url}&text=${title}` },
     { name: 'LinkedIn', icon: <FaLinkedin />, shareUrl: `https://www.linkedin.com/shareArticle?url=${url}&title=${title}` },
-    { name: 'Instagram', icon: <FaInstagram />, shareUrl: `https://www.instagram.com/?url=${url}` },
+    // { name: 'Instagram', icon: <FaInstagram />, shareUrl: `https://www.instagram.com/?url=${url}` },
     { name: 'WhatsApp', icon: <FaWhatsapp />, shareUrl: `https://api.whatsapp.com/send?text=${title} ${url}` }
   ];
 

@@ -29,17 +29,17 @@ const App = () => {
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
-			<Container maxWidth="xl" disableGutters>
-			<Helmet>
-        		<base href="/" />
-      		</Helmet>
-			<Menu />
-			<Routes />
-			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-			<Back />
-			<ProTip />
-			<Footer />
-		</Container>
+			<Container maxWidth="xl" disableGutters className="container">
+				<Helmet>
+					<base href="/" />
+				</Helmet>
+				<Menu />
+				<Routes />
+				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+				<Back />
+				<ProTip />
+				<Footer />
+			</Container>
 		</ThemeProvider>
 	);
 };
