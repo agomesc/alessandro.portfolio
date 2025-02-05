@@ -3,7 +3,6 @@ import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Helmet } from "react-helmet";
 
 const Routes = lazy(() => import("./routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
@@ -29,10 +28,6 @@ const App = () => {
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
-			
-				<Helmet>
-					<base href="/" />
-				</Helmet>
 				<Menu />
 				<Container maxWidth="80%" disableGutters>
 				<Routes />
