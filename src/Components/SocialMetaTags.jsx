@@ -1,45 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const SocialMetaTags = ({ title, description, url }) => {
+const SocialMetaTags = ({ defaultTitle, defaultDescription, defaultImageUrl, defaultUrl }) => {
+  useEffect(() => {
+    // Pegando valores do sessionStorage ou usando os padrões fornecidos
+    const title = sessionStorage.getItem('ogTitle') || defaultTitle;
+    const description = sessionStorage.getItem('ogDescription') || defaultDescription;
+    const imageUrl = sessionStorage.getItem('ogImage') || defaultImageUrl;
+    const url = sessionStorage.getItem('ogUrl') || defaultUrl;
 
-  const updateMetaTags = () => {
-    // Alterando o título da página
-    document.title = title;
+    // Atualizando sessionStorage
+    sessionStorage.setItem('ogTitle', title);
+    sessionStorage.setItem('ogDescription', description);
+    sessionStorage.setItem('ogImage', imageUrl);
+    sessionStorage.setItem('ogUrl', url);
 
-    // Criando ou atualizando a meta tag de descrição
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', description);
-
-    // Open Graph meta tags
-    const metaTags = [
-      { name: 'og:title', content: title },
-      { name: 'og:description', content: description },
-      { name: 'og:image', content: url },
-      { name: 'og:url', content: url },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: url }
-    ];
-
-    metaTags.forEach(tag => {
-      let metaTag = document.querySelector(`meta[property="${tag.name}"]`);
-      if (!metaTag) {
-        metaTag = document.createElement('meta');
-        metaTag.setAttribute('property', tag.name);
-        document.head.appendChild(metaTag);
+    // Atualizando meta tags dinamicamente
+    const updateMetaTag = (selector, content) => {
+      let tag = document.querySelector(selector);
+      if (!tag) {
+        tag = document.createElement('meta');
+        if (selector.includes('property')) {
+          tag.setAttribute('property', selector.split('=')[1].replace(/"/g, ''));
+        } else {
+          tag.setAttribute('name', selector.split('=')[1].replace(/"/g, ''));
+        }
+        document.head.appendChild(tag);
       }
-      metaTag.setAttribute('content', tag.content);
-    });
-  };
+      tag.setAttribute('content', content);
+    };
 
-  React.useEffect(() => {
-    updateMetaTags();
-  }, [title, description, url]);
+    updateMetaTag('meta[name="description"]', description);
+    updateMetaTag('meta[property="og:title"]', title);
+    updateMetaTag('meta[property="og:description"]', description);
+    updateMetaTag('meta[property="og:image"]', imageUrl);
+    updateMetaTag('meta[property="og:url"]', url);
+    updateMetaTag('meta[name="twitter:title"]', title);
+    updateMetaTag('meta[name="twitter:description"]', description);
+    updateMetaTag('meta[name="twitter:image"]', imageUrl);
+
+    // Atualizando o título da página
+    document.title = title;
+  }, [defaultTitle, defaultDescription, defaultImageUrl, defaultUrl]);
 
   return null; // Não renderiza nada no DOM
 };
