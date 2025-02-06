@@ -9,47 +9,49 @@
 		<meta http-equiv="Cache-Control" content="max-age: 31536000, no-cache, no-store, must-revalidate">
 		<meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
 		<meta http-equiv="Expires" content="Wed, 21 Oct 2024 07:28:00 GMT">
-
 		<meta property="og:type" content="website" />
-		<meta property="og:logo" content="%PUBLIC_URL%/logo_512.png" />
-		<meta name="description" content="Alessandro Gomes Portifólio." />
-		<meta property="og:title" content="Alessandro Gomes Portifólio." />
-		<meta property="og:description" content="Alessandro Gomes Portifólio." />
-		<meta property="og:image" content="%PUBLIC_URL%/logo_512.png" />
-		<meta property="og:url" content="https://alessandro-portfolio.web.app/" />
+
+		<meta name="description" id="metaDescription" content="" />
+		<meta property="og:title" id="ogTitle" content="" />
+		<meta property="og:description" id="ogDescription" content="" />
+		<meta property="og:image" id="ogImage" content="" />
+		<meta property="og:url" id="ogUrl" content="" />
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="Alessandro Gomes Portifólio." />
-		<meta name="twitter:description" content="Alessandro Gomes Portifólio." />
-		<meta name="twitter:image" content="%PUBLIC_URL%/logo_512.png" />
-		<meta property="og:locale" content="pt-BR" />
-		<link rel="canonical" href="https://alessandro-portfolio.web.app/" />
+		<meta name="twitter:title" id="twitterTitle" content="" />
+		<meta name="twitter:description" id="twitterDescription" content="" />
+		<meta name="twitter:image" id="twitterImage" content="" />
+
+		<link rel="canonical" id="canonicalLink" href="" />
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo_192.png" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() { dataLayer.push(arguments); }
-			gtag('js', new Date());
-			gtag('config', 'G-4XE72L7D1T');
-		</script>
 
-		<script async
-			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8452566000891009"
-			crossorigin="anonymous"></script>
+		<script>
+			function updateMetaTags(title, description, imageUrl, url) {
+				document.getElementById('metaDescription').setAttribute('content', description);
+				document.getElementById('ogTitle').setAttribute('content', title);
+				document.getElementById('ogDescription').setAttribute('content', description);
+				document.getElementById('ogImage').setAttribute('content', imageUrl);
+				document.getElementById('ogUrl').setAttribute('content', url);
+				document.getElementById('twitterTitle').setAttribute('content', title);
+				document.getElementById('twitterDescription').setAttribute('content', description);
+				document.getElementById('twitterImage').setAttribute('content', imageUrl);
+				document.getElementById('canonicalLink').setAttribute('href', url);
+			}
+
+			document.addEventListener('DOMContentLoaded', function () {
+				const title = sessionStorage.getItem('metaTitle') || 'Alessandro Gomes Portifólio';
+				const description = sessionStorage.getItem('metaDescription') || 'Alessandro Gomes Portifólio.';
+				const imageUrl = sessionStorage.getItem('metaImage') || '%PUBLIC_URL%/logo_512.png';
+				const url = sessionStorage.getItem('metaUrl') || 'https://alessandro-portfolio.web.app/';
+
+				updateMetaTags(title, description, imageUrl, url);
+			});
+		</script>
 	</head>
 
 	<body>
 		<noscript>You need to enable JavaScript to run this app.</noscript>
 		<div id="root"></div>
-		<!--
-			This HTML file is a template.
-			If you open it directly in the browser, you will see an empty page.
-
-			You can add webfonts, meta tags, or analytics to this file.
-			The build step will place the bundled scripts into the <body> tag.
-
-			To begin the development, run `npm start` or `yarn start`.
-			To create a production bundle, use `npm run build` or `yarn build`.
-		-->
 	</body>
 
 </html>
