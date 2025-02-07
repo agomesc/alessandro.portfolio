@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useMemo } from 'react';
+import Box from "@mui/material/Box";
 import minhaImagem from "../images/Eu.png";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
@@ -18,13 +19,21 @@ const About = () => {
         Hoje sou um amante da fotografia, com muito orgulho, registrando momentos importantes da vida das pessoas e o resultado dessa trajetória está refletido em meu portfólio que apresento a vocês.`, []);
 
     return (
-        <>
+        <Box
+        sx={{
+            p: 0,
+            width: "98%",
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+        }}
+    >
             <SocialMetaTags title={title} url={minhaImagem} description={minhaDescricao} />
             <Suspense fallback={<LoadingMessage />}>
                 <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
                 <CommentBox itemID="About" />
             </Suspense>
-        </>
+            </Box>
     );
 };
 

@@ -4,6 +4,7 @@ import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
 
+
 const Privacidade = () => {
     const descricao = useMemo(() => `Política Privacidade
     A sua privacidade é importante para nós. É política do Alessandro Portfólio respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site Alessandro Portfólio, e outros sites que possuímos e operamos.
@@ -40,7 +41,7 @@ const Privacidade = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: "80%",
+                        width: "98%",
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",

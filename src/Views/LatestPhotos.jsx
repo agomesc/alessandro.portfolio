@@ -3,6 +3,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
+import { Typography, Box, Paper } from "@mui/material";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 
@@ -29,8 +30,18 @@ const LatestPhotos = () => {
 		<>
 
 			<Suspense fallback={<LoadingMessage />}>
-				<SocialMetaTags title={title} url={logo} description={description} />
-				{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
+				<Box
+					sx={{
+						p: 0,
+						width: "98%",
+						alignContent: "center",
+						alignItems: "center",
+						margin: "0 auto",
+					}}
+				>
+					<SocialMetaTags title={title} url={logo} description={description} />
+					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
+				</Box>
 			</Suspense>
 		</>
 	);
