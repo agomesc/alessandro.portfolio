@@ -89,7 +89,6 @@ a:focus {
   padding: 10px;
 }
 
-
 .Container > * {
   flex-grow: 1;
   flex-shrink: 0;

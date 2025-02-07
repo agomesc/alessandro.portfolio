@@ -2,8 +2,8 @@ import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
-const ImageComponent = ({ src, alt, maxWidth }) => (
-  <div>
+const ImageComponent = ({ src, alt }) => (
+  <>
     <LazyLoadImage
       alt={alt}
       src={src}
@@ -12,7 +12,7 @@ const ImageComponent = ({ src, alt, maxWidth }) => (
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
         display: "block",
-        maxWidth: maxWidth,
+        maxWidth: "100%",
         minWidth: '80px',
         width: "100%",
         height: "auto",
@@ -22,7 +22,7 @@ const ImageComponent = ({ src, alt, maxWidth }) => (
       }}
       loading="lazy"
     />
-  </div>
+  </>
 );
 
 export default React.memo(ImageComponent);

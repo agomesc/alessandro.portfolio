@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage";
+import ImageComponent from './ImageComponent';  
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -31,12 +32,6 @@ const Label = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
 }));
-
-const StyledImageComponent = styled('img')({
-  width: '100%',
-  height: 'auto',
-  objectFit: 'contain', // Mantém a proporção das imagens
-});
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
@@ -72,7 +67,7 @@ const PhotoGallery = ({ photos }) => {
                     </Link>
                   </nav>
                 </Label>
-                <StyledImageComponent src={item.url} alt={item.title} />
+                <ImageComponent src={item.url} alt={item.title} />
               </GalleryContainer>
             ))}
           </Masonry>

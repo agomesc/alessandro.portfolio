@@ -5,6 +5,7 @@ import { Masonry } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import React from 'react';
+import ImageComponent from './ImageComponent';  
 
 const LabelTop = styled(Paper)(() => ({
   position: "absolute",
@@ -27,12 +28,6 @@ const LabelTop = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
 }));
-
-const ImageComponent = styled('img')({
-  width: '100%',
-  height: 'auto',
-  objectFit: 'contain', // Mantém a proporção das imagens
-});
 
 const ImageMasonry = ({ data }) => {
   return (
