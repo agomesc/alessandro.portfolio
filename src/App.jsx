@@ -1,6 +1,5 @@
 import React, { lazy, useState, useEffect } from 'react';
 import "./App.css";
-import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -31,9 +30,9 @@ const App = () => {
 				
 				<CssBaseline />
 				<Menu />
-				<Container maxWidth="80%" disableGutters>
+				
 					<Routes />
-				</Container>
+				
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 				<Back />
 				<ProTip />

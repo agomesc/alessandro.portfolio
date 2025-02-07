@@ -34,7 +34,7 @@ const ArticleCarousel = () => {
     };
 
     return (
-        <Box sx={{ pt: 4, width: "80%", margin: "0 auto" }}>
+        <Box sx={{ pt: 4, width: "100%", margin: "0 auto" }}>
             <Slider {...settings}>
                 {articles.map((article) => (
                     <Box key={article.id} sx={{ p: 2 }}>

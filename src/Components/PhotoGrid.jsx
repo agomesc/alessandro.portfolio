@@ -19,7 +19,7 @@ const PhotoGrid = ({ itemData }) => {
       <Box
         sx={{
           p: 0,
-          width: "80%",
+          width: "100%",
           alignContent: "center",
           alignItems: "center",
           margin: "0 auto",

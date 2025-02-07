@@ -26,7 +26,7 @@ const RandomAffiliateAd = () => {
   }, []);
 
   return (
-    <Box sx={{ pt: 4, display: "fixed", justifyContent: "center", width: "80%", alignContent: "center", margin: "0 auto" }}>
+    <Box sx={{ pt: 4, display: "fixed", justifyContent: "center", width: "98%", alignContent: "center", margin: "0 auto" }}>
       <Paper style={{ padding: '20px', margin: '20px', justifyContent: "center" }}>
         {randomAd ? (randomAd.isLink ? (
           <Link target='_blank' to={randomAd.text}>

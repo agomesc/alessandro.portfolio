@@ -22,7 +22,7 @@ const ArticleDetail = () => {
     }, [id]);
 
     return (
-        <Box sx={{ pt: 4, width: "80%", margin: "0 auto" }}>
+        <Box sx={{ pt: 4, width: "100%", margin: "0 auto" }}>
             {article ? (
                 <Paper style={{ padding: '20px', margin: '20px' }}>
                     <Typography variant="h6">{article.title}</Typography>

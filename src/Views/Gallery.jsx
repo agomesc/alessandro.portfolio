@@ -42,7 +42,7 @@ const Gallery = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: "80%",
+                        width: "98%",
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",

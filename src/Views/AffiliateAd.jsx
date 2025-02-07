@@ -69,7 +69,7 @@ const AffiliateAd = () => {
   };
 
   return (
-    <Box sx={{ p: 0, width: "80%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+    <Box sx={{ p: 0, width: "98%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Minhas Galerias
       </Typography>
