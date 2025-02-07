@@ -33,7 +33,7 @@ const GalleryContainer = styled(Paper)(() => ({
 
 const CardContainer = styled(Box)(() => ({
   display: "flex",
-  alignItems: "flex-start",
+  alignItems: "flex-start", // Alinha pelo topo
   gap: "16px",
   padding: "16px",
   borderRadius: "8px",
@@ -52,8 +52,10 @@ const Thumbnail = styled("img")(() => ({
 const TextContainer = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "flex-start",
-  textAlign: "right",
+  justifyContent: "flex-start", // Alinha pelo topo
+  textAlign: "left",
+  verticalAlign: "middle",
+  color: "black", // Garante que a cor seja preta
 }));
 
 const ImageMasonry = ({ data }) => {
