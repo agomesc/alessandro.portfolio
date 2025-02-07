@@ -5,14 +5,14 @@ function CreateFetchService() {
 			if (!response.ok) {
 				throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
 			}
-			return await response.json(); // Use await here
+			return await response.json(); 
 		} catch (error) {
 			throw new Error(TryError(error.message));
 		}
 	}
 
 	async function get(url) {
-		return await fetchWithInterceptor(url); // Use await here
+		return await fetchWithInterceptor(url); 
 	}
 
 	async function post(url, data) {
@@ -30,7 +30,7 @@ function CreateFetchService() {
 			},
 			body: JSON.stringify(data),
 		};
-		const response = await fetchWithInterceptor(url, options); // Use await here
+		const response = await fetchWithInterceptor(url, options); 
 		sessionStorage.setItem(cacheKey, JSON.stringify(response));
 		return response;
 	}
