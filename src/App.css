@@ -1,19 +1,23 @@
 /* Reset de estilos globais */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --primary-color: #c0810d;
+  --secondary-color: #ccc;
+  --background-color: #222;
+  --text-color: #fff;
 }
 
 /* Estilos Globais */
-html, body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  font-weight: 400;
-  background-color: #222;
-  color: #fff; /* Cor do texto */
-  padding-bottom: 70px;
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+html {
+  font-size: 16px; /* 1rem = 16px */
+}
+
+.overlay {
+  padding: 0.625rem; /* 10px */
 }
 
 /* Estilos dos Títulos */
@@ -40,45 +44,34 @@ h4::after {
 }
 
 a {
-  color: #ccc; /* Cor do link */
-  text-decoration: none; /* Remove o sublinhado */
-  font-weight: 600; /* Torna o texto um pouco mais grosso */
-  transition: color 0.3s ease; /* Suaviza a transição de cor */
+  color: var(--secondary-color);
 }
 
 a:hover {
-  color: #c0810d; /* Cor do link quando o mouse passa por cima */
+  color: var(--primary-color);
 }
 
-a:active {
-  color: #fff; /* Cor do link quando é clicado */
+a:focus {
+  outline: 2px dashed var(--primary-color);
+  outline-offset: 4px;
 }
 
-
-/* Estilos para dispositivos móveis (orientação retrato) */
 @media screen and (orientation: portrait) {
   img {
-    height: auto;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    object-fit: cover; 
-    object-position: center; 
+    object-fit: cover;
+    object-position: center;
   }
 }
 
-/* Estilos para dispositivos móveis (orientação paisagem) */
 @media screen and (orientation: landscape) {
   img {
-    height: auto;
     width: 100%;
-    display: grid;
-    object-fit: cover; 
-    object-position: center; 
+    object-fit: cover;
+    object-position: center;
   }
 }
 
-/* Estilos para a classe .image-container */
 .image-container {
   position: relative;
 }
@@ -89,19 +82,15 @@ a:active {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  height: 10%;
-  background-color: rgba(0, 0, 0, 0.5); /* Transparência */
+  max-width: 600px; /* Limita a largura máxima */
+  background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
   text-align: center;
   padding: 10px;
 }
 
-.Container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ocupa 100% da altura da visualização */
-}
 
 .Container > * {
-  flex: 1; /* Faz com que os elementos dentro do contêiner expandam igualmente */
+  flex-grow: 1;
+  flex-shrink: 0;
 }
