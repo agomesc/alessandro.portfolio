@@ -1,85 +1,93 @@
-import CreateFlickrService from "../shared/CreateFlickrService";
 //https://www.flickr.com/services/api/flickr.photos.getSizes.html
 const CreateFlickrApp = () => {
 
-	const apiKey = process.env.REACT_APP_FLICKR_API_KEY;
-	const userID = process.env.REACT_APP_USER_ID;
-	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
-
-	const instance = CreateFlickrService(apiKey);
-
 	const getGallery = async () => {
 		try {
-		  const response = await fetch('/getList');
-		  const data = await response.json();
-	  
-		  //console.log('data ', data);
-	  
-		  const itemData = data.photosets.photoset.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
-			title: album.title._content,
-			id: album.id,
-			description: album.description._content,
-		  }));
-		  return itemData;
+			const response = await fetch('/getList');
+			const data = await response.json();
+			const itemData = data.photosets.photoset.map((album) => ({
+				img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
+				title: album.title._content,
+				id: album.id,
+				description: album.description._content,
+			}));
+			return itemData;
 		} catch (error) {
-		  console.error('Erro ao carregar a galeria: ', error);
-		  return [];
+			console.error('Erro ao carregar a galeria: ', error);
+			return [];
 		}
-	  };
-
-	const getGalleryWork = async () => {
-		const data = await instance.listarAlbuns(userwORKID);
-		const itemData = data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
-			title: album.title._content,
-			id: album.id,
-			description: album.description._content,
-		}));
-		return itemData;
 	};
 
-	const getPhotos = async (id) => {
-		const data = await instance.listarFotos(id);
-		const itemData = data.map((photo) => ({
-			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
-			title: photo.title,
-		}));
-		return itemData;
+	const getPhotos = async (albumId) => {
+		try {
+			const response = await fetch(`/getPhotos/${albumId}`);
+			const data = await response.json();
+
+			console.log('data ', data);
+
+			const itemData = data.photoset.photo.map((photo) => ({
+				url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
+				title: photo.title,
+				id: photo.id,
+			}));
+			return itemData;
+		} catch (error) {
+			console.error('Erro ao carregar as fotos: ', error);
+			return [];
+		}
 	};
 
 	const getLatestPhotos = async () => {
-		const data = await instance.listarFotosRecentes(userID);
-		const itemData = data.map((photo) => ({
-			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`,
-			title: photo.title,
-		}));
-		return itemData;
+		try {
+			const response = await fetch('/getLatestPhotos');
+			const data = await response.json();
+
+			console.log('data ', data);
+
+			if (data.photos && data.photos.photo) {
+				const itemData = data.photos.photo.map((photo) => ({
+					img: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
+					title: photo.title,
+					id: photo.id,
+				}));
+				return itemData;
+			} else {
+				throw new Error('Formato inesperado da resposta');
+			}
+		} catch (error) {
+			console.error('Erro ao carregar as últimas fotos: ', error.message);
+			return [];
+		}
 	};
 
+
 	const getPhotoInfo = async (id) => {
+		try {
+			const response = await fetch(`/getInfo/${id}`);
+			const data = await response.json();
 
-		const data = await instance.listarInformacoes(id);
+			console.log('Informações da Foto: ', data);
 
-		const itemData = ({
-			id: data.id,
-			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_n.jpg`,
-			description: data.description._content,
-			location: data.owner.location,
-			title: data.title._content,
-			taken: data.dates.taken,
-			photopage: data.urls.url[0]._content,
-			views: data.views
-		});
+			const itemData = {
+				id: data.photo.id,
+				url: `https://farm${data.photo.farm}.staticflickr.com/${data.photo.server}/${data.photo.id}_${data.photo.secret}_n.jpg`,
+				description: data.photo.description._content,
+				location: data.photo.owner.location,
+				title: data.photo.title._content,
+				taken: data.photo.dates.taken,
+				photopage: data.photo.urls.url[0]._content,
+				views: data.photo.views
+			};
 
-		return itemData;
+			return itemData;
+		} catch (error) {
+			console.error('Erro ao obter as informações da foto: ', error.message);
+			return null;
+		}
 	};
 
 	return {
 		getGallery,
-		getGalleryWork,
 		getPhotos,
 		getLatestPhotos,
 		getPhotoInfo
