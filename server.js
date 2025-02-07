@@ -1,29 +1,33 @@
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { readFile } from "fs/promises";
+import fetch from 'node-fetch';
 
-const REACT_APP_FLICKR_API_KEY="099c9a89c04c78ec7592650af1d25a7a";
-const REACT_APP_USER_ID="186526131@N04";
+// Definindo __dirname em ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+const REACT_APP_FLICKR_API_KEY = "099c9a89c04c78ec7592650af1d25a7a";
+const REACT_APP_USER_ID = "186526131@N04";
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   const filePath = path.resolve(__dirname, "./build", "index.html");
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) {
-      return console.log(err);
-    }
-
+  try {
+    let data = await readFile(filePath, "utf8");
     data = data
       .replace(/__TITLE__/g, "Home Page")
       .replace(/__DESCRIPTION__/g, "Home page description.");
 
-    res.send(data)
-  });
+    res.send(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error reading the file");
+  }
 });
-
 
 app.get("/getList", async (req, res) => {
   try {
@@ -73,7 +77,7 @@ app.get("/getLatestPhotos", async (req, res) => {
 
 app.get("/getInfo/:photoId", async (req, res) => {
   try {
-    const { photoId } = req.params; // Captura o photoId a partir dos parâmetros da URL
+    const { photoId } = req.params;
     const url = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=${REACT_APP_FLICKR_API_KEY}&photo_id=${photoId}&format=json&nojsoncallback=1`;
     const response = await fetch(url);
     const data = await response.json();
@@ -87,9 +91,8 @@ app.get("/getInfo/:photoId", async (req, res) => {
   }
 });
 
-
-app.use(express.static(path.resolve(__dirname, "./build")))
+app.use(express.static(path.resolve(__dirname, "./build")));
 
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`)
-})
+  console.log(`Server is listening on port ${PORT}`);
+});

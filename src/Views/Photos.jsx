@@ -41,11 +41,11 @@ const Photos = () => {
 	return (
 		<>
 			<Suspense fallback={<LoadingMessage />}>
-				<SocialMetaTags
+				{/* <SocialMetaTags
 					title={metaData.title}
 					description={metaData.description}
 					url={metaData.url}
-				/>
+				/> */}
 				<PhotoGallery photos={galleryData} />
 				<CommentBox itemID={id} />
 			</Suspense>

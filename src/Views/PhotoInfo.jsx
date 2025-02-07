@@ -38,11 +38,11 @@ const PhotoInfo = () => {
 	return (
 		<>
 			<Suspense fallback={<LoadingMessage />}>
-				<SocialMetaTags
+				{/* <SocialMetaTags
 					title={metaData.title}
 					description={metaData.description}
 					url={metaData.url}
-				/>
+				/> */}
 				<PhotoDashboard photoData={galleryData} />
 				<CommentBox itemID={id} />
 			</Suspense>

@@ -1,7 +1,7 @@
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
-import SocialMetaTags from "../Components/SocialMetaTags";
+//import SocialMetaTags from "../Components/SocialMetaTags";
 import Box from "@mui/material/Box";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
@@ -48,11 +48,11 @@ const Gallery = () => {
                         margin: "0 auto",
                     }}
                 >
-                    <SocialMetaTags
+                    {/* <SocialMetaTags
                         title={metaData.title}
                         description={metaData.description}
                         url={metaData.url}
-                    />
+                    /> */}
                     <ImageMasonry data={galleryData} />
                     <CommentBox itemID="Gallery" />
                 </Box>
