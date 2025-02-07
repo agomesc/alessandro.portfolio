@@ -9,19 +9,19 @@ import React from 'react';
 const LabelTop = styled(Paper)(() => ({
   position: "absolute",
   content: '""',
-  fontsize: 10,
   top: 0,
   left: 0,
-  width: "100%",
-  height: "auto",
+  width: "auto",
+  height: "10%",
   backgroundColor: "rgba(2, 2, 2, 0.75)",
   color: "#fff",
-  textAlign: "justify",
+  textAlign: "center",
   padding: "20px",
   display: "flex",
   alignItems: "center",
   borderRadius: 0,
-  zIndex: 2,
+  textTransform: "uppercase",
+  fontSize: 12
 }));
 
 const GalleryContainer = styled(Paper)(() => ({

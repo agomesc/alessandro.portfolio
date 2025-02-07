@@ -10,8 +10,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage";
 
-const ImageComponent = lazy(() => import("./ImageComponent"));
-
 const Label = styled(Paper)(() => ({
   position: "absolute",
   content: '""',
