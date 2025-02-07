@@ -9,15 +9,24 @@ const CreateFlickrApp = () => {
 	const instance = CreateFlickrService(apiKey);
 
 	const getGallery = async () => {
-		const data = await instance.listarAlbuns(userID);
-		const itemData = data.map((album) => ({
+		try {
+		  const response = await fetch('/getList');
+		  const data = await response.json();
+	  
+		  //console.log('data ', data);
+	  
+		  const itemData = data.photosets.photoset.map((album) => ({
 			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,
-		}));
-		return itemData;
-	};
+		  }));
+		  return itemData;
+		} catch (error) {
+		  console.error('Erro ao carregar a galeria: ', error);
+		  return [];
+		}
+	  };
 
 	const getGalleryWork = async () => {
 		const data = await instance.listarAlbuns(userwORKID);

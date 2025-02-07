@@ -1,10 +1,4 @@
 const CreateFlickrService = (apiKey) => {
-	const listarAlbuns = async (userId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
-		const response = await fetch(url);
-		const data = await response.json();
-		return data.photosets.photoset;
-	};
 
 	const listarFotos = async (albumId) => {
 		const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&format=json&nojsoncallback=1`;
@@ -36,7 +30,6 @@ const CreateFlickrService = (apiKey) => {
 	};
 
 	return {
-		listarAlbuns,
 		listarFotos,
 		listarComentarios,
 		listarFotosRecentes,
