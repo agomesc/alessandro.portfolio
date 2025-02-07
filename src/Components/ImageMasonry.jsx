@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Masonry } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
-import ImageComponent from './ImageComponent';  
+import ImageComponent from './ImageComponent';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const LabelTop = styled(Paper)(() => ({
@@ -62,7 +62,15 @@ const ImageMasonry = ({ data }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   return (
-    <Box sx={{ p: 0, width: "80%", margin: "0 auto", textAlign: "center" }}>
+    <Box
+      sx={{
+        p: 0,
+        width: "80%",
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
+    >
       <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
         Minhas Galerias
       </Typography>
@@ -70,10 +78,12 @@ const ImageMasonry = ({ data }) => {
         <Box>
           {data.map((item, index) => (
             <CardContainer key={index}>
-              <Thumbnail src={item.img} alt={item.title} />
+              <NavLink to={`/Photos/${item.id}`}>
+                <Thumbnail src={item.img} alt={item.title} />
+              </NavLink>
               <TextContainer>
                 <Typography variant="h6">{item.title}</Typography>
-                <NavLink to={`/Photos/${item.id}`}>{item.title}</NavLink>
+
               </TextContainer>
             </CardContainer>
           ))}

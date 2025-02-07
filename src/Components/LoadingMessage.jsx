@@ -10,6 +10,7 @@ const LoadingMessage = () => {
       minHeight="100vh"
       sx={{
         position: 'relative',
+        width: '100%',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -17,6 +18,7 @@ const LoadingMessage = () => {
           left: '50%',
           width: '50px',
           height: '50px',
+          marginLeft:'-25px', 
           border: '6px solid #f3f3f3',
           borderTop: '6px solid #3498db',
           borderRadius: '50%',
@@ -28,18 +30,7 @@ const LoadingMessage = () => {
           '100%': { transform: 'rotate(360deg)' }
         }
       }}
-    >
-      <Box
-        component="span"
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
-      </Box>
-    </Box>
+    />
   );
 };
 
