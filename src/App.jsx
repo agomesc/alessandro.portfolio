@@ -1,4 +1,5 @@
 import React, { lazy, useState, useEffect } from 'react';
+import { Helmet } from "react-helmet"
 import "./App.css";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,18 +27,20 @@ const App = () => {
 	}, []);
 
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<CssBaseline />
+		
+			<ThemeProvider theme={darkTheme}>
+				
+				<CssBaseline />
 				<Menu />
 				<Container maxWidth="80%" disableGutters>
-				<Routes />
+					<Routes />
 				</Container>
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 				<Back />
 				<ProTip />
 				<Footer />
-			
-		</ThemeProvider>
+			</ThemeProvider>
+		
 	);
 };
 
