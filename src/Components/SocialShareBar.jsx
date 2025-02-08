@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import Typography from '@mui/material/Typography';
 
 const SocialShareBar = ({ url, title }) => {
   const socialNetworks = [
@@ -11,12 +12,20 @@ const SocialShareBar = ({ url, title }) => {
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', padding: '5px' }}>
-      {socialNetworks.map((network) => (
-        <a key={network.name} href={network.shareUrl} target="_blank" rel="noopener noreferrer" title={`Compartilhar no ${network.name}`}>
-          {network.icon}
-        </a>
-      ))}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
+      <Typography variant="subtitle1" style={{ marginBottom: '5px' }}>
+        Compartilhe:
+      </Typography>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {socialNetworks.map((network) => (
+          <a key={network.name} href={network.shareUrl} target="_blank" rel="noopener noreferrer" title={`Compartilhar no ${network.name}`}>
+            {network.icon}
+          </a>
+        ))}
+      </div>
+      <Typography variant="subtitle2" style={{ marginTop: '10px' }}>
+        Ajude-nos!
+      </Typography>
     </div>
   );
 };

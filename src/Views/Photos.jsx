@@ -23,7 +23,7 @@ const Photos = () => {
 				url: randomItem.url
 			};
 		}
-	
+
 	}, [galleryData]);
 
 	const fetchData = useCallback(async () => {
@@ -42,25 +42,25 @@ const Photos = () => {
 	return (
 		<>
 			<Suspense fallback={<LoadingMessage />}>
-			<Box
-        sx={{
-          p: 0,
-          width: "98%",
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        }}
-      >
-        <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-          Minhas Fotos
-        </Typography>
-				<SocialMetaTags
-					title={metaData.title}
-					description={metaData.description}
-					url={metaData.url}
-				/>
-				<PhotoGallery photos={galleryData} />
-				<CommentBox itemID={id} />
+				<Box
+					sx={{
+						p: 0,
+						width: "98%",
+						alignContent: "center",
+						alignItems: "center",
+						margin: "0 auto",
+					}}
+				>
+					<Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+						Minhas Fotos
+					</Typography>
+					<SocialMetaTags
+						title={metaData.title}
+						description={metaData.description}
+						url={metaData.url}
+					/>
+					<PhotoGallery photos={galleryData} />
+					<CommentBox itemID={id} />
 				</Box>
 			</Suspense>
 		</>

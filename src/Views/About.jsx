@@ -20,20 +20,19 @@ const About = () => {
 
     return (
         <Box
-        sx={{
-            p: 0,
-            width: "98%",
-            alignContent: "center",
-            alignItems: "center",
-            margin: "0 auto",
-        }}
-    >
+            sx={{
+                p: 2,
+                width: "98%",
+                margin: "0 auto",
+                textAlign: "justify",
+            }}
+        >
             <SocialMetaTags title={title} url={minhaImagem} description={minhaDescricao} />
             <Suspense fallback={<LoadingMessage />}>
                 <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
                 <CommentBox itemID="About" />
             </Suspense>
-            </Box>
+        </Box>
     );
 };
 

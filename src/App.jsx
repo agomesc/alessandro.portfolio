@@ -25,20 +25,17 @@ const App = () => {
 	}, []);
 
 	return (
-		
-			<ThemeProvider theme={darkTheme}>
-				
-				<CssBaseline />
-				<Menu />
-				
-					<Routes />
-				
-				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-				<Back />
-				<ProTip />
-				<Footer />
-			</ThemeProvider>
-		
+
+		<ThemeProvider theme={darkTheme}>
+			<CssBaseline />
+			<Menu />
+			<Routes />
+			<ProTip />
+			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+			<Back />
+			<Footer />
+		</ThemeProvider>
+
 	);
 };
 

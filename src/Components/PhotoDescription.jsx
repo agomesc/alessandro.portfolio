@@ -25,7 +25,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
           <Grid item>
             <Card
               style={{
-                maxWidth: 600,
+                maxWidth: "50%",
                 margin: "0 auto",
               }}
             >
@@ -39,7 +39,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
                 <Box
                   component="img"
                   sx={{
-                    width: "30%",
+                    width: "10%",
                     height: "auto",
                   }}
                   src={imageUrl}
@@ -54,11 +54,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
                   }}
                 >
                   <Typography 
-                    variant="body1" 
-                    sx={{ 
-                      whiteSpace: 'pre-wrap', 
-                      textAlign: 'justify' 
-                    }}
+                    variant="body1" component="p"
                   >
                     {description}
                   </Typography>

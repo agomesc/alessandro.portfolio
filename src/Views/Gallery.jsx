@@ -3,6 +3,7 @@ import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
 import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
@@ -48,6 +49,9 @@ const Gallery = () => {
                         margin: "0 auto",
                     }}
                 >
+                    <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+                        Portfólio
+                    </Typography>
                     <SocialMetaTags
                         title={metaData.title}
                         description={metaData.description}

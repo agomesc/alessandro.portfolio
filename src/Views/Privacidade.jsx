@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Typography, Box, Paper } from "@mui/material";
 
 import logo from "../images/logo_192.png";
@@ -6,7 +6,7 @@ import SocialMetaTags from "../Components/SocialMetaTags";
 
 
 const Privacidade = () => {
-    const descricao = useMemo(() => `Política Privacidade
+    const description = useMemo(() => `Política Privacidade
     A sua privacidade é importante para nós. É política do Alessandro Portfólio respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site Alessandro Portfólio, e outros sites que possuímos e operamos.
 
     Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e como será usado.
@@ -36,7 +36,7 @@ const Privacidade = () => {
 
     return (
         <>
-            <SocialMetaTags title={title} url={logo} description={descricao} />
+            <SocialMetaTags title={title} url={logo} description={description} />
             
                 <Box
                     sx={{
@@ -49,7 +49,11 @@ const Privacidade = () => {
                 >
                     <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
                     <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
-                        {descricao}
+                          <Typography 
+                                            variant="body1" component="p"
+                                          >
+                                            {description}
+                                          </Typography>
                     </Paper>
                 </Box>
         </>
