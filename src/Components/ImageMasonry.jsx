@@ -62,20 +62,9 @@ const ImageMasonry = ({ data }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: "100%",
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-      }}
-    >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-        Minhas Galerias
-      </Typography>
+    <>
       {isPortrait ? (
-        <Box>
+        <>
           {data.map((item, index) => (
             <CardContainer key={index}>
               <NavLink to={`/Photos/${item.id}`}>
@@ -83,15 +72,14 @@ const ImageMasonry = ({ data }) => {
               </NavLink>
               <TextContainer>
                 <Typography variant="h6">{item.title}</Typography>
-
               </TextContainer>
             </CardContainer>
           ))}
-        </Box>
+        </>
       ) : (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {data.map((item, index) => (
-            <GalleryContainer className="image-container" key={index}>
+            <GalleryContainer key={index}>
               <NavLink key={index} to={`/Photos/${item.id}`}>
                 <LabelTop>{item.title}</LabelTop>
                 <ImageComponent src={item.img} alt={item.title} />
@@ -100,7 +88,7 @@ const ImageMasonry = ({ data }) => {
           ))}
         </Masonry>
       )}
-    </Box>
+    </>
   );
 };
 

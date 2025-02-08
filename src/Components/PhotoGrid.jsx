@@ -1,12 +1,11 @@
-import React, { Suspense } from "react";
-import { Card, CardMedia, CardContent, Typography, Grid } from "@mui/material";
+import React from "react";
+import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import LoadingMessage from "./LoadingMessage";
+import Masonry from '@mui/lab/Masonry';
 
 const PhotoGrid = ({ itemData }) => {
-
   return (
-    <Suspense fallback={<LoadingMessage />}>
+   
       <Box
         sx={{
           p: 0,
@@ -19,27 +18,23 @@ const PhotoGrid = ({ itemData }) => {
         <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
           Atualizações
         </Typography>
-        <Grid container spacing={2}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {itemData.map((item) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={item.url}
-                  alt={item.title}
-                />
-                <CardContent>
-                  <Typography variant="subtitle1">
-                    {item.title}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Card key={item.id}>
+              <CardMedia
+                component="img"
+                height="auto"
+                image={item.url}
+                alt={item.title}
+              />
+              <CardContent>
+                <Typography variant="subtitle1">{item.title}</Typography>
+              </CardContent>
+            </Card>
           ))}
-        </Grid>
+        </Masonry>
       </Box>
-    </Suspense>
+   
   );
 };
 

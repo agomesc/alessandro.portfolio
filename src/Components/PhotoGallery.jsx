@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -8,8 +8,7 @@ import PhotoModal from "./PhotoModal"; // Importe o componente
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage";
-import ImageComponent from './ImageComponent';  
+import ImageComponent from './ImageComponent';
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -37,46 +36,34 @@ const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
-      <Box
-        sx={{
-          p: 0,
-          width: "98%",
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        }}
-      >
-        <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
-          Minhas Fotos
-        </Typography>
-        {!showModal && (
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
-            {photos.map((item, index) => (
-              <GalleryContainer
-                className="image-container"
-                key={index}
-                onClick={() => setShowModal(true)}
-              >
-                <Label style={{ zIndex: 2 }}>{item.title}
-                  <nav>
-                    <Link to={`/PhotoInfo/${item.id}`}>
-                      <IconButton>
-                        <InfoIcon />
-                      </IconButton>
-                    </Link>
-                  </nav>
-                </Label>
-                <ImageComponent src={item.url} alt={item.title} />
-              </GalleryContainer>
-            ))}
-          </Masonry>
-        )}
-        {showModal && (
-          <PhotoModal photos={photos} onClose={() => setShowModal(false)} />
-        )}
-      </Box>
-    </Suspense>
+
+    <>
+      {!showModal && (
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+          {photos.map((item, index) => (
+            <GalleryContainer
+              className="image-container"
+              key={index}
+              onClick={() => setShowModal(true)}
+            >
+              <Label style={{ zIndex: 2 }}>{item.title}
+                
+                  <Link to={`/PhotoInfo/${item.id}`}>
+                    <IconButton>
+                      <InfoIcon />
+                    </IconButton>
+                  </Link>
+                
+              </Label>
+              <ImageComponent src={item.url} alt={item.title} />
+            </GalleryContainer>
+          ))}
+        </Masonry>
+      )}
+      {showModal && (
+        <PhotoModal photos={photos} onClose={() => setShowModal(false)} />
+      )}
+    </>
   );
 };
 
