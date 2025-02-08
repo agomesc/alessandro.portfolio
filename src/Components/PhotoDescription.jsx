@@ -1,18 +1,17 @@
-// PhotoDescription.js
 import React from "react";
 import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import ImageComponent from "./ImageComponent";
 
 const PhotoDescription = ({ imageUrl, description }) => {
   return (
     <Box
       sx={{
         p: 0,
-        width: "100%",
+        width: "98%",
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
@@ -22,19 +21,49 @@ const PhotoDescription = ({ imageUrl, description }) => {
         Sobre?
       </Typography>
       <Paper elevation={3}>
-        <Grid>
+        <Grid container justifyContent="center">
           <Grid item>
             <Card
               style={{
-                display: "flex",
-                alignItems: "flex-start",
-                padding: 5,
+                maxWidth: 600,
+                margin: "0 auto",
               }}
             >
-              <ImageComponent src={imageUrl} alt={description} ></ImageComponent>
-              <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', p: 5, textAlign: 'justify' }}>
-                {description}
-              </Typography>
+              <CardContent 
+                sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center' 
+                }}
+              >
+                <Box
+                  component="img"
+                  sx={{
+                    width: "30%",
+                    height: "auto",
+                  }}
+                  src={imageUrl}
+                  alt="Minha Imagem"
+                />
+                <Paper
+                  elevation={1}
+                  sx={{
+                    p: 2,
+                    mt: 2,
+                    width: '100%'
+                  }}
+                >
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      whiteSpace: 'pre-wrap', 
+                      textAlign: 'justify' 
+                    }}
+                  >
+                    {description}
+                  </Typography>
+                </Paper>
+              </CardContent>
             </Card>
           </Grid>
         </Grid>

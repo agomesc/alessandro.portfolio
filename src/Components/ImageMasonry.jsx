@@ -33,13 +33,13 @@ const GalleryContainer = styled(Paper)(() => ({
 
 const CardContainer = styled(Box)(() => ({
   display: "flex",
-  alignItems: "flex-start", // Alinha pelo topo
+  alignItems: "flex-start",
   gap: "16px",
   padding: "16px",
   borderRadius: "8px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
   backgroundColor: "#fff",
-  marginBottom: "16px", // Espaçamento entre os cards
+  marginBottom: "16px",
 }));
 
 const Thumbnail = styled("img")(() => ({
@@ -52,10 +52,10 @@ const Thumbnail = styled("img")(() => ({
 const TextContainer = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "flex-start", // Alinha pelo topo
+  justifyContent: "flex-start",
   textAlign: "left",
   verticalAlign: "middle",
-  color: "black", // Garante que a cor seja preta
+  color: "black",
 }));
 
 const ImageMasonry = ({ data }) => {
@@ -66,14 +66,14 @@ const ImageMasonry = ({ data }) => {
       {isPortrait ? (
         <>
           {data.map((item, index) => (
-            <CardContainer key={index}>
-              <NavLink to={`/Photos/${item.id}`}>
+            <NavLink key={index} to={`/Photos/${item.id}`}>
+              <CardContainer>
                 <Thumbnail src={item.img} alt={item.title} />
-              </NavLink>
-              <TextContainer>
-                <Typography variant="h6">{item.title}</Typography>
-              </TextContainer>
-            </CardContainer>
+                <TextContainer>
+                  <Typography variant="h6">{item.title}</Typography>
+                </TextContainer>
+              </CardContainer>
+            </NavLink>
           ))}
         </>
       ) : (

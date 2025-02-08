@@ -1,6 +1,6 @@
 import React, { Suspense, useMemo } from "react";
 import { Typography, Box, Paper } from "@mui/material";
-import LoadingMessage from "../Components/LoadingMessage";
+
 import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
 
@@ -37,7 +37,7 @@ const Privacidade = () => {
     return (
         <>
             <SocialMetaTags title={title} url={logo} description={descricao} />
-            <Suspense fallback={<LoadingMessage />}>
+            
                 <Box
                     sx={{
                         p: 0,
@@ -52,7 +52,6 @@ const Privacidade = () => {
                         {descricao}
                     </Paper>
                 </Box>
-            </Suspense>
         </>
     );
 };
