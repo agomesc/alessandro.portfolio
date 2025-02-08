@@ -1,18 +1,9 @@
 import React, { Suspense } from "react";
-import { ImageList, ImageListItem } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import LoadingMessage from "./LoadingMessage";
 
 const PhotoGrid = ({ itemData }) => {
-
-  function srcset(image, size, rows = 1, cols = 1) {
-    return {
-      src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-      srcSet: `${image}?w=${size * cols}&h=${size * rows
-        }&fit=crop&auto=format&dpr=2 2x`,
-    };
-  }
 
   return (
     <Suspense fallback={<LoadingMessage />}>
@@ -28,28 +19,25 @@ const PhotoGrid = ({ itemData }) => {
         <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
           Atualizações
         </Typography>
-        <ImageList
-          sx={{ width: "100%", height: "auto" }}
-          style={{ display: 'flex', flexWrap: 'wrap' }}
-          variant="quilted"
-          cols={4}
-          rowHeight={100}
-        >
+        <Grid container spacing={2}>
           {itemData.map((item) => (
-            <ImageListItem
-              key={item.id}
-              cols={item.cols || 1}
-              rows={item.rows || 1}
-            >
-              <img
-                {...srcset(item.url, 100, item.rows, item.cols)}
-                alt={item.title}
-                loading="lazy"
-                media="photo"
-              />
-            </ImageListItem>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={item.url}
+                  alt={item.title}
+                />
+                <CardContent>
+                  <Typography variant="subtitle1">
+                    {item.title}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </ImageList>
+        </Grid>
       </Box>
     </Suspense>
   );
