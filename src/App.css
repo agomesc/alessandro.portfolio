@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
 /* Reset de estilos globais */
 :root {
   --primary-color: #c0810d;
@@ -6,27 +9,44 @@
   --text-color: #fff;
 }
 
-body, html {
-  padding: 0;
+body,
+html {
+  font-family: 'Roboto', sans-serif;
+  background: var(--ion-background-color);
+  color: var(--text-color);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  position: fixed;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-user-drag: none;
+  -ms-content-zooming: none;
+  word-wrap: break-word;
+  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  text-size-adjust: none;
   margin: 0;
+  padding: 0;
   margin-bottom: 5%;
 }
 
-/* Estilos Globais */
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
 html {
-  font-size: 16px; /* 1rem = 16px */
+  font-size: 16px;
+  /* 1rem = 16px */
 }
 
 .overlay {
-  padding: 0.625rem; /* 10px */
+  padding: 0.625rem;
+  /* 10px */
 }
 
-/* Estilos dos Títulos */
 /* Estilos dos Títulos */
 h1,
 h2,
@@ -39,35 +59,40 @@ h4 {
 /* Ajustar tamanhos para dispositivos móveis */
 @media only screen and (max-width: 600px) {
   h1 {
-    font-size: 24px;
-  }
-  h2 {
     font-size: 20px;
   }
-  h3 {
+
+  h2 {
     font-size: 18px;
   }
-  h4 {
+
+  h3 {
     font-size: 16px;
+  }
+
+  h4 {
+    font-size: 14px;
   }
 }
 
 /* Ajustar tamanhos para telas maiores */
 @media only screen and (min-width: 601px) {
   h1 {
-    font-size: 36px;
-  }
-  h2 {
     font-size: 30px;
   }
-  h3 {
+
+  h2 {
     font-size: 24px;
   }
-  h4 {
+
+  h3 {
     font-size: 20px;
   }
-}
 
+  h4 {
+    font-size: 18px;
+  }
+}
 
 /* Linha abaixo dos Títulos */
 h1::after,
@@ -85,6 +110,8 @@ h4::after {
 
 a {
   color: var(--secondary-color);
+  text-decoration: none;
+  /* Remover a linha abaixo do link */
 }
 
 a:hover {
@@ -97,11 +124,13 @@ a:focus {
 }
 
 img:hover {
-  filter: brightness(1.2); /* Aumenta o brilho da imagem */
-  transform: scale(1.05); /* Aumenta o tamanho da imagem em 5% */
-  transition: transform 0.3s, filter 0.3s; /* Adiciona uma transição suave */
+  filter: brightness(1.2);
+  /* Aumenta o brilho da imagem */
+  transform: scale(1.05);
+  /* Aumenta o tamanho da imagem em 5% */
+  transition: transform 0.3s, filter 0.3s;
+  /* Adiciona uma transição suave */
 }
-
 
 /* Ajustar imagens para modo paisagem */
 @media screen and (orientation: landscape) {
@@ -122,7 +151,7 @@ img:hover {
   }
 }
 
-.Container > * {
+.Container>* {
   flex-grow: 1;
   flex-shrink: 0;
 }
