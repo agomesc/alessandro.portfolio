@@ -27,6 +27,7 @@ html {
 }
 
 /* Estilos dos Títulos */
+/* Estilos dos Títulos */
 h1,
 h2,
 h3,
@@ -34,6 +35,39 @@ h4 {
   font-weight: bold;
   position: relative;
 }
+
+/* Ajustar tamanhos para dispositivos móveis */
+@media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+}
+
+/* Ajustar tamanhos para telas maiores */
+@media only screen and (min-width: 601px) {
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+}
+
 
 /* Linha abaixo dos Títulos */
 h1::after,
@@ -69,14 +103,7 @@ img:hover {
 }
 
 
-@media screen and (orientation: portrait) {
-  img {
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-}
-
+/* Ajustar imagens para modo paisagem */
 @media screen and (orientation: landscape) {
   img {
     width: 100%;
@@ -85,8 +112,14 @@ img:hover {
   }
 }
 
-.image-container {
-  position: relative;
+/* Ajustar imagens para modo retrato em dispositivos móveis */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+  }
 }
 
 .Container > * {
