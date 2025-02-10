@@ -20,7 +20,10 @@ const PhotoDashboard = ({ photoData }) => {
             !
           </Avatar>
         }
-      />
+      >
+      {photoData.title}
+      </CardHeader>
+
       <CardMedia
         component="img"
         sx={{ 
