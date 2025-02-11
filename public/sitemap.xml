@@ -5,11 +5,8 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-   <url>
-    <lochttps://olhofotografico.com.br/></loc>
+  <url>
+    <loc>https://olhofotografico.com.br/</loc>
   </url>
   <url>
     <loc>https://olhofotografico.com.br/Photos/72177720323648009</loc>
@@ -17,7 +14,7 @@
   <url>
     <loc>https://olhofotografico.com.br/Photos/72177720323302191</loc>
   </url>
-    <url>
+  <url>
     <loc>https://olhofotografico.com.br/latestphotos</loc>
   </url>
   <url>
@@ -35,5 +32,4 @@
   <url>
     <loc>https://olhofotografico.com.br/about</loc>
   </url>
-</url>
 </urlset>
