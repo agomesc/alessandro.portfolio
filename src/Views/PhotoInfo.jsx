@@ -17,8 +17,8 @@ const PhotoInfo = () => {
     if (galleryData) {
       return {
         title: galleryData.title,
-        description: galleryData.description,
-        url: galleryData.url,
+        image: galleryData.url,
+        url: galleryData.description,
       };
     }
   }, [galleryData]);

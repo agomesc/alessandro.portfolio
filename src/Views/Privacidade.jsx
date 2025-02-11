@@ -36,7 +36,7 @@ const Privacidade = () => {
 
     return (
         <>
-            <SocialMetaTags title={title} url={logo} description={description} />
+            <SocialMetaTags title={title} image={logo} description={description} />
             
                 <Box
                     sx={{

@@ -27,7 +27,7 @@ const About = () => {
                 textAlign: "justify",
             }}
         >
-            <SocialMetaTags title={title} url={minhaImagem} description={minhaDescricao} />
+            <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
             <Suspense fallback={<LoadingMessage />}>
                 <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
                 <CommentBox itemID="About" />

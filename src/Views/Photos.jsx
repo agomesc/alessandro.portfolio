@@ -19,8 +19,8 @@ const Photos = () => {
 			const randomItem = galleryData[randomIndex];
 			return {
 				title: randomItem.title,
-				description: randomItem.title,
-				url: randomItem.url
+				image: randomItem.url,
+				description: randomItem.title
 			};
 		}
 

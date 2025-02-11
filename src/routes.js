@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import { hydrate, render } from "react-dom";
 
 const Gallery = lazy(() => import("./Views/Gallery"));
 const GalleryWork = lazy(() => import("./Views/GalleryWork"));
@@ -30,5 +31,20 @@ const AppRoutes = () => {
     </Suspense>
   );
 };
+
+const rootElement = document.getElementById("root");
+if (rootElement.hasChildNodes()) {
+  hydrate(AppRoutes, rootElement);
+} else {
+  render(AppRoutes, rootElement);
+}
+
+const prefersColorSchemeWatcher = window.matchMedia("(prefers-color-scheme: dark)");
+
+prefersColorSchemeWatcher.addEventListener("change", () => {
+  const favicon = document.querySelector('link[rel="icon"]');
+  favicon.href = null;
+  favicon.href = "/favicon.ico";
+});
 
 export default AppRoutes;

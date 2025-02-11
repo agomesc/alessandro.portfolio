@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Snackbar } from "@mui/material";
-import Alert from '@mui/material/Alert';
+import { Button, Box, Typography, Snackbar, Alert } from "@mui/material";
 import { auth, provider } from '../../firebaseConfig';
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 
