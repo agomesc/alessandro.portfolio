@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useMemo } from 'react';
 import Box from "@mui/material/Box";
-import minhaImagem from "../images/Eu.png";
+import minhaImagem from "../images/logo_512.png";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
 
