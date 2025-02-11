@@ -30,4 +30,5 @@ const SocialShareBar = ({ url, title }) => {
   );
 };
 
+
 export default React.memo(SocialShareBar);
