@@ -26,10 +26,6 @@ function Login() {
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        // O token de acesso do Google pode ser acessado aqui, se necessário
-        //const credential = GoogleAuthProvider.credentialFromResult(result);
-        //const token = credential.accessToken;
-
         const user = result.user;
         setUser(user);
         setMessage('Login realizado com sucesso!');
