@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/lab/Alert";
+import Alert from "@mui/lab/Alert";
 
 const MessageSnackbar = ({ message, severity }) => {
   const [open, setOpen] = useState(true);
@@ -11,14 +11,14 @@ const MessageSnackbar = ({ message, severity }) => {
 
   return (
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <MuiAlert
+      <Alert
         elevation={6}
         variant="filled"
         onClose={handleClose}
         severity={severity}
       >
         {message}
-      </MuiAlert>
+      </Alert>
     </Snackbar>
   );
 };

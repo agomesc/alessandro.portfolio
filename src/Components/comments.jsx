@@ -3,7 +3,7 @@ import { collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -132,9 +132,9 @@ function CommentBox({ itemID }) {
         <Button sx={{ mb: 2, mt: 2 }} type="submit" disabled={!isLoggedIn} variant="contained" color="primary">Enviar comentário</Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <MuiAlert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
           {message}
-        </MuiAlert>
+        </Alert>
       </Snackbar>
 
       {comments.map((comment, index) => (

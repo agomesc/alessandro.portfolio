@@ -6,7 +6,7 @@ import { auth, db } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 
 const AffiliateAd = () => {
   const [user, setUser] = useState(null);
@@ -109,9 +109,9 @@ const AffiliateAd = () => {
         </Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <MuiAlert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
           {message}
-        </MuiAlert>
+        </Alert>
       </Snackbar>
     </Box>
   );
