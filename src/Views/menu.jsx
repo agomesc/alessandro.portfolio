@@ -168,7 +168,7 @@ const TemporaryDrawer = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
-						Alessandro - Portfólio
+						Olho Fotográfico
 					</Typography>
 					{user ? (
 						<div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
