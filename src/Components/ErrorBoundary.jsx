@@ -5,8 +5,8 @@ class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
-    this.error = {};
-    this.errorInfo = {};
+    this.error = null; // Initialize with null instead of empty object
+    this.errorInfo = null; // Initialize with null instead of empty object
   }
 
   static getDerivedStateFromError(error) {
@@ -21,7 +21,7 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <MessageSnackbar message={this.error} severity="info" />
+      return <MessageSnackbar message={this.error.message} severity="info" />;
     }
 
     return this.props.children;
