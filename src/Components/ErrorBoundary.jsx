@@ -4,9 +4,7 @@ import MessageSnackbar from './MessageSnackbar';
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
-    this.error = null; // Initialize with null instead of empty object
-    this.errorInfo = null; // Initialize with null instead of empty object
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
   static getDerivedStateFromError(error) {
@@ -14,14 +12,18 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    this.error = error;
-    this.errorInfo = errorInfo;
+    this.setState({
+      error: error,
+      errorInfo: errorInfo
+    });
     console.error('Erro capturado:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      return <MessageSnackbar message={this.error.message} severity="info" />;
+      return (
+        <MessageSnackbar message={this.state.error.message} severity="info" />
+      );
     }
 
     return this.props.children;
