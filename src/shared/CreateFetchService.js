@@ -1,4 +1,5 @@
 function CreateFetchService() {
+	
 	async function fetchWithInterceptor(url, options) {
 		try {
 			const response = await fetch(url, options);
