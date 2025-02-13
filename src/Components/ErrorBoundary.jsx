@@ -8,7 +8,7 @@ class ErrorBoundary extends Component {
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
@@ -22,7 +22,10 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <MessageSnackbar message={this.state.error.message} severity="info" />
+        <MessageSnackbar 
+          message={this.state.error ? this.state.error.message : 'Ocorreu um erro'} 
+          severity="info" 
+        />
       );
     }
 
