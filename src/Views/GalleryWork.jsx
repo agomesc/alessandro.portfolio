@@ -1,4 +1,4 @@
-import CreateFlickrApp from "../shared/CreateFlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp.jsx";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";

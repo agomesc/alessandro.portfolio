@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import LinkPreview from '../Components/LinkPreview';
+import LinkPreview from '../Components/LinkPreview.jsx';
 
 const AffiliateAdList = () => {
     const [ads, setAds] = useState([]);

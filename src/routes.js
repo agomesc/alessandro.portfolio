@@ -2,15 +2,15 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { hydrate, render } from "react-dom";
 
-const Gallery = lazy(() => import("./Views/Gallery"));
-const GalleryWork = lazy(() => import("./Views/GalleryWork"));
-const Photos = lazy(() => import("./Views/Photos"));
-const About = lazy(() => import("./Views/About"));
-const LatestPhotos = lazy(() => import("./Views/LatestPhotos"));
-const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
-const Login = lazy(() => import("./Views/auth/index"));
-const Privacidade = lazy(() => import("./Views/Privacidade"));
-const Transparencia = lazy(() => import("./Views/Transparencia"));
+const Gallery = lazy(() => import("./Views/Gallery.jsx"));
+const GalleryWork = lazy(() => import("./Views/GalleryWork.jsx"));
+const Photos = lazy(() => import("./Views/Photos.jsx"));
+const About = lazy(() => import("./Views/About.jsx"));
+const LatestPhotos = lazy(() => import("./Views/LatestPhotos.jsx"));
+const PhotoInfo = lazy(() => import("./Views/PhotoInfo.jsx"));
+const Login = lazy(() => import("./Views/auth/index.jsx"));
+const Privacidade = lazy(() => import("./Views/Privacidade.jsx"));
+const Transparencia = lazy(() => import("./Views/Transparencia.jsx"));
 
 const AppRoutes = () => {
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig.jsx';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';

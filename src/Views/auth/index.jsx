@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, Snackbar, Alert } from "@mui/material";
-import { auth, provider } from '../../firebaseConfig';
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from '../../firebaseConfig.jsx';
 
 function Login() {
 

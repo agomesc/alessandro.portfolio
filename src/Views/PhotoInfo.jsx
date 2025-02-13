@@ -1,9 +1,9 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
-import CreateFlickrApp from "../shared/CreateFlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp.jsx";
 import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
-import LoadingMessage from "../Components/LoadingMessage";
-import SocialMetaTags from "../Components/SocialMetaTags";
+import LoadingMessage from "../Components/LoadingMessage.jsx";
+import SocialMetaTags from "../Components/SocialMetaTags.jsx";
 import { Typography, Box } from "@mui/material";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));

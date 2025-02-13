@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
-import CreateFlickrApp from "../shared/CreateFlickrApp";
+import CreateFlickrApp from "../shared/CreateFlickrApp.jsx";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
-import SocialMetaTags from "../Components/SocialMetaTags";
+import SocialMetaTags from "../Components/SocialMetaTags.jsx";
 import { Box } from "@mui/material";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
