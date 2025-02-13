@@ -35,6 +35,19 @@ const CreateFlickrService = () => {
 		return data.photo;
 	};
 
+
+	const getInfoApi = async () => {
+
+		const url = `/api/getList`
+		const data = await instance.get(url);
+
+		console.log('data', data);
+
+		return data.photo;
+	};
+
+	getInfoApi();
+
 	return {
 		getList,
 		getPhotos,

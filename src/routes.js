@@ -10,7 +10,6 @@ const PhotoInfo = lazy(() => import("./Views/PhotoInfo.jsx"));
 const Login = lazy(() => import("./Views/auth/index.jsx"));
 const Privacidade = lazy(() => import("./Views/Privacidade.jsx"));
 const Transparencia = lazy(() => import("./Views/Transparencia.jsx"));
-const TestApi = lazy(() => import("./Views/testApi.jsx"));
 
 const AppRoutes = () => {
   return (
@@ -27,7 +26,6 @@ const AppRoutes = () => {
         <Route path="/privacidade" element={<Privacidade />} />
         <Route path="/transparencia" element={<Transparencia />} />
         <Route path="/about" element={<About />} />
-        <Route path="/testApi" element={<TestApi />} />
       </Routes>
     </Suspense>
   );

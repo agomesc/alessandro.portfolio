@@ -4,10 +4,12 @@ function CreateFetchService() {
 		try {
 			const response = await fetch(url, options);
 			if (!response.ok) {
+				console.log('response',response);
 				throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
 			}
 			return await response.json(); 
 		} catch (error) {
+			console.log('error',error);
 			throw new Error(TryError(error.message));
 		}
 	}
