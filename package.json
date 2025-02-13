@@ -23,6 +23,7 @@
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "firebase": "^10.9.0",
+    "firebase-functions": "^3.14.1",
     "ignore-styles": "^5.0.1",
     "node-cache": "^5.1.2",
     "react": "^18.3.1",
@@ -47,7 +48,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap"
+    "postbuild": "react-snap",
+    "deploy": "firebase deploy"
   },
   "eslintConfig": {
     "extends": [
