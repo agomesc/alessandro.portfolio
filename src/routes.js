@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import { hydrate, render } from "react-dom";
 
 const Gallery = lazy(() => import("./Views/Gallery.jsx"));
 const GalleryWork = lazy(() => import("./Views/GalleryWork.jsx"));
@@ -11,6 +10,7 @@ const PhotoInfo = lazy(() => import("./Views/PhotoInfo.jsx"));
 const Login = lazy(() => import("./Views/auth/index.jsx"));
 const Privacidade = lazy(() => import("./Views/Privacidade.jsx"));
 const Transparencia = lazy(() => import("./Views/Transparencia.jsx"));
+const TestApi = lazy(() => import("./Views/testApi.jsx"));
 
 const AppRoutes = () => {
   return (
@@ -27,24 +27,10 @@ const AppRoutes = () => {
         <Route path="/privacidade" element={<Privacidade />} />
         <Route path="/transparencia" element={<Transparencia />} />
         <Route path="/about" element={<About />} />
+        <Route path="/testApi" element={<TestApi />} />
       </Routes>
     </Suspense>
   );
 };
-
-const rootElement = document.getElementById("root");
-if (rootElement.hasChildNodes()) {
-  hydrate(AppRoutes, rootElement);
-} else {
-  render(AppRoutes, rootElement);
-}
-
-const prefersColorSchemeWatcher = window.matchMedia("(prefers-color-scheme: dark)");
-
-prefersColorSchemeWatcher.addEventListener("change", () => {
-  const favicon = document.querySelector('link[rel="icon"]');
-  favicon.href = null;
-  favicon.href = "/favicon.ico";
-});
 
 export default AppRoutes;
