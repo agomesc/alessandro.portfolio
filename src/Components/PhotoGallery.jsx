@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
-import Typography from "@mui/material/Typography";
 import PhotoModal from "./PhotoModal"; // Importe o componente
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
@@ -39,10 +37,9 @@ const PhotoGallery = ({ photos }) => {
 
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {photos.map((item, index) => (
             <GalleryContainer
-              className="image-container"
               key={index}
               onClick={() => setShowModal(true)}
             >

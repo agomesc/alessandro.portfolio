@@ -77,7 +77,7 @@ const ImageMasonry = ({ data }) => {
           ))}
         </>
       ) : (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {data.map((item, index) => (
             <GalleryContainer key={index}>
               <NavLink key={index} to={`/Photos/${item.id}`}>

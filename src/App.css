@@ -5,8 +5,25 @@
 :root {
   --primary-color: #c0810d;
   --secondary-color: #ccc;
-  --background-color: #222;
-  --text-color: #fff;
+  --background-color: #fff;
+  --text-color: #222;
+}
+
+.css-pt3d2n-MuiPaper-root-MuiAppBar-root {
+  background-color: #fff!important; 
+  color: #222!important;
+}
+
+.MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-7daasw-MuiToolbar-root
+{
+  background-color: #fff!important; 
+  color: #222!important;
+}
+
+.css-1d6a3hl-MuiPaper-root-MuiAppBar-root {
+  background-color: #fff!important; 
+  color: #222!important;
+  border-radius: 0;
 }
 
 body,
@@ -100,7 +117,7 @@ h4::after {
   left: 0;
   width: 30%;
   height: 1px;
-  background-color: #c0810d;
+  background-color: #ccc;
 }
 
 a {
@@ -126,6 +143,7 @@ img:hover {
   transition: transform 0.3s, filter 0.3s;
   /* Adiciona uma transição suave */
 }
+
 
 /* Ajustar imagens para modo paisagem */
 @media screen and (orientation: landscape) {

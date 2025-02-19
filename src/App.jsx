@@ -13,7 +13,7 @@ const Footer = lazy(() => import("./Views/Footer"));
 
 const darkTheme = createTheme({
 	palette: {
-		mode: "dark",
+		mode: "light",
 	},
 });
 
