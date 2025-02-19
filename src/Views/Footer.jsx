@@ -19,7 +19,7 @@ const Footer = () => {
                     <Fa500Px />
                 </IconButton>
                 <IconButton
-                    href="https://twitter.com/AlePortolio"
+                    href="https://x.com/olhotofografico"
                     target="_blank"
                     sx={{ color: 'black' }}
                 >
