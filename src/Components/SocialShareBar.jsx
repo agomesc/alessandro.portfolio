@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaWhatsapp, FaPinterest } from 'react-icons/fa';
 import Typography from '@mui/material/Typography';
 
 const SocialShareBar = ({ url, title }) => {
@@ -8,7 +8,8 @@ const SocialShareBar = ({ url, title }) => {
     { name: 'Twitter', icon: <FaTwitter />, shareUrl: `https://twitter.com/intent/tweet?url=${url}&text=${title}` },
     { name: 'LinkedIn', icon: <FaLinkedin />, shareUrl: `https://www.linkedin.com/shareArticle?url=${url}&title=${title}` },
     { name: 'Instagram', icon: <FaInstagram />, shareUrl: `https://www.instagram.com/?url=${url}` },
-    { name: 'WhatsApp', icon: <FaWhatsapp />, shareUrl: `https://api.whatsapp.com/send?text=${title} ${url}` }
+    { name: 'WhatsApp', icon: <FaWhatsapp />, shareUrl: `https://api.whatsapp.com/send?text=${title} ${url}` },
+    { name: 'Pinterest', icon: <FaPinterest />, shareUrl: `https://pinterest.com/pin/create/button/?url=${url}&description=${title}` }
   ];
 
   return (
@@ -29,6 +30,5 @@ const SocialShareBar = ({ url, title }) => {
     </div>
   );
 };
-
 
 export default React.memo(SocialShareBar);

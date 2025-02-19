@@ -95,7 +95,7 @@ const TemporaryDrawer = () => {
 
     const DrawerList = (
         <Suspense fallback={<LoadingMessage />}>
-            <Box sx={{ width: 250 }} role="presentation">
+            <Box sx={{ width: 250, backgroundColor: 'white', color: 'black' }} role="presentation">
                 <Divider />
                 <List>
                     {items.map((item, index) => {
@@ -116,6 +116,7 @@ const TemporaryDrawer = () => {
                                                 setOpen(false); // Fechar a gaveta ao clicar em um item que não tem filhos
                                             }
                                         }}
+                                        sx={{ color: 'black' }}
                                     >
                                         <ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
                                             {item.icon}
@@ -130,7 +131,7 @@ const TemporaryDrawer = () => {
                                 <Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
                                         <ListItemButton
-                                            sx={{ pl: 4 }}
+                                            sx={{ pl: 4, color: 'black' }}
                                             component="a"
                                             href={item.route}
                                             onClick={(event) => {
@@ -160,7 +161,7 @@ const TemporaryDrawer = () => {
 
     return (
         <div>
-            <AppBar position="fixed" color="primary" sx={{ top: 0 }}>
+            <AppBar position="fixed" color="inherit" sx={{ top: 0, backgroundColor: 'white', color: 'black' }}>
                 <Toolbar>
                     <IconButton
                         size="large"

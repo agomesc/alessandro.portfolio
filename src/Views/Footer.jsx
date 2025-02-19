@@ -1,40 +1,33 @@
-// Footer.js
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import { FaInstagram, FaFlickr, Fa500Px, FaTwitter } from "react-icons/fa"; //
+import { FaFlickr, Fa500Px, FaTwitter } from "react-icons/fa";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
 const Footer = () => {
-	return (
-		<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-			<Toolbar sx={{ justifyContent: "center", b: 0 }}>
-				<IconButton
-					href="https://www.instagram.com/alessandro.portfolio"
-					target="_blank"
-				>
-					<FaInstagram />
-				</IconButton>
-				<IconButton href="https://www.flickr.com/agomesc" target="_blank">
-					<FaFlickr />
-				</IconButton>
-				<IconButton
-					href="https://500px.com/p/alessandrogomescunha?view=photos"
-					target="_blank"
-				>
-					<Fa500Px />
-				</IconButton>
-				<IconButton
-					href="https://twitter.com/AlePortolio"
-					target="_blank"
-				>
-					<FaTwitter />
-				</IconButton>
-
-
-			</Toolbar>
-		</AppBar>
-	);
+    return (
+        <AppBar position="fixed" color="inherit" sx={{ top: 'auto', bottom: 0 }}>
+            <Toolbar sx={{ justifyContent: "center", backgroundColor: 'white' }}>
+                <IconButton href="https://www.flickr.com/agomesc" target="_blank" sx={{ color: 'black' }}>
+                    <FaFlickr />
+                </IconButton>
+                <IconButton
+                    href="https://500px.com/p/alessandrogomescunha?view=photos"
+                    target="_blank"
+                    sx={{ color: 'black' }}
+                >
+                    <Fa500Px />
+                </IconButton>
+                <IconButton
+                    href="https://twitter.com/AlePortolio"
+                    target="_blank"
+                    sx={{ color: 'black' }}
+                >
+                    <FaTwitter />
+                </IconButton>
+            </Toolbar>
+        </AppBar>
+    );
 };
 
 export default React.memo(Footer);

@@ -118,16 +118,6 @@ a:focus {
   outline-offset: 4px;
 }
 
-img:hover {
-  filter: brightness(1.2);
-  /* Aumenta o brilho da imagem */
-  transform: scale(1.05);
-  /* Aumenta o tamanho da imagem em 5% */
-  transition: transform 0.3s, filter 0.3s;
-  /* Adiciona uma transição suave */
-}
-
-
 /* Ajustar imagens para modo paisagem */
 @media screen and (orientation: landscape) {
   img {
