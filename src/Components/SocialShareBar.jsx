@@ -17,7 +17,7 @@ const SocialShareBar = ({ url, title }) => {
       <Typography variant="subtitle1" style={{ marginBottom: '5px' }}>
         Compartilhe:
       </Typography>
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
           <a key={network.name} href={network.shareUrl} target="_blank" rel="noopener noreferrer" title={`Compartilhar no ${network.name}`}>
             {network.icon}
