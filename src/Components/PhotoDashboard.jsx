@@ -7,54 +7,95 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
-import { yellow } from '@mui/material/colors';
+import CardHeader from "@mui/material/CardHeader";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
 
 const PhotoDashboard = ({ photoData }) => {
   return (
-    <Card sx={{ maxWidth: "xl" }}>
+    <Card>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: yellow[500] }} aria-label="recipe">
-            !
-          </Avatar>
+        title={
+          <Typography variant="h3" component="div">
+            {photoData.title}
+          </Typography>
         }
-      >
-        <Typography sx={{ mt: 10, mb: 3 }} variant="h3">
-          {photoData.title}
-        </Typography>
-      </CardHeader>
+      />
 
       <CardMedia
         component="img"
         sx={{
           width: "100%",
           height: "auto",
-          objectFit: "cover",
+          objectFit: "crop",
           objectPosition: "center",
         }}
         image={photoData.url}
         lazy="load"
         title={photoData.title}
       />
+
       <CardContent>
-        <Typography variant="body1" gutterBottom>
-          Titulo: {photoData.title}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Descrição: {photoData.description}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Localização: {photoData.location}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Data da Foto: {photoData.taken}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Visualizações: {photoData.views}
-        </Typography>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="photo specifications">
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Titulo
+                </TableCell>
+                <TableCell>{photoData.title}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Descrição
+                </TableCell>
+                <TableCell>{photoData.description}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Localização
+                </TableCell>
+                <TableCell>{photoData.location}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Data da Foto
+                </TableCell>
+                <TableCell>{photoData.taken}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Visualizações
+                </TableCell>
+                <TableCell>{photoData.views}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Equipamento
+                </TableCell>
+                <TableCell>{photoData.equipment}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Lente
+                </TableCell>
+                <TableCell>{photoData.lens}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Distância Focal
+                </TableCell>
+                <TableCell>{photoData.range}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </CardContent>
+
       <CardActions></CardActions>
       <Link target="_new" to={photoData.photopage}>
         <IconButton>

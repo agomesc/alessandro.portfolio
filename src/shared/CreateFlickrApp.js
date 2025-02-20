@@ -53,6 +53,8 @@ const CreateFlickrApp = () => {
 
 		const data = await instance.getInfo(id);
 
+		console.log(data);
+
 		const itemData = ({
 			id: data.id,
 			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,
@@ -61,7 +63,10 @@ const CreateFlickrApp = () => {
 			title: data.title._content,
 			taken: data.dates.taken,
 			photopage: data.urls.url[0]._content,
-			views: data.views
+			views: data.views,
+			//equipment: data.photo.mode, 
+    		//lens: data.photo.lens,       
+    		//range: data.photo.exif.filter(exif => exif.tag === "FocalLength")[0].raw._content 
 		});
 
 		return itemData;

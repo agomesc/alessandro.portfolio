@@ -54,8 +54,8 @@ const Gallery = () => {
                     </Typography>
                     <SocialMetaTags
                         title={metaData.title}
-                        description={metaData.description}
-                        url={metaData.url}
+                        image={metaData.url}
+                        url={metaData.description}
                     />
                     <ImageMasonry data={galleryData} />
                     <CommentBox itemID="Gallery" />

@@ -18,7 +18,7 @@ const PhotoInfo = () => {
       return {
         title: galleryData.title,
         image: galleryData.url,
-        url: galleryData.description,
+        description: galleryData.description,
       };
     }
   }, [galleryData]);
@@ -52,8 +52,8 @@ const PhotoInfo = () => {
         </Typography>
         <SocialMetaTags
           title={metaData.title}
+          image={metaData.url}
           description={metaData.description}
-          url={metaData.url}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <PhotoDashboard photoData={galleryData} />

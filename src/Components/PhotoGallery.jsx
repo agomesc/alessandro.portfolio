@@ -48,7 +48,7 @@ const PhotoGallery = ({ photos }) => {
                 
                   <Link to={`/PhotoInfo/${item.id}`}>
                     <IconButton>
-                      <InfoIcon sx={{ bgcolor: yellow[500] }} aria-label="recipe" />
+                      <InfoIcon sx={{ bgcolor: yellow[700] }} aria-label="recipe" />
                     </IconButton>
                   </Link>
                 
