@@ -9,14 +9,14 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import { blue } from '@mui/material/colors';
+import { yellow } from '@mui/material/colors';
 
 const PhotoDashboard = ({ photoData }) => {
   return (
     <Card sx={{ maxWidth: "xl" }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: yellow[500] }} aria-label="recipe">
             !
           </Avatar>
         }

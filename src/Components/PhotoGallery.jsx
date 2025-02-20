@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import { Link } from "react-router-dom";
 import ImageComponent from './ImageComponent';
+import { yellow } from '@mui/material/colors';
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
@@ -43,11 +44,11 @@ const PhotoGallery = ({ photos }) => {
               key={index}
               onClick={() => setShowModal(true)}
             >
-              <Label style={{ zIndex: 2 }}>{item.title}
+              <Label style={{ zIndex: 3 }}>{item.title}
                 
                   <Link to={`/PhotoInfo/${item.id}`}>
                     <IconButton>
-                      <InfoIcon />
+                      <InfoIcon sx={{ bgcolor: yellow[500] }} aria-label="recipe" />
                     </IconButton>
                   </Link>
                 
