@@ -19,7 +19,7 @@ const Gallery = () => {
             return {
                 title: randomItem.title,
                 description: randomItem.description,
-                url: randomItem.img
+                img: randomItem.img
             };
         };
     }, [galleryData]);
@@ -54,7 +54,7 @@ const Gallery = () => {
                     </Typography>
                     <SocialMetaTags
                         title={metaData.title}
-                        image={metaData.url}
+                        image={metaData.img}
                         description={metaData.description}
                     />
                     <ImageMasonry data={galleryData} />
