@@ -21,12 +21,14 @@ const PhotoDashboard = ({ photoData }) => {
           </Avatar>
         }
       >
-      {photoData.title}
+        <Typography sx={{ mt: 10, mb: 3 }} variant="h3">
+          {photoData.title}
+        </Typography>
       </CardHeader>
 
       <CardMedia
         component="img"
-        sx={{ 
+        sx={{
           width: "100%",
           height: "auto",
           objectFit: "cover",

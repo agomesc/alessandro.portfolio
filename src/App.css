@@ -4,8 +4,8 @@
 /* Reset de estilos globais */
 :root {
   --primary-color: #c0810d;
-  --secondary-color: #ccc;
-  --background-color: #fff;
+  --secondary-color: #fff;
+  --background-color: #ccc;
   --text-color: #222;
 }
 
