@@ -55,7 +55,7 @@ const CreateFlickrApp = () => {
 		const exifData = await instance.getExifInfo(id);
 	
 		// Logging the EXIF data for debugging purposes
-		console.log('exifData', exifData);
+		//console.log('exifData', exifData);
 	
 		// Create an object to store the formatted information
 		const itemData = {
