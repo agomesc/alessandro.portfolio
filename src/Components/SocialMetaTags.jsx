@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 // https://metatags.io/
@@ -24,12 +23,6 @@ const SocialMetaTags = ({ title, image, description }) => {
   );
 };
 
-SocialMetaTags.propTypes = {
-  title: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
-};
 
 
 export default React.memo(SocialMetaTags);

@@ -50,15 +50,15 @@ const CreateFlickrApp = () => {
 	};
 
 	const getPhotoInfo = async (id) => {
-		// Função para obter as informações da foto
+		// Fetch basic info and EXIF data
 		const data = await instance.getInfo(id);
-		console.log('photo', data?.exif);
+		const exifData = await instance.getExifInfo(id);
 	
-		// Função para obter os dados EXIF da foto
-		const exifData = await instance.getExif(id);
-		const focalLength = exifData.photo.exif.filter(exif => exif.tag === "FocalLength")[0]?.raw._content;
+		// Logging the EXIF data for debugging purposes
+		console.log('exifData', exifData);
 	
-		const itemData = ({
+		// Create an object to store the formatted information
+		const itemData = {
 			id: data.id,
 			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,
 			description: data.description._content,
@@ -67,13 +67,19 @@ const CreateFlickrApp = () => {
 			taken: data.dates.taken,
 			photopage: data.urls.url[0]._content,
 			views: data?.views,
-			equipment: data?.camera, // Utilize data.camera para obter o equipamento
-			lens: data?.lens,
-			range: focalLength
-		});
+			camera: exifData?.camera,
+			lens: exifData.exif.find(exif => exif.tag === 'LensInfo')?.raw._content,
+			range: exifData.exif.find(exif => exif.tag === 'FocalLength')?.raw._content,
+			colorSpace: exifData.exif.find(exif => exif.tag === 'ColorSpace')?.raw._content,
+			iso: exifData.exif.find(exif => exif.tag === 'ISO')?.raw._content,
+			exposure: exifData.exif.find(exif => exif.tag === 'ExposureTime')?.raw._content,
+			focal: exifData.exif.find(exif => exif.tag === 'FocalLength')?.raw._content,
+			aperture: exifData.exif.find(exif => exif.tag === 'FNumber')?.clean._content
+		};
 	
 		return itemData;
 	};
+	
 	
 	return {
 		getGallery,

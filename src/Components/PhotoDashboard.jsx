@@ -45,51 +45,81 @@ const PhotoDashboard = ({ photoData }) => {
             <TableBody>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Titulo
+                  Title
                 </TableCell>
                 <TableCell>{photoData.title}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Descrição
+                  Description
                 </TableCell>
                 <TableCell>{photoData.description}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Localização
+                  Location
                 </TableCell>
                 <TableCell>{photoData.location}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Data da Foto
+                  Take
                 </TableCell>
                 <TableCell>{photoData.taken}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Visualizações
+                  Views
                 </TableCell>
                 <TableCell>{photoData.views}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Equipamento
+                  Camera
                 </TableCell>
-                <TableCell>{photoData.equipment}</TableCell>
+                <TableCell>{photoData.camera}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Lente
+                  Lens
                 </TableCell>
                 <TableCell>{photoData.lens}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Distância Focal
+                  Range
                 </TableCell>
                 <TableCell>{photoData.range}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  ColorSpace
+                </TableCell>
+                <TableCell>{photoData.colorSpace}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Iso
+                </TableCell>
+                <TableCell>{photoData.iso}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Exposure
+                </TableCell>
+                <TableCell>{photoData.exposure}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Focal
+                </TableCell>
+                <TableCell>{photoData.focal}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Aperture
+                </TableCell>
+                <TableCell>{photoData.aperture}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
