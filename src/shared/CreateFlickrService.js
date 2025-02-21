@@ -35,12 +35,19 @@ const CreateFlickrService = () => {
 		return data.photo;
 	};
 
+	const getExifInfo = async (id) => {
+		const url = `https://api.flickr.com/services/rest/?method=flickr.photos.getExif&api_key=${apiKey}&photo_id=${id}&format=json&nojsoncallback=1`;
+		const data = await instance.get(url);
+		return data.photo;
+	};
+	
 	return {
 		getList,
 		getPhotos,
 		getListcomments,
 		getLatestPhotos,
-		getInfo
+		getInfo,
+		getExifInfo
 	};
 };
 
