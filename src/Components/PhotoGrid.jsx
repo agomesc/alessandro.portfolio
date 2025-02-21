@@ -18,7 +18,7 @@ const PhotoGrid = ({ itemData }) => {
         <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
           Atualizações
         </Typography>
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {itemData.map((item) => (
             <Card key={item.id}>
               <CardMedia
