@@ -53,7 +53,7 @@ const CreateFlickrApp = () => {
 
 		const data = await instance.getInfo(id);
 
-		console.log(data);
+		console.log('photo', data?.photo);
 
 		const itemData = ({
 			id: data.id,
