@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
@@ -8,63 +9,79 @@ import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-const AffiliateAd = () => {
+const FormContent = () => {
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
-  const [isLink, setIsLink] = useState(true); // Novo estado para 
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
-      }
+      setUser(user || null);
     });
     return () => unsubscribe();
   }, []);
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+    if (reason === 'clickaway') return;
     setOpen(false);
+  };
+
+  const handleImageUpload = async () => {
+    if (!image) return null;
+
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${image.name}`);
+      await uploadBytes(storageRef, image);
+      return await getDownloadURL(storageRef);
+    } catch (error) {
+      console.error('Erro ao fazer upload da imagem:', error.message);
+      throw new Error('Erro ao fazer upload da imagem. Tente novamente.');
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!user) {
-      setMessage('Por favor, faça login para comentar.');
+      setMessage('Por favor, faça login para postar.');
       setSeverity('warning');
       setOpen(true);
       window.location.href = '/Login';
+      return;
     }
 
     try {
-      await addDoc(collection(db, 'AffiliateAd'), {
+      let imageUrl = null;
+      if (image) {
+        imageUrl = await handleImageUpload();
+      }
+
+      await addDoc(collection(db, 'content'), {
         title,
         text,
         createdAt: serverTimestamp(),
         isActive,
-        isLink,
+        imageUrl,
       });
-      console.log('Documento adicionado com sucesso!');
 
       setTitle('');
       setText('');
-      setIsActive(false);
+      setIsActive(true);
+      setImage(null);
+      setMessage('Postagem adicionada com sucesso!');
+      setSeverity('success');
+      setOpen(true);
     } catch (error) {
-      console.error('Erro ao adicionar documento: ', error);
+      console.error('Erro ao adicionar postagem:', error.message);
+      setMessage(`Erro ao adicionar postagem: ${error.message}`);
+      setSeverity('error');
+      setOpen(true);
     }
   };
 
@@ -98,13 +115,8 @@ const AffiliateAd = () => {
             label="Ativo"
           />
         </FormGroup>
-        <FormGroup>
-          <FormControlLabel
-            control={<Switch checked={isLink} onChange={(e) => setIsLink(e.target.checked)} />}
-            label="É Link"
-          />
-        </FormGroup>
-        <Button type="submit" variant="contained" color="primary" disabled={!isLoggedIn}>
+        <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
           Salvar
         </Button>
       </form>
@@ -117,6 +129,4 @@ const AffiliateAd = () => {
   );
 };
 
-export default AffiliateAd;
-
-
+export default FormContent;

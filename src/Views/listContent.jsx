@@ -7,12 +7,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import LinkPreview from '../Components/LinkPreview';
 
-const AffiliateAdList = () => {
+const ListContent = () => {
     const [ads, setAds] = useState([]);
 
     useEffect(() => {
         const fetchAds = async () => {
-            const querySnapshot = await getDocs(collection(db, 'AffiliateAd'));
+            const querySnapshot = await getDocs(collection(db, 'content'));
             const adsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
@@ -25,7 +25,7 @@ const AffiliateAdList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        const docRef = doc(db, 'AffiliateAd', id);
+        const docRef = doc(db, 'content', id);
         await deleteDoc(docRef);
         // Atualiza o estado local após a exclusão
         setAds(ads.filter((ad) => ad.id !== id));
@@ -68,4 +68,4 @@ const AffiliateAdList = () => {
     );
 };
 
-export default AffiliateAdList;
+export default ListContent;
