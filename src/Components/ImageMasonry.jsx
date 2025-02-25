@@ -57,6 +57,14 @@ const TextContainer = styled(Box)(() => ({
   color: "black",
 }));
 
+// Função auxiliar para remover tags HTML e limitar o texto a 100 caracteres
+const sanitizeDescription = (description) => {
+  const div = document.createElement("div");
+  div.innerHTML = description;
+  const text = div.textContent || div.innerText || "";
+  return text.length > 100 ? text.substring(0, 100) + "..." : text;
+};
+
 const ImageMasonry = ({ data }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
@@ -70,7 +78,7 @@ const ImageMasonry = ({ data }) => {
                 <Thumbnail src={item.img} alt={item.title} />
                 <TextContainer>
                   <Typography variant="subtitle1">{item.title}</Typography>
-                  <Typography variant="subtitle2">{item.description}</Typography>
+                  <Typography variant="subtitle2">{sanitizeDescription(item.description)}</Typography>
                 </TextContainer>
               </CardContainer>
             </NavLink>
