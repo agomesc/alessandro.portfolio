@@ -10,7 +10,7 @@ const CreateFlickrApp = () => {
 	const getGallery = async () => {
 		const data = await instance.getList(userID);
 		const itemData = data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_b.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,
@@ -21,7 +21,7 @@ const CreateFlickrApp = () => {
 	const getGalleryWork = async () => {
 		const data = await instance.getList(userwORKID);
 		const itemData = data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_z.jpg`,
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_b.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,
@@ -50,14 +50,9 @@ const CreateFlickrApp = () => {
 	};
 
 	const getPhotoInfo = async (id) => {
-		// Fetch basic info and EXIF data
 		const data = await instance.getInfo(id);
 		const exifData = await instance.getExifInfo(id);
-	
-		// Logging the EXIF data for debugging purposes
-		//console.log('exifData', exifData);
-	
-		// Create an object to store the formatted information
+
 		const itemData = {
 			id: data.id,
 			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,

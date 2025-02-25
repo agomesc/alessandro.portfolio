@@ -69,7 +69,7 @@ const ImageMasonry = ({ data }) => {
               <CardContainer>
                 <Thumbnail src={item.img} alt={item.title} />
                 <TextContainer>
-                  <Typography variant="h4">{item.title}</Typography>
+                  <Typography variant="subtitle1">{item.title}</Typography>
                 </TextContainer>
               </CardContainer>
             </NavLink>
