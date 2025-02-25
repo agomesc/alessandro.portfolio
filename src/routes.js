@@ -11,8 +11,8 @@ const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
 const Login = lazy(() => import("./Views/auth/index"));
 const Privacidade = lazy(() => import("./Views/Privacidade"));
 const Transparencia = lazy(() => import("./Views/Transparencia"));
-const ListContent = lazy(() => import("./Views/listContent"));
-const FormContent = lazy(() => import("./Views/formContent"));
+const ListContent = lazy(() => import("./Views/ListContent"));
+const FormContent = lazy(() => import("./Views/FormContent"));
 
 const AppRoutes = () => {
   return (

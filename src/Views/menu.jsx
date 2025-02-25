@@ -82,7 +82,7 @@ const TemporaryDrawer = () => {
         }));
 
         const additionalItems = [
-            { route: "/GalleryWork", description: "Meus Trabalhos", chid: true, icon:  <ArtTrackIcon /> },
+            { route: "/GalleryWork", description: "Meus Trabalhos", chid: true, icon: <ArtTrackIcon /> },
             { route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
@@ -173,8 +173,8 @@ const TemporaryDrawer = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
-                        Olho Fotográfico
+                    <Typography variant="h1" component="div" sx={{ flexGrow: 1 }}>
+                        OlhoFotográfico
                     </Typography>
                     {user ? (
                         <div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>

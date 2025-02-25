@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const Routes = lazy(() => import("./routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
-const Menu = lazy(() => import("./Views/menu"));
+const Menu = lazy(() => import("./Views/Menu"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
