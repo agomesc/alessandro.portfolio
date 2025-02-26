@@ -39,7 +39,6 @@ html {
 
 .overlay {
   padding: 0.625rem;
-  /* 10px */
 }
 
 /* Estilos dos Títulos */
@@ -98,7 +97,7 @@ h4::after {
   position: absolute;
   bottom: -5px;
   left: 0;
-  width: 30%;
+  width: 50%;
   height: 1px;
   background-color: #ccc;
 }

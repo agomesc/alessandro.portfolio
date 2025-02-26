@@ -173,7 +173,7 @@ const TemporaryDrawer = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h1" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
                         OlhoFotográfico
                     </Typography>
                     {user ? (
