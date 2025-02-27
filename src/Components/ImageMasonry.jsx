@@ -12,8 +12,7 @@ const LabelTop = styled(Paper)(() => ({
   position: "absolute",
   top: 0,
   left: 0,
-  width: "auto",
-  height: "10%",
+  width: "100%",
   backgroundColor: "rgba(2, 2, 2, 0.75)",
   color: "#fff",
   textAlign: "center",
@@ -77,7 +76,7 @@ const ImageMasonry = ({ data }) => {
               <CardContainer>
                 <Thumbnail src={item.img} alt={item.title} />
                 <TextContainer>
-                  <Typography variant="subtitle1">{item.title}</Typography>
+                  <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>{item.title}</Typography>
                   <Typography variant="subtitle2">{sanitizeDescription(item.description)}</Typography>
                 </TextContainer>
               </CardContainer>
