@@ -38,6 +38,8 @@ const CardContainer = styled(Box)(() => ({
   borderRadius: "8px",
   backgroundColor: "#fff",
   marginBottom: "16px",
+  border: "1px solid #000",  // Adiciona uma borda
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",  // Adiciona uma sombra simples
 }));
 
 const Thumbnail = styled("img")(() => ({
