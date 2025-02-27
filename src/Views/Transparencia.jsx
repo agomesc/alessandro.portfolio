@@ -1,4 +1,4 @@
-import { React, lazy } from 'react';
+import React, { lazy } from 'react';
 import { Paper, Typography, Box } from '@mui/material';
 import Link from "@mui/material/Link";
 
