@@ -43,7 +43,7 @@ const CardContainer = styled(Box)(() => ({
 const Thumbnail = styled("img")(() => ({
   width: 80,
   height: 80,
-  borderRadius: "8px",
+  borderRadius: "5px",
   objectFit: "cover",
 }));
 

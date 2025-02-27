@@ -105,7 +105,6 @@ h4::after {
 a {
   color: var(--primary-color);
   text-decoration: none;
-  /* Remover a linha abaixo do link */
 }
 
 a:hover {
