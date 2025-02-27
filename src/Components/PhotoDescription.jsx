@@ -1,7 +1,8 @@
-import React from "react";
+import { React, lazy } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ImageComponent from './ImageComponent'
+const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 
 const PhotoDescription = ({ imageUrl, description }) => {
@@ -18,9 +19,8 @@ const PhotoDescription = ({ imageUrl, description }) => {
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-        Sobre?
-      </Typography>
+
+      <TypographyTitle src="Sobre?"></TypographyTitle>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
         <ImageComponent src={imageUrl} alt={autor} />
@@ -35,4 +35,4 @@ const PhotoDescription = ({ imageUrl, description }) => {
   );
 };
 
-export default React.memo(PhotoDescription);
+export default PhotoDescription;

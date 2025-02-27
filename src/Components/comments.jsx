@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import { Card } from '@mui/material';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 function CommentBox({ itemID }) {
   const [comment, setComment] = useState('');
@@ -114,9 +115,7 @@ function CommentBox({ itemID }) {
         marginBottom: 30
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3, fontWeight: 500 }} variant="subtitle1">
-        Comentários
-      </Typography>
+      <TypographyTitle src="Comentários" />
 
       <form onSubmit={handleSubmit}>
         <TextField

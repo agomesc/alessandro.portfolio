@@ -1,6 +1,8 @@
-import React from 'react';
+import { React, lazy } from 'react';
 import { Paper, Typography, Box } from '@mui/material';
 import Link from "@mui/material/Link";
+
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Transparencia = () => {
   return (
@@ -14,9 +16,7 @@ const Transparencia = () => {
         marginBottom: 30
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-        Página de Transparência
-      </Typography>
+      <TypographyTitle src="Página de Transparência" />
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
         <Typography variant="subtitle1">Quem Somos</Typography>
         <Typography paragraph>

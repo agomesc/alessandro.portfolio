@@ -6,7 +6,9 @@ import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
 import { Typography, Box } from "@mui/material";
 
+
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
+
 
 const PhotoInfo = () => {
   const { id } = useParams();

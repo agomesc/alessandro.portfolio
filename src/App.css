@@ -103,7 +103,7 @@ h4::after {
 }
 
 a {
-  color: var(--secondary-color);
+  color: var(--primary-color);
   text-decoration: none;
   /* Remover a linha abaixo do link */
 }

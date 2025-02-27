@@ -1,8 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, lazy } from "react";
 import { Typography, Box, Paper } from "@mui/material";
 
 import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+
 
 
 const Privacidade = () => {
@@ -47,7 +49,7 @@ const Privacidade = () => {
                     margin: "0 auto",
                 }}
             >
-                <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
+                <TypographyTitle src="Política de Privacidade e Termos de Uso" />
                 <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
                     <Typography variant="body1" component="div">
                         {description}

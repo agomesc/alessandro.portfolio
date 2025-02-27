@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Snackbar, Alert } from "@mui/material";
+import React, { useState, useEffect, lazy } from 'react';
+import { Button, Box, Snackbar, Alert } from "@mui/material";
 import { auth, provider } from '../../firebaseConfig';
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
+const TypographyTitle = lazy(() => import("../../Components/TypographyTitle"));
 
 function Login() {
 
@@ -55,16 +56,13 @@ function Login() {
     <Box
       sx={{
         p: 0,
-        width: "30%",
+        width: "90%",
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-        {user ? "Bem-vindo!" : "Login"}
-      </Typography>
-
+      <TypographyTitle src={user ? "Bem-vindo!" : "Login"}></TypographyTitle>
       {user ? (
         <Button
           variant="contained"

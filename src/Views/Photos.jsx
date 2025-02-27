@@ -5,6 +5,7 @@ import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
 import { Typography, Box } from "@mui/material";
 
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
 const CommentBox = lazy(() => import("../Components/comments"));
 
@@ -58,9 +59,7 @@ const Photos = () => {
 						margin: "0 auto",
 					}}
 				>
-					<Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-						Minhas Fotos
-					</Typography>
+					<TypographyTitle src="Minhas Fotos"></TypographyTitle>
 					<SocialMetaTags
 						title={metaData.title}
 						image={metaData.url}

@@ -39,10 +39,10 @@ const LatestPhotos = () => {
 						margin: "0 auto",
 					}}
 				>
-					<SocialMetaTags title={title} image={logo} description={description} />
 					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
 				</Box>
 			</Suspense>
+			<SocialMetaTags title={title} image={logo} description={description} />
 		</>
 	);
 };

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { lazy } from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Masonry from '@mui/lab/Masonry';
+
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const PhotoGrid = ({ itemData }) => {
   return (
@@ -15,9 +17,8 @@ const PhotoGrid = ({ itemData }) => {
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-        Atualizações
-      </Typography>
+      <TypographyTitle src="Atualizações" />
+
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
         {itemData.map((item) => (
           <Card key={item.id}>
