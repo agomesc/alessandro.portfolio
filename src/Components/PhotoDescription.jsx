@@ -18,7 +18,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
         margin: "0 auto",
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
         Sobre?
       </Typography>
 
@@ -27,7 +27,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
       </Box>
 
 
-      <Typography variant="body1" component="p" sx={{ mt: 2, textAlign: "left" }}>
+      <Typography variant="body1" component="div" sx={{ mt: 2, textAlign: "left" }}>
         {description}
       </Typography>
 

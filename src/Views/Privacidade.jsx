@@ -37,23 +37,23 @@ const Privacidade = () => {
     return (
         <>
             <SocialMetaTags title={title} image={logo} description={description} />
-            
-                <Box
-                    sx={{
-                        p: 0,
-                        width: "98%",
-                        alignContent: "center",
-                        alignItems: "center",
-                        margin: "0 auto",
-                    }}
-                >
-                    <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
-                    <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
-                          <Typography variant="body1" component="p">
-                                {description}
-                          </Typography>
-                    </Paper>
-                </Box>
+
+            <Box
+                sx={{
+                    p: 0,
+                    width: "90%",
+                    alignContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                }}
+            >
+                <Typography sx={{ mt: 10, mb: 3 }} variant="h4">Política de Privacidade e Termos de Uso</Typography>
+                <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
+                    <Typography variant="body1" component="div">
+                        {description}
+                    </Typography>
+                </Paper>
+            </Box>
         </>
     );
 };

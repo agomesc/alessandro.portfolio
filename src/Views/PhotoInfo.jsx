@@ -41,13 +41,13 @@ const PhotoInfo = () => {
       <Box
         sx={{
           p: 0,
-          width: "98%",
+          width: "90%",
           alignContent: "center",
           alignItems: "center",
           margin: "0 auto",
         }}
       >
-        <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+        <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
           Informações da Foto
         </Typography>
         <SocialMetaTags

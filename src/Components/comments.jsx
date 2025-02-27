@@ -107,14 +107,14 @@ function CommentBox({ itemID }) {
     <Box
       sx={{
         p: 0,
-        width: "98%",
+        width: "90%",
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
         marginBottom: 30
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+      <Typography sx={{ mt: 10, mb: 3, fontWeight: 500 }} variant="subtitle1">
         Comentários
       </Typography>
 

@@ -8,8 +8,8 @@ const Back = () => {
         bottom: "70px",
         right: "20px",
         zIndex: 1000,
-        backgroundColor: "#f50057",  
-        color: "#ffffff",  
+        backgroundColor: "#c0810d",
+        color: "#ffffff",
     };
 
     const goBack = () => {

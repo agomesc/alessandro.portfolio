@@ -33,7 +33,7 @@ const ListContent = () => {
 
     return (
         <Box sx={{ p: 0, width: "80%", height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
-            <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+            <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
             <TableContainer component={Paper}>

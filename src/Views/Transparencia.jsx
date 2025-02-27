@@ -7,14 +7,14 @@ const Transparencia = () => {
     <Box
       sx={{
         p: 0,
-        width: "98%",
+        width: "90%",
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
         marginBottom: 30
       }}
     >
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
         Página de Transparência
       </Typography>
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>

@@ -86,8 +86,8 @@ const FormContent = () => {
   };
 
   return (
-    <Box sx={{ p: 0, width: "98%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
-      <Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+    <Box sx={{ p: 0, width: "90%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
         Minhas Galerias
       </Typography>
       <form onSubmit={handleSubmit}>

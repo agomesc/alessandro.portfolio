@@ -58,7 +58,7 @@ const Photos = () => {
 						margin: "0 auto",
 					}}
 				>
-					<Typography sx={{ mt: 10, mb: 3 }} variant="h4">
+					<Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
 						Minhas Fotos
 					</Typography>
 					<SocialMetaTags
