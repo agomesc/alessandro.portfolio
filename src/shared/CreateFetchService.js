@@ -1,43 +1,50 @@
 function CreateFetchService() {
-	
 	async function fetchWithInterceptor(url, options) {
-		try {
-			const response = await fetch(url, options);
-			if (!response.ok) {
-				throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-			}
-			return await response.json(); 
-		} catch (error) {
-			throw new Error(TryError(error.message));
-		}
+	  const response = await fetch(url, options);
+	  if (!response.ok) {
+		throw new Error(TryError(`Erro na requisição: ${response.status} ${response.statusText}`));
+	  }
+	  return await response.json();
 	}
-
+  
 	async function get(url) {
-		return await fetchWithInterceptor(url); 
+	  return await fetchWithInterceptor(url);
 	}
-
+  
 	async function post(url, data) {
-		const cacheKey = `${url}-${JSON.stringify(data)}`;
-		const cachedResponse = sessionStorage.getItem(cacheKey);
-		if (cachedResponse) {
-			return JSON.parse(cachedResponse);
-		}
-		const options = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Cache-Control": "no-cache",
-				"Connection": "keep-alive"
-			},
-			body: JSON.stringify(data),
-		};
-		const response = await fetchWithInterceptor(url, options); 
-		sessionStorage.setItem(cacheKey, JSON.stringify(response));
-		return response;
+	  const cacheKey = `${url}-${JSON.stringify(data)}`;
+	  const cachedResponse = getCache(cacheKey);
+	  if (cachedResponse) {
+		return cachedResponse;
+	  }
+  
+	  const options = {
+		method: "POST",
+		headers: {
+		  "Content-Type": "application/json",
+		  "Cache-Control": "no-cache",
+		  "Connection": "keep-alive"
+		},
+		body: JSON.stringify(data)
+	  };
+  
+	  const response = await fetchWithInterceptor(url, options);
+	  setCache(cacheKey, response);
+	  return response;
 	}
-
+  
 	return { get, post };
-}
+  }
+
+function setCache(key, data) {
+	sessionStorage.setItem(key, JSON.stringify(data));
+  }
+  
+  function getCache(key) {
+	const cachedResponse = sessionStorage.getItem(key);
+	return cachedResponse ? JSON.parse(cachedResponse) : null;
+  }
+  
 
 function TryError(message) {
 	switch (message) {
