@@ -11,6 +11,7 @@ const CommentBox = lazy(() => import("../Components/comments"));
 const Photos = () => {
 	const { id } = useParams();
 	const [galleryData, setGalleryData] = useState(null);
+	const [galleryInfoData, setGalleryInfoData] = useState(null);
 	const instance = useMemo(() => CreateFlickrApp(), []);
 
 	const metaData = useMemo(() => {
@@ -28,11 +29,17 @@ const Photos = () => {
 
 	const fetchData = useCallback(async () => {
 		const data = await instance.getPhotos(id);
+
 		setGalleryData(data);
+
+		const albumInfo = await instance.getAlbum(id);
+		setGalleryInfoData(albumInfo.description._content);
+
 	}, [id, instance]);
 
 	useEffect(() => {
 		if (!galleryData) fetchData();
+
 	}, [fetchData, galleryData]);
 
 	if (!galleryData) {
@@ -59,6 +66,9 @@ const Photos = () => {
 						image={metaData.url}
 						description={metaData.description}
 					/>
+					<Typography sx={{ mt: 1, mb: 3 }} variant="subtitle1">
+						{galleryInfoData}
+					</Typography>
 					<PhotoGallery photos={galleryData} />
 					<CommentBox itemID={id} />
 				</Box>

@@ -18,6 +18,11 @@ const CreateFlickrApp = () => {
 		return itemData;
 	};
 
+	const getAlbum = async (photosetId) => {
+		const data = await instance.getAlbum(userID , photosetId);
+		return data;
+	};
+
 	const getGalleryWork = async () => {
 		const data = await instance.getList(userwORKID);
 		const itemData = data.map((album) => ({
@@ -78,6 +83,7 @@ const CreateFlickrApp = () => {
 	
 	return {
 		getGallery,
+		getAlbum,
 		getGalleryWork,
 		getPhotos,
 		getLatestPhotos,
