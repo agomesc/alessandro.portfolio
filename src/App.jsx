@@ -1,14 +1,13 @@
 import React, { lazy, useState, useEffect } from 'react';
-import "./App.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-const Routes = lazy(() => import("./routes"));
+import "./App.css";
+const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
-const Menu = lazy(() => import("./Views/Menu"));
+const Menu = lazy(() => import("./Views/menu"));
 
 const darkTheme = createTheme({
 	palette: {

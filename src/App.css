@@ -140,10 +140,3 @@ a:focus {
   flex-grow: 1;
   flex-shrink: 0;
 }
-
-/* Remover sombras */
-* {
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-}
