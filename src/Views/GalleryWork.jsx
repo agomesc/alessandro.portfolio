@@ -39,14 +39,14 @@ const GalleryWork = () => {
     return (
         <>
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags
-                    title={metaData.title}
-                    image={metaData.url}
-                    description={metaData.description}
-                />
                 <ImageMasonry data={galleryData} />
                 <CommentBox itemID="Gallery" />
             </Suspense>
+            <SocialMetaTags
+                title={metaData.title}
+                image={metaData.url}
+                description={metaData.description}
+            />
         </>
     );
 };

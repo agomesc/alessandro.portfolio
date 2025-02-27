@@ -60,11 +60,6 @@ const Photos = () => {
 					}}
 				>
 					<TypographyTitle src="Minhas Fotos"></TypographyTitle>
-					<SocialMetaTags
-						title={metaData.title}
-						image={metaData.url}
-						description={metaData.description}
-					/>
 					<Typography sx={{ mt: 1, mb: 3 }} variant="subtitle1">
 						{galleryInfoData}
 					</Typography>
@@ -72,6 +67,11 @@ const Photos = () => {
 					<CommentBox itemID={id} />
 				</Box>
 			</Suspense>
+			<SocialMetaTags
+				title={metaData.title}
+				image={metaData.url}
+				description={metaData.description}
+			/>
 		</>
 	);
 };

@@ -50,15 +50,15 @@ const Gallery = () => {
                     }}
                 >
                     <TypographyTitle src="Portfólio"></TypographyTitle>
-                    <SocialMetaTags
-                        title={metaData.title}
-                        image={metaData.img}
-                        description={metaData.description}
-                    />
                     <ImageMasonry data={galleryData} />
                     <CommentBox itemID="Gallery" />
                 </Box>
             </Suspense>
+            <SocialMetaTags
+                title={metaData.title}
+                image={metaData.img}
+                description={metaData.description}
+            />
         </>
     );
 };

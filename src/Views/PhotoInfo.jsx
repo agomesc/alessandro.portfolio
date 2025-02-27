@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import CommentBox from "../Components/comments";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
-
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const PhotoInfo = () => {
   const { id } = useParams();
@@ -39,30 +39,31 @@ const PhotoInfo = () => {
   }
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
-      <Box
-        sx={{
-          p: 0,
-          width: "90%",
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        }}
-      >
-        <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-          Informações da Foto
-        </Typography>
-        <SocialMetaTags
-          title={metaData.title}
-          image={metaData.url}
-          description={metaData.description}
-        />
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <PhotoDashboard photoData={galleryData} />
+    <>
+      <Suspense fallback={<LoadingMessage />}>
+        <Box
+          sx={{
+            p: 0,
+            width: "90%",
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+          }}
+        >
+          <TypographyTitle src="Informações da Foto" />
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <PhotoDashboard photoData={galleryData} />
+          </Box>
+          <CommentBox itemID={id} />
         </Box>
-        <CommentBox itemID={id} />
-      </Box>
-    </Suspense>
+      </Suspense>
+      <SocialMetaTags
+        title={metaData.title}
+        image={metaData.url}
+        description={metaData.description}
+      />
+    </>
   );
 };
 
