@@ -74,3 +74,33 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 npm run build
 
 firebase deploy
+
+-------------------------------------------------------------------------
+
+Atualiza a Versão
+
+1. Verifique a versão atual
+Primeiro, veja qual versão do React você está usando. No terminal, execute:
+
+npm list react react-dom
+
+2. Atualize o React
+
+npm install react@latest react-dom@latest
+
+
+Se estiver usando TypeScript, também é bom atualizar os tipos:
+
+npm install @types/react@latest @types/react-dom@latest
+
+
+3. Atualize outras dependências (Opcional)
+
+npm install react-scripts@latest
+
+4. Limpe e reinicie o projeto
+
+rm -rf node_modules package-lock.json  # Apaga os módulos antigos
+npm install  # Reinstala tudo
+npm start  # Inicia o projeto novamente
+
