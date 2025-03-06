@@ -9,7 +9,7 @@ const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
 
-const darkTheme = createTheme({
+const lightTheme = createTheme({
 	palette: {
 		mode: "light",
 	},
@@ -24,7 +24,7 @@ const App = () => {
 
 	return (
 		<>
-			<ThemeProvider theme={darkTheme}>
+			<ThemeProvider theme={lightheme}>
 				<CssBaseline />
 				<Menu />
 				<Routes />
