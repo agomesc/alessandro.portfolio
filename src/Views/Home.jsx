@@ -7,6 +7,8 @@ import { Box } from "@mui/material";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const Gallery = lazy(() => import("./Gallery"));
+
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -43,6 +45,7 @@ const Home = () => {
                     <TypographyTitle src="Atualizações"></TypographyTitle>
                     {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
                 </Box>
+                <Gallery />
             </Suspense>
             <SocialMetaTags title={title} image={logo} description={description} />
         </>
