@@ -7,7 +7,7 @@ const ProTip = lazy(() => import("./Views/ProTip"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
-const Menu = lazy(() => import("./Views/menu"));
+const Menu = lazy(() => import("./Views/Menu"));
 
 const darkTheme = createTheme({
 	palette: {

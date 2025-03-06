@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 const Gallery = lazy(() => import("./Views/Gallery"));
+const Home = lazy(() => import("./Views/Home"));
 const GalleryWork = lazy(() => import("./Views/GalleryWork"));
 const Photos = lazy(() => import("./Views/Photos"));
 const About = lazy(() => import("./Views/About"));
@@ -18,7 +19,7 @@ const AppRoutes = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Gallery />} />
-        <Route path="/home" element={<Gallery />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/galleryWork" element={<GalleryWork />} />
