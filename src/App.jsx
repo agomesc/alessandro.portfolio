@@ -24,7 +24,7 @@ const App = () => {
 
 	return (
 		<>
-			<ThemeProvider theme={lightheme}>
+			<ThemeProvider theme={lightTheme}>
 				<CssBaseline />
 				<Menu />
 				<Routes />
