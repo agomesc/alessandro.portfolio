@@ -7,7 +7,6 @@ import { Box } from "@mui/material";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const RandomAffiliateAd = lazy(() => import("./RandomContent"));
 const Gallery = lazy(() => import("./Gallery"));
 
 
@@ -47,7 +46,6 @@ const Home = () => {
                     {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
                 </Box>
                 <Gallery />
-                <RandomAffiliateAd />
             </Suspense>
             <SocialMetaTags title={title} image={logo} description={description} />
         </>

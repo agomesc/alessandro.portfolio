@@ -8,6 +8,7 @@ const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Views/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
+const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 
 const lightTheme = createTheme({
 	palette: {
@@ -28,6 +29,7 @@ const App = () => {
 				<CssBaseline />
 				<Menu />
 				<Routes />
+				<RandomAffiliateAd />
 				<ProTip />
 				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 				<Back />
