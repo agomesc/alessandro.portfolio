@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
@@ -14,10 +13,10 @@ const FormContent = () => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(true);
+  const [isLink, setIsLink] = useState(false); // Novo estado para isLink
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -29,20 +28,6 @@ const FormContent = () => {
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setOpen(false);
-  };
-
-  const handleImageUpload = async () => {
-    if (!image) return null;
-
-    try {
-      const storage = getStorage();
-      const storageRef = ref(storage, `images/${image.name}`);
-      await uploadBytes(storageRef, image);
-      return await getDownloadURL(storageRef);
-    } catch (error) {
-      console.error('Erro ao fazer upload da imagem:', error.message);
-      throw new Error('Erro ao fazer upload da imagem. Tente novamente.');
-    }
   };
 
   const handleSubmit = async (event) => {
@@ -57,23 +42,18 @@ const FormContent = () => {
     }
 
     try {
-      let imageUrl = null;
-      if (image) {
-        imageUrl = await handleImageUpload();
-      }
-
       await addDoc(collection(db, 'content'), {
         title,
         text,
         createdAt: serverTimestamp(),
         isActive,
-        imageUrl,
+        isLink, // Inclui o novo campo
       });
 
       setTitle('');
       setText('');
       setIsActive(true);
-      setImage(null);
+      setIsLink(false); // Resetar o campo após salvar
       setMessage('Postagem adicionada com sucesso!');
       setSeverity('success');
       setOpen(true);
@@ -114,8 +94,11 @@ const FormContent = () => {
             control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />}
             label="Ativo"
           />
+          <FormControlLabel
+            control={<Switch checked={isLink} onChange={(e) => setIsLink(e.target.checked)} />}
+            label="É um link?"
+          />
         </FormGroup>
-        <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
           Salvar
         </Button>
