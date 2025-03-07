@@ -21,7 +21,7 @@ const ProTip = () => {
 	), []);
 
 	return (
-		<Box sx={{ mt: 10, pt: 2, display: "flex", justifyContent: "center" }}>
+		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
 			<Paper elevation={3}>
 				<Typography sx={{ mt: 2, mb: 2, p: 1, justifyContent: "center" }} color="text.secondary">
 					<Typography variant="subtitle1" sx={{ textAlign: "center" }}>
