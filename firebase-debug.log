@@ -1,0 +1,36 @@
+[debug] [2025-03-07T01:51:23.151Z] ----------------------------------------------------------------------
+[debug] [2025-03-07T01:51:23.156Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\agome\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-03-07T01:51:23.157Z] CLI Version:   13.32.0
+[debug] [2025-03-07T01:51:23.157Z] Platform:      win32
+[debug] [2025-03-07T01:51:23.157Z] Node Version:  v20.18.0
+[debug] [2025-03-07T01:51:23.158Z] Time:          Thu Mar 06 2025 22:51:23 GMT-0300 (Horário Padrão de Brasília)
+[debug] [2025-03-07T01:51:23.158Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-07T01:51:23.586Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-07T01:51:23.587Z] > authorizing via signed-in user (alessandrogomescunha@gmail.com)
+[debug] [2025-03-07T01:51:23.587Z] [iam] checking project alessandro-portfolio for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-03-07T01:51:23.591Z] Checked if tokens are valid: false, expires at: 1741285881603
+[debug] [2025-03-07T01:51:23.591Z] Checked if tokens are valid: false, expires at: 1741285881603
+[debug] [2025-03-07T01:51:23.592Z] > refreshing access token with scopes: []
+[debug] [2025-03-07T01:51:23.595Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-03-07T01:51:23.595Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-03-07T01:51:24.129Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-03-07T01:51:24.129Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-03-07T01:51:24.139Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions [none]
+[debug] [2025-03-07T01:51:24.140Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions x-goog-quota-user=projects/alessandro-portfolio
+[debug] [2025-03-07T01:51:24.140Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-03-07T01:51:25.207Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions 200
+[debug] [2025-03-07T01:51:25.207Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-03-07T01:51:25.208Z] Checked if tokens are valid: true, expires at: 1741315883129
+[debug] [2025-03-07T01:51:25.208Z] Checked if tokens are valid: true, expires at: 1741315883129
+[debug] [2025-03-07T01:51:25.209Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio [none]
+[debug] [2025-03-07T01:51:25.899Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio 200
+[debug] [2025-03-07T01:51:25.900Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio {"projectId":"alessandro-portfolio","projectNumber":"1077155633264","displayName":"olhotofografico","name":"projects/alessandro-portfolio","resources":{"hostingSite":"alessandro-portfolio","realtimeDatabaseInstance":"alessandro-portfolio-default-rtdb","locationId":"asia-northeast3"},"state":"ACTIVE","etag":"1_1da2c900-1b74-4a58-b557-46560b691182"}
+[info] 
+[info] === Deploying to 'alessandro-portfolio'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2025-03-07T01:51:25.907Z] Checked if tokens are valid: true, expires at: 1741315883129
+[debug] [2025-03-07T01:51:25.907Z] Checked if tokens are valid: true, expires at: 1741315883129
+[debug] [2025-03-07T01:51:25.908Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions [none]
+[debug] [2025-03-07T01:51:25.908Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}

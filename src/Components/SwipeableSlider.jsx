@@ -17,7 +17,7 @@ const SwipeableSlider = ({ itemData }) => {
                 alignItems: 'center',
                 overflowX: 'auto', // Permite rolagem horizontal
                 position: 'relative',
-                width: '90%',
+                width: '100%',
                 maxWidth: '100%', // Ajuste para o tamanho desejado
                 height: '250px', // Ajuste para o tamanho desejado
             }}
