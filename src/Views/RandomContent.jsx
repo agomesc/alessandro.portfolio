@@ -1,8 +1,7 @@
 import React, { useState, useEffect, lazy } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
-import Box from "@mui/material/Box";
-import { Paper, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
@@ -37,44 +36,20 @@ const RandomAffiliateAd = () => {
   }
 
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: "90%",
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-      }}
-    >
-      <TypographyTitle src="Publicidade"></TypographyTitle>
-      <Paper
-        sx={{
-          mt: 0,
-          display: 'flex',          // Habilita o uso de flexbox
-          justifyContent: 'center', // Alinha horizontalmente ao centro
-          alignItems: 'center',     // Alinha verticalmente ao centro
-          height: '100vh',          // Garante altura total da viewport
-          p: 3,
-          width: '100%',
-          border: 'none',           // Remove qualquer borda
-          boxShadow: 0,
-          margin: "0 auto",
-        }}
-
-      >
-        {randomAd ? (
-          randomAd.isLink ? (
-            <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
-              <LinkPreview url={randomAd.text} />
-            </Link>
-          ) : (
-            <Typography variant="body1">{randomAd.text}</Typography>
-          )
+    <>
+      {randomAd ? (
+        randomAd.isLink ? (
+          <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
+            <LinkPreview url={randomAd.text} />
+          </Link>
         ) : (
-          <Typography variant="body1">Carregando anúncio...</Typography>
-        )}
-      </Paper>
-    </Box>
+          <Typography variant="body1">{randomAd.text}</Typography>
+        )
+      ) : (
+        <Typography variant="body1">Carregando anúncio...</Typography>
+      )}
+
+    </>
   );
 };
 

@@ -34,23 +34,37 @@ const LinkPreview = ({ url }) => {
 
     return (<>
         <Box sx={{
-            p: 10,
-            width: "auto",
+            p: 0,
+            mt: 0,
+            width: "90%",
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",
-            marginBottom: 30,
-            maxHeight: 250,
-            maxWidth: "80%"
+            boxShadow: 0
         }}>
-            <Paper elevation={3} sx={{
-                p: 2,
-            }}>
-                <ImageComponent src={previewData?.image?.url} alt={previewData?.description} maxWidth="150px" ></ImageComponent>
+            <Paper
+                elevation={3}
+                sx={{
+                    mt: 0,
+                    p: 2,
+                    width: '50%',
+                    margin: "0 auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: 0
+
+                }}
+            >
+                <ImageComponent src={previewData?.image?.url} alt={previewData?.description} maxWidth={300} />
+                <Typography variant="subtitle1" sx={{ textAlign: "center", color: 'red' }}>
+                    Publicidade
+                </Typography>
                 <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
                     {previewData?.title}
                 </Typography>
-                <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+                <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
                     {previewData?.description}
                 </Typography>
             </Paper>
