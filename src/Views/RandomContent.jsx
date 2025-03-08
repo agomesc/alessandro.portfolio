@@ -55,7 +55,7 @@ const RandomAffiliateAd = () => {
           wordBreak: 'break-word',
           textAlign: "center",
           boxShadow: 0,
-          width: '30%',
+          minWidth: '600px',
           margin: "0 auto",
         }}
       >
