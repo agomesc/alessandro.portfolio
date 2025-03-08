@@ -21,7 +21,7 @@ const LinkPreview = ({ url }) => {
             }
         };
 
-        fetchData();
+        if (!previewData) fetchData();
     }, [url]);
 
     if (loading) {
@@ -46,15 +46,13 @@ const LinkPreview = ({ url }) => {
             <Paper elevation={3} sx={{
                 p: 2,
             }}>
-                <nav>
-                    <ImageComponent src={previewData.image.url} alt={previewData.description} maxWidth="150px" ></ImageComponent>
-                    <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
-                        {previewData.title}
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
-                        {previewData.description}
-                    </Typography>
-                </nav>
+                <ImageComponent src={previewData?.image?.url} alt={previewData?.description} maxWidth="150px" ></ImageComponent>
+                <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+                    {previewData?.title}
+                </Typography>
+                <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+                    {previewData?.description}
+                </Typography>
             </Paper>
         </Box>
     </>
