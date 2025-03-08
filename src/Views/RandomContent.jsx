@@ -44,22 +44,21 @@ const RandomAffiliateAd = () => {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
-        border: 'none',           // Remove qualquer borda
-        boxShadow: 0
       }}
     >
       <TypographyTitle src="Publicidade"></TypographyTitle>
       <Paper
         sx={{
-          mt: 10,
+          mt: 0,
           display: 'flex',          // Habilita o uso de flexbox
           justifyContent: 'center', // Alinha horizontalmente ao centro
           alignItems: 'center',     // Alinha verticalmente ao centro
           height: '100vh',          // Garante altura total da viewport
-          p: 0,
+          p: 3,
           width: '100%',
           border: 'none',           // Remove qualquer borda
           boxShadow: 0,
+          margin: "0 auto",
         }}
 
       >
