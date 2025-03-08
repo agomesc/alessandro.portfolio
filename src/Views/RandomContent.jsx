@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import Box from "@mui/material/Box";
 import { Paper, Typography } from '@mui/material';
-import LinkPreview from '../Components/LinkPreview';
 import { Link } from "react-router-dom";
+
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
+
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -33,15 +36,16 @@ const RandomAffiliateAd = () => {
     <Box
       sx={{ mt: 2, pt: 2, display: "flex", justifyContent: "center" }}
     >
+      <TypographyTitle src="Publicidade"></TypographyTitle>
       <Paper
         sx={{
           padding: '20px',
-          marginX: 'auto', // Centraliza horizontalmente
-          maxWidth: '600px', // Controla a largura
+          marginX: 'auto',
           width: '100%',
-          wordBreak: 'break-word', // Impede quebra de layout com links longos
+          minWidth: '250px',
+          wordBreak: 'break-word',
           textAlign: "center",
-          boxShadow: 0, // Adiciona um leve destaque
+          boxShadow: 0,
         }}
       >
         {randomAd ? (
