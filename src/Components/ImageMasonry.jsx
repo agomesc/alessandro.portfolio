@@ -30,7 +30,7 @@ const GalleryContainer = styled(Paper)(() => ({
   cursor: "pointer",
 }));
 
-const CardContainer = styled(Box)(() => ({
+const CardContainer = styled(Box)(({ theme, isPortrait }) => ({
   display: "flex",
   alignItems: "flex-start",
   gap: "16px",
@@ -38,9 +38,12 @@ const CardContainer = styled(Box)(() => ({
   borderRadius: "8px",
   backgroundColor: "#fff",
   marginBottom: "16px",
-  border: "1px solid #000",  // Adiciona uma borda
-  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",  // Adiciona uma sombra simples
+  border: "1px solid #000",
+  boxShadow: isPortrait
+    ? "0px 4px 10px rgba(0, 0, 0, 0.3)" // Sombra mais pronunciada no modo retrato
+    : "0px 4px 6px rgba(0, 0, 0, 0.1)", // Sombra padrão para paisagem
 }));
+
 
 const Thumbnail = styled("img")(() => ({
   width: 80,
@@ -75,7 +78,7 @@ const ImageMasonry = ({ data }) => {
         <>
           {data.map((item, index) => (
             <NavLink key={index} to={`/Photos/${item.id}`}>
-              <CardContainer>
+              <CardContainer isPortrait={isPortrait}>
                 <Thumbnail src={item.img} alt={item.title} />
                 <TextContainer>
                   <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>{item.title}</Typography>

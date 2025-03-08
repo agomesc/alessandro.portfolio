@@ -12,7 +12,6 @@ const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
 
-
   useEffect(() => {
     const fetchAds = async () => {
       const querySnapshot = await getDocs(collection(db, 'content'));
@@ -33,7 +32,6 @@ const RandomAffiliateAd = () => {
     if (!randomAd) fetchAds();
   }, []);
 
-
   if (!randomAd) {
     return <LoadingMessage />;
   }
@@ -46,18 +44,24 @@ const RandomAffiliateAd = () => {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
+        border: 'none',           // Remove qualquer borda
+        boxShadow: 0
       }}
     >
       <TypographyTitle src="Publicidade"></TypographyTitle>
       <Paper
         sx={{
-          padding: '20px',
-          wordBreak: 'break-word',
-          textAlign: "center",
+          mt: 10,
+          display: 'flex',          // Habilita o uso de flexbox
+          justifyContent: 'center', // Alinha horizontalmente ao centro
+          alignItems: 'center',     // Alinha verticalmente ao centro
+          height: '100vh',          // Garante altura total da viewport
+          p: 0,
+          width: '100%',
+          border: 'none',           // Remove qualquer borda
           boxShadow: 0,
-          minWidth: '600px',
-          margin: "0 auto",
         }}
+
       >
         {randomAd ? (
           randomAd.isLink ? (
