@@ -1,12 +1,12 @@
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
-import LoadingMessage from "../Components/LoadingMessage";
-import SocialMetaTags from "../Components/SocialMetaTags";
 import Box from "@mui/material/Box";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -51,8 +51,8 @@ const Gallery = () => {
                 >
                     <TypographyTitle src="Portfólio"></TypographyTitle>
                     <ImageMasonry data={galleryData} />
-                    <CommentBox itemID="Gallery" />
                 </Box>
+                <CommentBox itemID="Gallery" />
             </Suspense>
             <SocialMetaTags
                 title={metaData.title}

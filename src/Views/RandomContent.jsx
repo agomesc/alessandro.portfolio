@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
@@ -29,23 +30,33 @@ const RandomAffiliateAd = () => {
       }
     };
 
-    fetchAds();
+    if (!randomAd) fetchAds();
   }, []);
+
+
+  if (!randomAd) {
+    return <LoadingMessage />;
+  }
 
   return (
     <Box
-      sx={{ mt: 2, pt: 2, display: "flex", justifyContent: "center" }}
+      sx={{
+        p: 0,
+        width: "90%",
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+      }}
     >
       <TypographyTitle src="Publicidade"></TypographyTitle>
       <Paper
         sx={{
           padding: '20px',
-          marginX: 'auto',
-          width: '100%',
-          minWidth: '250px',
           wordBreak: 'break-word',
           textAlign: "center",
           boxShadow: 0,
+          width: '30%',
+          margin: "0 auto",
         }}
       >
         {randomAd ? (
