@@ -18,9 +18,9 @@ const LoadingMessage = () => {
           left: '50%',
           width: '50px',
           height: '50px',
-          marginLeft:'-25px', 
-          border: '6px solid #f3f3f3',
-          borderTop: '6px solid #3498db',
+          marginLeft: '-25px',
+          border: '6px solid #c0810d',
+          borderTop: '6px solid #c0810d',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite',
           transform: 'translate(-50%, -50%)'
