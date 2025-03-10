@@ -13,11 +13,9 @@ const ImageComponent = ({ src, alt, maxWidth = 1000 }) => (
         borderBottomRightRadius: 0,
         display: "block",
         maxWidth: maxWidth,
-        minWidth: '80px',
         width: "100%",
         height: "auto",
         cursor: "pointer",
-        flexWrap: 'wrap',
         zIndex: -1000,
       }}
       loading="lazy"

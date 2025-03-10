@@ -28,6 +28,7 @@ const LabelTop = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
   cursor: "pointer",
+  width: "auto"
 }));
 
 const CardContainer = styled(Box)(({ theme, isPortrait }) => ({
@@ -49,7 +50,7 @@ const Thumbnail = styled("img")(() => ({
   width: 80,
   height: 80,
   borderRadius: "5px",
-  objectFit: "cover",
+  objectFit: "fit",
 }));
 
 const TextContainer = styled(Box)(() => ({
@@ -89,7 +90,7 @@ const ImageMasonry = ({ data }) => {
           ))}
         </>
       ) : (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+        <Masonry columns={{ xs: 2, sm: 3, md: 4, lg: 5 }} spacing={2}>
           {data.map((item, index) => (
             <GalleryContainer key={index}>
               <NavLink key={index} to={`/Photos/${item.id}`}>
