@@ -11,6 +11,7 @@ const ImageComponent = ({ src, alt, maxWidth = 1000 }) => (
       style={{
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
+        boxShadow: 0,
         display: "block",
         maxWidth: maxWidth,
         width: "100%",

@@ -3,6 +3,7 @@ import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Typography } from '@mui/material';
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
@@ -37,18 +38,28 @@ const RandomAffiliateAd = () => {
 
   return (
     <>
-      {randomAd ? (
-        randomAd.isLink ? (
-          <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
-            <LinkPreview url={randomAd.text} />
-          </Link>
+      <Box
+        sx={{
+          p: 0,
+          width: "90%",
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+        }}
+      >
+        <TypographyTitle src="Anúncio" />
+        {randomAd ? (
+          randomAd.isLink ? (
+            <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
+              <LinkPreview url={randomAd.text} />
+            </Link>
+          ) : (
+            <Typography variant="body1">{randomAd.text}</Typography>
+          )
         ) : (
-          <Typography variant="body1">{randomAd.text}</Typography>
-        )
-      ) : (
-        <Typography variant="body1">Carregando anúncio...</Typography>
-      )}
-
+          <Typography variant="body1">Carregando anúncio...</Typography>
+        )}
+      </Box>
     </>
   );
 };

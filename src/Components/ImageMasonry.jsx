@@ -96,7 +96,9 @@ const ImageMasonry = ({ data }) => {
           {data.map((item, index) => (
             <GalleryContainer key={index}>
               <NavLink key={index} to={`/Photos/${item.id}`}>
-                <LabelTop>{item.title}</LabelTop>
+                <LabelTop>
+                  {sanitizeDescription(item.title)}
+                </LabelTop>
                 <ImageComponent src={item.img} alt={item.title} />
               </NavLink>
             </GalleryContainer>
