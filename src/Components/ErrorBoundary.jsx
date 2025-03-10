@@ -24,7 +24,7 @@ class ErrorBoundary extends Component {
       return (
         <MessageSnackbar
           message={this.state.error ? this.state.error.message : 'Ocorreu um erro'}
-          severity="info"
+          severity={this.state.error ? 'error' : 'info'}
         />
       );
     }

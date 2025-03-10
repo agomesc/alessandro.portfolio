@@ -28,18 +28,20 @@ const LabelTop = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
   cursor: "pointer",
-  width: "auto"
+  width: "auto",
+  boxShadow: 0,
+  border: 0
 }));
 
-const CardContainer = styled(Box)(({ theme, isPortrait }) => ({
+const CardContainer = styled(Box)(({ isPortrait }) => ({
   display: "flex",
   alignItems: "flex-start",
   gap: "16px",
   padding: "16px",
-  borderRadius: "8px",
+  borderRadius: "5px",
   backgroundColor: "#fff",
   marginBottom: "16px",
-  border: "1px solid #000",
+  border: "0px solid #000",
   boxShadow: isPortrait
     ? "0px 4px 10px rgba(0, 0, 0, 0.3)" // Sombra mais pronunciada no modo retrato
     : "0px 4px 6px rgba(0, 0, 0, 0.1)", // Sombra padrão para paisagem
