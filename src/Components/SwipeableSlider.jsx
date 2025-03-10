@@ -39,4 +39,4 @@ const SwipeableSlider = ({ itemData }) => {
     );
 };
 
-export default SwipeableSlider;
+export default React.memo(SwipeableSlider);

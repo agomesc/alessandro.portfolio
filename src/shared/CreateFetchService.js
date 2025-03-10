@@ -1,14 +1,20 @@
+import React from "react";
 function CreateFetchService() {
 	async function fetchWithInterceptor(url, options) {
 	  const response = await fetch(url, options);
 	  if (!response.ok) {
-		throw new Error(TryError(`Erro na requisição: ${response.status} ${response.statusText}`));
+		throw new Error(TryError(response.status));
 	  }
 	  return await response.json();
 	}
   
 	async function get(url) {
-	  return await fetchWithInterceptor(url);
+	  
+		if (!navigator.onLine) {
+			throw new Error(TryError(521));
+		}
+
+		return await fetchWithInterceptor(url);
 	}
   
 	async function post(url, data) {
@@ -78,6 +84,8 @@ function TryError(message) {
 			return "O servidor não tem a funcionalidade necessária para completar a solicitação.";
 		case "503":
 			return "O servidor está indisponível.";
+		case "521":
+			return "Off Line.";
 		default:
 			return "Erro desconhecido.";
 	}
