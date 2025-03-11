@@ -28,7 +28,7 @@ const LabelTop = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
   cursor: "pointer",
-  width: "auto",
+  width: "100%",
   boxShadow: 0,
   border: 0
 }));
@@ -92,7 +92,7 @@ const ImageMasonry = ({ data }) => {
           ))}
         </>
       ) : (
-        <Masonry columns={{ xs: 2, sm: 3, md: 4, lg: 5 }} spacing={2}>
+        <Masonry columns={{ xs: 2, sm: 3, md: 4, lg: 5 }} spacing={1}>
           {data.map((item, index) => (
             <GalleryContainer key={index}>
               <NavLink key={index} to={`/Photos/${item.id}`}>

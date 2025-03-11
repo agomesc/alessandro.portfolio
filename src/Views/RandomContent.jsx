@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Typography } from '@mui/material';
@@ -38,28 +38,30 @@ const RandomAffiliateAd = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          p: 0,
-          width: "90%",
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        }}
-      >
-        <TypographyTitle src="Anúncio" />
-        {randomAd ? (
-          randomAd.isLink ? (
-            <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
-              <LinkPreview url={randomAd.text} />
-            </Link>
+      <Suspense fallback={<LoadingMessage />}>
+        <Box
+          sx={{
+            p: 0,
+            width: "90%",
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+          }}
+        >
+          <TypographyTitle src="Anúncio" />
+          {randomAd ? (
+            randomAd.isLink ? (
+              <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
+                <LinkPreview url={randomAd.text} />
+              </Link>
+            ) : (
+              <Typography variant="body1">{randomAd.text}</Typography>
+            )
           ) : (
-            <Typography variant="body1">{randomAd.text}</Typography>
-          )
-        ) : (
-          <Typography variant="body1">Carregando anúncio...</Typography>
-        )}
-      </Box>
+            <Typography variant="body1">Carregando anúncio...</Typography>
+          )}
+        </Box>
+      </Suspense>
     </>
   );
 };
