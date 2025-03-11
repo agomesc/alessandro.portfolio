@@ -28,9 +28,10 @@ const LabelTop = styled(Paper)(() => ({
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
   cursor: "pointer",
-  width: "100%",
+  display: "inline-block",
   boxShadow: 0,
-  border: 0
+  border: 0,
+  overflow: "hidden",
 }));
 
 const CardContainer = styled(Box)(({ isPortrait }) => ({
