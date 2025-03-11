@@ -5,7 +5,7 @@ const CreateFlickrApp = () => {
 	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
 	const instance = CreateFlickrService();
 	const isMobile = window.innerWidth <= 768;
-	const sizeSuffix = isMobile ? '_m.jpg' : '_b.jpg'; 
+	const sizeSuffix = isMobile ? '_n.jpg' : '_b.jpg'; 
 
 	const getGallery = async () => {
 		const data = await instance.getList(userID);
