@@ -36,7 +36,7 @@ const LinkPreview = ({ url }) => {
         <Box sx={{
             p: 0,
             mt: 0,
-            width: "90%",
+            width: "100%",
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",

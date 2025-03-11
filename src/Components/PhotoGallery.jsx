@@ -1,39 +1,11 @@
 import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+import { Card, CardMedia, CardContent, Typography, IconButton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
-import PhotoModal from "./PhotoModal"; // Importe o componente
-import IconButton from "@mui/material/IconButton";
+import { yellow } from "@mui/material/colors";
 import InfoIcon from '@mui/icons-material/Info';
 import { NavLink } from "react-router-dom";
-import ImageComponent from './ImageComponent';
-import { yellow } from '@mui/material/colors';
-
-const LabelTop = styled(Paper)(() => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  backgroundColor: "rgba(2, 2, 2, 0.75)",
-  color: "#fff",
-  textAlign: "center",
-  padding: "10px",
-  display: "flex",
-  alignItems: "center",
-  borderRadius: 0,
-  textTransform: "uppercase",
-  fontSize: 12,
-  zIndex: 2,
-}));
-
-const GalleryContainer = styled(Paper)(() => ({
-  position: "relative",
-  cursor: "pointer",
-  display: "inline-block",
-  boxShadow: 0,
-  border: 10,
-  overflow: "hidden",
-}));
+import PhotoModal from "./PhotoModal"; // Componente de modal
+import ImageComponent from "./ImageComponent"; // Componente de imagem
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
@@ -41,29 +13,44 @@ const PhotoGallery = ({ photos }) => {
   return (
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
-          {photos.map((item, index) => (
-            <GalleryContainer
-              key={index}
-              onClick={() => setShowModal(true)}
-            >
-              <NavLink to={`/PhotoInfo/${item.id}`}>
-                <LabelTop style={{ zIndex: 1 }}>{item.title}
-                  <IconButton>
-                    <InfoIcon sx={{ bgcolor: yellow[700] }} aria-label="recipe" />
-                  </IconButton>
-                </LabelTop>
-              </NavLink>
-              <ImageComponent src={item.url} alt={item.title} />
-            </GalleryContainer>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+          {photos.map((item) => (
+            <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
+              <Card sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    bgcolor: yellow[700],
+                    zIndex: 2
+                  }}
+                  aria-label="info"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
+                >
+                  <InfoIcon />
+                </IconButton>
+
+                <CardMedia
+                  component="img"
+                  height="auto"
+                  image={item.url}
+                  alt={item.title}
+                  loading="lazy"
+                />
+                <CardContent>
+                  <Typography variant="subtitle1">{item.title}</Typography>
+                </CardContent>
+              </Card>
+            </NavLink>
           ))}
-        </Masonry >
+        </Masonry>
       )}
-      {
-        showModal && (
-          <PhotoModal photos={photos} onClose={() => setShowModal(false)} />
-        )
-      }
+
+      {showModal && <PhotoModal photos={photos} onClose={() => setShowModal(false)} />}
     </>
   );
 };

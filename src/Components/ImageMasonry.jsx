@@ -1,112 +1,71 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { Masonry } from "@mui/lab";
-import { styled } from "@mui/material/styles";
+import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
-import ImageComponent from './ImageComponent';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const LabelTop = styled(Paper)(() => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  backgroundColor: "rgba(2, 2, 2, 0.75)",
-  color: "#fff",
-  textAlign: "center",
-  padding: "10px",
-  display: "flex",
-  alignItems: "center",
-  borderRadius: 0,
-  textTransform: "uppercase",
-  fontSize: 12,
-  zIndex: 2,
-}));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
-const GalleryContainer = styled(Paper)(() => ({
-  position: "relative",
-  cursor: "pointer",
-  display: "inline-block",
-  boxShadow: 0,
-  border: 0,
-  overflow: "hidden",
-}));
-
-const CardContainer = styled(Box)(({ isPortrait }) => ({
-  display: "flex",
-  alignItems: "flex-start",
-  gap: "16px",
-  padding: "16px",
-  borderRadius: "5px",
-  backgroundColor: "#fff",
-  marginBottom: "16px",
-  border: "0px solid #000",
-  boxShadow: isPortrait
-    ? "0px 4px 10px rgba(0, 0, 0, 0.3)" // Sombra mais pronunciada no modo retrato
-    : "0px 4px 6px rgba(0, 0, 0, 0.1)", // Sombra padrão para paisagem
-}));
-
-
-const Thumbnail = styled("img")(() => ({
-  width: 80,
-  height: 80,
-  borderRadius: "5px",
-  objectFit: "fit",
-}));
-
-const TextContainer = styled(Box)(() => ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-start",
-  textAlign: "left",
-  verticalAlign: "middle",
-  color: "black",
-}));
-
-// Função auxiliar para remover tags HTML e limitar o texto a 100 caracteres
-const sanitizeDescription = (description) => {
-  const div = document.createElement("div");
-  div.innerHTML = description;
-  const text = div.textContent || div.innerText || "";
-  return text.length > 100 ? text.substring(0, 100) + "..." : text;
-};
-
-const ImageMasonry = ({ data }) => {
+const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   return (
-    <>
-      {isPortrait ? (
-        <>
-          {data.map((item, index) => (
-            <NavLink key={index} to={`/Photos/${item.id}`}>
-              <CardContainer isPortrait={isPortrait}>
-                <Thumbnail src={item.img} alt={item.title} />
-                <TextContainer>
-                  <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>{item.title}</Typography>
-                  <Typography variant="subtitle2">{sanitizeDescription(item.description)}</Typography>
-                </TextContainer>
-              </CardContainer>
+    <Box sx={{ p: 2, maxWidth: "1200px", mx: "auto" }}>
+      <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
+        <TypographyTitle src="Galeria de Fotos" />
+      </Suspense>
+
+      {data.length > 0 ? (
+        isPortrait ? (
+          // Layout para modo retrato (lista vertical)
+          data.map((item) => (
+            <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
+              <Card sx={{ display: "flex", mb: 2, boxShadow: 3 }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 120, height: 120, objectFit: "cover" }}
+                  image={item.img}
+                  alt={item.title}
+                />
+                <CardContent>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {item.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
+                  </Typography>
+                </CardContent>
+              </Card>
             </NavLink>
-          ))}
-        </>
-      ) : (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
-          {data.map((item, index) => (
-            <GalleryContainer key={index}>
-              <NavLink key={index} to={`/Photos/${item.id}`}>
-                <LabelTop>
-                  {sanitizeDescription(item.title)}
-                </LabelTop>
-                <ImageComponent src={item.img} alt={item.title} />
+          ))
+        ) : (
+          // Layout para modo paisagem (grade com Masonry)
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+            {data.map((item) => (
+              <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
+                <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+                  <CardMedia
+                    component="img"
+                    height="auto"
+                    image={item.img}
+                    alt={item.title}
+                    loading="lazy"
+                  />
+                  <CardContent>
+                    <Typography variant="subtitle1">{item.title}</Typography>
+                  </CardContent>
+                </Card>
               </NavLink>
-            </GalleryContainer>
-          ))}
-        </Masonry>
+            ))}
+          </Masonry>
+        )
+      ) : (
+        <Typography variant="h6" align="center" sx={{ mt: 4 }}>
+          Nenhuma imagem disponível
+        </Typography>
       )}
-    </>
+    </Box>
   );
 };
 
