@@ -11,20 +11,19 @@ import { yellow } from '@mui/material/colors';
 
 const Label = styled(Paper)(() => ({
   position: "absolute",
-  content: '""',
   top: 0,
   left: 0,
-  width: "auto",
-  height: "10%",
+  width: "100%",
   backgroundColor: "rgba(2, 2, 2, 0.75)",
   color: "#fff",
   textAlign: "center",
-  padding: "20px",
+  padding: "10px",
   display: "flex",
   alignItems: "center",
   borderRadius: 0,
   textTransform: "uppercase",
-  fontSize: 12
+  fontSize: 12,
+  zIndex: 2
 }));
 
 const GalleryContainer = styled(Paper)(() => ({
@@ -43,7 +42,7 @@ const PhotoGallery = ({ photos }) => {
 
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 2, sm: 3, md: 4, lg: 5 }} spacing={1}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {photos.map((item, index) => (
             <GalleryContainer
               key={index}
