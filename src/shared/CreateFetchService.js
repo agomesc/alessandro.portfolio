@@ -1,4 +1,3 @@
-import React from "react";
 function CreateFetchService() {
 	async function fetchWithInterceptor(url, options) {
 	  const response = await fetch(url, options);
