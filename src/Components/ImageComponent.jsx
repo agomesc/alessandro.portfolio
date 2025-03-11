@@ -17,7 +17,7 @@ const ImageComponent = ({ src, alt, maxWidth = 1000 }) => (
         height: "auto",
         cursor: "pointer",
         zIndex: -1000,
-        width: "fit-content",
+        width: "100%",
       }}
       loading="lazy"
     />

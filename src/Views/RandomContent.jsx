@@ -30,7 +30,7 @@ const RandomAffiliateAd = () => {
     };
 
     if (!randomAd) fetchAds();
-  }, []);
+  }, [randomAd]);
 
   if (!randomAd) {
     return <LoadingMessage />;

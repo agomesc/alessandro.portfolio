@@ -38,12 +38,6 @@ const GalleryContainer = styled(Paper)(() => ({
   overflow: "hidden",
 }));
 
-const StyledImage = styled(ImageComponent)(() => ({
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-}));
-
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -64,7 +58,7 @@ const PhotoGallery = ({ photos }) => {
                   </IconButton>
                 </Link>
               </Label>
-              <StyledImage src={item.url} alt={item.title} />
+              <ImageComponent src={item.url} alt={item.title} />
             </GalleryContainer>
           ))}
         </Masonry>

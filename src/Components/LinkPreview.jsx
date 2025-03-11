@@ -22,7 +22,7 @@ const LinkPreview = ({ url }) => {
         };
 
         if (!previewData) fetchData();
-    }, [url]);
+    }, [url, previewData]);
 
     if (loading) {
         return <div>Carregando pré-visualização...</div>;
