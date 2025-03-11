@@ -1,4 +1,4 @@
-import { React, lazy } from "react";
+import React, { lazy } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ImageComponent from './ImageComponent'

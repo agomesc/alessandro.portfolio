@@ -33,7 +33,7 @@ const LatestPhotos = () => {
 				<Box
 					sx={{
 						p: 0,
-						width: "98%",
+						width: "90%",
 						alignContent: "center",
 						alignItems: "center",
 						margin: "0 auto",

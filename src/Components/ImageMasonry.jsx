@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Masonry } from "@mui/lab";
 import { styled } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+  import { NavLink } from "react-router-dom";
 import ImageComponent from './ImageComponent';
 import useMediaQuery from "@mui/material/useMediaQuery";
 

@@ -30,7 +30,7 @@ const SwipeableSlider = ({ itemData }) => {
                         marginRight: '10px',
                         width: '100px', // Fixed square size
                         height: 'auto', // Fixed square size
-                        objectFit: 'fill', // Ensures content fits within square
+                        objectFit: 'cover', // Ensures content fits within square
                         borderRadius: '8px', // Optional for rounded squares
                     }}
                 />

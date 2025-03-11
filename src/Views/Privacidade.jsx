@@ -50,7 +50,7 @@ const Privacidade = () => {
                 }}
             >
                 <TypographyTitle src="Política de Privacidade e Termos de Uso" />
-                <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5 }}>
+                <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, boxShadow: 0 }}>
                     <Typography variant="body1" component="div">
                         {description}
                     </Typography>

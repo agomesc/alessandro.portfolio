@@ -53,7 +53,7 @@ const Photos = () => {
 				<Box
 					sx={{
 						p: 0,
-						width: "98%",
+						width: "90%",
 						alignContent: "center",
 						alignItems: "center",
 						margin: "0 auto",
@@ -64,8 +64,8 @@ const Photos = () => {
 						{galleryInfoData}
 					</Typography>
 					<PhotoGallery photos={galleryData} />
-					<CommentBox itemID={id} />
 				</Box>
+				<CommentBox itemID={id} />
 			</Suspense>
 			<SocialMetaTags
 				title={metaData.title}

@@ -19,20 +19,22 @@ const About = () => {
         Hoje sou um amante da fotografia, com muito orgulho, registrando momentos importantes da vida das pessoas e o resultado dessa trajetória está refletido em meu portfólio que apresento a vocês.`, []);
 
     return (
-        <Box
-            sx={{
-                p: 2,
-                width: "90%",
-                margin: "0 auto",
-                textAlign: "justify",
-            }}
-        >
-            <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
-            <Suspense fallback={<LoadingMessage />}>
-                <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
-                <CommentBox itemID="About" />
-            </Suspense>
-        </Box>
+        <>
+            <Box
+                sx={{
+                    p: 2,
+                    width: "90%",
+                    margin: "0 auto",
+                    textAlign: "justify",
+                }}
+            >
+                <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
+                <Suspense fallback={<LoadingMessage />}>
+                    <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
+                </Suspense>
+            </Box>
+            <CommentBox itemID="About" />
+        </>
     );
 };
 
