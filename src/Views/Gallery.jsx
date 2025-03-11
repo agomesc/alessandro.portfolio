@@ -49,7 +49,6 @@ const Gallery = () => {
                         margin: "0 auto",
                     }}
                 >
-                    <TypographyTitle src="Portfólio"></TypographyTitle>
                     <ImageMasonry data={galleryData} />
                 </Box>
                 <CommentBox itemID="Gallery" />
