@@ -14,10 +14,10 @@ const ImageComponent = ({ src, alt, maxWidth = 1000 }) => (
         boxShadow: 0,
         display: "inline-block",
         maxWidth: maxWidth,
-        width: "100%",
         height: "auto",
         cursor: "pointer",
         zIndex: -1000,
+        width: "fit-content",
       }}
       loading="lazy"
     />

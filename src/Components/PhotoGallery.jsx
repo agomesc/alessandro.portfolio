@@ -23,41 +23,48 @@ const Label = styled(Paper)(() => ({
   borderRadius: 0,
   textTransform: "uppercase",
   fontSize: 12,
-  zIndex: 2
+  zIndex: 2,
 }));
 
 const GalleryContainer = styled(Paper)(() => ({
   position: "relative",
   cursor: "pointer",
-  display: "inline-block",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   boxShadow: 0,
   border: 0,
   overflow: "hidden",
+}));
+
+const StyledImage = styled(ImageComponent)(() => ({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
 }));
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-
     <>
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {photos.map((item, index) => (
             <GalleryContainer
               key={index}
+              style={{ aspectRatio: `${item.width} / ${item.height}` }}
               onClick={() => setShowModal(true)}
             >
               <Label style={{ zIndex: 3 }}>{item.title}
-
                 <Link to={`/PhotoInfo/${item.id}`}>
                   <IconButton>
                     <InfoIcon sx={{ bgcolor: yellow[700] }} aria-label="recipe" />
                   </IconButton>
                 </Link>
-
               </Label>
-              <ImageComponent src={item.url} alt={item.title} />
+              <StyledImage src={item.url} alt={item.title} />
             </GalleryContainer>
           ))}
         </Masonry>

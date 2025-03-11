@@ -16,7 +16,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 
 const PhotoDashboard = ({ photoData }) => {
-  return (
+  return (<>
     <Card>
       <CardHeader
         title={
@@ -133,6 +133,7 @@ const PhotoDashboard = ({ photoData }) => {
         </IconButton>
       </Link>
     </Card>
+  </>
   );
 };
 
