@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "@babel/register": "^7.25.7",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

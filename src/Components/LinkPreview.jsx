@@ -48,7 +48,7 @@ const LinkPreview = ({ url }) => {
     }
 
     return (
-        <Box sx={{ p: 0, mt: 0, width: "60%", margin: "0 auto", boxShadow: 0 }}>
+        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0 }}>
             <Paper
                 elevation={3}
                 sx={{
