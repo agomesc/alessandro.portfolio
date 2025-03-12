@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Masonry from '@mui/lab/Masonry';
@@ -10,8 +10,6 @@ const ImageMasonry = ({ data = [] }) => {
 
   return (
     <Box sx={{ p: 2, maxWidth: "1200px", mx: "auto" }}>
-
-
       {data.length > 0 ? (
         isPortrait ? (
           data.map((item) => (

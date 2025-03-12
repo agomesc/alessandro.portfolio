@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import Box from "@mui/material/Box";
 import Paper from '@mui/material/Paper';
 import Typography from "@mui/material/Typography";
-import ImageComponent from "./ImageComponent";
+
+const ImageComponent = lazy(() => import("./ImageComponent"));
 
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
@@ -36,7 +37,7 @@ const LinkPreview = ({ url }) => {
         <Box sx={{
             p: 0,
             mt: 0,
-            width: "100%",
+            width: "60%",
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",

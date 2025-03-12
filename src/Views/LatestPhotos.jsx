@@ -1,15 +1,15 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 
 const LatestPhotos = () => {
 	const [galleryData, setGalleryData] = useState(null);
-	const instance = CreateFlickrApp();
+	const instance = useMemo(() => CreateFlickrApp(), []);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -33,10 +33,10 @@ const LatestPhotos = () => {
 				<Box
 					sx={{
 						p: 0,
-                        width: "90%",
-                        alignContent: "center",
-                        alignItems: "center",
-                        margin: "0 auto",
+						width: "90%",
+						alignContent: "center",
+						alignItems: "center",
+						margin: "0 auto",
 					}}
 				>
 					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}

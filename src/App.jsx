@@ -2,6 +2,7 @@ import React, { lazy, useState, useEffect } from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
+
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const Back = lazy(() => import("./Components/Back"));

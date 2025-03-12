@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, lazy } from "react";
 import { Card, CardMedia, CardContent, Typography, IconButton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import { yellow } from "@mui/material/colors";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
-import PhotoModal from "./PhotoModal"; // Componente de modal
+
+const PhotoModal = lazy(() => import("./PhotoModal"));
 
 const PhotoGallery = ({ photos }) => {
   const [showModal, setShowModal] = useState(false);

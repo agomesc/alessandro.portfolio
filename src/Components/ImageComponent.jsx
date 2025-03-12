@@ -9,8 +9,8 @@ const ImageComponent = ({ src, alt }) => (
     effect="black-and-white"
     style={{
       width: "100%",
-      height: "100%",
-      objectFit: "cover", // Garante que a imagem cubra o contêiner sem distorcer
+      height: "auto",
+      objectFit: "contain",
       display: "block"
     }}
     loading="lazy"

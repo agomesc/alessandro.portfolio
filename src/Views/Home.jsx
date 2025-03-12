@@ -1,18 +1,18 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
-import SocialMetaTags from "../Components/SocialMetaTags";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
 
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const instance = CreateFlickrApp();
+    const instance = useMemo(() => CreateFlickrApp(), []);
 
     useEffect(() => {
         async function fetchData() {

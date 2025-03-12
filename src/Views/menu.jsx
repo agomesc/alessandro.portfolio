@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, { useEffect, useState, Suspense, useMemo, useCallback } from "react";
+import React, { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
@@ -29,7 +29,8 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import LoadingMessage from "../Components/LoadingMessage";
+
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const TemporaryDrawer = () => {
     const [open, setOpen] = useState(false);
@@ -70,7 +71,6 @@ const TemporaryDrawer = () => {
     const items = useMemo(() => {
         const baseItems = [
             { route: "/Home", description: "Home", chid: false, icon: <HomeIcon /> },
-            // eslint-disable-next-line no-script-url
             { route: "JavaScript:void(0);", description: "Minhas Galerias", chid: false, icon: <PhotoLibraryIcon /> }
         ];
 
