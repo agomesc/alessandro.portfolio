@@ -13,7 +13,7 @@ import { Card } from '@mui/material';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
 
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 function CommentBox({ itemID }) {
   const [comment, setComment] = useState('');

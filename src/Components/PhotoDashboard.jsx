@@ -41,7 +41,7 @@ const PhotoDashboard = ({ photoData }) => {
 
       <CardContent>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="photo specifications">
+          <Table sx={{ width: "100%" }} aria-label="photo specifications">
             <TableBody>
               <TableRow>
                 <TableCell component="th" scope="row">
