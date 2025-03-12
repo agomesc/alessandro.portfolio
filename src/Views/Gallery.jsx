@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
-const CommentBox = lazy(() => import("../Components/comments"));
+const CommentBox = lazy(() => import("../Components/CommentBox"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 

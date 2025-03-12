@@ -5,7 +5,7 @@ import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
-const CommentBox = lazy(() => import("../Components/comments"));
+const CommentBox = lazy(() => import("../Components/CommentBox"));
 
 const About = () => {
 

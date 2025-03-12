@@ -1,13 +1,14 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
-import LoadingMessage from "../Components/LoadingMessage";
-import SocialMetaTags from "../Components/SocialMetaTags";
-import { Typography, Box } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
-const CommentBox = lazy(() => import("../Components/comments"));
+const CommentBox = lazy(() => import("../Components/CommentBox"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Photos = () => {
 	const { id } = useParams();

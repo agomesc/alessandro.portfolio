@@ -1,10 +1,10 @@
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
-import LoadingMessage from "../Components/LoadingMessage";
-import SocialMetaTags from "../Components/SocialMetaTags";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
-const CommentBox = lazy(() => import("../Components/comments"));
+const CommentBox = lazy(() => import("../Components/CommentBox"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 
 const GalleryWork = () => {
