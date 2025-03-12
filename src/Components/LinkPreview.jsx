@@ -12,9 +12,12 @@ const LinkPreview = ({ url }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+                const response = await fetch(`https://opengraph.io/api/1.1/site/${encodeURIComponent(url)}?app_id=SUA_CHAVE`);
                 const data = await response.json();
-                setPreviewData(data.data);
+
+                console.log('data', data);
+
+                setPreviewData(data.openGraph);
                 setLoading(false);
             } catch (error) {
                 console.error(error);
@@ -33,44 +36,21 @@ const LinkPreview = ({ url }) => {
         return <div>Pré-visualização não disponível.</div>;
     }
 
-    return (<>
-        <Box sx={{
-            p: 0,
-            mt: 0,
-            width: "60%",
-            alignContent: "center",
-            alignItems: "center",
-            margin: "0 auto",
-            boxShadow: 0
-        }}>
-            <Paper
-                elevation={3}
-                sx={{
-                    mt: 0,
-                    p: 2,
-                    width: '50%',
-                    margin: "0 auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    boxShadow: 0
-
-                }}
-            >
-                <ImageComponent src={previewData?.image?.url} alt={previewData?.description} maxWidth={300} />
+    return (
+        <Box sx={{ p: 0, mt: 0, width: "60%", margin: "0 auto", boxShadow: 0 }}>
+            <Paper elevation={3} sx={{ mt: 0, p: 2, width: '50%', margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: 0 }}>
+                <ImageComponent src={previewData.image} alt={previewData.description} maxWidth={300} />
                 <Typography variant="subtitle1" sx={{ textAlign: "center", color: 'red' }}>
                     Publicidade
                 </Typography>
                 <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-                    {previewData?.title}
+                    {previewData.title}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
-                    {previewData?.description}
+                    {previewData.description}
                 </Typography>
             </Paper>
         </Box>
-    </>
     );
 };
 

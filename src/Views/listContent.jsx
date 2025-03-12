@@ -22,7 +22,7 @@ const ListContent = () => {
             setAds(adsData);
         };
 
-        fetchAds();
+        if (!ads) fetchAds();
     }, []);
 
     const handleDelete = async (id) => {
@@ -46,6 +46,7 @@ const ListContent = () => {
                     </TableHead>
                     <TableBody>
                         {ads.map((ad) => (
+
                             <TableRow key={ad.id}>
                                 <TableCell component="th" scope="row">
                                     {ad.isLink ? (
