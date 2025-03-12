@@ -1,11 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
@@ -16,7 +14,6 @@ const ImageMasonry = ({ data = [] }) => {
 
       {data.length > 0 ? (
         isPortrait ? (
-          // Layout para modo retrato (lista vertical)
           data.map((item) => (
             <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
               <Card sx={{ display: "flex", mb: 2, boxShadow: 3 }}>
@@ -38,7 +35,6 @@ const ImageMasonry = ({ data = [] }) => {
             </NavLink>
           ))
         ) : (
-          // Layout para modo paisagem (grade com Masonry)
           <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
             {data.map((item) => (
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>

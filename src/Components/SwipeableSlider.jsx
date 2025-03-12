@@ -13,7 +13,6 @@ const SwipeableSlider = ({ itemData }) => {
             {...handlers} // Ensure swipeable functionality
             style={{
                 display: 'flex',
-                alignItems: 'center',
                 overflowX: 'auto',
                 position: 'relative',
                 width: '100%',
