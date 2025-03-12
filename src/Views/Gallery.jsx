@@ -1,8 +1,9 @@
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+import Typography from "@mui/material/Typography";
 
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/comments"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
@@ -49,6 +50,9 @@ const Gallery = () => {
                         margin: "0 auto",
                     }}
                 >
+                    <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
+                        <TypographyTitle src="Galeria de Fotos" />
+                    </Suspense>
                     <ImageMasonry data={galleryData} />
                 </Box>
                 <CommentBox itemID="Gallery" />

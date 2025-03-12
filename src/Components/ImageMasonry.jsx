@@ -12,9 +12,7 @@ const ImageMasonry = ({ data = [] }) => {
 
   return (
     <Box sx={{ p: 2, maxWidth: "1200px", mx: "auto" }}>
-      <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
-        <TypographyTitle src="Galeria de Fotos" />
-      </Suspense>
+
 
       {data.length > 0 ? (
         isPortrait ? (

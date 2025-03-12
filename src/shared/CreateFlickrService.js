@@ -31,7 +31,7 @@ const CreateFlickrService = () => {
 	const getLatestPhotos = async (userId) => {
 		const url = `https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
 		const data = await instance.get(url);
-		return data.photos.photo.slice(0, 30);
+		return data.photos.photo.slice(0, 10);
 	};
 
 	const getInfo = async (id) => {

@@ -33,10 +33,10 @@ const LatestPhotos = () => {
 				<Box
 					sx={{
 						p: 0,
-						width: "90%",
-						alignContent: "center",
-						alignItems: "center",
-						margin: "0 auto",
+                        width: "90%",
+                        alignContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto",
 					}}
 				>
 					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}

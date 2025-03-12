@@ -14,11 +14,15 @@ const SwipeableSlider = ({ itemData }) => {
             style={{
                 display: 'flex',
                 alignItems: 'center',
-                overflowX: 'auto', // Permits horizontal scroll
+                overflowX: 'auto',
                 position: 'relative',
                 width: '100%',
-                maxWidth: '100%', // Adjust to desired size
-                height: 'auto', // Adjust as needed
+                maxWidth: '1200px',
+                height: 'auto',
+                mx: "auto",
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
             }}
         >
             {itemData.map((image, index) => (
