@@ -7,7 +7,7 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (
-    <Box sx={{ p: 2, maxWidth: "1200px", mx: "auto" }}>
+    <Box sx={{ p: 2, maxWidth: { xs: "100%", sm: "90%" }, mx: "auto" }}>
       <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
         <TypographyTitle src="Atualizações" />
       </Suspense>

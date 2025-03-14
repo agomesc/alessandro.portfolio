@@ -16,7 +16,7 @@ const SwipeableSlider = ({ itemData }) => {
                 overflowX: 'auto',
                 position: 'relative',
                 width: '100%',
-                maxWidth: '1200px',
+                maxWidth: { xs: "100%", sm: "90%" },
                 height: 'auto',
                 mx: "auto",
                 alignContent: "center",

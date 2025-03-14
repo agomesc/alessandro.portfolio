@@ -9,7 +9,7 @@ const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   return (
-    <Box sx={{ p: 2, maxWidth: "1200px", mx: "auto" }}>
+    <Box sx={{ p: 2, maxWidth: { xs: "100%", sm: "90%" }, mx: "auto" }}>
       {data.length > 0 ? (
         isPortrait ? (
           data.map((item) => (
