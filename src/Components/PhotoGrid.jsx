@@ -1,17 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
 import Masonry from '@mui/lab/Masonry';
 
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (
-    <Box sx={{ p: 2, maxWidth: { xs: "100%", sm: "90%" }, mx: "auto" }}>
-      <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
-        <TypographyTitle src="Atualizações" />
-      </Suspense>
-
+    <>
       {itemData.length > 0 ? (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {itemData.map((item) => (
@@ -34,7 +28,8 @@ const PhotoGrid = ({ itemData = [] }) => {
           Nenhuma imagem disponível
         </Typography>
       )}
-    </Box>
+
+    </>
   );
 };
 

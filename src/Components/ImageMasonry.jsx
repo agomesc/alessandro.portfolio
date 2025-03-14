@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
+
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,7 +9,7 @@ const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   return (
-    <Box sx={{ p: 2, maxWidth: { xs: "100%", sm: "90%" }, mx: "auto" }}>
+    <>
       {data.length > 0 ? (
         isPortrait ? (
           data.map((item) => (
@@ -57,7 +57,7 @@ const ImageMasonry = ({ data = [] }) => {
           Nenhuma imagem disponível
         </Typography>
       )}
-    </Box>
+    </>
   );
 };
 

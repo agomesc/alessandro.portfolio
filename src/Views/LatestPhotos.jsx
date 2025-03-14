@@ -6,6 +6,7 @@ import SocialMetaTags from "../Components/SocialMetaTags";
 import Box from "@mui/material/Box";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const LatestPhotos = () => {
 	const [galleryData, setGalleryData] = useState(null);
@@ -39,6 +40,7 @@ const LatestPhotos = () => {
 						margin: "0 auto",
 					}}
 				>
+					<TypographyTitle src="Atualizações" />
 					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
 				</Box>
 			</Suspense>

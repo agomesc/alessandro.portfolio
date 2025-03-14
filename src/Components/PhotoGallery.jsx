@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
 
-const PhotoGallery = ({ photos }) => {
+const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
