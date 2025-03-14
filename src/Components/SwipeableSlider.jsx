@@ -16,7 +16,6 @@ const SwipeableSlider = ({ itemData }) => {
                 overflowX: 'auto',
                 position: 'relative',
                 width: '100%',
-                maxWidth: { xs: "100%", sm: "90%" },
                 height: 'auto',
                 mx: "auto",
                 alignContent: "center",
@@ -35,6 +34,7 @@ const SwipeableSlider = ({ itemData }) => {
                         height: 'auto', // Fixed square size
                         objectFit: 'cover', // Ensures content fits within square
                         borderRadius: '8px', // Optional for rounded squares
+                        margin: "0 auto",
                     }}
                 />
             ))}
