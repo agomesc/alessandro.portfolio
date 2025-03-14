@@ -13,7 +13,7 @@ const LinkPreview = ({ url }) => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?url=${encodeURIComponent(url)}`
+                    `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
                 );
                 const data = await response.json();
 
