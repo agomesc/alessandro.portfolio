@@ -1,6 +1,24 @@
 const CreateFetchService = () => {
+
+	let lastRequestTime = 0; 
+	
+	async function delay(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	async function fetchWithInterceptor(url, options = {}) {
 		try {
+
+			const currentTime = Date.now();
+			const timeSinceLastRequest = currentTime - lastRequestTime;
+			const delayTime = Math.max(0, 5000 - timeSinceLastRequest); // 5 segundos (5000ms)
+
+			if (delayTime > 0) {
+				await delay(delayTime); // Aguarde o tempo necessário
+			}
+
+			lastRequestTime = Date.now(); // Atualiza o tempo da última requisição
+
 			const response = await fetch(url, options);
 			if (!response.ok) {
 				throw new Error(TryError(response.status));
