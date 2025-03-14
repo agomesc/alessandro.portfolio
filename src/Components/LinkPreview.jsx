@@ -4,30 +4,23 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
-const API_KEY_OPENGRAPH = process.env.REACT_APP_API_KEY_OPENGRAPH;
-
-const getCachedData = (url) => {
-    const cached = localStorage.getItem(`opengraph_${url}`);
-    return cached ? JSON.parse(cached) : null;
-};
 
 const LinkPreview = ({ url }) => {
-    const [previewData, setPreviewData] = useState(getCachedData(url));
-    const [loading, setLoading] = useState(!previewData);
+    const [previewData, setPreviewData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (previewData) return; // Se já temos cache, evitamos a requisição
-
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `https://opengraph.io/api/1.1/site/${encodeURIComponent(url)}?app_id=${API_KEY_OPENGRAPH}`
+                    `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?url=${encodeURIComponent(url)}`
                 );
                 const data = await response.json();
 
-                if (data.hybridGraph) {
-                    setPreviewData(data.hybridGraph);
-                    localStorage.setItem(`opengraph_${url}`, JSON.stringify(data.hybridGraph));
+                console.log("data", data);
+
+                if (data) {
+                    setPreviewData(data);
                 }
             } catch (error) {
                 console.error("Erro ao buscar metadados:", error);
@@ -37,7 +30,7 @@ const LinkPreview = ({ url }) => {
         };
 
         fetchData();
-    }, [url, previewData]);
+    }, [url]);
 
     if (loading) {
         return <div>Carregando pré-visualização...</div>;
