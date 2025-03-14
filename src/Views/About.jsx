@@ -23,7 +23,7 @@ const About = () => {
             <Box
                 sx={{
                     p: 2,
-                    width: "90%",
+                    width: { xs: "100%", sm: "90%" },
                     margin: "0 auto",
                     textAlign: "justify",
                 }}

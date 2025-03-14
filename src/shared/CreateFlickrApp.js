@@ -1,8 +1,10 @@
 import CreateFlickrService from "../shared/CreateFlickrService";
 
 const CreateFlickrApp = () => {
+	
 	const userID = process.env.REACT_APP_USER_ID;
 	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
+
 	const instance = CreateFlickrService();
 	const isMobile = window.innerWidth <= 768;
 	const sizeSuffix = isMobile ? '_n.jpg' : '_b.jpg'; 

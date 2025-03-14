@@ -15,6 +15,7 @@ const LinkPreview = ({ url }) => {
                 const response = await fetch(
                     `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
                 );
+
                 const data = await response.json();
 
                 if (data) {
@@ -27,7 +28,8 @@ const LinkPreview = ({ url }) => {
             }
         };
 
-        fetchData();
+        if (loading) fetchData();
+
     }, [url]);
 
     if (loading) {

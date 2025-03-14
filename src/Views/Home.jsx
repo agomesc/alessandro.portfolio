@@ -36,7 +36,7 @@ const Home = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: "90%",
+                        width: { xs: "100%", sm: "90%" },
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",

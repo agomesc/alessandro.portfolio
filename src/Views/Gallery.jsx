@@ -32,7 +32,7 @@ const Gallery = () => {
         }
 
         if (!galleryData) fetchData();
-    }, [galleryData, instance]);
+    }, [galleryData, instance,]);
 
     if (!galleryData) {
         return <LoadingMessage />;
@@ -44,7 +44,7 @@ const Gallery = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: "90%",
+                        width: { xs: "100%", sm: "90%" },
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",

@@ -33,12 +33,22 @@ const CreateFlickrService = () => {
 	};
 
 	const getListcomments = async (photoId) => {
+
+		if (!photoId) {
+            throw new Error("photoId é obrigatório.");
+        }
+
 		const url = `${urlApi}/flickr/comments/${photoId}`;
 		const data = await instance.get(url);
 		return data;
 	};
 
 	const getLatestPhotos = async (userId) => {
+
+		if (!userId) {
+            throw new Error("userId é obrigatório.");
+        }
+
 		const url = `${urlApi}/flickr/latest/${userId}`;
 		const data = await instance.get(url);
 		return data;
@@ -46,12 +56,24 @@ const CreateFlickrService = () => {
 
 	const getInfo = async (id) => {
 
+
+		if (!id) {
+            throw new Error("id é obrigatório.");
+        }
+		
+
 		const url = `${urlApi}/flickr/info/${id}`
 		const data = await instance.get(url);
 		return data;
 	};
 
 	const getExifInfo = async (id) => {
+
+		
+		if (!id) {
+            throw new Error("id é obrigatório.");
+        }
+
 		const url = `${urlApi}/flickr/exif/${id}`;
 		const data = await instance.get(url);
 		return data;
