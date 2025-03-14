@@ -13,7 +13,7 @@ const PhotoGallery = ({ photos = [] }) => {
   return (
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={0}>
           {photos.map((item) => (
             <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
               <Card sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
