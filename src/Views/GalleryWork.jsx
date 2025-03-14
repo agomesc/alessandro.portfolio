@@ -1,10 +1,13 @@
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 
 const GalleryWork = () => {
@@ -39,9 +42,24 @@ const GalleryWork = () => {
     return (
         <>
             <Suspense fallback={<LoadingMessage />}>
-                <ImageMasonry data={galleryData} />
-                <CommentBox itemID="Gallery" />
+                <Box
+                    sx={{
+                        p: 0,
+                        width: { xs: "100%", sm: "90%" },
+                        alignContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto",
+                        padding: "0 20px",
+                    }}
+                >
+                    <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
+                        <TypographyTitle src="Meus Trabalhos" />
+                    </Suspense>
+                    <ImageMasonry data={galleryData} />
+                    <CommentBox itemID="Gallery" />
+                </Box>
             </Suspense>
+
             <SocialMetaTags
                 title={metaData.title}
                 image={metaData.url}

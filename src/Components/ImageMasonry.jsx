@@ -14,7 +14,7 @@ const ImageMasonry = ({ data = [] }) => {
         isPortrait ? (
           data.map((item) => (
             <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-              <Card sx={{ display: "flex", mb: 2, boxShadow: 3 }}>
+              <Card sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 120, height: 120, objectFit: "cover" }}
@@ -33,7 +33,7 @@ const ImageMasonry = ({ data = [] }) => {
             </NavLink>
           ))
         ) : (
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
             {data.map((item) => (
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <Card sx={{ borderRadius: 2, boxShadow: 3 }}>

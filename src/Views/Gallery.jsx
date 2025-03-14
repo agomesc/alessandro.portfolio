@@ -48,6 +48,7 @@ const Gallery = () => {
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",
+                        padding: "0 20px",
                     }}
                 >
                     <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>

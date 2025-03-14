@@ -59,6 +59,7 @@ const Photos = () => {
 						alignContent: "center",
 						alignItems: "center",
 						margin: "0 auto",
+						padding: "0 20px",
 					}}
 				>
 					<TypographyTitle src="Minhas Fotos"></TypographyTitle>
