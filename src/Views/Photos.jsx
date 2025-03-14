@@ -35,7 +35,8 @@ const Photos = () => {
 		setGalleryData(data);
 
 		const albumInfo = await instance.getAlbum(id);
-		setGalleryInfoData(albumInfo.description._content);
+
+		setGalleryInfoData(albumInfo[0].description._content);
 
 	}, [id, instance]);
 

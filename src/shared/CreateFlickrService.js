@@ -1,50 +1,60 @@
 import CreateFetchService from './CreateFetchService'
 const CreateFlickrService = () => {
 
-	const apiKey = process.env.REACT_APP_FLICKR_API_KEY;
+	const urlApi = process.env.REACT_APP_FLICKR_API_URL;
 	const instance  = CreateFetchService();
-
+	
 	const getList = async (userId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
+		const url = `${urlApi}/flickr/albums/${userId}`;
 		const data = await instance.get(url);
-		return data.photosets.photoset;
+		return data;
 	};
 
 	const getAlbum = async (userId, photosetId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getInfo&api_key=${apiKey}&photoset_id=${photosetId}&user_id=${userId}&format=json&nojsoncallback=1`;
+
+		if (!userId || !photosetId) {
+            throw new Error("userId e photosetId são obrigatórios.");
+        }
+
+		const url = `${urlApi}/flickr/albums/${userId}?photosetId=${photosetId}`;
 		const data = await instance.get(url);
-		return data.photoset;
+		return data;
 	};
 
 	const getPhotos = async (albumId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&format=json&nojsoncallback=1`;
+
+		if (!albumId) {
+            throw new Error("albumId é obrigatório.");
+        }
+
+		const url = `${urlApi}/flickr/photos/${albumId}`;
 		const data = await instance.get(url);
-		return data.photoset.photo;
+		return data;
 	};
 
 	const getListcomments = async (photoId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photos.comments.getList&api_key=${apiKey}&photo_id=${photoId}&format=json&nojsoncallback=1`;
+		const url = `${urlApi}/flickr/comments/${photoId}`;
 		const data = await instance.get(url);
-		return data.comments.comment;
+		return data;
 	};
 
 	const getLatestPhotos = async (userId) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
+		const url = `${urlApi}/flickr/latest/${userId}`;
 		const data = await instance.get(url);
-		return data.photos.photo.slice(0, 10);
+		return data;
 	};
 
 	const getInfo = async (id) => {
 
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=${apiKey}&photo_id=${id}&format=json&nojsoncallback=1`
+		const url = `${urlApi}/flickr/info/${id}`
 		const data = await instance.get(url);
-		return data.photo;
+		return data;
 	};
 
 	const getExifInfo = async (id) => {
-		const url = `https://api.flickr.com/services/rest/?method=flickr.photos.getExif&api_key=${apiKey}&photo_id=${id}&format=json&nojsoncallback=1`;
+		const url = `${urlApi}/flickr/exif/${id}`;
 		const data = await instance.get(url);
-		return data.photo;
+		return data;
 	};
 	
 	return {
