@@ -6,6 +6,7 @@ import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
 const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);
@@ -42,7 +43,7 @@ const PhotoGallery = ({ photos = [] }) => {
                   loading="lazy"
                 />
                 <CardContent>
-                  <Typography variant="subtitle1">{item.title}</Typography>
+                  <Typography variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
                 </CardContent>
               </Card>
             </NavLink>

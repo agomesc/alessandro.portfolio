@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
@@ -23,7 +24,7 @@ const ImageMasonry = ({ data = [] }) => {
                 />
                 <CardContent>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    {item.title}
+                    {item.title}<StarComponent id={item.id} />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
@@ -45,7 +46,7 @@ const ImageMasonry = ({ data = [] }) => {
                     loading="lazy"
                   />
                   <CardContent>
-                    <Typography variant="subtitle1">{item.title}</Typography>
+                    <Typography variant="subtitle1">{item.title}<StarComponent id={item.id} /></Typography>
                   </CardContent>
                 </Card>
               </NavLink>

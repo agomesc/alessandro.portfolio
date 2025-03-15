@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (
@@ -18,7 +19,7 @@ const PhotoGrid = ({ itemData = [] }) => {
                 loading="lazy"
               />
               <CardContent>
-                <Typography variant="subtitle1">{item.title}</Typography>
+                <Typography variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
               </CardContent>
             </Card>
           ))}

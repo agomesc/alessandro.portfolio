@@ -9,6 +9,7 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
 const PhotoInfo = () => {
   const { id } = useParams();
@@ -56,6 +57,7 @@ const PhotoInfo = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <PhotoDashboard photoData={galleryData} />
           </Box>
+          <StarComponent id={id} />
         </Box>
         <CommentBox itemID={id} />
       </Suspense>
