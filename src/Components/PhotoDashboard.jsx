@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -14,6 +14,8 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
+
+const StarComponent = lazy(() => import("./StarComponent"));
 
 const PhotoDashboard = ({ photoData }) => {
   return (<>
@@ -126,7 +128,7 @@ const PhotoDashboard = ({ photoData }) => {
         </TableContainer>
       </CardContent>
 
-      <CardActions></CardActions>
+      <CardActions><StarComponent id={photoData.id} /></CardActions>
       <Link target="_new" to={photoData.photopage}>
         <IconButton>
           <FaFlickr />
