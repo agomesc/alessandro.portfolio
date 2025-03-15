@@ -14,30 +14,31 @@ const ImageMasonry = ({ data = [] }) => {
       {data.length > 0 ? (
         isPortrait ? (
           data.map((item) => (
-            <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-              <Card sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
+            <Card sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
+              <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 120, height: 120, objectFit: "cover" }}
                   image={item.img}
                   alt={item.title}
                 />
-                <CardContent>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {item.title}<StarComponent id={item.id} />
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </NavLink>
+              </NavLink>
+              <CardContent>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {item.title}<StarComponent id={item.id} />
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
+                </Typography>
+              </CardContent>
+            </Card>
           ))
         ) : (
           <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
             {data.map((item) => (
-              <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-                <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+
+              <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+                <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <CardMedia
                     component="img"
                     height="auto"
@@ -45,11 +46,12 @@ const ImageMasonry = ({ data = [] }) => {
                     alt={item.title}
                     loading="lazy"
                   />
-                  <CardContent>
-                    <Typography variant="subtitle1">{item.title}<StarComponent id={item.id} /></Typography>
-                  </CardContent>
-                </Card>
-              </NavLink>
+                </NavLink>
+                <CardContent>
+                  <Typography variant="subtitle1">{item.title}<StarComponent id={item.id} /></Typography>
+                </CardContent>
+              </Card>
+
             ))}
           </Masonry>
         )

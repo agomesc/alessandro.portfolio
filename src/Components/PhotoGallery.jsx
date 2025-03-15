@@ -16,25 +16,25 @@ const PhotoGallery = ({ photos = [] }) => {
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {photos.map((item) => (
-            <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-              <Card sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    bgcolor: yellow[700],
-                    zIndex: 2
-                  }}
-                  aria-label="info"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowModal(true);
-                  }}
-                >
-                  <Slideshow />
-                </IconButton>
 
+            <Card sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  bgcolor: yellow[700],
+                  zIndex: 2
+                }}
+                aria-label="info"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowModal(true);
+                }}
+              >
+                <Slideshow />
+              </IconButton>
+              <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
                   height="auto"
@@ -42,11 +42,12 @@ const PhotoGallery = ({ photos = [] }) => {
                   alt={item.title}
                   loading="lazy"
                 />
-                <CardContent>
-                  <Typography variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
-                </CardContent>
-              </Card>
-            </NavLink>
+              </NavLink>
+              <CardContent>
+                <Typography variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
+              </CardContent>
+            </Card>
+
           ))}
         </Masonry>
       )}

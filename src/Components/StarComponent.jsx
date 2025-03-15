@@ -7,6 +7,12 @@ const StarComponent = ({ id }) => {
     const [isClicked, setIsClicked] = useState(false);
 
     useEffect(() => {
+        // Verifica no localStorage se o id já foi clicado
+        const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
+        if (clickedImages.includes(id)) {
+            setIsClicked(true);
+        }
+
         // Obtém o contador atual do Firestore ao carregar o componente
         const fetchCount = async () => {
             const docRef = doc(db, "stars", id); // 'stars' é a coleção
@@ -24,6 +30,11 @@ const StarComponent = ({ id }) => {
     }, [id]);
 
     const handleClick = async () => {
+        if (isClicked) {
+            alert("Você já interagiu com essa imagem!");
+            return;
+        }
+
         const docRef = doc(db, "stars", id);
 
         // Incrementa o contador tanto local quanto no Firestore
@@ -33,6 +44,11 @@ const StarComponent = ({ id }) => {
         await updateDoc(docRef, {
             count: count + 1,
         });
+
+        // Salva o id da imagem no localStorage
+        const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
+        clickedImages.push(id);
+        localStorage.setItem("clickedImages", JSON.stringify(clickedImages));
     };
 
     return (
@@ -43,9 +59,10 @@ const StarComponent = ({ id }) => {
                     fontSize: "18px",
                     background: "none",
                     border: "none",
-                    cursor: "pointer",
+                    cursor: isClicked ? "not-allowed" : "pointer", // Cursor desativado se já clicado
                     color: isClicked ? "gold" : "gray", // Estrela dourada se clicada, cinza caso contrário
                 }}
+                disabled={isClicked} // Desabilita o botão se já clicado
             >
                 ⭐
             </button>
