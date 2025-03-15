@@ -4,6 +4,7 @@ import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from '@mui/material/Paper';
+import HomeIcon from '@mui/icons-material/Home'; // Importando ícones adicionais
 
 function LightBulbIcon(props) {
 	return (
@@ -16,25 +17,31 @@ function LightBulbIcon(props) {
 const ProTip = () => {
 	const linkContent = useMemo(() => (
 		<>
-			Flickr API <LightBulbIcon sx={{ mr: 1, verticalAlign: "center" }} />
+			Flickr API
 		</>
 	), []);
 
 	return (
 		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
-			<Paper elevation={3}>
+			<Paper elevation={1} sx={{ boxShadow: 0, border: 0 }}>
 				<Typography component="div" sx={{ mt: 2, mb: 2, p: 1, justifyContent: "center" }} color="text.secondary">
 					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
-						Alessandro Portfólio.
+						<HomeIcon sx={{ mr: 1 }} /> Olhofotográfico / Alessandro Portfólio
 					</Typography>
-					<Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						Desenvolvedor: Alessandro G
 					</Typography>
-					<Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						Todos os direitos reservados.
 					</Typography>
-					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						<Link href="https://www.flickr.com/services/api/">{linkContent}</Link>
+					</Typography>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
+						<Link href="https://firebase.google.com/?hl=pt-br">Firebase</Link>
+					</Typography>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
+						<Link href="https://vercel.com/">Vercel</Link>
 					</Typography>
 				</Typography>
 			</Paper>
