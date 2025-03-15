@@ -7,48 +7,51 @@ const StarComponent = ({ id }) => {
     const [isClicked, setIsClicked] = useState(false);
 
     useEffect(() => {
-        // Verifica no localStorage se o id já foi clicado
-        const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
-        if (clickedImages.includes(id)) {
-            setIsClicked(true);
-        }
+        const fetchData = async () => {
+            const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
 
-        // Obtém o contador atual do Firestore ao carregar o componente
-        const fetchCount = async () => {
-            const docRef = doc(db, "stars", id); // 'stars' é a coleção
+            // Verificar se o ID já foi clicado no localStorage
+            if (clickedImages.includes(id)) {
+                setIsClicked(true);
+            } else {
+                setIsClicked(false); // Certifique-se de redefinir caso o estado tenha mudado
+            }
+
+            // Obter o contador do Firestore
+            const docRef = doc(db, "stars", id);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 setCount(docSnap.data().count || 0);
             } else {
-                // Se o documento não existir, inicialize com count 0
+                // Inicializa no Firestore caso não exista
                 await setDoc(docRef, { count: 0 });
+                setCount(0);
             }
         };
 
-        fetchCount();
+        fetchData();
     }, [id]);
 
     const handleClick = async () => {
-        if (isClicked) {
-            alert("Você já interagiu com essa imagem!");
-            return;
-        }
-
+        const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
         const docRef = doc(db, "stars", id);
 
-        // Incrementa o contador tanto local quanto no Firestore
-        setCount((prevCount) => prevCount + 1);
-        setIsClicked(true); // Define o estado como clicado
-
-        await updateDoc(docRef, {
-            count: count + 1,
-        });
-
-        // Salva o id da imagem no localStorage
-        const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
-        clickedImages.push(id);
-        localStorage.setItem("clickedImages", JSON.stringify(clickedImages));
+        if (isClicked) {
+            // Remove a interação e decrementar o contador
+            setCount((prevCount) => prevCount - 1);
+            await updateDoc(docRef, { count: count - 1 });
+            const updatedImages = clickedImages.filter((imageId) => imageId !== id);
+            localStorage.setItem("clickedImages", JSON.stringify(updatedImages));
+            setIsClicked(false);
+        } else {
+            // Adiciona a interação e incrementa o contador
+            setCount((prevCount) => prevCount + 1);
+            await updateDoc(docRef, { count: count + 1 });
+            clickedImages.push(id);
+            localStorage.setItem("clickedImages", JSON.stringify(clickedImages));
+            setIsClicked(true);
+        }
     };
 
     return (
@@ -59,10 +62,10 @@ const StarComponent = ({ id }) => {
                     fontSize: "18px",
                     background: "none",
                     border: "none",
-                    cursor: isClicked ? "not-allowed" : "pointer", // Cursor desativado se já clicado
-                    color: isClicked ? "gold" : "gray", // Estrela dourada se clicada, cinza caso contrário
+                    cursor: isClicked ? "not-allowed" : "pointer",
+                    color: isClicked ? "gold" : "gray",
                 }}
-                disabled={isClicked} // Desabilita o botão se já clicado
+                disabled={isClicked}
             >
                 ⭐
             </button>
