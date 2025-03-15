@@ -35,13 +35,13 @@ const ProTip = () => {
 						Todos os direitos reservados.
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
-						<Link href="https://www.flickr.com/services/api/">{linkContent}</Link>
+						<Link target="_blank" rel="noopener noreferrer" href="https://www.flickr.com/services/api/">{linkContent}</Link>
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
-						<Link href="https://firebase.google.com/?hl=pt-br">Firebase</Link>
+						<Link target="_blank" rel="noopener noreferrer" href="https://firebase.google.com/?hl=pt-br">Firebase</Link>
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
-						<Link href="https://vercel.com/">Vercel</Link>
+						<Link target="_blank" rel="noopener noreferrer" href="https://vercel.com/">Vercel</Link>
 					</Typography>
 				</Typography>
 			</Paper>
