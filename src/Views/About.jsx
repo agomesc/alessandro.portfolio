@@ -31,10 +31,10 @@ const About = () => {
                 }}
             >
                 <TypographyTitle src="Sobre?"></TypographyTitle>
-                <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
                 <Suspense fallback={<LoadingMessage />}>
                     <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
                 </Suspense>
+                <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
             </Box>
             <CommentBox itemID="About" />
         </>
