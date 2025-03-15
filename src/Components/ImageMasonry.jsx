@@ -24,9 +24,11 @@ const ImageMasonry = ({ data = [] }) => {
                 />
               </NavLink>
               <CardContent>
-                <Typography component="div" variant="subtitle1" fontWeight="bold">
-                  {item.title}
-                </Typography>
+                <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
+                  <Typography component="div" variant="subtitle1" fontWeight="bold">
+                    {item.title}
+                  </Typography>
+                </NavLink>
                 <Typography component="div" variant="body2" color="text.secondary">
                   {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
                   <StarComponent id={item.id} />
