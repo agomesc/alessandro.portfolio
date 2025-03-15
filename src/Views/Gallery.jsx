@@ -51,7 +51,7 @@ const Gallery = () => {
                         padding: "0 20px",
                     }}
                 >
-                    <Suspense fallback={<Typography variant="h6">Carregando...</Typography>}>
+                    <Suspense fallback={<Typography variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
                     <ImageMasonry data={galleryData} />

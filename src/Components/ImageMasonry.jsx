@@ -25,10 +25,11 @@ const ImageMasonry = ({ data = [] }) => {
               </NavLink>
               <CardContent>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {item.title}<StarComponent id={item.id} />
+                  {item.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
+                  <StarComponent id={item.id} />
                 </Typography>
               </CardContent>
             </Card>
@@ -56,7 +57,7 @@ const ImageMasonry = ({ data = [] }) => {
           </Masonry>
         )
       ) : (
-        <Typography variant="h6" align="center" sx={{ mt: 4 }}>
+        <Typography variant="h4" align="center" sx={{ mt: 4 }}>
           Nenhuma imagem disponível
         </Typography>
       )}

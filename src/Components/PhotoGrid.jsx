@@ -25,7 +25,7 @@ const PhotoGrid = ({ itemData = [] }) => {
           ))}
         </Masonry>
       ) : (
-        <Typography variant="h6" align="center" sx={{ mt: 4 }}>
+        <Typography variant="h4" align="center" sx={{ mt: 4 }}>
           Nenhuma imagem disponível
         </Typography>
       )}
