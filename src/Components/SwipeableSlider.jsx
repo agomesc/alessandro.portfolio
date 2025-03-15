@@ -1,8 +1,6 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Box from "@mui/material/Box";
-
-const ImageComponent = lazy(() => import("./ImageComponent"));
 
 const SwipeableSlider = ({ itemData }) => {
     const handlers = useSwipeable({
@@ -26,7 +24,19 @@ const SwipeableSlider = ({ itemData }) => {
             }}
         >
             {itemData.map((image, index) => (
-                <ImageComponent key={index} src={image.url} alt={image.title} />
+                <img
+                    key={index}
+                    src={image.url}
+                    alt={image.title}
+                    style={{
+                        marginRight: '5px',
+                        width: '250px', // Fixed square size
+                        height: '250px', // Fixed square size
+                        objectFit: 'contain', // Ensures content fits within square
+                        borderRadius: '5px', // Optional for rounded squares
+                        margin: "0 auto",
+                    }}
+                />
             ))}
         </Box>
     );
