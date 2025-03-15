@@ -15,7 +15,7 @@ const SocialShareBar = ({ url, title }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
       <Typography component="div" variant="subtitle1" style={{ marginBottom: '5px' }}>
-        Compartilhe:
+        Compartilhe
       </Typography>
       <div style={{ display: 'flex', gap: '10px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
