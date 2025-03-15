@@ -15,7 +15,7 @@ const SwipeableSlider = ({ itemData }) => {
                 display: 'flex',
                 overflowX: 'auto',
                 position: 'relative',
-                width: '80%',
+                width: '100%',
                 height: 'auto',
                 mx: "auto",
                 alignContent: "center",
@@ -29,11 +29,11 @@ const SwipeableSlider = ({ itemData }) => {
                     src={image.url}
                     alt={image.title}
                     style={{
-                        marginRight: '10px',
-                        width: '100px', // Fixed square size
-                        height: '100px', // Fixed square size
-                        objectFit: 'cover', // Ensures content fits within square
-                        borderRadius: '8px', // Optional for rounded squares
+                        marginRight: '5px',
+                        width: '150px', // Fixed square size
+                        height: '150px', // Fixed square size
+                        objectFit: 'contain', // Ensures content fits within square
+                        borderRadius: '5px', // Optional for rounded squares
                         margin: "0 auto",
                     }}
                 />

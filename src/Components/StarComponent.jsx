@@ -11,11 +11,7 @@ const StarComponent = ({ id }) => {
             const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
 
             // Verificar se o ID já foi clicado no localStorage
-            if (clickedImages.includes(id)) {
-                setIsClicked(true);
-            } else {
-                setIsClicked(false); // Certifique-se de redefinir caso o estado tenha mudado
-            }
+            setIsClicked(clickedImages.includes(id));
 
             // Obter o contador do Firestore
             const docRef = doc(db, "stars", id);
@@ -65,11 +61,10 @@ const StarComponent = ({ id }) => {
                     cursor: isClicked ? "not-allowed" : "pointer",
                     color: isClicked ? "gold" : "gray",
                 }}
-                disabled={isClicked}
             >
                 ⭐
             </button>
-            <div style={{ fontWeight: "bold", margin: 0 }}>{count}</div>
+            <span style={{ fontWeight: "bold", margin: 0 }}>{count}</span>
         </div>
     );
 };

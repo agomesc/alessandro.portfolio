@@ -56,13 +56,13 @@ const LinkPreview = ({ url }) => {
                 }}
             >
                 <ImageComponent src={previewData.image} alt={previewData.description} maxWidth={300} />
-                <Typography variant="subtitle1" sx={{ textAlign: "center", color: "red" }}>
+                <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
                     Publicidade
                 </Typography>
-                <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+                <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
                     {previewData.title}
                 </Typography>
-                <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
+                <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
                     {previewData.description}
                 </Typography>
             </Paper>

@@ -19,13 +19,13 @@ const PhotoGrid = ({ itemData = [] }) => {
                 loading="lazy"
               />
               <CardContent>
-                <Typography variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
+                <Typography component="div" variant="subtitle1">{item.title} <StarComponent id={item.id} /></Typography>
               </CardContent>
             </Card>
           ))}
         </Masonry>
       ) : (
-        <Typography variant="h4" align="center" sx={{ mt: 4 }}>
+        <Typography component="div" variant="h4" align="center" sx={{ mt: 4 }}>
           Nenhuma imagem disponível
         </Typography>
       )}

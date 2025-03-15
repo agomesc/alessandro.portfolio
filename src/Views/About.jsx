@@ -6,6 +6,7 @@ import SocialMetaTags from "../Components/SocialMetaTags";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const About = () => {
 
@@ -29,6 +30,7 @@ const About = () => {
                     padding: "0 20px",
                 }}
             >
+                <TypographyTitle src="Sobre?"></TypographyTitle>
                 <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
                 <Suspense fallback={<LoadingMessage />}>
                     <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />

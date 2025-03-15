@@ -52,7 +52,7 @@ const GalleryWork = () => {
                         padding: "0 20px",
                     }}
                 >
-                    <Suspense fallback={<Typography variant="h4">Carregando...</Typography>}>
+                    <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Meus Trabalhos" />
                     </Suspense>
                     <ImageMasonry data={galleryData} />

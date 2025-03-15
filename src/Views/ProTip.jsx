@@ -23,17 +23,17 @@ const ProTip = () => {
 	return (
 		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
 			<Paper elevation={3}>
-				<Typography sx={{ mt: 2, mb: 2, p: 1, justifyContent: "center" }} color="text.secondary">
-					<Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+				<Typography component="div" sx={{ mt: 2, mb: 2, p: 1, justifyContent: "center" }} color="text.secondary">
+					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
 						Alessandro Portfólio.
 					</Typography>
-					<Typography variant="subtitle2" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
 						Desenvolvedor: Alessandro G
 					</Typography>
-					<Typography variant="subtitle2" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
 						Todos os direitos reservados.
 					</Typography>
-					<Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
 						<Link href="https://www.flickr.com/services/api/">{linkContent}</Link>
 					</Typography>
 				</Typography>

@@ -14,7 +14,7 @@ const ImageMasonry = ({ data = [] }) => {
       {data.length > 0 ? (
         isPortrait ? (
           data.map((item) => (
-            <Card sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
+            <Card key={item.id} sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
@@ -24,10 +24,10 @@ const ImageMasonry = ({ data = [] }) => {
                 />
               </NavLink>
               <CardContent>
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography component="div" variant="subtitle1" fontWeight="bold">
                   {item.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography component="div" variant="body2" color="text.secondary">
                   {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
                   <StarComponent id={item.id} />
                 </Typography>
@@ -38,7 +38,7 @@ const ImageMasonry = ({ data = [] }) => {
           <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
             {data.map((item) => (
 
-              <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <CardMedia
                     component="img"
@@ -49,7 +49,7 @@ const ImageMasonry = ({ data = [] }) => {
                   />
                 </NavLink>
                 <CardContent>
-                  <Typography variant="subtitle1">{item.title}<StarComponent id={item.id} /></Typography>
+                  <Typography component="div" variant="caption">{item.title}<StarComponent id={item.id} /></Typography>
                 </CardContent>
               </Card>
 
@@ -57,7 +57,7 @@ const ImageMasonry = ({ data = [] }) => {
           </Masonry>
         )
       ) : (
-        <Typography variant="h4" align="center" sx={{ mt: 4 }}>
+        <Typography variant="h4" align="center" component="div" sx={{ mt: 4 }}>
           Nenhuma imagem disponível
         </Typography>
       )}
