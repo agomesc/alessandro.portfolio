@@ -26,7 +26,7 @@ const SwipeableSlider = ({ itemData }) => {
             }}
         >
             {itemData.map((image, index) => (
-                <ImageComponent key={index} src={image.url} alt={image.title} maxWidth={100} />
+                <ImageComponent key={index} src={image.url} alt={image.title} />
             ))}
         </Box>
     );
