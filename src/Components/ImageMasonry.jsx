@@ -18,26 +18,26 @@ const ImageMasonry = ({ data = [] }) => {
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 120, height: 120, objectFit: "cover" }}
+                  sx={{ width: 120, height: 120, objectFit: "cover", padding: 2 }}
                   image={item.img}
                   alt={item.title}
                 />
               </NavLink>
               <CardContent>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-                  <Typography component="div" variant="subtitle1" fontWeight="bold">
+                  <Typography component="div" variant="subtitle1" fontWeight="bold" sx={{ padding: 1, m: 0 }}>
                     {item.title}
                   </Typography>
                 </NavLink>
-                <Typography component="div" variant="body2" color="text.secondary">
-                  {item.description.length > 100 ? `${item.description.substring(0, 100)}...` : item.description}
-                  <StarComponent id={item.id} />
+                <Typography component="div" variant="caption" color="text.secondary" sx={{ padding: 1, m: 0 }}>
+                  {item.description.length > 100 ? `${item.description.substring(0, 150)}...` : item.description}
                 </Typography>
+                <StarComponent id={item.id} />
               </CardContent>
             </Card>
           ))
         ) : (
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 5 }} spacing={1}>
             {data.map((item) => (
 
               <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
@@ -51,7 +51,11 @@ const ImageMasonry = ({ data = [] }) => {
                   />
                 </NavLink>
                 <CardContent>
-                  <Typography component="div" variant="caption">{item.title}<StarComponent id={item.id} /></Typography>
+                  <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>{item.title}</Typography>
+                  <Typography component="div" variant="caption" color="text.secondary" sx={{ padding: 1, m: 0 }}>
+                    {item.description.length > 100 ? `${item.description.substring(0, 150)}...` : item.description}
+                  </Typography>
+                  <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
                 </CardContent>
               </Card>
 

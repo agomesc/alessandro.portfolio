@@ -51,11 +51,11 @@ const StarComponent = ({ id }) => {
     };
 
     return (
-        <div key={id} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div key={id} style={{ display: "flex", alignItems: "center", gap: "3px" }}>
             <button
                 onClick={handleClick}
                 style={{
-                    fontSize: "18px",
+                    fontSize: "14px",
                     background: "none",
                     border: "none",
                     cursor: isClicked ? "not-allowed" : "pointer",
@@ -64,7 +64,7 @@ const StarComponent = ({ id }) => {
             >
                 ⭐
             </button>
-            <span style={{ fontWeight: "bold", margin: 0, padding: 1, marginLeft: -12 }}>{count}</span>
+            <span style={{ fontWeight: "bold", margin: 0, padding: 0, fontSize: 10 }}>{count}</span>
         </div>
     );
 };

@@ -14,7 +14,7 @@ const PhotoGallery = ({ photos = [] }) => {
   return (
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 5 }} spacing={1}>
           {photos.map((item) => (
 
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
@@ -44,7 +44,7 @@ const PhotoGallery = ({ photos = [] }) => {
                 />
               </NavLink>
               <CardContent>
-                <Typography key={item.id} component="div" variant="subtitle1">{item.title}</Typography>
+                <Typography key={item.id} component="div" variant="caption">{item.title}</Typography>
                 <StarComponent id={item.id} />
               </CardContent>
             </Card>
