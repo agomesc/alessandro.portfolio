@@ -1,7 +1,6 @@
 import React, { useState, lazy } from "react";
 import { Card, CardMedia, CardContent, Typography, IconButton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
-import { yellow } from "@mui/material/colors";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
 
@@ -23,7 +22,7 @@ const PhotoGallery = ({ photos = [] }) => {
                   position: "absolute",
                   top: 8,
                   right: 8,
-                  bgcolor: yellow[700],
+                  bgcolor: "#c0810d",
                   zIndex: 2
                 }}
                 aria-label="info"
