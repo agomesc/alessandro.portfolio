@@ -32,7 +32,7 @@ const ImageMasonry = ({ data = [] }) => {
                 <Typography component="div" variant="caption" color="text.secondary" sx={{ padding: 1, m: 0 }}>
                   {item.description.length > 100 ? `${item.description.substring(0, 150)}...` : item.description}
                 </Typography>
-                <StarComponent id={item.id} />
+                <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
               </CardContent>
             </Card>
           ))
