@@ -18,7 +18,7 @@ const ImageMasonry = ({ data = [] }) => {
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 120, height: 120, objectFit: "cover", padding: 2 }}
+                  sx={{ width: 120, height: 120, objectFit: "cover", padding: 2, borderRadius:5 }}
                   image={item.img}
                   alt={item.title}
                 />

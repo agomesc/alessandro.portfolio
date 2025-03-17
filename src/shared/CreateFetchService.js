@@ -14,10 +14,10 @@ const CreateFetchService = () => {
 			const delayTime = Math.max(0, 5000 - timeSinceLastRequest); // 5 segundos (5000ms)
 
 			if (delayTime > 0) {
-				await delay(delayTime); // Aguarde o tempo necessário
+				await delay(delayTime); 
 			}
 
-			lastRequestTime = Date.now(); // Atualiza o tempo da última requisição
+			lastRequestTime = Date.now(); 
 
 			const response = await fetch(url, options);
 			if (!response.ok) {

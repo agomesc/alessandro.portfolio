@@ -64,7 +64,7 @@ const StarComponent = ({ id }) => {
             >
                 ⭐
             </button>
-            <span style={{ fontWeight: "bold", margin: 0, padding: 0, fontSize: 10 }}>{count}</span>
+            <span style={{ fontWeight: "bold", margin: 0, padding: 0, fontSize: 10, flexGrow: 1 }}>{count}</span>
         </div>
     );
 };
