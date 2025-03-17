@@ -9,28 +9,49 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
+const CACHE_KEY = 'randomAdCache';
+const CACHE_EXPIRY_KEY = 'randomAdCacheExpiry';
+const CACHE_DURATION_MS = 60 * 60 * 1000; // Cache for 1 hour
+
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
 
+  const isCacheValid = () => {
+    const expiry = localStorage.getItem(CACHE_EXPIRY_KEY);
+    return expiry && new Date().getTime() < new Date(expiry).getTime();
+  };
+
   useEffect(() => {
     const fetchAds = async () => {
-      const querySnapshot = await getDocs(collection(db, 'content'));
-      const adsData = querySnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate().toLocaleString()
-        }))
-        .filter(ad => ad.isActive);
+      if (isCacheValid()) {
+        // Use cached data
+        const cachedAd = JSON.parse(localStorage.getItem(CACHE_KEY));
+        setRandomAd(cachedAd);
+      } else {
+        // Fetch new data
+        const querySnapshot = await getDocs(collection(db, 'content'));
+        const adsData = querySnapshot.docs
+          .map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate().toLocaleString(),
+          }))
+          .filter(ad => ad.isActive);
 
-      if (adsData.length > 0) {
-        const randomIndex = Math.floor(Math.random() * adsData.length);
-        setRandomAd(adsData[randomIndex]);
+        if (adsData.length > 0) {
+          const randomIndex = Math.floor(Math.random() * adsData.length);
+          const selectedAd = adsData[randomIndex];
+          setRandomAd(selectedAd);
+
+          // Update cache
+          localStorage.setItem(CACHE_KEY, JSON.stringify(selectedAd));
+          localStorage.setItem(CACHE_EXPIRY_KEY, new Date().getTime() + CACHE_DURATION_MS);
+        }
       }
     };
 
-    if (!randomAd) fetchAds();
-  }, [randomAd]);
+    fetchAds();
+  }, []);
 
   if (!randomAd) {
     return <LoadingMessage />;
@@ -50,16 +71,12 @@ const RandomAffiliateAd = () => {
           }}
         >
           <TypographyTitle src="Anúncio" />
-          {randomAd ? (
-            randomAd.isLink ? (
-              <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
-                <LinkPreview url={randomAd.text} />
-              </Link>
-            ) : (
-              <Typography variant="body1">{randomAd.text}</Typography>
-            )
+          {randomAd.isLink ? (
+            <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
+              <LinkPreview url={randomAd.text} />
+            </Link>
           ) : (
-            <Typography variant="body1">Carregando anúncio...</Typography>
+            <Typography variant="body1">{randomAd.text}</Typography>
           )}
         </Box>
       </Suspense>
