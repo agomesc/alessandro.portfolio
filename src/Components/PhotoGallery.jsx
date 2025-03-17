@@ -45,8 +45,8 @@ const PhotoGallery = ({ photos = [] }) => {
               </NavLink>
               <CardContent>
                 <Typography key={item.id} component="div" variant="caption">{item.title}</Typography>
-                <StarComponent id={item.id} />
               </CardContent>
+              <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
             </Card>
 
           ))}

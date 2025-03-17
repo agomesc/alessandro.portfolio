@@ -18,7 +18,7 @@ const ImageMasonry = ({ data = [] }) => {
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 120, height: 120, objectFit: "cover", padding: 2, borderRadius:5 }}
+                  sx={{ width: 120, height: 120, objectFit: "cover", padding: 2, borderRadius: 5 }}
                   image={item.img}
                   alt={item.title}
                 />
@@ -51,7 +51,9 @@ const ImageMasonry = ({ data = [] }) => {
                   />
                 </NavLink>
                 <CardContent>
-                  <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>{item.title}</Typography>
+                  <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
+                    <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>{item.title}</Typography>
+                  </NavLink>
                   <Typography component="div" variant="caption" color="text.secondary" sx={{ padding: 1, m: 0 }}>
                     {item.description.length > 100 ? `${item.description.substring(0, 150)}...` : item.description}
                   </Typography>

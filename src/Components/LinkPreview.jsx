@@ -70,4 +70,4 @@ const LinkPreview = ({ url }) => {
     );
 };
 
-export default React.memo(LinkPreview);
+export default React.memo(LinkPreview); 
