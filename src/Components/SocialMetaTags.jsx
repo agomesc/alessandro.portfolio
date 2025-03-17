@@ -19,7 +19,6 @@ const SocialMetaTags = ({ title, image, description }) => {
     <>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={descricaoAtual} />
         <meta property="og:title" content={tituloAtual} />
         <meta property="og:description" content={descricaoAtual} />
         <meta property="og:image" content={imagemAtual || urlAtual} />
