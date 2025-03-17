@@ -30,13 +30,13 @@ const Photos = () => {
 	}, [galleryData]);
 
 	const fetchData = useCallback(async () => {
-		const data = await instance.getPhotos(id);
 
+		const data = await instance.getPhotos(id);
 		setGalleryData(data);
 
 		const albumInfo = await instance.getAlbum(id);
 
-		setGalleryInfoData(albumInfo[0].description._content);
+		setGalleryInfoData(albumInfo.description._content);
 
 	}, [id, instance]);
 
