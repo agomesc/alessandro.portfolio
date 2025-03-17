@@ -7,12 +7,6 @@ import HomeIcon from '@mui/icons-material/Home'; // Importando ícones adicionai
 
 
 const ProTip = () => {
-	const linkContent = useMemo(() => (
-		<>
-			Flickr API
-		</>
-	), []);
-
 	return (
 		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
 			<Paper elevation={1} sx={{ boxShadow: 0, border: 0 }}>
@@ -20,14 +14,14 @@ const ProTip = () => {
 					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
 						<HomeIcon sx={{ mr: 1 }} /> Olhofotográfico / Alessandro Portfólio
 					</Typography>
-					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
-						Desenvolvedor: Alessandro G
+					<Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+						Desenvolvido por Alessandro G
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						Todos os direitos reservados.
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
-						<Link target="_blank" rel="noopener noreferrer" href="https://www.flickr.com/services/api/">{linkContent}</Link>
+						<Link target="_blank" rel="noopener noreferrer" href="https://www.flickr.com/services/api/">Flickr API</Link>
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						<Link target="_blank" rel="noopener noreferrer" href="https://firebase.google.com/?hl=pt-br">Firebase</Link>
