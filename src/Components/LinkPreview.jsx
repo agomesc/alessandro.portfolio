@@ -8,7 +8,6 @@ const ImageComponent = lazy(() => import("./ImageComponent"));
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,9 +27,8 @@ const LinkPreview = ({ url }) => {
             }
         };
 
-        if (loading) fetchData();
-
-    }, [url]);
+        fetchData(); // Call fetchData unconditionally without relying on `loading`
+    }, [url]); // Dependency array includes `url` only
 
     if (loading) {
         return <div>Carregando pré-visualização...</div>;

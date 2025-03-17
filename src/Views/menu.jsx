@@ -96,7 +96,7 @@ const TemporaryDrawer = () => {
 
     const DrawerList = (
         <Suspense fallback={<LoadingMessage />}>
-            <Box sx={{ width: 250, backgroundColor: 'white', color: 'black' }} role="presentation">
+            <Box sx={{ width: 250, backgroundColor: 'white', color: '#6c6a6b' }} role="presentation">
                 <Divider />
                 <List>
                     {items.map((item, index) => {
@@ -117,9 +117,9 @@ const TemporaryDrawer = () => {
                                                 setOpen(false); // Fechar a gaveta ao clicar em um item que não tem filhos
                                             }
                                         }}
-                                        sx={{ color: 'black' }}
+                                        sx={{ color: '#6c6a6b' }}
                                     >
-                                        <ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
+                                        <ListItemIcon size="small" edge="start" color="#78884c" aria-label="menu">
                                             {item.icon}
                                         </ListItemIcon>
                                         <ListItemText primary={item.description} />
@@ -132,7 +132,7 @@ const TemporaryDrawer = () => {
                                 <Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
                                         <ListItemButton
-                                            sx={{ pl: 4, color: 'black' }}
+                                            sx={{ pl: 4, color: '#6c6a6b' }}
                                             component="a"
                                             href={item.route}
                                             onClick={(event) => {
@@ -140,7 +140,7 @@ const TemporaryDrawer = () => {
                                                 setOpen(false); // Fechar a gaveta ao clicar em um item filho
                                             }}
                                         >
-                                            <ListItemIcon size="small" edge="start" color="inherit" aria-label="menu">
+                                            <ListItemIcon size="small" edge="start" color="#78884c" aria-label="menu">
                                                 {item.icon}
                                             </ListItemIcon>
                                             <ListItemText primary={item.description} />
@@ -162,12 +162,12 @@ const TemporaryDrawer = () => {
 
     return (
         <div>
-            <AppBar position="fixed" color="inherit" sx={{ top: 0, backgroundColor: 'white', color: 'black' }}>
+            <AppBar position="fixed" sx={{ top: 0, backgroundColor: 'white', color: '#6c6a6b' }}>
                 <Toolbar>
                     <IconButton
                         size="large"
                         edge="start"
-                        color="inherit"
+                        color="#78884c"
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={toggleDrawer(true)}
@@ -175,7 +175,7 @@ const TemporaryDrawer = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        OlhoFotográfico
+                        <span style={{ color: "#78884c" }}>Olho</span><span style={{ color: "#6c6a6b" }} >Fotográfico</span>
                     </Typography>
                     {user ? (
                         <div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
@@ -186,7 +186,7 @@ const TemporaryDrawer = () => {
                                     aria-label="account of current user"
                                     aria-controls="menu-appbar"
                                     aria-haspopup="true"
-                                    color="inherit"
+                                    color="#78884c"
                                 >
                                     <LogoutIcon />
                                 </IconButton>
@@ -201,7 +201,7 @@ const TemporaryDrawer = () => {
                                         aria-label="account of current user"
                                         aria-controls="menu-appbar"
                                         aria-haspopup="true"
-                                        color="inherit"
+                                        color="#78884c"
                                     >
                                         <AccountCircle />
                                     </IconButton>

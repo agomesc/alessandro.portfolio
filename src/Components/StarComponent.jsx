@@ -62,7 +62,9 @@ const StarComponent = ({ id }) => {
                     color: isClicked ? "gold" : "gray",
                 }}
             >
-                ⭐
+                <span role="img" aria-label={isClicked ? "Selected Star" : "Unselected Star"}>
+                    ⭐
+                </span>
             </button>
             <span style={{ fontWeight: "bold", margin: 0, padding: 0, fontSize: 10, flexGrow: 1 }}>{count}</span>
         </div>

@@ -12,7 +12,7 @@ const Back = () => {
         bottom: "70px",
         right: "20px",
         zIndex: 1000,
-        backgroundColor: "#c0810d",
+        backgroundColor: "#78884c",
         color: "#ffffff",
     };
 

@@ -22,7 +22,7 @@ const ListContent = () => {
             setAds(adsData);
         };
 
-        if (!ads) fetchAds();
+        fetchAds();
     }, []);
 
     const handleDelete = async (id) => {
