@@ -16,7 +16,7 @@ const CreateFlickrService = () => {
             throw new Error("userId e photosetId são obrigatórios.");
         }
 
-		const url = `${urlApi}/flickr/albums/${userId}?photosetId=${photosetId}`;
+		const url = `${urlApi}/flickr/album/${userId}/${photosetId}`;
 		const data = await instance.get(url);
 		return data;
 	};
