@@ -33,9 +33,10 @@
     "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build"
+    "start": "node server.js",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [
