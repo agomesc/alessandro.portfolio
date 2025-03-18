@@ -20,6 +20,7 @@ app.get('*', (req, res) => {
     // Modifica dinamicamente a meta tag description
     const modifiedHtml = data.replace(
       /<meta name="description" content=".*?">/,
+      '<title>Alterado com sucesso!!</title>',
       '<meta name="description" content="Descrição dinâmica via Express">'
     );
 
