@@ -11,13 +11,6 @@ const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const cardStyles = {
-        p: 2,
-        margin: "0 auto",
-        boxShadow: 0,
-        border: 0,
-    };
-
     const cardMediaStyles = {
         maxWidth: 240,
         margin: "0 auto",

@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from "react-router-dom";
 
 const FormContent = () => {
   const [user, setUser] = useState(null);
@@ -17,6 +18,8 @@ const FormContent = () => {
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -37,7 +40,7 @@ const FormContent = () => {
       setMessage('Por favor, faça login para postar.');
       setSeverity('warning');
       setOpen(true);
-      window.location.href = '/Login';
+      navigate('/Login');
       return;
     }
 
@@ -47,7 +50,7 @@ const FormContent = () => {
         text,
         createdAt: serverTimestamp(),
         isActive,
-        isLink, // Inclui o novo campo
+        isLink,
       });
 
       setTitle('');
@@ -57,6 +60,7 @@ const FormContent = () => {
       setMessage('Postagem adicionada com sucesso!');
       setSeverity('success');
       setOpen(true);
+      navigate('/ListContent');
     } catch (error) {
       console.error('Erro ao adicionar postagem:', error.message);
       setMessage(`Erro ao adicionar postagem: ${error.message}`);

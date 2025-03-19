@@ -14,10 +14,12 @@ const Transparencia = lazy(() => import("./Views/Transparencia"));
 const ListContent = lazy(() => import("./Views/ListContent"));
 const FormContent = lazy(() => import("./Views/FormContent"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
+const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
+
 
 const AppRoutes = () => {
-  
-  const isLocalhost = window.location.hostname === "localhost"; 
+
+  const isLocalhost = window.location.hostname === "localhost";
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -36,6 +38,8 @@ const AppRoutes = () => {
         {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
         {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
+        <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
+
       </Routes>
     </Suspense>
   );

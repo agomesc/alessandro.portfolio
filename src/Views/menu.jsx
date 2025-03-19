@@ -29,6 +29,8 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
@@ -84,6 +86,7 @@ const TemporaryDrawer = () => {
         const additionalItems = [
             { route: "/GalleryWork", description: "Meus Trabalhos", chid: false, icon: <PhotoLibraryIcon /> },
             { route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
+            { route: "/ListContentWithPagination", description: "Seleção de Ofertas", chid: false, icon: <ShoppingCartIcon /> },
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
