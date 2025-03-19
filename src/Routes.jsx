@@ -11,8 +11,8 @@ const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
 const Login = lazy(() => import("./Views/auth/index"));
 const Privacidade = lazy(() => import("./Views/Privacidade"));
 const Transparencia = lazy(() => import("./Views/Transparencia"));
-const ListContent = lazy(() => import("./Views/ListContent"));
-const FormContent = lazy(() => import("./Views/FormContent"));
+// const ListContent = lazy(() => import("./Views/ListContent"));
+// const FormContent = lazy(() => import("./Views/FormContent"));
 
 
 const AppRoutes = () => {
@@ -30,8 +30,8 @@ const AppRoutes = () => {
         <Route path="/privacidade" element={<Privacidade />} />
         <Route path="/transparencia" element={<Transparencia />} />
         <Route path="/about" element={<About />} />
-        <Route path="/listContent" element={<ListContent />} />
-        <Route path="/formContent" element={<FormContent />} />
+        {/* <Route path="/listContent" element={<ListContent />} />
+        <Route path="/formContent" element={<FormContent />} /> */}
       </Routes>
     </Suspense>
   );

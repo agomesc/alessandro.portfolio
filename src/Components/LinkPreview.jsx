@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
+const LoadingMessage = lazy(() => import("./LoadingMessage"));
+
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const styles = {
-        p: 2,
-        width: { xs: "80%", xl: "60%" },
-        margin: "0 auto",
-    };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +33,7 @@ const LinkPreview = ({ url }) => {
     }, [url]);
 
     if (loading) {
-        return <div>Carregando pré-visualização...</div>;
+        return <LoadingMessage />;
     }
 
     if (!previewData) {
@@ -46,30 +41,30 @@ const LinkPreview = ({ url }) => {
     }
 
     return (
-        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0, border: 0 }}>
-            <Card sx={{ p: 2, width: "70%", margin: "0 auto", boxShadow: 0, border: 0 }}>
-                <CardMedia
-                    component="img"
-                    sx={{ width: 320, height: "auto", objectFit: "cover", padding: 2, borderRadius: 5 }}
-                    image={previewData.image}
-                    alt={previewData.description}
-                    media="photo"
-                    loading="lazy"
-                    style={styles}
-                />
-                <CardContent>
-                    <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
-                        Publicidade
-                    </Typography>
-                    <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
-                        {previewData.title}
-                    </Typography>
-                    <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
-                        {previewData.description}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </Box>
+        <Suspense fallback={<LoadingMessage />}>
+            <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+                <Card sx={{ p: 2, maxWidth: "70%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+                    <CardMedia
+                        component="img"
+                        image={previewData.image}
+                        alt={previewData.description}
+                        media="photo"
+                        loading="lazy"
+                    />
+                    <CardContent>
+                        <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
+                            Publicidade / Indicação
+                        </Typography>
+                        <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
+                            {previewData.title}
+                        </Typography>
+                        <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+                            {previewData.description}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+        </Suspense>
     );
 };
 
