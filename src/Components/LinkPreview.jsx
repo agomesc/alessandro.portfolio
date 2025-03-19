@@ -1,20 +1,20 @@
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-
-const ImageComponent = lazy(() => import("./ImageComponent"));
 
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
                     `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
                 );
-
                 const data = await response.json();
 
                 if (data) {
@@ -27,8 +27,8 @@ const LinkPreview = ({ url }) => {
             }
         };
 
-        fetchData(); // Call fetchData unconditionally without relying on `loading`
-    }, [url]); // Dependency array includes `url` only
+        fetchData();
+    }, [url]);
 
     if (loading) {
         return <div>Carregando pré-visualização...</div>;
@@ -39,33 +39,31 @@ const LinkPreview = ({ url }) => {
     }
 
     return (
-        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0 }}>
-            <Paper
-                elevation={3}
-                sx={{
-                    p: 2,
-                    width: "50%",
-                    margin: "0 auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    boxShadow: 0
-                }}
-            >
-                <ImageComponent src={previewData.image} alt={previewData.description} width={240} height={240} />
-                <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
-                    Publicidade
-                </Typography>
-                <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
-                    {previewData.title}
-                </Typography>
-                <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
-                    {previewData.description}
-                </Typography>
-            </Paper>
+        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+            <Card sx={{ p: 2, width: "50%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+                <CardMedia
+                    component="img"
+                    sx={{ width: 240, height: "auto", objectFit: "cover", padding: 2, borderRadius: 5 }}
+                    image={previewData.image}
+                    alt={previewData.description}
+                    media="photo"
+                    loading="lazy"
+                    style={{ p: 2, width: "50%", margin: "0 auto" }}
+                />
+                <CardContent>
+                    <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
+                        Publicidade
+                    </Typography>
+                    <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
+                        {previewData.title}
+                    </Typography>
+                    <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+                        {previewData.description}
+                    </Typography>
+                </CardContent>
+            </Card>
         </Box>
     );
 };
 
-export default React.memo(LinkPreview); 
+export default React.memo(LinkPreview);
