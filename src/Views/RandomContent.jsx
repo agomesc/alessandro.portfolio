@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
@@ -79,6 +80,21 @@ const RandomAffiliateAd = () => {
 
             <Typography component="div" variant="body1">{randomAd.text}</Typography>
           )}
+
+
+          <Link
+            to="/ListContentWithPagination"
+            style={{
+              textDecoration: 'none',
+              margin: '0 auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ShoppingCartIcon style={{ marginRight: '5px' }} /> Seleção de Ofertas
+          </Link>
+
         </Box>
       </Suspense>
     </>
