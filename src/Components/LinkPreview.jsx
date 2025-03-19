@@ -9,6 +9,13 @@ const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const styles = {
+        p: 2,
+        width: { xs: "80%", xl: "60%" },
+        margin: "0 auto",
+    };
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -40,7 +47,7 @@ const LinkPreview = ({ url }) => {
 
     return (
         <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0, border: 0 }}>
-            <Card sx={{ p: 2, width: "50%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+            <Card sx={{ p: 2, width: "70%", margin: "0 auto", boxShadow: 0, border: 0 }}>
                 <CardMedia
                     component="img"
                     sx={{ width: 320, height: "auto", objectFit: "cover", padding: 2, borderRadius: 5 }}
@@ -48,7 +55,7 @@ const LinkPreview = ({ url }) => {
                     alt={previewData.description}
                     media="photo"
                     loading="lazy"
-                    style={{ p: 2, width: "50%", margin: "0 auto" }}
+                    style={styles}
                 />
                 <CardContent>
                     <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
