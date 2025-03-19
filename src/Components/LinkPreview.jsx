@@ -53,7 +53,7 @@ const LinkPreview = ({ url }) => {
                     boxShadow: 0
                 }}
             >
-                <ImageComponent src={previewData.image} alt={previewData.description} maxWidth={300} />
+                <ImageComponent src={previewData.image} alt={previewData.description} width={240} height={240} />
                 <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
                     Publicidade
                 </Typography>
