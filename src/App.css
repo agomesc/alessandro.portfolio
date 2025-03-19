@@ -99,11 +99,11 @@ h1::after,
 h2::after,
 h3::after,
 h4::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
+  content:"";
+  position:absolute;
+  bottom:-5px;
   left: 0;
-  width: 40%;
+  width: 50%;
   height: 2px;
   background-color: #c0810d;
 }
