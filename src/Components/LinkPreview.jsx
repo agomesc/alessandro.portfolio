@@ -11,6 +11,19 @@ const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const cardStyles = {
+        p: 2,
+        margin: "0 auto",
+        boxShadow: 0,
+        border: 0,
+    };
+
+    const cardMediaStyles = {
+        maxWidth: 240,
+        margin: "0 auto",
+    };
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -43,22 +56,23 @@ const LinkPreview = ({ url }) => {
     return (
         <Suspense fallback={<LoadingMessage />}>
             <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto", boxShadow: 0, border: 0 }}>
-                <Card sx={{ p: 2, maxWidth: "70%", margin: "0 auto", boxShadow: 0, border: 0 }}>
+                <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0, border: 0 }}>
                     <CardMedia
                         component="img"
                         image={previewData.image}
                         alt={previewData.description}
                         media="photo"
                         loading="lazy"
+                        style={cardMediaStyles}
                     />
                     <CardContent>
                         <Typography component="div" variant="caption" sx={{ textAlign: "center", color: "red" }}>
                             Publicidade / Indicação
                         </Typography>
-                        <Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
+                        <Typography component="div" variant="body1" sx={{ textAlign: "center", fontWeight: "bold" }}>
                             {previewData.title}
                         </Typography>
-                        <Typography component="div" variant="subtitle2" sx={{ textAlign: "center" }}>
+                        <Typography component="div" variant="body2" sx={{ textAlign: "center" }}>
                             {previewData.description}
                         </Typography>
                     </CardContent>
