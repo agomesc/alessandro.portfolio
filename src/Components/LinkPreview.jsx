@@ -43,7 +43,7 @@ const LinkPreview = ({ url }) => {
             <Card sx={{ p: 2, width: "50%", margin: "0 auto", boxShadow: 0, border: 0 }}>
                 <CardMedia
                     component="img"
-                    sx={{ width: 240, height: "auto", objectFit: "cover", padding: 2, borderRadius: 5 }}
+                    sx={{ width: 320, height: "auto", objectFit: "cover", padding: 2, borderRadius: 5 }}
                     image={previewData.image}
                     alt={previewData.description}
                     media="photo"

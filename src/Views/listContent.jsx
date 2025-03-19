@@ -1,15 +1,17 @@
 import React, { useState, useEffect, lazy } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 const LinkPreview = lazy(() => import("../Components/LinkPreview"));
 
 const ListContent = () => {
     const [ads, setAds] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchAds = async () => {
@@ -29,13 +31,28 @@ const ListContent = () => {
         const docRef = doc(db, 'content', id);
         await deleteDoc(docRef);
         setAds(ads.filter((ad) => ad.id !== id));
+        setTimeout(() => {
+            navigate('/ListContent'); // Alterar para a rota correta de ListContent
+        }, 1000);
+    };
+
+    const handleAddNew = () => {
+        navigate('/FormContent'); // Certifique-se de que essa rota está configurada corretamente
     };
 
     return (
         <Box sx={{ p: 0, width: { xs: "100%", sm: "90%" }, height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
-            <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
+            <Typography component="div" sx={{ mt: 10, mb: 3 }} variant="subtitle1">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ mb: 3 }}
+                onClick={handleAddNew}
+            >
+                Adicionar Novo
+            </Button>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -46,7 +63,6 @@ const ListContent = () => {
                     </TableHead>
                     <TableBody>
                         {ads.map((ad) => (
-
                             <TableRow key={ad.id}>
                                 <TableCell component="th" scope="row">
                                     {ad.isLink ? (
