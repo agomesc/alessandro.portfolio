@@ -1,15 +1,15 @@
 import React from 'react';
 
-const ImageComponent = ({ src, alt, width = "100%", height = "auto" }) => (
+const ImageComponent = ({ src, alt, width, height }) => (
   <img
     alt={alt}
     src={src}
     loading="lazy"
     style={{
-      width: { width },
-      height: { height },
+      width: width,
+      height: height,
       objectFit: "cover",
-      display: "block"
+      display: "flex"
     }}
   />
 );
