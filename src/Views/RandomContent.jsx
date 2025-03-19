@@ -5,14 +5,22 @@ import { Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import logo from '../images/logo_192.png'
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const CACHE_KEY = 'randomAdCache';
 const CACHE_EXPIRY_KEY = 'randomAdCacheExpiry';
 const CACHE_DURATION_MS = 60 * 60 * 1000; // Cache for 1 hour
+
+const textoOfertas = "Bem-vindo à Seleção de Ofertas - onde economizar é mais fácil do que nunca!" +
+  " Descubra uma ampla variedade de produtos com descontos imperdíveis, pensados para atender às suas necessidades e ao seu bolso." +
+  " Nossa loja oferece promoções especiais em todas as categorias: eletrônicos, moda, casa e decoração, saúde e beleza, e muito mais!";
+
+const title = "Seleção de Ofertas";
 
 const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
@@ -92,10 +100,11 @@ const RandomAffiliateAd = () => {
               justifyContent: 'center',
             }}
           >
-            <ShoppingCartIcon style={{ marginRight: '5px' }} /> Seleção de Ofertas
+            <ShoppingCartIcon style={{ marginRight: '5px' }} /> {title}
           </Link>
 
         </Box>
+        <SocialMetaTags title={title} image={logo} description={textoOfertas} />
       </Suspense>
     </>
   );

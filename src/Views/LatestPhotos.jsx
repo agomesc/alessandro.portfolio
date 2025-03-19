@@ -2,11 +2,11 @@ import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
 import logo from "../images/logo_192.png";
-import SocialMetaTags from "../Components/SocialMetaTags";
 import Box from "@mui/material/Box";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const LatestPhotos = () => {
 	const [galleryData, setGalleryData] = useState(null);

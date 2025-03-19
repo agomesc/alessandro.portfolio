@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
 const ListContentWithPagination = () => {
     const [ads, setAds] = useState([]);
@@ -42,19 +43,21 @@ const ListContentWithPagination = () => {
                 {paginatedAds.map(ad => (
                     <Grid item xs={12} sm={6} md={4} key={ad.id}>
                         <Card>
-                            {ad.isLink ? (
-                                <Link target='_blank' to={ad.text} style={{ textDecoration: 'none' }}>
-                                    <LinkPreview url={ad.text} />
-                                </Link>
-                            ) : (
-                                <CardContent>
+                            <CardContent>
+                                {ad.isLink ? (
+                                    <Link target='_blank' to={ad.text} style={{ textDecoration: 'none' }}>
+                                        <LinkPreview url={ad.text} />
+                                    </Link>
+                                ) : (
+
                                     <Typography
                                         dangerouslySetInnerHTML={{ __html: ad.text }}
                                         variant="body2"
                                         component="div"
                                     />
-                                </CardContent>
-                            )}
+                                )}
+                                <StarComponent id={ad.id} sx={{ padding: 1, m: 0 }} />
+                            </CardContent>
                         </Card>
                     </Grid>
                 ))}
