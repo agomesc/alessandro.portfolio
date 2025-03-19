@@ -175,7 +175,7 @@ const TemporaryDrawer = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <span style={{ color: "#78884c" }}>Olho</span><span style={{ color: "#6c6a6b" }} >Fotográfico</span>
+                        <span style={{ color: "#78884c" }}>Olho</span><span style={{ color: "#6c6a6b" }}>Fotográfico</span>
                     </Typography>
                     {user ? (
                         <div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>

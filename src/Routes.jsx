@@ -16,6 +16,9 @@ const FormContent = lazy(() => import("./Views/FormContent"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
 
 const AppRoutes = () => {
+  
+  const isLocalhost = window.location.hostname === "localhost"; 
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
@@ -30,8 +33,8 @@ const AppRoutes = () => {
         <Route path="/privacidade" element={<Privacidade />} />
         <Route path="/transparencia" element={<Transparencia />} />
         <Route path="/about" element={<About />} />
-        <Route path="/listContent" element={<ListContent />} />
-        <Route path="/formContent" element={<FormContent />} />
+        {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
+        {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
       </Routes>
     </Suspense>
