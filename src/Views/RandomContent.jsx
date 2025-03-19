@@ -73,10 +73,11 @@ const RandomAffiliateAd = () => {
           <TypographyTitle src="Anúncio" />
           {randomAd.isLink ? (
             <Link target='_blank' to={randomAd.text} style={{ textDecoration: 'none' }}>
-              <LinkPreview url={randomAd.text} />
+              {randomAd && <LinkPreview url={randomAd.text} />}
             </Link>
           ) : (
-            <Typography variant="body1">{randomAd.text}</Typography>
+
+            <Typography component="div" variant="body1">{randomAd.text}</Typography>
           )}
         </Box>
       </Suspense>

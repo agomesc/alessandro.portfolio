@@ -54,7 +54,7 @@ const PhotoInfo = () => {
           <TypographyTitle src="Informações da Foto" />
 
           <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <PhotoDashboard photoData={galleryData} />
+            {galleryData && <PhotoDashboard photoData={galleryData} />}
           </Box>
         </Box>
         <CommentBox itemID={id} />

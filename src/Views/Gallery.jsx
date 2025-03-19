@@ -54,7 +54,7 @@ const Gallery = () => {
                     <Suspense fallback={<Typography variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
-                    <ImageMasonry data={galleryData} />
+                    {galleryData && <ImageMasonry data={galleryData} />}
                 </Box>
                 <CommentBox itemID="Gallery" />
             </Suspense>

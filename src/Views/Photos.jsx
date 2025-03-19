@@ -66,7 +66,7 @@ const Photos = () => {
 					<Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
 						{galleryInfoData}
 					</Typography>
-					<PhotoGallery photos={galleryData} />
+					{galleryData && <PhotoGallery photos={galleryData} />}
 				</Box>
 				<CommentBox itemID={id} />
 			</Suspense>
