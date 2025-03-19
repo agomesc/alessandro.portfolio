@@ -10,14 +10,12 @@ const PhotoDescription = ({ imageUrl, description }) => {
 
   return (
     <>
-
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
         <ImageComponent src={imageUrl} alt={autor} />
       </Box>
       <Typography variant="body1" component="div" sx={{ mt: 2, textAlign: "left" }}>
         {description}
       </Typography>
-
     </>
   );
 };

@@ -1,6 +1,7 @@
-import React from "react";
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css"; // Importe os estilos
+import React, { lazy } from "react";
+import "react-image-gallery/styles/css/image-gallery.css";
+
+const ImageGallery = lazy(() => import("react-image-gallery"));
 
 const PhotoCarousel = ({ photos }) => {
   const galleryImages = photos.map((item) => ({

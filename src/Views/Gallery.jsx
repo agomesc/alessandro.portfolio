@@ -27,7 +27,7 @@ const Gallery = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await instance.getGallery();
+            const data = await instance.getGallerySmall();
             setGalleryData(data);
         }
 

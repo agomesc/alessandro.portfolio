@@ -16,7 +16,7 @@ const Home = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await instance.getLatestPhotos();
+            const data = await instance.getLatestPhotosThumbnail();
             setGalleryData(data);
         }
         if (!galleryData) fetchData();

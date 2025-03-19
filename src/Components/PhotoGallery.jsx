@@ -35,6 +35,7 @@ const PhotoGallery = ({ photos = [] }) => {
               </IconButton>
               <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
+                  media="photo"
                   component="img"
                   height="auto"
                   image={item.url}

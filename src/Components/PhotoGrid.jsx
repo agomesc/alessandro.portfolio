@@ -12,8 +12,10 @@ const PhotoGrid = ({ itemData = [] }) => {
           {itemData.map((item) => (
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
               <CardMedia
+                media="photo"
                 component="img"
-                height="auto"
+                width="320"
+                height="240"
                 image={item.url}
                 alt={item.title || "Imagem sem descrição"}
                 loading="lazy"
@@ -26,7 +28,7 @@ const PhotoGrid = ({ itemData = [] }) => {
           ))}
         </Masonry>
       ) : (
-        <Typography component="div" variant="h4" align="center" sx={{ mt: 4 }}>
+        <Typography component="div" variant="caption" align="center" sx={{ mt: 4 }}>
           Nenhuma imagem disponível
         </Typography>
       )}
