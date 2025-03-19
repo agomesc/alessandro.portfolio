@@ -13,7 +13,7 @@ const FormContent = () => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(true);
-  const [isLink, setIsLink] = useState(false); // Novo estado para isLink
+  const [isLink, setIsLink] = useState(true);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
