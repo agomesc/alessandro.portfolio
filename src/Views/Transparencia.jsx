@@ -19,7 +19,7 @@ const Transparencia = () => {
     >
       <TypographyTitle src="Página de Transparência" />
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, border: 0, boxShadow: 0 }}>
-        <Typography variant="subtitle1">Quem Somos</Typography>
+        <Typography variant="subtitle1">Quem Somos?</Typography>
         <Typography paragraph>
           Somos apaixonados por fotografia e nosso site é dedicado a compartilhar nosso trabalho com o mundo. (Alessandro Portfólio.)
         </Typography>
