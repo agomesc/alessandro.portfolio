@@ -1,8 +1,8 @@
 /* /node_modules/typeface-roboto/files/roboto-regular.woff2 */
 @font-face {
   font-family: 'Roboto';
-  src: url('/node_modules/typeface-roboto/files/roboto-latin-500.woff2') format('woff2'),
-       url('/node_modules/typeface-roboto/files/roboto-latin-500.woff') format('woff');
+  src: url('/node_modules/typeface-roboto/files/roboto-latin-300.woff2') format('woff2'),
+       url('/node_modules/typeface-roboto/files/roboto-latin-300.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }

@@ -144,7 +144,7 @@ function CommentBox({ itemID }) {
           disabled={!isLoggedIn}
           placeholder={!isLoggedIn ? 'Caro visitante, Sua opinião é muito importante para nós! Convidamos você a compartilhar seus pensamentos ou experiências relacionadas à sua visita. Por favor, faça login através do ícone do usuário no menu superior para deixar seu comentário.' : ''}
         />
-        <Button sx={{ mb: 2, mt: 2 }} type="submit" disabled={!isLoggedIn} variant="contained" color="primary">Enviar comentário</Button>
+        <Button sx={{ mb: 2, mt: 2, backgroundColor: "#78884c" }} type="submit" disabled={!isLoggedIn} variant="contained">Enviar comentário</Button>
       </form>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>

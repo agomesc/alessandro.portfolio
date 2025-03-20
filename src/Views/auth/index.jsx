@@ -79,6 +79,7 @@ function Login() {
           variant="contained"
           color="primary"
           onClick={handleGoogleLogin}
+          sx={{ mb: 2, mt: 2, backgroundColor: "#78884c", display: "-ms-flexbox" }}
         >
           Entrar com Google
         </Button>
