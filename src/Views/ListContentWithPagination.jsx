@@ -28,7 +28,11 @@ const ListContentWithPagination = () => {
     }, []);
 
     const handlePageChange = (event, value) => {
+
+        event.preventDefault();
+
         setCurrentPage(value);
+
     };
 
     const paginatedAds = ads.slice(
@@ -38,7 +42,7 @@ const ListContentWithPagination = () => {
 
     return (
         <Box sx={{ p: 2, width: { xs: '100%', sm: '90%' }, margin: '0 auto' }}>
-            <TypographyTitle src="Guia Afiliado para as Melhores Compras Online"></TypographyTitle>
+            <TypographyTitle src="Seleção de ofertas"></TypographyTitle>
             <Grid container spacing={3}>
                 {paginatedAds.map(ad => (
                     <Grid item xs={12} sm={6} md={4} key={ad.id}>
