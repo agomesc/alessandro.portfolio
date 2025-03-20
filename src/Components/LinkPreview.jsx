@@ -19,10 +19,23 @@ const LinkPreview = ({ url }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
+            const timeout = (ms) =>
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Tempo limite excedido")), ms)
                 );
+
+            try {
+                const response = await Promise.race([
+                    fetch(
+                        `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
+                    ),
+                    timeout(10000) 
+                ]);
+
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.statusText}`);
+                }
+
                 const data = await response.json();
 
                 if (data) {
@@ -45,6 +58,8 @@ const LinkPreview = ({ url }) => {
     if (!previewData) {
         return <div>Pré-visualização não disponível.</div>;
     }
+
+    console.log('previewData', previewData);
 
     return (
         <Suspense fallback={<LoadingMessage />}>
