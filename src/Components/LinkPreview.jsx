@@ -29,7 +29,7 @@ const LinkPreview = ({ url }) => {
                     fetch(
                         `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
                     ),
-                    timeout(10000) 
+                    timeout(10000)
                 ]);
 
                 if (!response.ok) {
@@ -58,8 +58,6 @@ const LinkPreview = ({ url }) => {
     if (!previewData) {
         return <div>Pré-visualização não disponível.</div>;
     }
-
-    console.log('previewData', previewData);
 
     return (
         <Suspense fallback={<LoadingMessage />}>

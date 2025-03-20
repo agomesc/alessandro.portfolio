@@ -12,10 +12,12 @@ import Avatar from '@mui/material/Avatar';
 import { Card } from '@mui/material';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
+import { useNavigate } from "react-router-dom";
 
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 function CommentBox({ itemID }) {
+
   const [comment, setComment] = useState('');
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
@@ -24,6 +26,8 @@ function CommentBox({ itemID }) {
   const [comments, setComments] = useState([]);
   const [getiID, setID] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -72,8 +76,19 @@ function CommentBox({ itemID }) {
       setMessage('Por favor, faça login para comentar.');
       setSeverity('warning');
       setOpen(true);
-      window.location.href = '/Login';
+
+      setTimeout(() => {
+        navigate('/Login'); // Navega para a página de login após 2 segundos
+      }, 3000);
     }
+
+    if (!comment.trim()) {
+      setMessage('O campo de comentário não pode estar vazio.');
+      setSeverity('warning');
+      setOpen(true);
+      return;
+    }
+
 
     try {
       const docRef = await addDoc(collection(db, 'comments'), {

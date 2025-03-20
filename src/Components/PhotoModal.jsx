@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import PhotoCarousel from "./PhotoCarousel"; // Importe o componente PhotoCarousel
+import PhotoCarousel from "./PhotoCarousel";
 
 const PhotoModal = ({ photos, onClose }) => {
   return (
@@ -9,7 +9,7 @@ const PhotoModal = ({ photos, onClose }) => {
       <IconButton sx={{ mb: 3, mt: 0 }} onClick={onClose}>
         <CloseIcon />
       </IconButton>
-      <PhotoCarousel photos={photos} onClose={onClose} />
+      {photos && <PhotoCarousel photos={photos} onClose={onClose} />}
     </Box>
   );
 };

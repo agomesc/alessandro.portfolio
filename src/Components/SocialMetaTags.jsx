@@ -15,7 +15,7 @@ const SocialMetaTags = ({ title, image, description }) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image || currentUrl} />
       <meta name="twitter:site" content="@olhotografico" />
-      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:card" content={image} />
     </Helmet>
   );
 };
