@@ -7,25 +7,24 @@
 		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta http-equiv="Cache-Control" content="max-age: 31536000, no-cache, no-store, must-revalidate">
-		<meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
-		<meta http-equiv="Expires" content="Wed, 21 Oct 2024 07:28:00 GMT">
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Expires" content="0">
 		<meta name="keywords"
-			content="OlhoFotográfico, Fotografia de Rua, Street Photography, Olho Fotográfico, OlhoFotografico, Fotografia de Ensaios, Fotografia de Eventos, Fotografia de Paisagens, Fotografia de Retratos, Fotógrafo, Fotografia Personalizada, Fotografia de Casamento, Fotografia de Aniversário, Fotografia de Natureza, Fotografia Urbana, LifeStyle">
-		<meta property="og:type" content="website" />
-		<meta property="og:logo" content="%PUBLIC_URL%/logo_512.png" />
+			content="OlhoFotográfico, Fotografia de Rua, Street Photography, Fotografia de Ensaios, Fotografia de Eventos, Fotografia de Paisagens, Fotografia de Retratos, Fotógrafo, Fotografia Personalizada, Fotografia de Casamento, Fotografia de Aniversário, Fotografia de Natureza, Fotografia Urbana, LifeStyle">
+		<meta name="author" content="OlhoFotográfico">
 		<meta name="description" content="Mostre ao mundo como você o vê" />
+		<meta property="og:type" content="website" />
 		<meta property="og:title" content="OlhoFotográfico - Mostre ao Mundo como você o vê" />
 		<meta property="og:description" content="Mostre ao mundo como você o vê" />
-		<meta property="og:image" content="%PUBLIC_URL%/logo_192.png" />
+		<meta property="og:image" content="%PUBLIC_URL%/logo_512.png" />
 		<meta property="og:url" content="https://olhofotografico.com.br/" />
+		<meta property="og:locale" content="pt-BR" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="OlhoFotográfico - Mostre ao Mundo como você o vê" />
 		<meta name="twitter:description" content="Mostre ao mundo como você o vê" />
-		<meta name="twitter:image" content="%PUBLIC_URL%/logo_192.png" />
-		<meta property="og:locale" content="pt-BR" />
+		<meta name="twitter:image" content="%PUBLIC_URL%/logo_512.png" />
 		<link rel="canonical" href="https://olhofotografico.com.br/" />
-		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo_512.png" />
+		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo_192.png" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 		<title>OlhoFotográfico - Mostre ao Mundo como você o vê</title>
 
@@ -35,34 +34,36 @@
 			window.dataLayer = window.dataLayer || [];
 			function gtag() { dataLayer.push(arguments); }
 			gtag('js', new Date());
-
 			gtag('config', 'G-4XE72L7D1T');
 		</script>
+
 		<script>
-			if (!navigator.onLine) {
-				alert('Sem Internet.');
-			}
-
-			document.addEventListener("contextmenu", (e) => {
-				e.preventDefault();
+			window.addEventListener('load', () => {
+				if (!navigator.onLine) {
+					alert('Você está offline. Algumas funcionalidades podem não estar disponíveis.');
+				}
 			});
+		</script>
 
-
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const consentBanner = document.createElement('div');
+				consentBanner.innerHTML = `
+                <div style="position: fixed; bottom: 10px; left: 10px; right: 10px; background: transparent; color: #fff; padding: 15px; text-align: center; z-index: 1000; border-radius: 5px;">
+                    Este site utiliza cookies para melhorar sua experiência. 
+                    <button id="acceptCookies" style="margin-left: 10px; padding: 5px 10px;">Aceitar</button>
+                </div>
+            `;
+				document.body.appendChild(consentBanner);
+				document.getElementById('acceptCookies').addEventListener('click', () => {
+					consentBanner.remove();
+				});
+			});
 		</script>
 	</head>
 
 	<body>
 		<div id="root"></div>
-		<!--
-			This HTML file is a template.
-			If you open it directly in the browser, you will see an empty page.
-
-			You can add webfonts, meta tags, or analytics to this file.
-			The build step will place the bundled scripts into the <body> tag.
-
-			To begin the development, run `npm start` or `yarn start`.
-			To create a production bundle, use `npm run build` or `yarn build`.
-		-->
 	</body>
 
 </html>
