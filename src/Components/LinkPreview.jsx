@@ -13,6 +13,7 @@ const LinkPreview = ({ url }) => {
 
     const cardMediaStyles = {
         maxWidth: 240,
+        height: "auto",
         margin: "0 auto",
     };
 

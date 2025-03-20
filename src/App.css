@@ -54,7 +54,6 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: bold;
   position: relative;
 }
 
@@ -133,6 +132,18 @@ img {
   height: auto;
   width: 100%;
 }
+
+img {
+  width: 300px;
+  transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+img:hover {
+  filter: blur(3px);
+  opacity: 0.8; /* Torna a imagem um pouco transparente ao passar o mouse */
+  border: 2px solid #f39c12; /* Adiciona uma borda colorida ao interagir */
+}
+
 
 .Container>* {
   flex-grow: 1;
