@@ -22,10 +22,16 @@ const SocialMetaTags = ({ title, image, description }) => {
       metaTag.setAttribute("content", content);
     };
 
+    setMetaTag("title", title, true);
+    setMetaTag("description", description, true);
+    setMetaTag("image", image || currentUrl, true);
+    setMetaTag("url", currentUrl, true);
+
     setMetaTag("og:title", title, true);
     setMetaTag("og:description", description, true);
     setMetaTag("og:image", image || currentUrl, true);
     setMetaTag("og:url", currentUrl, true);
+
     setMetaTag("twitter:title", title);
     setMetaTag("twitter:description", description);
     setMetaTag("twitter:image", image || currentUrl);
