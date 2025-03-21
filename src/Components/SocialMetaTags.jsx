@@ -1,23 +1,39 @@
-import React from "react";
-import { Helmet } from "react-helmet";
+import React, { useEffect } from "react";
 
 const SocialMetaTags = ({ title, image, description }) => {
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  return (
-    <Helmet defaultTitle={title}>
-      <title>{title}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image || currentUrl} />
-      <meta property="og:url" content={currentUrl} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image || currentUrl} />
-      <meta name="twitter:site" content="@olhotografico" />
-      <meta name="twitter:card" content={image} />
-    </Helmet>
-  );
+  useEffect(() => {
+    document.title = title;
+
+    const setMetaTag = (name, content, property = false) => {
+      let metaTag = document.querySelector(
+        property ? `meta[property="${name}"]` : `meta[name="${name}"]`
+      );
+      if (!metaTag) {
+        metaTag = document.createElement("meta");
+        if (property) {
+          metaTag.setAttribute("property", name);
+        } else {
+          metaTag.setAttribute("name", name);
+        }
+        document.head.appendChild(metaTag);
+      }
+      metaTag.setAttribute("content", content);
+    };
+
+    setMetaTag("og:title", title, true);
+    setMetaTag("og:description", description, true);
+    setMetaTag("og:image", image || currentUrl, true);
+    setMetaTag("og:url", currentUrl, true);
+    setMetaTag("twitter:title", title);
+    setMetaTag("twitter:description", description);
+    setMetaTag("twitter:image", image || currentUrl);
+    setMetaTag("twitter:site", "@olhotografico");
+    setMetaTag("twitter:card", "summary_large_image");
+  }, [title, image, description, currentUrl]);
+
+  return null;
 };
 
 export default React.memo(SocialMetaTags);

@@ -45,7 +45,7 @@ const LinkPreview = ({ url }) => {
                     setPreviewData(data);
                 }
             } catch (error) {
-                console.error("Erro ao buscar metadados:", error);
+                throw new Error(`Erro na requisição: ${error}`);
             } finally {
                 setLoading(false);
             }
