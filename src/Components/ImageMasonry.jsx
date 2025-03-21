@@ -6,6 +6,14 @@ import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 const StarComponent = lazy(() => import("../Components/StarComponent"));
 
+const cardMediaStyles = {
+  with: { xs: "100%", sm: "90%" },
+  height: "auto",
+  maxWidth: "320px",
+  margin: "0 auto",
+  objectFit: "cover"
+};
+
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
@@ -39,18 +47,17 @@ const ImageMasonry = ({ data = [] }) => {
             </Card>
           ))
         ) : (
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 5 }} spacing={1}>
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 6 }} spacing={1}>
             {data.map((item) => (
-
-              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
+              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "320px" } }}>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <CardMedia
                     component="img"
-                    height="400"
-                    width="100"
+                    media="photo"
                     image={item.img}
                     alt={item.title}
                     loading="lazy"
+                    style={cardMediaStyles}
                   />
                 </NavLink>
                 <CardContent>
