@@ -72,7 +72,7 @@ const Photos = () => {
 			</Suspense>
 			<SocialMetaTags
 				title={metaData.title}
-				image={metaData.url}
+				image={metaData.image}
 				description={metaData.description}
 			/>
 		</>
