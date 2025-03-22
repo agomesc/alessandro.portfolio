@@ -62,13 +62,26 @@ const Home = () => {
                         sx={{
                             marginTop: 5,
                             marginBottom: -8,
+                            '.MuiTabs-indicator': {
+                                backgroundColor: '#78884c',
+                            },
                         }}
-
                     >
-                        <Tab label="Galeria" />
-                        <Tab label="Meus Trabalhos" />
+                        <Tab
+                            label="Galeria"
+                            sx={{
+                                color: tabIndex === 0 ? '#78884c' : '#000',
+                                fontWeight: tabIndex === 0 ? 'bold' : 'normal',
+                            }}
+                        />
+                        <Tab
+                            label="Meus Trabalhos"
+                            sx={{
+                                color: tabIndex === 1 ? '#78884c' : '#000',
+                                fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+                            }}
+                        />
                     </Tabs>
-
                     {tabIndex === 0 && <Gallery />}
                     {tabIndex === 1 && <GalleryWork />}
                 </Box>

@@ -21,6 +21,9 @@ const ProTip = () => {
 						Todos os direitos reservados.
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
+						<Link target="_blank" rel="noopener noreferrer" href="https://pt-br.legacy.reactjs.org/">React</Link>
+					</Typography>
+					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						<Link target="_blank" rel="noopener noreferrer" href="https://www.flickr.com/services/api/">Flickr API</Link>
 					</Typography>
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
@@ -29,6 +32,8 @@ const ProTip = () => {
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						<Link target="_blank" rel="noopener noreferrer" href="https://vercel.com/">Vercel</Link>
 					</Typography>
+
+
 				</Typography>
 			</Paper>
 		</Box>
