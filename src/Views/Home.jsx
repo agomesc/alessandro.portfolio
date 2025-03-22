@@ -2,17 +2,22 @@ import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import logo from "../images/logo_192.png";
 import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
+const GalleryWork = lazy(() => import("./GalleryWork"));
 
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
     const instance = useMemo(() => CreateFlickrApp(), []);
+    const [tabIndex, setTabIndex] = useState(0);
 
     useEffect(() => {
         async function fetchData() {
@@ -25,6 +30,11 @@ const Home = () => {
     if (!galleryData) {
         return <LoadingMessage />;
     }
+
+    const handleTabChange = (event, newIndex) => {
+        setTabIndex(newIndex);
+    };
+
 
     const title = 'Atualizações';
     const description = 'Últimas Atualizações';
@@ -45,8 +55,23 @@ const Home = () => {
                 >
                     <TypographyTitle src="Atualizações"></TypographyTitle>
                     {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
+                    <Tabs
+                        value={tabIndex}
+                        onChange={handleTabChange}
+                        centered
+                        sx={{
+                            marginTop: 5,
+                            marginBottom: -8,
+                        }}
+
+                    >
+                        <Tab label="Galeria" />
+                        <Tab label="Meus Trabalhos" />
+                    </Tabs>
+
+                    {tabIndex === 0 && <Gallery />}
+                    {tabIndex === 1 && <GalleryWork />}
                 </Box>
-                <Gallery />
             </Suspense>
             <SocialMetaTags title={title} image={logo} description={description} />
         </>
