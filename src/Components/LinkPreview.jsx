@@ -12,11 +12,11 @@ const LinkPreview = ({ url }) => {
     const [loading, setLoading] = useState(true);
 
     const cardMediaStyles = {
-        with: "100%",
+        with: { xs: "100%", sm: "90%" },
         height: "auto",
-        maxWidth: 300,
+        maxWidth: "320px",
         margin: "0 auto",
-        objectFit: "fill"
+        objectFit: "cover"
     };
 
 
