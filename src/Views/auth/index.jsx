@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy } from 'react';
-import { Button, Box, Snackbar, Alert } from "@mui/material";
+import { Button, Box, Snackbar } from "@mui/material";
+import Alert from '@mui/material/Alert';
 import { auth, provider } from '../../firebaseConfig';
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 const TypographyTitle = lazy(() => import("../../Components/TypographyTitle"));

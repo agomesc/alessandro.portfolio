@@ -3,7 +3,7 @@ import { collection, addDoc, onSnapshot, query, orderBy, where } from 'firebase/
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
