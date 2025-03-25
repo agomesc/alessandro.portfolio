@@ -26,7 +26,7 @@ const ImageMasonry = ({ data = [] }) => {
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 140, height: 140, objectFit: "cover", padding: 2, borderRadius: 5 }}
+                  sx={{ width: 160, height: 160, objectFit: "cover", padding: 2, borderRadius: 5 }}
                   image={item.img}
                   alt={item.title}
                   media="photo"
@@ -49,7 +49,7 @@ const ImageMasonry = ({ data = [] }) => {
         ) : (
           <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 6 }} spacing={1}>
             {data.map((item) => (
-              <Card key={item.id} sx={{ display: "flex", borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "320px" } }}>
+              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "320px" } }}>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <CardMedia
                     component="img"
