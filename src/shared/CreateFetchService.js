@@ -48,7 +48,15 @@ const CreateFetchService = () => {
         if (!navigator.onLine) {
             throw new Error(TryError(521));
         }
-        return await fetchWithInterceptor(url);
+
+        const cachedResponse = getCache(url);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
+
+        const response = await fetchWithInterceptor(url);
+        setCache(url, response);
+        return response;
     }
 
     async function post(url, data) {
@@ -88,7 +96,7 @@ function getCache(key) {
     const cachedResponse = sessionStorage.getItem(key);
     if (cachedResponse) {
         const { timestamp, data } = JSON.parse(cachedResponse);
-        const cacheDuration = 5 * 60 * 1000;
+        const cacheDuration = 5 * 60 * 1000; // 5 minutos
         if (Date.now() - timestamp < cacheDuration) {
             return data;
         }
