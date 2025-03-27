@@ -31,7 +31,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const TemporaryDrawer = () => {
@@ -178,7 +177,7 @@ const TemporaryDrawer = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <span style={{ color: "#78884c" }}>Olho</span><span style={{ color: "#6c6a6b" }}>Fotográfico</span>
+                        <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span><span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
                     </Typography>
                     {user ? (
                         <div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
