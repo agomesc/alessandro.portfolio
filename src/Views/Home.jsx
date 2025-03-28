@@ -60,25 +60,31 @@ const Home = () => {
                         onChange={handleTabChange}
                         centered
                         sx={{
-                            marginTop: 5,
-                            marginBottom: -8,
+                            marginTop: 3,
+                            marginBottom: -11,
                             '.MuiTabs-indicator': {
-                                backgroundColor: '#78884c',
+                                backgroundColor: '#78884c', // Muda a cor do indicador (linha abaixo da aba)
                             },
                         }}
                     >
                         <Tab
                             label="Galeria"
                             sx={{
-                                color: tabIndex === 0 ? '#78884c' : '#000',
+                                color: tabIndex === 0 ? '#78884c' : '#000', // Muda a cor do texto
                                 fontWeight: tabIndex === 0 ? 'bold' : 'normal',
+                                '&.Mui-selected': {
+                                    color: '#78884c', // Garante que o link azul seja substituído
+                                },
                             }}
                         />
                         <Tab
                             label="Meus Trabalhos"
                             sx={{
-                                color: tabIndex === 1 ? '#78884c' : '#000',
+                                color: tabIndex === 1 ? '#78884c' : '#000', // Muda a cor do texto
                                 fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+                                '&.Mui-selected': {
+                                    color: '#78884c', // Garante que o link azul seja substituído
+                                },
                             }}
                         />
                     </Tabs>
