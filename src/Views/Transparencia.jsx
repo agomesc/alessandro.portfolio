@@ -13,7 +13,7 @@ const Transparencia = () => {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
-        padding: "0 20px",
+        padding: "0 10px",
         marginBottom: 30
       }}
     >

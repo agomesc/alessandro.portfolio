@@ -27,7 +27,7 @@ const About = () => {
                     width: { xs: "100%", sm: "90%" },
                     margin: "0 auto",
                     textAlign: "justify",
-                    padding: "0 20px",
+                    padding: "0 10px",
                 }}
             >
                 <TypographyTitle src="Sobre?"></TypographyTitle>

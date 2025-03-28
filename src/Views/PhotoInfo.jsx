@@ -48,7 +48,7 @@ const PhotoInfo = () => {
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",
-            padding: "0 20px",
+            padding: "0 10px",
           }}
         >
           <TypographyTitle src="Informações da Foto" />

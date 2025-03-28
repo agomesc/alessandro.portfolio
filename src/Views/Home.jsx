@@ -50,7 +50,7 @@ const Home = () => {
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",
-                        padding: "0 20px",
+                        padding: "0 10px",
                     }}
                 >
                     <TypographyTitle src="Atualizações"></TypographyTitle>
@@ -61,7 +61,7 @@ const Home = () => {
                         centered
                         sx={{
                             marginTop: 3,
-                            marginBottom: -11,
+                            marginBottom: -8,
                             '.MuiTabs-indicator': {
                                 backgroundColor: '#78884c', // Muda a cor do indicador (linha abaixo da aba)
                             },
