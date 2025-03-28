@@ -20,7 +20,7 @@ const RandomAffiliateAd = () => {
   const [randomAd, setRandomAd] = useState(null);
 
   const isCacheValid = () => {
-    const expiry = localStorage.getItem(CACHE_EXPIRY_KEY);
+    const expiry = sessionStorage.getItem(CACHE_EXPIRY_KEY);
     return expiry && new Date().getTime() < new Date(expiry).getTime();
   };
 
@@ -28,7 +28,7 @@ const RandomAffiliateAd = () => {
     const fetchAds = async () => {
       if (isCacheValid()) {
         // Use cached data
-        const cachedAd = JSON.parse(localStorage.getItem(CACHE_KEY));
+        const cachedAd = JSON.parse(sessionStorage.getItem(CACHE_KEY));
         setRandomAd(cachedAd);
       } else {
         // Fetch new data
@@ -47,8 +47,8 @@ const RandomAffiliateAd = () => {
           setRandomAd(selectedAd);
 
           // Update cache
-          localStorage.setItem(CACHE_KEY, JSON.stringify(selectedAd));
-          localStorage.setItem(CACHE_EXPIRY_KEY, new Date().getTime() + CACHE_DURATION_MS);
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(selectedAd));
+          sessionStorage.setItem(CACHE_EXPIRY_KEY, new Date().getTime() + CACHE_DURATION_MS);
         }
       }
     };
