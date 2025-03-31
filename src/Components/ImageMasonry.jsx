@@ -58,6 +58,7 @@ const ImageMasonry = ({ data = [] }) => {
                     alt={item.title}
                     loading="lazy"
                     style={cardMediaStyles}
+                    sx={{ width: '320', height: 'auto', objectFit: "cover", padding: 1, borderRadius: 5 }}
                   />
                 </NavLink>
                 <CardContent>
