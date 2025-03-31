@@ -32,7 +32,7 @@ const Gallery = () => {
         }
 
         if (!galleryData) fetchData();
-    }, [galleryData, instance,]);
+    }, [galleryData, instance]);
 
     if (!galleryData) {
         return <LoadingMessage />;
@@ -51,7 +51,7 @@ const Gallery = () => {
                         padding: "0 10px",
                     }}
                 >
-                    <Suspense fallback={<Typography variant="h4">Carregando...</Typography>}>
+                    <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
                     {galleryData && <ImageMasonry data={galleryData} />}
