@@ -56,8 +56,8 @@ const PhotoInfo = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             {galleryData && <PhotoDashboard photoData={galleryData} />}
           </Box>
+          <CommentBox itemID={id} />
         </Box>
-        <CommentBox itemID={id} />
       </Suspense>
       <SocialMetaTags
         title={metaData.title}

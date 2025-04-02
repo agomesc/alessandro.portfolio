@@ -57,7 +57,7 @@ const GalleryWork = () => {
                     </Suspense>
                     <ImageMasonry data={galleryData} />
                 </Box>
-                <CommentBox itemID="Gallery" />
+                <CommentBox itemID="GalleryWork" />
             </Suspense>
 
             <SocialMetaTags

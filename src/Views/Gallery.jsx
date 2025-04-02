@@ -55,8 +55,8 @@ const Gallery = () => {
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
                     {galleryData && <ImageMasonry data={galleryData} />}
+                    <CommentBox itemID="Gallery" />
                 </Box>
-                <CommentBox itemID="Gallery" />
             </Suspense>
             <SocialMetaTags
                 title={metaData.title}

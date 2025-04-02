@@ -67,8 +67,9 @@ const Photos = () => {
 						{galleryInfoData}
 					</Typography>
 					{galleryData && <PhotoGallery photos={galleryData} />}
+					<CommentBox itemID={id} />
 				</Box>
-				<CommentBox itemID={id} />
+
 			</Suspense>
 			<SocialMetaTags
 				title={metaData.title}
