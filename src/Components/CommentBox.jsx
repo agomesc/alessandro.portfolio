@@ -124,7 +124,7 @@ function CommentBox({ itemID }) {
     <Box
       sx={{
         p: 0,
-        width: "90%",
+        width: "auto",
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",

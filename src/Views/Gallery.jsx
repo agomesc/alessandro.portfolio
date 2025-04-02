@@ -44,7 +44,7 @@ const Gallery = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: { xs: "100%", sm: "90%" },
+                        width: "auto",
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",
