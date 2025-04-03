@@ -24,7 +24,7 @@ const About = () => {
             <Box
                 sx={{
                     p: 2,
-                    width: { xs: "100%", sm: "90%" },
+                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
                     margin: "0 auto",
                     textAlign: "justify",
                     padding: "0 10px",

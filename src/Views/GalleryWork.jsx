@@ -56,8 +56,8 @@ const GalleryWork = () => {
                         <TypographyTitle src="Meus Trabalhos" />
                     </Suspense>
                     <ImageMasonry data={galleryData} />
+                    <CommentBox itemID="GalleryWork" />
                 </Box>
-                <CommentBox itemID="GalleryWork" />
             </Suspense>
 
             <SocialMetaTags

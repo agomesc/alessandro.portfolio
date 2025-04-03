@@ -41,7 +41,7 @@ const ListContent = () => {
     };
 
     return (
-        <Box sx={{ p: 0, width: { xs: "100%", sm: "90%" }, height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
+        <Box sx={{ p: 0, width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" }, height: "auto", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
             <Typography component="div" sx={{ mt: 10, mb: 3 }} variant="subtitle1">
                 Seu Guia Afiliado para as Melhores Compras Online!
             </Typography>
