@@ -83,7 +83,6 @@ const TemporaryDrawer = () => {
         }));
 
         const additionalItems = [
-            { route: "/GalleryWork", description: "Meus Trabalhos", chid: false, icon: <PhotoLibraryIcon /> },
             { route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
             { route: "/ListContentWithPagination", description: "Seleção de Ofertas", chid: false, icon: <ShoppingCartIcon /> },
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
