@@ -35,8 +35,9 @@ const About = () => {
                     <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
                 </Suspense>
                 <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
+                <CommentBox itemID="About" />
             </Box>
-            <CommentBox itemID="About" />
+
         </>
     );
 };

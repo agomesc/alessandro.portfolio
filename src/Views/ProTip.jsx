@@ -32,8 +32,6 @@ const ProTip = () => {
 					<Typography component="div" variant="caption" sx={{ textAlign: "center" }}>
 						<Link target="_blank" rel="noopener noreferrer" href="https://vercel.com/">Vercel</Link>
 					</Typography>
-
-
 				</Typography>
 			</Paper>
 		</Box>
