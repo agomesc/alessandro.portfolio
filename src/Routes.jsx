@@ -15,8 +15,6 @@ const ListContent = lazy(() => import("./Views/ListContent"));
 const FormContent = lazy(() => import("./Views/FormContent"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
 const ImageUploadForm = lazy(() => import("./Views/ImageUploadForm"));
-const DisplayGalleries = lazy(() => import("./Views/DisplayGalleries"));
-
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 
 
@@ -41,7 +39,6 @@ const AppRoutes = () => {
         {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
         {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
         {isLocalhost && <Route path="/ImageUploadForm" element={<ImageUploadForm />} />}
-        {isLocalhost && <Route path="/DisplayGalleries" element={<DisplayGalleries />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
         <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
 

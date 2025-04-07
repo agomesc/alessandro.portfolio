@@ -12,7 +12,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
-
+const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -90,6 +90,7 @@ const Home = () => {
                     </Tabs>
                     {tabIndex === 0 && <Gallery />}
                     {tabIndex === 1 && <GalleryWork />}
+                    <DisplayGalleries />
                 </Box>
             </Suspense>
             <SocialMetaTags title={title} image={logo} description={description} />

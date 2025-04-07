@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Card, CardContent, Typography, CardMedia, Box } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [selectedGallery, setSelectedGallery] = useState(null);
+
+
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -20,33 +25,76 @@ const DisplayGalleries = () => {
 
                 setGalleries(fetchedGalleries);
             } catch (error) {
-                console.error('Erro ao buscar galerias:', error.message);
+                console.error('Erro ao buscar galerias:', error);
             }
         };
 
         fetchGalleries();
     }, []);
 
+    const handleOpen = (gallery) => {
+        setSelectedGallery(gallery);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedGallery(null);
+    };
+
     return (
-        <Box sx={{ p: 0, width: "90%", alignContent: "center", alignItems: "center", margin: "0 auto", mt: 50 }}>
-            {galleries.map(({ id, title, text, imagePath }) => (
-                <Card key={id} sx={{ maxWidth: 345, m: 2 }}>
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image={imagePath}
-                        alt={title}
-                    />
-                    <CardContent>
-                        <Typography variant="h6" component="div">
-                            {title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {text}
-                        </Typography>
-                    </CardContent>
-                </Card>
-            ))}
+        <Box
+            sx={{
+                p: 0,
+                width: "auto",
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: "0 10px",
+            }}
+        >
+            <TypographyTitle src="Conteúdos"></TypographyTitle>
+            <Grid container spacing={3}>
+                {galleries.map((gallery) => (
+                    <Grid item xs={12} sm={6} md={4} key={gallery.id}>
+                        <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
+                            {gallery.imagePath && (
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={gallery.imagePath}
+                                    alt={gallery.title}
+                                />
+                            )}
+                            <CardContent>
+                                <Typography variant="h6" component="div">
+                                    {gallery.title}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+
+            <Dialog open={open} onClose={handleClose}>
+                {selectedGallery && (
+                    <>
+                        <DialogTitle>{selectedGallery.title}</DialogTitle>
+                        <DialogContent>
+                            {selectedGallery.imagePath && (
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={selectedGallery.imagePath}
+                                    alt={selectedGallery.title}
+                                    sx={{ mb: 2 }}
+                                />
+                            )}
+                            <Typography variant="body1">{selectedGallery.text}</Typography>
+                        </DialogContent>
+                    </>
+                )}
+            </Dialog>
         </Box>
     );
 };
