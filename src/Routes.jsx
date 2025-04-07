@@ -18,7 +18,6 @@ const ImageUploadForm = lazy(() => import("./Views/ImageUploadForm"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 
 
-
 const AppRoutes = () => {
 
   const isLocalhost = window.location.hostname === "localhost";

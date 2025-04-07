@@ -3,7 +3,7 @@ import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/mat
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db, storage } from '../firebaseConfig'; // Import storage
+import { auth, db, storage } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
@@ -29,6 +29,14 @@ const ImageUploadForm = () => {
         });
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        if (selectedFile) {
+            setImageUrl(URL.createObjectURL(selectedFile));
+        } else {
+            setImageUrl('');
+        }
+    }, [selectedFile]);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return;
@@ -66,7 +74,7 @@ const ImageUploadForm = () => {
                 setMessage(`Erro ao fazer upload da imagem: ${error.message}`);
                 setSeverity('error');
                 setOpen(true);
-                return; // Stop further processing if image upload fails
+                return;
             }
         }
 
@@ -76,11 +84,11 @@ const ImageUploadForm = () => {
                 text,
                 createdAt: serverTimestamp(),
                 isActive,
-                isLink: false, // Always false for this component as it's for image upload
+                isLink: false,
                 imageUrl: downloadURL,
-                userId: user.uid, // Assuming you want to store the user who uploaded
+                userId: user.uid,
             };
-            await addDoc(collection(db, 'galleries'), docData); // Save to a different collection 'galleries'
+            await addDoc(collection(db, 'galleries'), docData);
 
             setTitle('');
             setText('');
@@ -90,7 +98,7 @@ const ImageUploadForm = () => {
             setMessage('Imagem e informações adicionadas com sucesso!');
             setSeverity('success');
             setOpen(true);
-            navigate('/ListGalleries'); // Assuming you'll create a ListGalleries component
+            navigate('/ListGalleries');
         } catch (error) {
             console.error('Erro ao adicionar galeria:', error.message);
             setMessage(`Erro ao adicionar galeria: ${error.message}`);
@@ -105,30 +113,9 @@ const ImageUploadForm = () => {
                 Upload de Imagem
             </Typography>
             <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Título da Imagem"
-                    variant="outlined"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Descrição"
-                    variant="outlined"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    multiline
-                    rows={2}
-                    fullWidth
-                    margin="normal"
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{ margin: '16px 0' }}
-                />
+                <TextField label="Título da Imagem" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth margin="normal" />
+                <TextField label="Descrição" variant="outlined" value={text} onChange={(e) => setText(e.target.value)} multiline rows={2} fullWidth margin="normal" />
+                <input type="file" accept="image/*" onChange={handleFileChange} style={{ margin: '16px 0' }} />
                 {imageUrl && (
                     <Box mt={2}>
                         <Typography variant="caption">Imagem selecionada:</Typography>
@@ -136,10 +123,7 @@ const ImageUploadForm = () => {
                     </Box>
                 )}
                 <FormGroup>
-                    <FormControlLabel
-                        control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />}
-                        label="Ativo"
-                    />
+                    <FormControlLabel control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />} label="Ativo" />
                 </FormGroup>
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                     Salvar Imagem
