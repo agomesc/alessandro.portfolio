@@ -8,12 +8,12 @@ import IconButton from '@mui/material/IconButton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const LazyIframe = lazy(() => import("../Components/LazyIframe"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
-
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -71,25 +71,12 @@ const DisplayGalleries = () => {
                         <Grid item xs={12} sm={6} md={4} key={gallery.id}>
                             <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
                                 {gallery.imagePath && (
-                                    <div style={{
-                                        position: 'relative',
-                                        overflow: 'hidden',
-                                        width: '100%',
-                                        paddingTop: '56.25%' /* Aspect ratio: 16:9 */
-                                    }}>
-                                        <iframe
+                                    <Suspense fallback={<div>Carregando...</div>}>
+                                        <LazyIframe
                                             src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
                                             title={`Gallery-${gallery.id}`}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                border: 0
-                                            }}
-                                        ></iframe>
-                                    </div>
+                                        />
+                                    </Suspense>
                                 )}
                                 <CardContent>
                                     <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
@@ -117,7 +104,6 @@ const DisplayGalleries = () => {
                                     )}
                                 </CardContent>
                             </Card>
-
                         </Grid>
                     ))}
                 </Grid>
@@ -152,28 +138,12 @@ const DisplayGalleries = () => {
                             </DialogTitle>
                             <DialogContent>
                                 {selectedGallery.imagePath && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            overflow: 'hidden',
-                                            width: '100%',
-                                            paddingTop: '56.25%', /* Aspect ratio: 16:9 */
-                                            marginTop: 30,
-                                        }}
-                                    >
-                                        <iframe
+                                    <Suspense fallback={<div>Carregando...</div>}>
+                                        <LazyIframe
                                             src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
                                             title={`Gallery-${selectedGallery.id}`}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                border: 0,
-                                            }}
-                                        ></iframe>
-                                    </div>
+                                        />
+                                    </Suspense>
                                 )}
                                 <div
                                     style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
@@ -183,7 +153,6 @@ const DisplayGalleries = () => {
                         </>
                     )}
                 </Dialog>
-
             </Box>
         </Suspense>
     );
