@@ -140,7 +140,8 @@ const DisplayGalleries = () => {
                                         position: 'relative',
                                         overflow: 'hidden',
                                         width: '100%',
-                                        paddingTop: '56.25%' /* Aspect ratio: 16:9 */
+                                        paddingTop: '56.25%', /* Aspect ratio: 16:9 */
+                                        marginTop: 30
                                     }}>
                                         <iframe
                                             src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
@@ -156,7 +157,7 @@ const DisplayGalleries = () => {
                                         ></iframe>
                                     </div>
                                 )}
-                                <Typography component="div" variant="body1">{selectedGallery.text}</Typography>
+                                <Typography component="div" variant="body1" sx={{ marginTop: 5 }}>{selectedGallery.text}</Typography>
                             </DialogContent>
                         </>
                     )}
