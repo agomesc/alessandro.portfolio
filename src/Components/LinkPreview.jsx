@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
 const LoadingMessage = lazy(() => import("./LoadingMessage"));
 
@@ -79,7 +80,7 @@ const LinkPreview = ({ url }) => {
                             Publicidade / Indicação
                         </Typography>
                         <Typography component="div" variant="body1" sx={{ textAlign: "center", fontWeight: "bold" }}>
-                            {previewData.title}
+                            {previewData.title} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                         </Typography>
                         <Typography component="div" variant="body2" sx={{ textAlign: "center" }}>
                             {previewData.description}

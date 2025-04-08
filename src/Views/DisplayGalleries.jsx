@@ -4,13 +4,14 @@ import { db } from '../firebaseConfig';
 import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
-    const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-    const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -155,7 +156,7 @@ const DisplayGalleries = () => {
                                         ></iframe>
                                     </div>
                                 )}
-                                <Typography component="div" variant="body1">{selectedGallery.text} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} /></Typography>
+                                <Typography component="div" variant="body1">{selectedGallery.text}</Typography>
                             </DialogContent>
                         </>
                     )}
