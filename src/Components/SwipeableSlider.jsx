@@ -28,7 +28,7 @@ const SwipeableSlider = ({ itemData }) => {
                     key={index}
                     src={image.url}
                     alt={image.title}
-                    style={{ width: 100, height: 75, objectFit: "contain", margin: "0 auto", padding: 2, borderRadius: 5 }}
+                    style={{ width: 100, height: 75, objectFit: "cover", margin: "0 auto", padding: 2, borderRadius: 5 }}
                 />
             ))}
         </Box>
