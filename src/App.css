@@ -32,7 +32,6 @@ html {
   text-rendering: optimizeLegibility;
   overflow: auto;
   touch-action: manipulation;
-  -webkit-user-drag: none;
   -ms-content-zooming: none;
   word-wrap: break-word;
   -webkit-text-size-adjust: none;
@@ -60,6 +59,25 @@ h4 {
 /* Ajustar tamanhos para dispositivos móveis */
 @media only screen and (max-width: 600px) {
   h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+}
+
+/* Ajustar tamanhos para telas maiores */
+@media only screen and (min-width: 601px) {
+  h1 {
     font-size: 20px;
   }
 
@@ -69,25 +87,6 @@ h4 {
 
   h3 {
     font-size: 16px;
-  }
-
-  h4 {
-    font-size: 14px;
-  }
-}
-
-/* Ajustar tamanhos para telas maiores */
-@media only screen and (min-width: 601px) {
-  h1 {
-    font-size: 24px;
-  }
-
-  h2 {
-    font-size: 22px;
-  }
-
-  h3 {
-    font-size: 20px;
   }
 
   h4 {

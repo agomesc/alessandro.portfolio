@@ -2,7 +2,9 @@ import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
@@ -90,31 +92,32 @@ const DisplayGalleries = () => {
                                     </div>
                                 )}
                                 <CardContent>
-                                    <Typography variant="h6" component="div">
-                                        {gallery.title} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                    <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
+                                        {gallery.title}
+                                        <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                     </Typography>
-
+                                    {gallery.link && (
+                                        <Box sx={{ mt: 1 }}>
+                                            <Typography
+                                                variant="body2"
+                                                component="a"
+                                                href={gallery.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    textDecoration: 'none',
+                                                    color: '#78884c',
+                                                }}
+                                            >
+                                                Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                            </Typography>
+                                        </Box>
+                                    )}
                                 </CardContent>
                             </Card>
-                            {gallery.link && (
-                                <Box sx={{ mt: 1 }}>
-                                    <Typography
-                                        variant="body2"
-                                        component="a"
-                                        href={gallery.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            textDecoration: 'none',
-                                            color: '#78884c',
-                                        }}
-                                    >
-                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                    </Typography>
-                                </Box>
-                            )}
+
                         </Grid>
                     ))}
                 </Grid>
@@ -122,27 +125,42 @@ const DisplayGalleries = () => {
                     open={open}
                     onClose={handleClose}
                     fullWidth
-                    maxWidth="xl" // Ajusta o tamanho máximo
+                    maxWidth="xl"
                     sx={{
                         '& .MuiDialog-paper': {
-                            width: '90%', // Ocupa 90% da largura da tela
-                            height: '90%', // Ocupa 90% da altura da tela
+                            width: '90%',
+                            height: '90%',
                         },
                     }}
                 >
-
                     {selectedGallery && (
                         <>
-                            <DialogTitle>{selectedGallery.title}</DialogTitle>
+                            <DialogTitle>
+                                {selectedGallery.title}
+                                <IconButton
+                                    aria-label="close"
+                                    onClick={handleClose}
+                                    sx={{
+                                        position: 'absolute',
+                                        right: 8,
+                                        top: 8,
+                                        color: (theme) => theme.palette.grey[500],
+                                    }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </DialogTitle>
                             <DialogContent>
                                 {selectedGallery.imagePath && (
-                                    <div style={{
-                                        position: 'relative',
-                                        overflow: 'hidden',
-                                        width: '100%',
-                                        paddingTop: '56.25%', /* Aspect ratio: 16:9 */
-                                        marginTop: 30
-                                    }}>
+                                    <div
+                                        style={{
+                                            position: 'relative',
+                                            overflow: 'hidden',
+                                            width: '100%',
+                                            paddingTop: '56.25%', /* Aspect ratio: 16:9 */
+                                            marginTop: 30,
+                                        }}
+                                    >
                                         <iframe
                                             src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
                                             title={`Gallery-${selectedGallery.id}`}
@@ -152,7 +170,7 @@ const DisplayGalleries = () => {
                                                 left: 0,
                                                 width: '100%',
                                                 height: '100%',
-                                                border: 0
+                                                border: 0,
                                             }}
                                         ></iframe>
                                     </div>
@@ -165,6 +183,7 @@ const DisplayGalleries = () => {
                         </>
                     )}
                 </Dialog>
+
             </Box>
         </Suspense>
     );
