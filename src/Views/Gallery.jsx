@@ -58,11 +58,12 @@ const Gallery = () => {
                     <CommentBox itemID="Gallery" />
                 </Box>
             </Suspense>
-            <SocialMetaTags
-                title={metaData.title}
-                image={metaData.img}
-                description={metaData.description}
-            />
+            {metaData &&
+                <SocialMetaTags
+                    title={metaData.title}
+                    image={metaData.img}
+                    description={metaData.description}
+                />}
         </>
     );
 };

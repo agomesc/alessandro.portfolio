@@ -55,16 +55,18 @@ const GalleryWork = () => {
                     <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Meus Trabalhos" />
                     </Suspense>
-                    <ImageMasonry data={galleryData} />
+                    {galleryData && <ImageMasonry data={galleryData} />}
                     <CommentBox itemID="GalleryWork" />
                 </Box>
             </Suspense>
 
-            <SocialMetaTags
-                title={metaData.title}
-                image={metaData.url}
-                description={metaData.description}
-            />
+            {metaData &&
+                <SocialMetaTags
+                    title={metaData.title}
+                    image={metaData.url}
+                    description={metaData.description}
+                />
+            }
         </>
     );
 };
