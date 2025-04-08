@@ -51,7 +51,7 @@ const DisplayGalleries = () => {
                 padding: "0 10px",
             }}
         >
-            <Typography variant="h4" component="h1">Galerias</Typography>
+            <Typography variant="h4" component="h1">Conteúdos</Typography>
             <Grid container spacing={3}>
                 {galleries.map((gallery) => (
                     <Grid item xs={12} sm={6} md={4} key={gallery.id}>
