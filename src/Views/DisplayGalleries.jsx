@@ -157,7 +157,10 @@ const DisplayGalleries = () => {
                                         ></iframe>
                                     </div>
                                 )}
-                                <Typography component="div" variant="body1" sx={{ marginTop: 5 }}>{selectedGallery.text}</Typography>
+                                <div
+                                    style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
+                                    dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
+                                />
                             </DialogContent>
                         </>
                     )}
