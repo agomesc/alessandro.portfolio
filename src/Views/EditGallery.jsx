@@ -95,4 +95,4 @@ const EditGallery = () => {
     );
 };
 
-export default EditGallery;
+export default React.memo(EditGallery);
