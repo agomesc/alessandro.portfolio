@@ -15,6 +15,7 @@ const ImagePathForm = () => {
     const [text, setText] = useState('');
     const [isActive, setIsActive] = useState(true);
     const [imagePath, setImagePath] = useState('');
+    const [link, setLink] = useState(''); // Novo estado para o campo "link"
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
     const [open, setOpen] = useState(false);
@@ -51,6 +52,7 @@ const ImagePathForm = () => {
                 createdAt: serverTimestamp(),
                 isActive,
                 imagePath,
+                link, // Incluí o novo campo "link" nos dados enviados
                 userId: user.uid,
             };
             await addDoc(collection(db, 'galleries'), docData);
@@ -59,6 +61,7 @@ const ImagePathForm = () => {
             setText('');
             setIsActive(true);
             setImagePath('');
+            setLink(''); // Limpa o valor do novo campo após salvar
             setMessage('Informações adicionadas com sucesso!');
             setSeverity('success');
             setOpen(true);
@@ -74,14 +77,62 @@ const ImagePathForm = () => {
     return (
         <Box sx={{ p: 0, width: "90%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
             <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-                Passar Caminho da Imagem
+                Passar Caminho da Imagem e Link
             </Typography>
             <form onSubmit={handleSubmit}>
-                <TextField label="Título da Imagem" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth margin="normal" />
-                <TextField label="Descrição" variant="outlined" value={text} onChange={(e) => setText(e.target.value)} multiline rows={2} fullWidth margin="normal" />
-                <TextField label="Caminho da Imagem" variant="outlined" value={imagePath} onChange={(e) => setImagePath(e.target.value)} fullWidth margin="normal" />
+                <TextField
+                    label="Título da Imagem"
+                    variant="outlined"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Descrição"
+                    variant="outlined"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    multiline
+                    rows={2}
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Caminho da Imagem"
+                    variant="outlined"
+                    value={imagePath}
+                    onChange={(e) => setImagePath(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Link"
+                    variant="outlined"
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                />
+                {imagePath && (
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="body2">
+                            Link Imagem: <a href={imagePath} target="_blank" rel="noopener noreferrer">{title || "Ver Imagem"}</a>
+                        </Typography>
+                    </Box>
+                )}
+                {link && (
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="body2">
+                            Link: <a href={link} target="_blank" rel="noopener noreferrer">{title || "Acessar Link"}</a>
+                        </Typography>
+                    </Box>
+                )}
                 <FormGroup>
-                    <FormControlLabel control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />} label="Ativo" />
+                    <FormControlLabel
+                        control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />}
+                        label="Ativo"
+                    />
                 </FormGroup>
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                     Salvar Informações

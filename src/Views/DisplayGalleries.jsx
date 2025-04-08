@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Grid, Card, CardContent, CardMedia, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
@@ -56,14 +57,25 @@ const DisplayGalleries = () => {
                     <Grid item xs={12} sm={6} md={4} key={gallery.id}>
                         <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
                             {gallery.imagePath && (
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    media="photo"
-                                    loading="lazy"
-                                    image={`https://drive.google.com/uc?export=view&id=${gallery.imagePath}`}
-                                    alt={gallery.title}
-                                />
+                                <div style={{
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    width: '100%',
+                                    paddingTop: '56.25%' /* Aspect ratio: 16:9 */
+                                }}>
+                                    <iframe
+                                        src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
+                                        title={`Gallery-${gallery.id}`}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            border: 0
+                                        }}
+                                    ></iframe>
+                                </div>
                             )}
                             <CardContent>
                                 <Typography variant="h6" component="div">
@@ -71,6 +83,25 @@ const DisplayGalleries = () => {
                                 </Typography>
                             </CardContent>
                         </Card>
+                        {gallery.link && (
+                            <Box sx={{ mt: 1 }}>
+                                <Typography
+                                    variant="body2"
+                                    component="a"
+                                    href={gallery.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        textDecoration: 'none',
+                                        color: 'primary.main',
+                                    }}
+                                >
+                                    Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                </Typography>
+                            </Box>
+                        )}
                     </Grid>
                 ))}
             </Grid>
@@ -81,15 +112,25 @@ const DisplayGalleries = () => {
                         <DialogTitle>{selectedGallery.title}</DialogTitle>
                         <DialogContent>
                             {selectedGallery.imagePath && (
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    media="photo"
-                                    loading="lazy"
-                                    image={`https://drive.google.com/uc?export=view&id=${selectedGallery.imagePath}`}
-                                    alt={selectedGallery.title}
-                                    sx={{ mb: 2 }}
-                                />
+                                <div style={{
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    width: '100%',
+                                    paddingTop: '56.25%' /* Aspect ratio: 16:9 */
+                                }}>
+                                    <iframe
+                                        src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
+                                        title={`Gallery-${selectedGallery.id}`}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            border: 0
+                                        }}
+                                    ></iframe>
+                                </div>
                             )}
                             <Typography variant="body1">{selectedGallery.text}</Typography>
                         </DialogContent>
