@@ -15,7 +15,7 @@ const LinkPreview = ({ url }) => {
     const cardMediaStyles = {
         with: { xs: "100%", sm: "90%" },
         height: "auto",
-        maxWidth: "240px",
+        maxWidth: "100px",
         margin: "0 auto",
         objectFit: "cover"
     };

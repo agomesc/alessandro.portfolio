@@ -14,9 +14,10 @@ const Transparencia = lazy(() => import("./Views/Transparencia"));
 const ListContent = lazy(() => import("./Views/ListContent"));
 const FormContent = lazy(() => import("./Views/FormContent"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
-const ImageUploadForm = lazy(() => import("./Views/ImageUploadForm"));
+const ImagePathForm = lazy(() => import("./Views/ImagePathForm"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
-
+const GalleryList = lazy(() => import("./Views/GalleryList"));
+const EditGallery = lazy(() => import("./Views/EditGallery"));
 
 const AppRoutes = () => {
 
@@ -38,7 +39,9 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
         {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
-        {isLocalhost && <Route path="/ImageUploadForm" element={<ImageUploadForm />} />}
+        {isLocalhost && <Route path="/create" element={<ImagePathForm />} />}
+        {isLocalhost && <Route path="/list" element={<GalleryList />} />}
+        {isLocalhost && <Route path="/edit/:id" element={<EditGallery />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
         <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
 

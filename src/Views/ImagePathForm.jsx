@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
@@ -9,10 +9,12 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 
+const Editor = lazy(() => import("../Components/Editor")); // Ajuste do caminho
+
 const ImagePathForm = () => {
     const [user, setUser] = useState(null);
     const [title, setTitle] = useState('');
-    const [text, setText] = useState('');
+    const [text, setText] = useState(''); // Estado para o conteúdo do editor
     const [isActive, setIsActive] = useState(true);
     const [imagePath, setImagePath] = useState('');
     const [link, setLink] = useState(''); // Novo estado para o campo "link"
@@ -48,11 +50,11 @@ const ImagePathForm = () => {
         try {
             const docData = {
                 title,
-                text,
+                text, // Agora armazena o texto formatado
                 createdAt: serverTimestamp(),
                 isActive,
                 imagePath,
-                link, // Incluí o novo campo "link" nos dados enviados
+                link,
                 userId: user.uid,
             };
             await addDoc(collection(db, 'galleries'), docData);
@@ -61,7 +63,7 @@ const ImagePathForm = () => {
             setText('');
             setIsActive(true);
             setImagePath('');
-            setLink(''); // Limpa o valor do novo campo após salvar
+            setLink('');
             setMessage('Informações adicionadas com sucesso!');
             setSeverity('success');
             setOpen(true);
@@ -88,16 +90,9 @@ const ImagePathForm = () => {
                     fullWidth
                     margin="normal"
                 />
-                <TextField
-                    label="Descrição"
-                    variant="outlined"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    multiline
-                    rows={2}
-                    fullWidth
-                    margin="normal"
-                />
+                <Suspense fallback={<div>Carregando Editor...</div>}>
+                    <Editor onContentChange={(value) => setText(value)} />
+                </Suspense>
                 <TextField
                     label="Caminho da Imagem"
                     variant="outlined"
@@ -147,4 +142,4 @@ const ImagePathForm = () => {
     );
 };
 
-export default ImagePathForm;
+export default React.memo(ImagePathForm);
