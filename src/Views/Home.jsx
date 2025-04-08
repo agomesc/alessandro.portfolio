@@ -92,7 +92,9 @@ const Home = () => {
                     {tabIndex === 1 && <GalleryWork />}
                     <DisplayGalleries />
                 </Box>
+
             </Suspense>
+
             <SocialMetaTags title={title} image={logo} description={description} />
         </>
     );

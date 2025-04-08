@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
+
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
+    const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+    const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -40,105 +43,113 @@ const DisplayGalleries = () => {
         setSelectedGallery(null);
     };
 
-    return (
-        <Box
-            sx={{
-                p: 0,
-                width: "auto",
-                alignContent: "center",
-                alignItems: "center",
-                margin: "0 auto",
-                padding: "0 10px",
-            }}
-        >
-            <Typography variant="h4" component="h1">Conteúdos</Typography>
-            <Grid container spacing={3}>
-                {galleries.map((gallery) => (
-                    <Grid item xs={12} sm={6} md={4} key={gallery.id}>
-                        <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
-                            {gallery.imagePath && (
-                                <div style={{
-                                    position: 'relative',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                    paddingTop: '56.25%' /* Aspect ratio: 16:9 */
-                                }}>
-                                    <iframe
-                                        src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
-                                        title={`Gallery-${gallery.id}`}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            border: 0
-                                        }}
-                                    ></iframe>
-                                </div>
-                            )}
-                            <CardContent>
-                                <Typography variant="h6" component="div">
-                                    {gallery.title}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                        {gallery.link && (
-                            <Box sx={{ mt: 1 }}>
-                                <Typography
-                                    variant="body2"
-                                    component="a"
-                                    href={gallery.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        textDecoration: 'none',
-                                        color: 'primary.main',
-                                    }}
-                                >
-                                    Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                </Typography>
-                            </Box>
-                        )}
-                    </Grid>
-                ))}
-            </Grid>
+    if (!galleries) {
+        return <LoadingMessage />;
+    }
 
-            <Dialog open={open} onClose={handleClose}>
-                {selectedGallery && (
-                    <>
-                        <DialogTitle>{selectedGallery.title}</DialogTitle>
-                        <DialogContent>
-                            {selectedGallery.imagePath && (
-                                <div style={{
-                                    position: 'relative',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                    paddingTop: '56.25%' /* Aspect ratio: 16:9 */
-                                }}>
-                                    <iframe
-                                        src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
-                                        title={`Gallery-${selectedGallery.id}`}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            border: 0
+    return (
+        <Suspense fallback={<LoadingMessage />}>
+            <Box
+                sx={{
+                    p: 0,
+                    width: "auto",
+                    alignContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                    padding: "0 10px",
+                    mt: -30
+                }}
+            >
+                <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
+                    <TypographyTitle src="Conteúdos" />
+                </Suspense>
+                <Grid container spacing={3}>
+                    {galleries.map((gallery) => (
+                        <Grid item xs={12} sm={6} md={4} key={gallery.id}>
+                            <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
+                                {gallery.imagePath && (
+                                    <div style={{
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        paddingTop: '56.25%' /* Aspect ratio: 16:9 */
+                                    }}>
+                                        <iframe
+                                            src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
+                                            title={`Gallery-${gallery.id}`}
+                                            style={{
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '100%',
+                                                border: 0
+                                            }}
+                                        ></iframe>
+                                    </div>
+                                )}
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        {gallery.title}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                            {gallery.link && (
+                                <Box sx={{ mt: 1 }}>
+                                    <Typography
+                                        variant="body2"
+                                        component="a"
+                                        href={gallery.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            textDecoration: 'none',
+                                            color: '#78884c',
                                         }}
-                                    ></iframe>
-                                </div>
+                                    >
+                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                    </Typography>
+                                </Box>
                             )}
-                            <Typography variant="body1">{selectedGallery.text}</Typography>
-                        </DialogContent>
-                    </>
-                )}
-            </Dialog>
-        </Box>
+                        </Grid>
+                    ))}
+                </Grid>
+                <Dialog open={open} onClose={handleClose}>
+                    {selectedGallery && (
+                        <>
+                            <DialogTitle>{selectedGallery.title}</DialogTitle>
+                            <DialogContent>
+                                {selectedGallery.imagePath && (
+                                    <div style={{
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        paddingTop: '56.25%' /* Aspect ratio: 16:9 */
+                                    }}>
+                                        <iframe
+                                            src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
+                                            title={`Gallery-${selectedGallery.id}`}
+                                            style={{
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '100%',
+                                                border: 0
+                                            }}
+                                        ></iframe>
+                                    </div>
+                                )}
+                                <Typography component="div" variant="body1">{selectedGallery.text}</Typography>
+                            </DialogContent>
+                        </>
+                    )}
+                </Dialog>
+            </Box>
+        </Suspense>
     );
 };
 
-export default DisplayGalleries;
+export default React.memo(DisplayGalleries);
