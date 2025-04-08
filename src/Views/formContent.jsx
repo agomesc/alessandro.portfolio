@@ -116,4 +116,4 @@ const FormContent = () => {
   );
 };
 
-export default FormContent;
+export default React.memo(FormContent);
