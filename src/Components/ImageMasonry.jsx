@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
@@ -36,7 +37,7 @@ const ImageMasonry = ({ data = [] }) => {
               <CardContent>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <Typography component="div" variant="subtitle1" fontWeight="bold" sx={{ padding: 1, m: 0 }}>
-                    {item.title}
+                    {item.title} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                   </Typography>
                 </NavLink>
                 <Typography component="div" variant="caption" color="text.secondary" sx={{ padding: 1, m: 0 }}>

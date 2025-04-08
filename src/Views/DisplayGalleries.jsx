@@ -90,8 +90,9 @@ const DisplayGalleries = () => {
                                 )}
                                 <CardContent>
                                     <Typography variant="h6" component="div">
-                                        {gallery.title}
+                                        {gallery.title} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                     </Typography>
+
                                 </CardContent>
                             </Card>
                             {gallery.link && (
@@ -116,7 +117,19 @@ const DisplayGalleries = () => {
                         </Grid>
                     ))}
                 </Grid>
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    fullWidth
+                    maxWidth="xl" // Ajusta o tamanho máximo
+                    sx={{
+                        '& .MuiDialog-paper': {
+                            width: '90%', // Ocupa 90% da largura da tela
+                            height: '90%', // Ocupa 90% da altura da tela
+                        },
+                    }}
+                >
+
                     {selectedGallery && (
                         <>
                             <DialogTitle>{selectedGallery.title}</DialogTitle>
@@ -142,7 +155,7 @@ const DisplayGalleries = () => {
                                         ></iframe>
                                     </div>
                                 )}
-                                <Typography component="div" variant="body1">{selectedGallery.text}</Typography>
+                                <Typography component="div" variant="body1">{selectedGallery.text} <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} /></Typography>
                             </DialogContent>
                         </>
                     )}
