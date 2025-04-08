@@ -1,15 +1,12 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { Grid, Card, CardContent, CardMedia, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
-
-
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -53,7 +50,7 @@ const DisplayGalleries = () => {
                 padding: "0 10px",
             }}
         >
-            <TypographyTitle src="Conteúdos"></TypographyTitle>
+            <Typography variant="h4" component="h1">Galerias</Typography>
             <Grid container spacing={3}>
                 {galleries.map((gallery) => (
                     <Grid item xs={12} sm={6} md={4} key={gallery.id}>
@@ -62,7 +59,9 @@ const DisplayGalleries = () => {
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image={gallery.imagePath}
+                                    media="photo"
+                                    loading="lazy"
+                                    image={`https://drive.google.com/uc?export=view&id=${gallery.imagePath}`}
                                     alt={gallery.title}
                                 />
                             )}
@@ -85,7 +84,9 @@ const DisplayGalleries = () => {
                                 <CardMedia
                                     component="img"
                                     height="200"
-                                    image={selectedGallery.imagePath}
+                                    media="photo"
+                                    loading="lazy"
+                                    image={`https://drive.google.com/uc?export=view&id=${selectedGallery.imagePath}`}
                                     alt={selectedGallery.title}
                                     sx={{ mb: 2 }}
                                 />
