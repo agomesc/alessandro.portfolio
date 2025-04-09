@@ -1,20 +1,30 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 
-
 const LoadingMessage = lazy(() => import("./LoadingMessage"));
+
+const loadedIframesCache = new Set(); // Cache persistente na vida do app
+
 const LazyIframe = ({ src, title }) => {
     const containerRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
+    const hasLoaded = useRef(loadedIframesCache.has(src)); // Evita re-render desnecessário
 
     useEffect(() => {
+        if (hasLoaded.current) {
+            setIsVisible(true);
+            return;
+        }
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsVisible(true);
+                    loadedIframesCache.add(src); // Marca como carregado
+                    hasLoaded.current = true;
                     observer.disconnect();
                 }
             },
-            { rootMargin: '200px' } // Começa a carregar um pouco antes de entrar na tela
+            { rootMargin: '200px' }
         );
 
         if (containerRef.current) {
@@ -24,7 +34,7 @@ const LazyIframe = ({ src, title }) => {
         return () => {
             observer.disconnect();
         };
-    }, []);
+    }, [src]);
 
     return (
         <Suspense fallback={<LoadingMessage />}>
@@ -34,8 +44,8 @@ const LazyIframe = ({ src, title }) => {
                     position: 'relative',
                     overflow: 'hidden',
                     width: '100%',
-                    paddingTop: '56.25%', // Aspect ratio 16:9
-                    backgroundColor: '#000', // opcional: evita tela branca até o iframe carregar
+                    paddingTop: '56.25%',
+                    backgroundColor: '#000',
                 }}
             >
                 {isVisible && (
