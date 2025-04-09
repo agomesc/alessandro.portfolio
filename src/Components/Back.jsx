@@ -7,28 +7,33 @@ const Back = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const backButtonStyle = {
-        position: "fixed",
-        bottom: "70px",
-        right: "20px",
-        zIndex: 1000,
-        backgroundColor: "#78884c",
-        color: "#ffffff",
-    };
-
     const goBack = () => {
         if (location.key) {
             navigate(-1);
         } else {
-            navigate("/"); // Altere "/" para o caminho que você deseja como fallback.
+            navigate("/");
         }
     };
 
     return (
-        <IconButton onClick={goBack} style={backButtonStyle}>
+        <IconButton
+            aria-label="Voltar"
+            onClick={goBack}
+            sx={{
+                position: "fixed",
+                bottom: 70,
+                right: 20,
+                zIndex: 1000,
+                bgcolor: "#78884c",
+                color: "#ffffff",
+                "&:hover": {
+                    bgcolor: "#6a7a42",
+                },
+            }}
+        >
             <ArrowBackIosNewOutlinedIcon />
         </IconButton>
     );
 };
 
-export default React.memo(Back);
+export default Back;

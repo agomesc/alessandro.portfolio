@@ -5,8 +5,27 @@ import PhotoCarousel from "./PhotoCarousel";
 
 const PhotoModal = ({ photos, onClose }) => {
   return (
-    <Box>
-      <IconButton sx={{ mb: 3, mt: 0 }} onClick={onClose}>
+    <Box
+      sx={{
+        position: "relative",
+        p: 2,
+        maxWidth: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          zIndex: 2,
+          backgroundColor: "#fff",
+          '&:hover': { backgroundColor: "#eee" },
+        }}
+      >
         <CloseIcon />
       </IconButton>
       {photos && <PhotoCarousel photos={photos} onClose={onClose} />}

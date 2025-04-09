@@ -4,8 +4,17 @@ import Box from '@mui/material/Box';
 
 const TypographyTitle = ({ src }) => {
     return (
-        <Box>
-            <Typography sx={{ mt: 10, mb: 2, fontWeight: 'bold', fontSize: '20px', flexGrow: 1 }} variant="h1" component="h1" gutterBottom>
+        <Box sx={{ mt: { xs: 6, md: 10 }, mb: 2 }}>
+            <Typography
+                variant="h4"
+                component="h1"
+                sx={{
+                    fontWeight: 'bold',
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    textAlign: 'left',
+                }}
+                gutterBottom
+            >
                 {src}
             </Typography>
         </Box>

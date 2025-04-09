@@ -12,29 +12,39 @@ const SwipeableSlider = ({ itemData }) => {
     return (
         <Box
             {...handlers}
-            style={{
+            sx={{
                 display: 'flex',
                 overflowX: 'auto',
-                position: 'relative',
-                width: '80%',
-                height: 'auto',
-                mx: "auto",
-                alignContent: "center",
-                alignItems: "center",
-                margin: "0 auto",
+                scrollSnapType: 'x mandatory',
+                scrollBehavior: 'smooth',
+                gap: 1,
+                px: 1,
+                '&::-webkit-scrollbar': { display: 'none' },
             }}
         >
-            {itemData.map((image, index) => (
-                <NavLink key={index} to={`/latestphotos`} style={{ textDecoration: "none" }}>
+            {itemData.map((image) => (
+                <NavLink key={image.id} to={`/latestphotos`} style={{ scrollSnapAlign: 'center', textDecoration: 'none' }}>
                     <img
-                        key={index}
                         src={image.url}
                         alt={image.title}
-                        style={{ width: 100, height: 75, objectFit: "cover", margin: "0 auto", padding: 2, borderRadius: 5 }}
+                        style={{
+                            width: 120,
+                            height: 90,
+                            objectFit: "cover",
+                            borderRadius: 8,
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.05)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                            e.currentTarget.style.boxShadow = "none";
+                        }}
                     />
                 </NavLink>
             ))}
-
         </Box>
     );
 };

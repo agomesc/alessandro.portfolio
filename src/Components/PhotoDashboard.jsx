@@ -6,7 +6,6 @@ import { FaFlickr } from "react-icons/fa";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,9 +15,10 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 
 const StarComponent = lazy(() => import("./StarComponent"));
+const ImageComponent = lazy(() => import("./ImageComponent"));
 
 const PhotoDashboard = ({ photoData }) => {
-  return (<>
+  return (
     <Card>
       <CardHeader
         title={
@@ -28,114 +28,56 @@ const PhotoDashboard = ({ photoData }) => {
         }
       />
 
-      <CardMedia
-        component="img"
-        sx={{
-          width: "100%",
-          height: "auto",
-          objectFit: "crop",
+      <ImageComponent
+        src={photoData.url}
+        alt={photoData.title}
+        width="100%"
+        height="auto"
+        style={{
+          objectFit: "cover",
           objectPosition: "center",
+          display: "block"
         }}
-        image={photoData.url}
-        lazy="load"
-        title={photoData.title}
       />
 
       <CardContent>
         <TableContainer component={Paper}>
           <Table sx={{ width: "100%" }} aria-label="photo specifications">
             <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Title
-                </TableCell>
-                <TableCell>{photoData.title}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Description
-                </TableCell>
-                <TableCell>{photoData.description}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Location
-                </TableCell>
-                <TableCell>{photoData.location}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Take
-                </TableCell>
-                <TableCell>{photoData.taken}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Views
-                </TableCell>
-                <TableCell>{photoData.views}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Camera
-                </TableCell>
-                <TableCell>{photoData.camera}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Lens
-                </TableCell>
-                <TableCell>{photoData.lens}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Range
-                </TableCell>
-                <TableCell>{photoData.range}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  ColorSpace
-                </TableCell>
-                <TableCell>{photoData.colorSpace}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Iso
-                </TableCell>
-                <TableCell>{photoData.iso}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Exposure
-                </TableCell>
-                <TableCell>{photoData.exposure}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Focal
-                </TableCell>
-                <TableCell>{photoData.focal}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Aperture
-                </TableCell>
-                <TableCell>{photoData.aperture}</TableCell>
-              </TableRow>
+              {[
+                ["Title", photoData.title],
+                ["Description", photoData.description],
+                ["Location", photoData.location],
+                ["Take", photoData.taken],
+                ["Views", photoData.views],
+                ["Camera", photoData.camera],
+                ["Lens", photoData.lens],
+                ["Range", photoData.range],
+                ["ColorSpace", photoData.colorSpace],
+                ["Iso", photoData.iso],
+                ["Exposure", photoData.exposure],
+                ["Focal", photoData.focal],
+                ["Aperture", photoData.aperture],
+              ].map(([label, value]) => (
+                <TableRow key={label}>
+                  <TableCell component="th" scope="row">{label}</TableCell>
+                  <TableCell>{value}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
       </CardContent>
 
-      <CardActions><StarComponent id={photoData.id} /></CardActions>
-      <Link target="_new" to={photoData.photopage}>
-        <IconButton>
-          <FaFlickr />
-        </IconButton>
-      </Link>
+      <CardActions>
+        <StarComponent id={photoData.id} />
+        <Link target="_blank" to={photoData.photopage}>
+          <IconButton>
+            <FaFlickr />
+          </IconButton>
+        </Link>
+      </CardActions>
     </Card>
-  </>
   );
 };
 

@@ -12,6 +12,7 @@ const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -52,6 +53,7 @@ const Home = () => {
                         padding: "0 10px",
                     }}
                 >
+                    <TypographyTitle src="Novas Atualizações"></TypographyTitle>
                     {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
                     <Tabs
                         value={tabIndex}

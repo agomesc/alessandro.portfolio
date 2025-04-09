@@ -6,13 +6,13 @@ const SocialMetaTags = ({ title, image, description }) => {
   useEffect(() => {
     document.title = title;
 
-    const setMetaTag = (name, content, property = false) => {
-      let metaTag = document.querySelector(
-        property ? `meta[property="${name}"]` : `meta[name="${name}"]`
-      );
+    const setMetaTag = (name, content, isProperty = false) => {
+      let selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let metaTag = document.querySelector(selector);
+
       if (!metaTag) {
         metaTag = document.createElement("meta");
-        if (property) {
+        if (isProperty) {
           metaTag.setAttribute("property", name);
         } else {
           metaTag.setAttribute("name", name);
@@ -22,21 +22,20 @@ const SocialMetaTags = ({ title, image, description }) => {
       metaTag.setAttribute("content", content);
     };
 
-    setMetaTag("title", title, true);
-    setMetaTag("description", description, true);
-    setMetaTag("image", image || currentUrl, true);
-    setMetaTag("url", currentUrl, true);
-
+    // Open Graph
     setMetaTag("og:title", title, true);
     setMetaTag("og:description", description, true);
     setMetaTag("og:image", image || currentUrl, true);
     setMetaTag("og:url", currentUrl, true);
+    setMetaTag("og:type", "website", true);
 
+    // Twitter Cards
     setMetaTag("twitter:title", title);
     setMetaTag("twitter:description", description);
     setMetaTag("twitter:image", image || currentUrl);
-    setMetaTag("twitter:site", "@olhotografico");
     setMetaTag("twitter:card", "summary_large_image");
+    setMetaTag("twitter:site", "@olhotografico");
+
   }, [title, image, description, currentUrl]);
 
   return null;

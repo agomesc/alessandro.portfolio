@@ -1,13 +1,18 @@
-import React, { useRef, useState, useEffect, Suspense, lazy } from 'react';
+import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 
-const LoadingMessage = lazy(() => import("./LoadingMessage"));
+const LoadingMessage = lazy(() => import('./LoadingMessage'));
 
 const ImageComponent = ({ src, alt, width, height }) => {
-  const ref = useRef(null);
+  const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true); // fallback para navegadores que não suportam
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -18,8 +23,8 @@ const ImageComponent = ({ src, alt, width, height }) => {
       { rootMargin: '200px' }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => observer.disconnect();
@@ -27,18 +32,18 @@ const ImageComponent = ({ src, alt, width, height }) => {
 
   return (
     <div
-      ref={ref}
+      ref={containerRef}
       style={{
-        width: width,
-        height: height,
+        width,
+        height,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         margin: '0 auto',
       }}
     >
-      <Suspense fallback={<LoadingMessage />}>
-        {isVisible && (
+      <Suspense fallback={<div style={{ padding: 16 }}><LoadingMessage /></div>}>
+        {isVisible ? (
           <img
             src={src}
             alt={alt}
@@ -48,9 +53,12 @@ const ImageComponent = ({ src, alt, width, height }) => {
               height: 'auto',
               objectFit: 'cover',
               borderRadius: 8,
-              display: 'block', // importante para evitar espaços extras
+              display: 'block',
+              padding: 4,
             }}
           />
+        ) : (
+          <LoadingMessage />
         )}
       </Suspense>
     </div>
@@ -69,4 +77,4 @@ ImageComponent.defaultProps = {
   height: 'auto',
 };
 
-export default React.memo(ImageComponent);
+export default ImageComponent;

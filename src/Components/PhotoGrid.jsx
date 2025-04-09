@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Card, CardContent, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 
@@ -12,16 +12,22 @@ const PhotoGrid = ({ itemData = [] }) => {
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {itemData.map((item) => (
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
-              <ImageComponent
-                src={item.url}
-                alt={item.title}
-                width="320"
-                height="240"
-                style={{ padding: 8, borderRadius: 20 }}
-              />
+              <Suspense fallback={<div>Carregando imagem...</div>}>
+                <ImageComponent
+                  src={item.url}
+                  alt={item.title}
+                  width="320"
+                  height="240"
+                  style={{ padding: 8, borderRadius: 20 }}
+                />
+              </Suspense>
               <CardContent>
-                <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>{item.title} </Typography>
-                <StarComponent sx={{ padding: 1, m: 0 }} id={item.id} />
+                <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>
+                  {item.title}
+                </Typography>
+                <Suspense fallback={<div>Carregando estrela...</div>}>
+                  <StarComponent sx={{ padding: 1, m: 0 }} id={item.id} />
+                </Suspense>
               </CardContent>
             </Card>
           ))}
@@ -31,7 +37,6 @@ const PhotoGrid = ({ itemData = [] }) => {
           Nenhuma imagem disponível
         </Typography>
       )}
-
     </>
   );
 };

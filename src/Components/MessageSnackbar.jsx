@@ -1,21 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import Snackbar from "@mui/material/Snackbar";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 
-const MessageSnackbar = ({ message, severity }) => {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
+const MessageSnackbar = ({
+  open = true,
+  message = "",
+  severity = "info",
+  autoHideDuration = 6000,
+  onClose = () => { },
+}) => {
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") return;
+    onClose(); // permite controle externo
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar
+      open={open}
+      autoHideDuration={autoHideDuration}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    >
       <Alert
         elevation={6}
         variant="filled"
         onClose={handleClose}
         severity={severity}
+        sx={{ width: "100%" }}
       >
         {message}
       </Alert>

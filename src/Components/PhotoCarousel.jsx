@@ -1,7 +1,8 @@
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 const ImageGallery = lazy(() => import("react-image-gallery"));
+const LoadingMessage = lazy(() => import('./LoadingMessage'));
 
 const PhotoCarousel = ({ photos }) => {
   const galleryImages = photos.map((item) => ({
@@ -9,6 +10,11 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-  return <ImageGallery items={galleryImages} />;
+  return (
+    <Suspense fallback={<LoadingMessage />}>
+      <ImageGallery items={galleryImages} />
+    </Suspense>
+  );
 };
+
 export default React.memo(PhotoCarousel);

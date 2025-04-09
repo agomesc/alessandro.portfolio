@@ -10,13 +10,18 @@ const ImageComponent = lazy(() => import("../Components/ImageComponent"));
 
 const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+
+  const openModal = (index) => {
+    setSelectedPhotoIndex(index);
+    setShowModal(true);
+  };
 
   return (
     <>
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
-          {photos.map((item) => (
-
+          {photos.map((item, index) => (
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
               <IconButton
                 sx={{
@@ -26,15 +31,13 @@ const PhotoGallery = ({ photos = [] }) => {
                   bgcolor: "#c0810d",
                   zIndex: 2
                 }}
-                aria-label="info"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowModal(true);
-                }}
+                aria-label="Abrir Modal"
+                onClick={() => openModal(index)}
               >
                 <Slideshow />
               </IconButton>
-              <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
+
+              <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
                 <ImageComponent
                   src={item.url}
                   alt={item.title}
@@ -42,18 +45,25 @@ const PhotoGallery = ({ photos = [] }) => {
                   style={{ padding: 8, borderRadius: 20 }}
                 />
               </NavLink>
+
               <CardContent>
-                <Typography key={item.id} component="div" variant="caption" sx={{ padding: 1, m: 0 }}>{item.title}</Typography>
+                <Typography component="div" variant="caption" sx={{ padding: 1, m: 0 }}>
+                  {item.title}
+                </Typography>
                 <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
               </CardContent>
-
             </Card>
-
           ))}
         </Masonry>
       )}
 
-      {showModal && <PhotoModal photos={photos} onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <PhotoModal
+          photos={photos}
+          initialIndex={selectedPhotoIndex}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </>
   );
 };
