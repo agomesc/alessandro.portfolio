@@ -7,7 +7,6 @@ import Tab from "@mui/material/Tab";
 
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
@@ -53,7 +52,6 @@ const Home = () => {
                         padding: "0 10px",
                     }}
                 >
-                    <TypographyTitle src="Atualizações"></TypographyTitle>
                     {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
                     <Tabs
                         value={tabIndex}

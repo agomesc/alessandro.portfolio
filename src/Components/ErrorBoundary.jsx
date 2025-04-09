@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MessageSnackbar from './MessageSnackbar';
+import { Alert, AlertTitle, Button, Box, Typography, Snackbar } from '@mui/material';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -8,20 +8,18 @@ class ErrorBoundary extends Component {
       hasError: false,
       error: null,
       errorInfo: null,
-      isOffline: !navigator.onLine // Inicia verificando o estado da conexão
+      isOffline: !navigator.onLine,
+      showSnackbar: false,
     };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+    return { hasError: true, error, showSnackbar: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    });
-    console.error('Erro capturado:', error, errorInfo);
+    this.setState({ errorInfo });
+    console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
   }
 
   componentDidMount() {
@@ -38,22 +36,52 @@ class ErrorBoundary extends Component {
     this.setState({ isOffline: !navigator.onLine });
   };
 
+  handleRetry = () => {
+    window.location.reload();
+  };
+
+  handleCloseSnackbar = () => {
+    this.setState({ showSnackbar: false });
+  };
+
   render() {
-    if (this.state.hasError) {
+    const { hasError, error, isOffline, showSnackbar } = this.state;
+
+    if (hasError) {
       return (
-        <MessageSnackbar
-          message={this.state.error ? this.state.error.message : 'Ocorreu um erro'}
-          severity={this.state.error ? 'error' : 'info'}
-        />
+        <Box sx={{ padding: 4, textAlign: 'center' }}>
+          <Alert severity="error">
+            <AlertTitle>Erro inesperado</AlertTitle>
+            {error?.message || 'Algo deu errado ao carregar a aplicação.'}
+          </Alert>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Tente recarregar a página. Se o problema persistir, tente novamente mais tarde.
+          </Typography>
+          <Button variant="contained" color="error" onClick={this.handleRetry} sx={{ mt: 2 }}>
+            Recarregar Página
+          </Button>
+
+          <Snackbar
+            open={showSnackbar}
+            autoHideDuration={8000}
+            onClose={this.handleCloseSnackbar}
+            message="Um erro foi detectado"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          />
+        </Box>
       );
     }
 
-    if (this.state.isOffline) {
+    if (isOffline) {
       return (
-        <MessageSnackbar
-          message="Você está offline. Verifique sua conexão com a internet."
-          severity="warning"
-        />
+        <>
+          <Snackbar
+            open
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            message="Você está offline. Verifique sua conexão com a internet."
+          />
+          {this.props.children}
+        </>
       );
     }
 
@@ -61,4 +89,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default React.memo(ErrorBoundary);
+export default ErrorBoundary;
