@@ -35,7 +35,6 @@ const ImageComponent = ({ src, alt, width, height }) => {
         justifyContent: 'center',
         alignItems: 'center',
         margin: '0 auto',
-        marginTop: 5
       }}
     >
       <Suspense fallback={<LoadingMessage />}>
