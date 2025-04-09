@@ -46,7 +46,7 @@ const ImageMasonry = ({ data = [] }) => {
                   <ImageComponent
                     src={item.img}
                     alt={item.title}
-                    width={352}
+                    width={220}
                     height="auto"
                   />
                 </NavLink>
