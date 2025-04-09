@@ -1,5 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 
+
+const LoadingMessage = lazy(() => import("./LoadingMessage"));
 const LazyIframe = ({ src, title }) => {
     const containerRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -25,34 +27,36 @@ const LazyIframe = ({ src, title }) => {
     }, []);
 
     return (
-        <div
-            ref={containerRef}
-            style={{
-                position: 'relative',
-                overflow: 'hidden',
-                width: '100%',
-                paddingTop: '56.25%', // Aspect ratio 16:9
-                backgroundColor: '#000', // opcional: evita tela branca até o iframe carregar
-            }}
-        >
-            {isVisible && (
-                <iframe
-                    src={src}
-                    title={title}
-                    loading="lazy"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        border: 0,
-                    }}
-                />
-            )}
-        </div>
+        <Suspense fallback={<LoadingMessage />}>
+            <div
+                ref={containerRef}
+                style={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    width: '100%',
+                    paddingTop: '56.25%', // Aspect ratio 16:9
+                    backgroundColor: '#000', // opcional: evita tela branca até o iframe carregar
+                }}
+            >
+                {isVisible && (
+                    <iframe
+                        src={src}
+                        title={title}
+                        loading="lazy"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            border: 0,
+                        }}
+                    />
+                )}
+            </div>
+        </Suspense>
     );
 };
 
