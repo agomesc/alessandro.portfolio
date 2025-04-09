@@ -35,9 +35,11 @@ const ImageComponent = ({ src, alt, width, height }) => {
             loading="lazy"
             style={{
               width: '100%',
-              height: '100%',
-              objectFit: 'fill',
+              height: 'auto',
+              objectFit: 'cover',
               display: 'flex',
+              padding: "0 auto",
+              borderRadius: 8
             }}
           />
         )}

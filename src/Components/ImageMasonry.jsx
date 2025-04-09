@@ -23,7 +23,7 @@ const ImageMasonry = ({ data = [] }) => {
                   alt={item.title}
                   width={140}
                   height={140}
-                  style={{ padding: 8, borderRadius: 20 }}
+                  style={{ padding: 70 }}
                 />
               </NavLink>
               <CardContent>
