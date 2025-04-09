@@ -38,4 +38,4 @@ const ProTip = () => {
 	);
 }
 
-export default React.memo(ProTip);
+export default ProTip;

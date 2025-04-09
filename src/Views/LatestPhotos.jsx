@@ -14,41 +14,35 @@ const LatestPhotos = () => {
 	const instance = useMemo(() => CreateFlickrApp(), []);
 
 	useEffect(() => {
-		async function fetchData() {
-			const data = await instance.getLatestPhotosMedium();
-			setGalleryData(data);
+		if (!galleryData) {
+			instance.getLatestPhotosMedium().then(setGalleryData);
 		}
-		if (!galleryData) fetchData();
 	}, [galleryData, instance]);
 
-	if (!galleryData) {
-		return <LoadingMessage />;
-	}
+	if (!galleryData) return <LoadingMessage />;
 
 	const title = 'Atualizações';
 	const description = 'Últimas Atualizações';
 
 	return (
-		<>
+		<Suspense fallback={<LoadingMessage />}>
+			<Box
+				sx={{
+					p: 0,
+					width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
+					alignContent: "center",
+					alignItems: "center",
+					margin: "0 auto",
+					padding: "0 20px",
+				}}
+			>
+				<TypographyTitle src="Atualizações" />
+				<PhotoGrid itemData={galleryData} />
+				<CommentBox itemID="LatestPhotos" />
+			</Box>
 
-			<Suspense fallback={<LoadingMessage />}>
-				<Box
-					sx={{
-						p: 0,
-						width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
-						alignContent: "center",
-						alignItems: "center",
-						margin: "0 auto",
-						padding: "0 20px",
-					}}
-				>
-					<TypographyTitle src="Atualizações" />
-					{galleryData ? <PhotoGrid itemData={galleryData} /> : <LoadingMessage />}
-					<CommentBox itemID="LatestPhotos" />
-				</Box>
-			</Suspense>
 			<SocialMetaTags title={title} image={logo} description={description} />
-		</>
+		</Suspense>
 	);
 };
 

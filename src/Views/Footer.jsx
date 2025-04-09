@@ -8,20 +8,36 @@ const Footer = () => {
     return (
         <AppBar position="fixed" color="inherit" sx={{ top: 'auto', bottom: 0 }}>
             <Toolbar sx={{ justifyContent: "center", backgroundColor: 'white' }}>
-                <IconButton href="https://www.flickr.com/agomesc" target="_blank" sx={{ color: '#78884c' }}>
+                <IconButton
+                    href="https://www.flickr.com/agomesc"
+                    target="_blank"
+                    sx={{
+                        color: '#78884c',
+                        transition: 'color 0.3s',
+                        '&:hover': { color: '#000' }
+                    }}
+                >
                     <FaFlickr />
                 </IconButton>
                 <IconButton
                     href="https://500px.com/p/alessandrogomescunha?view=photos"
                     target="_blank"
-                    sx={{ color: '#78884c' }}
+                    sx={{
+                        color: '#78884c',
+                        transition: 'color 0.3s',
+                        '&:hover': { color: '#000' }
+                    }}
                 >
                     <Fa500Px />
                 </IconButton>
                 <IconButton
                     href="https://x.com/olhotofografico"
                     target="_blank"
-                    sx={{ color: '#78884c' }}
+                    sx={{
+                        color: '#78884c',
+                        transition: 'color 0.3s',
+                        '&:hover': { color: '#000' }
+                    }}
                 >
                     <FaTwitter />
                 </IconButton>

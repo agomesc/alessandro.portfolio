@@ -1,7 +1,16 @@
-import React, { useState, lazy } from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import React, { useState, lazy, Suspense } from 'react';
+import { Box, TextField, Typography, CircularProgress } from '@mui/material';
 
 const LinkPreview = lazy(() => import("../Components/LinkPreview"));
+
+const isValidUrl = (url) => {
+    try {
+        const parsed = new URL(url);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch (_) {
+        return false;
+    }
+};
 
 const TestWrapper = () => {
     const [url, setUrl] = useState('');
@@ -25,17 +34,24 @@ const TestWrapper = () => {
             }}
         >
             <Typography variant="h4" component="h1" gutterBottom>
-                LinkPreview
+                Teste de LinkPreview
             </Typography>
+
             <TextField
                 label="Digite o link aqui"
                 variant="outlined"
+                placeholder="https://exemplo.com"
                 fullWidth
                 value={url}
                 onChange={handleChange}
                 sx={{ marginBottom: 2 }}
             />
-            {url && <LinkPreview url={url} />}
+
+            {isValidUrl(url) && (
+                <Suspense fallback={<CircularProgress />}>
+                    <LinkPreview url={url} />
+                </Suspense>
+            )}
         </Box>
     );
 };

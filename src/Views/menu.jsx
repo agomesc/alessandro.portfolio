@@ -41,12 +41,9 @@ const TemporaryDrawer = () => {
     const instance = useMemo(() => CreateFlickrApp(), []);
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await instance.getGallery();
-            setGalleryData(data);
+        if (galleryData.length === 0) {
+            instance.getGallery().then(setGalleryData);
         }
-
-        if (!galleryData.length) fetchData();
     }, [galleryData, instance]);
 
     useEffect(() => {
@@ -60,13 +57,14 @@ const TemporaryDrawer = () => {
         setOpen(newOpen);
     }, []);
 
-
     const handleLogout = useCallback(() => {
-        signOut(auth).then(() => {
-            console.log('Usuário deslogado');
-        }).catch((error) => {
-            console.error('Erro ao deslogar', error);
-        });
+        signOut(auth)
+            .then(() => {
+                console.log('Usuário deslogado');
+            })
+            .catch((error) => {
+                console.error('Erro ao deslogar', error);
+            });
     }, []);
 
     const items = useMemo(() => {
@@ -91,7 +89,6 @@ const TemporaryDrawer = () => {
             { route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> }
         ];
 
-
         return [...baseItems, ...galleryItems, ...additionalItems];
     }, [galleryData]);
 
@@ -115,16 +112,23 @@ const TemporaryDrawer = () => {
                                             if (hasChildren) {
                                                 setOpenSub(!openSub);
                                             } else {
-                                                setOpen(false); // Fechar a gaveta ao clicar em um item que não tem filhos
+                                                setOpen(false);
                                             }
                                         }}
                                         sx={{ color: '#6c6a6b' }}
                                     >
-                                        <ListItemIcon size="small" edge="start" color="#78884c" aria-label="menu">
+                                        <ListItemIcon sx={{ color: '#78884c' }}>
                                             {item.icon}
                                         </ListItemIcon>
                                         <ListItemText primary={item.description} />
-                                        {hasChildren && (openSub ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
+                                        {hasChildren && (
+                                            <ExpandMoreIcon
+                                                sx={{
+                                                    transform: openSub ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                    transition: 'transform 0.3s ease'
+                                                }}
+                                            />
+                                        )}
                                     </ListItemButton>
                                 </ListItem>
                             );
@@ -138,10 +142,10 @@ const TemporaryDrawer = () => {
                                             href={item.route}
                                             onClick={(event) => {
                                                 event.stopPropagation();
-                                                setOpen(false); // Fechar a gaveta ao clicar em um item filho
+                                                setOpen(false);
                                             }}
                                         >
-                                            <ListItemIcon size="small" edge="start" color="#78884c" aria-label="menu">
+                                            <ListItemIcon sx={{ color: '#78884c' }}>
                                                 {item.icon}
                                             </ListItemIcon>
                                             <ListItemText primary={item.description} />
@@ -168,9 +172,8 @@ const TemporaryDrawer = () => {
                     <IconButton
                         size="large"
                         edge="start"
-                        color="#78884c"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
+                        sx={{ color: "#78884c", mr: 2 }}
+                        aria-label="Abrir menu de navegação"
                         onClick={toggleDrawer(true)}
                     >
                         <MenuIcon />
@@ -179,36 +182,18 @@ const TemporaryDrawer = () => {
                         <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span><span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
                     </Typography>
                     {user ? (
-                        <div style={{ display: 'flex', alignContent: "center", alignItems: "center", marginLeft: 10 }}>
-                            <Avatar alt={user.displayName} src={user.photoURL} />
-                            <nav>
-                                <IconButton onClick={handleLogout}
-                                    size="small"
-                                    aria-label="account of current user"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    color="#78884c"
-                                >
-                                    <LogoutIcon />
-                                </IconButton>
-                            </nav>
-                        </div>
+                        <Box sx={{ display: 'flex', alignItems: 'center', top: 10 }}>
+                            <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
+                            <IconButton onClick={handleLogout} sx={{ color: "#78884c" }}>
+                                <LogoutIcon />
+                            </IconButton>
+                        </Box>
                     ) : (
-                        <div>
-                            <nav>
-                                <Link to="/Login">
-                                    <IconButton
-                                        size="medium"
-                                        aria-label="account of current user"
-                                        aria-controls="menu-appbar"
-                                        aria-haspopup="true"
-                                        color="#78884c"
-                                    >
-                                        <AccountCircle />
-                                    </IconButton>
-                                </Link>
-                            </nav>
-                        </div>
+                        <Link to="/Login">
+                            <IconButton sx={{ color: "#78884c" }}>
+                                <AccountCircle />
+                            </IconButton>
+                        </Link>
                     )}
                 </Toolbar>
             </AppBar>
@@ -216,7 +201,7 @@ const TemporaryDrawer = () => {
                 {DrawerList}
             </Drawer>
         </div>
-    )
-}
+    );
+};
 
 export default React.memo(TemporaryDrawer);

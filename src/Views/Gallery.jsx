@@ -1,7 +1,7 @@
-import CreateFlickrApp from "../shared/CreateFlickrApp";
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
@@ -14,24 +14,21 @@ const Gallery = () => {
     const instance = useMemo(() => CreateFlickrApp(), []);
 
     const metaData = useMemo(() => {
-        if (galleryData && galleryData.length > 0) {
-            const randomIndex = Math.floor(Math.random() * galleryData.length);
-            const randomItem = galleryData[randomIndex];
+        if (galleryData?.length) {
+            const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
             return {
                 title: randomItem.title,
                 description: randomItem.description,
-                img: randomItem.img
+                img: randomItem.img,
             };
-        };
+        }
+        return null;
     }, [galleryData]);
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await instance.getGallerySmall();
-            setGalleryData(data);
+        if (!galleryData) {
+            instance.getGallerySmall().then(setGalleryData);
         }
-
-        if (!galleryData) fetchData();
     }, [galleryData, instance]);
 
     if (!galleryData) {
@@ -54,20 +51,22 @@ const Gallery = () => {
                     <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
-                    {galleryData && <ImageMasonry data={galleryData} />}
+
+                    <ImageMasonry data={galleryData} />
+
                     <CommentBox itemID="Gallery" />
                 </Box>
             </Suspense>
-            {metaData &&
+
+            {metaData && (
                 <SocialMetaTags
                     title={metaData.title}
                     image={metaData.img}
                     description={metaData.description}
-                />}
+                />
+            )}
         </>
     );
 };
 
 export default React.memo(Gallery);
-
-

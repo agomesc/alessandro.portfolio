@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
@@ -16,87 +15,84 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const instance = useMemo(() => CreateFlickrApp(), []);
     const [tabIndex, setTabIndex] = useState(0);
+    const instance = useMemo(() => CreateFlickrApp(), []);
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await instance.getLatestPhotosThumbnail();
-            setGalleryData(data);
+        if (!galleryData) {
+            instance.getLatestPhotosThumbnail().then(setGalleryData);
         }
-        if (!galleryData) fetchData();
     }, [galleryData, instance]);
-
-    if (!galleryData) {
-        return <LoadingMessage />;
-    }
 
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
 
-
     const title = 'Atualizações';
     const description = 'Últimas Atualizações';
 
-    return (
-        <>
+    if (!galleryData) {
+        return <LoadingMessage />;
+    }
 
-            <Suspense fallback={<LoadingMessage />}>
-                <Box
+    return (
+        <Suspense fallback={<LoadingMessage />}>
+            <Box
+                sx={{
+                    p: 0,
+                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
+                    alignContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                    padding: "0 10px",
+                }}
+            >
+                <TypographyTitle src="Novas Atualizações" />
+
+                <SwipeableSlider itemData={galleryData} />
+
+                <Tabs
+                    value={tabIndex}
+                    onChange={handleTabChange}
+                    centered
                     sx={{
-                        p: 0,
-                        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
-                        alignContent: "center",
-                        alignItems: "center",
-                        margin: "0 auto",
-                        padding: "0 10px",
+                        marginTop: 3,
+                        marginBottom: -8,
+                        '.MuiTabs-indicator': {
+                            backgroundColor: '#78884c',
+                        },
                     }}
                 >
-                    <TypographyTitle src="Novas Atualizações"></TypographyTitle>
-                    {galleryData ? <SwipeableSlider itemData={galleryData} /> : <LoadingMessage />}
-                    <Tabs
-                        value={tabIndex}
-                        onChange={handleTabChange}
-                        centered
+                    <Tab
+                        label="Galeria"
                         sx={{
-                            marginTop: 3,
-                            marginBottom: -8,
-                            '.MuiTabs-indicator': {
-                                backgroundColor: '#78884c', // Muda a cor do indicador (linha abaixo da aba)
+                            color: tabIndex === 0 ? '#78884c' : '#c0810d',
+                            fontWeight: tabIndex === 0 ? 'bold' : 'normal',
+                            '&.Mui-selected': {
+                                color: '#78884c',
                             },
                         }}
-                    >
-                        <Tab
-                            label="Galeria"
-                            sx={{
-                                color: tabIndex === 0 ? '#78884c' : '#000', // Muda a cor do texto
-                                fontWeight: tabIndex === 0 ? 'bold' : 'normal',
-                                '&.Mui-selected': {
-                                    color: '#78884c', // Garante que o link azul seja substituído
-                                },
-                            }}
-                        />
-                        <Tab
-                            label="Meus Trabalhos"
-                            sx={{
-                                color: tabIndex === 1 ? '#78884c' : '#000', // Muda a cor do texto
-                                fontWeight: tabIndex === 1 ? 'bold' : 'normal',
-                                '&.Mui-selected': {
-                                    color: '#78884c', // Garante que o link azul seja substituído
-                                },
-                            }}
-                        />
-                    </Tabs>
-                    {tabIndex === 0 && <Gallery />}
-                    {tabIndex === 1 && <GalleryWork />}
-                    <DisplayGalleries />
-                </Box>
+                    />
+                    <Tab
+                        label="Meus Trabalhos"
+                        sx={{
+                            color: tabIndex === 1 ? '#78884c' : '#c0810d',
+                            fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+                            '&.Mui-selected': {
+                                color: '#78884c',
+                            },
+                        }}
+                    />
+                </Tabs>
 
-            </Suspense>
+                {tabIndex === 0 && <Gallery />}
+                {tabIndex === 1 && <GalleryWork />}
+
+                <DisplayGalleries />
+            </Box>
 
             <SocialMetaTags title={title} image={logo} description={description} />
-        </>
+        </Suspense>
     );
 };
 
