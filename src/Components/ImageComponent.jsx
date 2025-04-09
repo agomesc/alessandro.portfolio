@@ -26,7 +26,18 @@ const ImageComponent = ({ src, alt, width, height }) => {
   }, []);
 
   return (
-    <div ref={ref} style={{ width, height }}>
+    <div
+      ref={ref}
+      style={{
+        width: width,
+        height: height,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: '0 auto',
+        marginTop: 5
+      }}
+    >
       <Suspense fallback={<LoadingMessage />}>
         {isVisible && (
           <img
@@ -37,9 +48,8 @@ const ImageComponent = ({ src, alt, width, height }) => {
               width: '100%',
               height: 'auto',
               objectFit: 'cover',
-              display: 'flex',
-              padding: "0 auto",
-              borderRadius: 8
+              borderRadius: 8,
+              display: 'block', // importante para evitar espaços extras
             }}
           />
         )}

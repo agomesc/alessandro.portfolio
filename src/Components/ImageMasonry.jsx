@@ -23,7 +23,6 @@ const ImageMasonry = ({ data = [] }) => {
                   alt={item.title}
                   width={140}
                   height={140}
-                  style={{ padding: 70 }}
                 />
               </NavLink>
               <CardContent>
@@ -40,16 +39,15 @@ const ImageMasonry = ({ data = [] }) => {
             </Card>
           ))
         ) : (
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 6 }} spacing={1}>
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
             {data.map((item) => (
-              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "320px" } }}>
+              <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "100%" } }}>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
                   <ImageComponent
                     src={item.img}
                     alt={item.title}
                     width={352}
                     height="auto"
-                    style={{ padding: 8, borderRadius: 20 }}
                   />
                 </NavLink>
                 <CardContent>
@@ -57,7 +55,7 @@ const ImageMasonry = ({ data = [] }) => {
                     <Typography component="div" variant="h5" sx={{ padding: 1, m: 0 }}>{item.title}<OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} /></Typography>
                   </NavLink>
                   <Typography component="div" variant="body1" color="text.secondary" sx={{ padding: 1, m: 0 }}>
-                    {item.description.length > 100 ? `${item.description.substring(0, 150)}...` : item.description}
+                    {item.description.length > 100 ? `${item.description.substring(0, 200)}...` : item.description}
                   </Typography>
                   <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
                 </CardContent>
