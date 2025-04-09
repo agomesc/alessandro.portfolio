@@ -39,12 +39,12 @@ const Home = () => {
         <Suspense fallback={<LoadingMessage />}>
             <Box
                 sx={{
-                    p: 0,
-                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
-                    alignContent: "center",
-                    alignItems: "center",
+                    p: { xs: 1, sm: 2 },
+                    maxWidth: "1200px",
                     margin: "0 auto",
-                    padding: "0 10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
                 }}
             >
                 <TypographyTitle src="Novas Atualizações" />
@@ -55,9 +55,10 @@ const Home = () => {
                     value={tabIndex}
                     onChange={handleTabChange}
                     centered
+                    variant="fullWidth"
                     sx={{
-                        marginTop: 3,
-                        marginBottom: -8,
+                        mt: 3,
+                        mb: 2,
                         '.MuiTabs-indicator': {
                             backgroundColor: '#78884c',
                         },
@@ -67,20 +68,14 @@ const Home = () => {
                         label="Galeria"
                         sx={{
                             color: tabIndex === 0 ? '#78884c' : '#c0810d',
-                            fontWeight: tabIndex === 0 ? 'bold' : 'normal',
-                            '&.Mui-selected': {
-                                color: '#78884c',
-                            },
+                            fontSize: { xs: '0.8rem', sm: '1rem' },
                         }}
                     />
                     <Tab
                         label="Meus Trabalhos"
                         sx={{
                             color: tabIndex === 1 ? '#78884c' : '#c0810d',
-                            fontWeight: tabIndex === 1 ? 'bold' : 'normal',
-                            '&.Mui-selected': {
-                                color: '#78884c',
-                            },
+                            fontSize: { xs: '0.8rem', sm: '1rem' },
                         }}
                     />
                 </Tabs>

@@ -31,9 +31,16 @@ const App = () => {
 	return (
 		<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
 			<CssBaseline />
-			<div style={{ position: "fixed", top: 10, right: 2, zIndex: 9999 }}>
-				<IconButton onClick={toggleTheme} color="inherit">
-					{darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+			<div style={{ position: "fixed", top: 12, right: 105, zIndex: 9999 }}>
+				<IconButton
+					onClick={toggleTheme}
+					style={{
+						backgroundColor: darkMode ? '#333333' : '#f0f0f0', // Fundo para contraste
+						color: darkMode ? '#ffffff' : '#000000', // Cor do ícone ajustada
+						borderRadius: '50%', // Apenas para melhorar o estilo
+					}}
+				>
+					{darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
 				</IconButton>
 			</div>
 
