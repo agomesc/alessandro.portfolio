@@ -30,10 +30,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
-const TemporaryDrawer = () => {
+const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [user, setUser] = useState(null);
@@ -181,8 +183,11 @@ const TemporaryDrawer = () => {
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
                         <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span><span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
                     </Typography>
+                    <IconButton onClick={toggleTheme} sx={{ color: "#78884c", mr: 1 }}>
+                        {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+                    </IconButton>
                     {user ? (
-                        <Box sx={{ display: 'flex', alignItems: 'center', top: 10 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
                             <IconButton onClick={handleLogout} sx={{ color: "#78884c" }}>
                                 <LogoutIcon />
