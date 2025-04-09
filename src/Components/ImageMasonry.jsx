@@ -55,7 +55,7 @@ const ImageMasonry = ({ data = [] }) => {
                     <Typography component="div" variant="h5" sx={{ padding: 1, m: 0 }}>{item.title}<OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} /></Typography>
                   </NavLink>
                   <Typography component="div" variant="body1" color="text.secondary" sx={{ padding: 1, m: 0 }}>
-                    {item.description.length > 100 ? `${item.description.substring(0, 200)}...` : item.description}
+                    {item.description.length > 200 ? `${item.description.substring(0, 200)}...` : item.description}
                   </Typography>
                   <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
                 </CardContent>
