@@ -39,14 +39,16 @@ const Home = () => {
         <Suspense fallback={<LoadingMessage />}>
             <Box
                 sx={{
-                    p: { xs: 1, sm: 2 },
-                    maxWidth: "1200px",
+                    p: 0,
+                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
+                    alignContent: "center",
+                    alignItems: "center",
                     margin: "0 auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
+                    padding: "0 10px",
+                    paddingTop: { xs: '10px', sm: '60px' }, // espaço para o menu
                 }}
             >
+
                 <TypographyTitle src="Novas Atualizações" />
 
                 <SwipeableSlider itemData={galleryData} />
@@ -55,10 +57,9 @@ const Home = () => {
                     value={tabIndex}
                     onChange={handleTabChange}
                     centered
-                    variant="fullWidth"
                     sx={{
-                        mt: 3,
-                        mb: 2,
+                        marginTop: 3,
+                        marginBottom: -8,
                         '.MuiTabs-indicator': {
                             backgroundColor: '#78884c',
                         },
@@ -68,14 +69,20 @@ const Home = () => {
                         label="Galeria"
                         sx={{
                             color: tabIndex === 0 ? '#78884c' : '#c0810d',
-                            fontSize: { xs: '0.8rem', sm: '1rem' },
+                            fontWeight: tabIndex === 0 ? 'bold' : 'normal',
+                            '&.Mui-selected': {
+                                color: '#78884c',
+                            },
                         }}
                     />
                     <Tab
                         label="Meus Trabalhos"
                         sx={{
                             color: tabIndex === 1 ? '#78884c' : '#c0810d',
-                            fontSize: { xs: '0.8rem', sm: '1rem' },
+                            fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+                            '&.Mui-selected': {
+                                color: '#78884c',
+                            },
                         }}
                     />
                 </Tabs>

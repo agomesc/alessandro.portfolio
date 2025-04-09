@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 const TypographyTitle = ({ src }) => {
     return (
-        <Box sx={{ mt: { xs: 6, md: 10 }, mb: 2 }}>
+        <Box sx={{ mt: { xs: 10, md: 5, xl: 5 }, mb: 2 }}>
             <Typography
                 variant="h4"
                 component="h1"
@@ -12,6 +12,9 @@ const TypographyTitle = ({ src }) => {
                     fontWeight: 'bold',
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     textAlign: 'left',
+                    display: 'flex', // Adicione "flex" para melhorar a disposição
+                    flexDirection: 'column', // Garante que os filhos fiquem em ordem
+
                 }}
                 gutterBottom
             >

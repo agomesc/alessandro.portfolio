@@ -68,12 +68,13 @@ const LinkPreview = ({ url }) => {
             <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
                 <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
                     {previewData.image && (
-                        <ImageComponent
-                            src={previewData.image}
-                            alt={previewData.description || "Imagem da prévia"}
-                            width={100}
-                            height={100}
-                        />
+                        <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+                            <ImageComponent
+                                src={previewData.image}
+                                alt={previewData.description || "Imagem da prévia"}
+                                width="150"
+                            />
+                        </Box>
                     )}
                     <CardContent>
                         <Typography variant="caption" align="center" sx={{ color: "red" }}>

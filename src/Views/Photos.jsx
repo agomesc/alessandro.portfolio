@@ -62,7 +62,7 @@ const Photos = () => {
 						padding: "0 20px",
 					}}
 				>
-					<TypographyTitle src={galleryInfoData || "Minhas Fotos"} />
+					<TypographyTitle src="Minhas Fotos" />
 					<Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
 						{galleryInfoData}
 					</Typography>
