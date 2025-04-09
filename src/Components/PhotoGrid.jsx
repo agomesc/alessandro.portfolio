@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
+const ImageComponent = lazy(() => import("../Components/ImageComponent"));
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (
@@ -11,14 +12,12 @@ const PhotoGrid = ({ itemData = [] }) => {
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {itemData.map((item) => (
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
-              <CardMedia
-                media="photo"
-                component="img"
+              <ImageComponent
+                src={item.url}
+                alt={item.title}
                 width="320"
                 height="240"
-                image={item.url}
-                alt={item.title || "Imagem sem descrição"}
-                loading="lazy"
+                style={{ padding: 8, borderRadius: 20 }}
               />
               <CardContent>
                 <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>{item.title} </Typography>

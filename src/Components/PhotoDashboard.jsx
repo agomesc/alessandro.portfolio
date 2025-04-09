@@ -139,4 +139,4 @@ const PhotoDashboard = ({ photoData }) => {
   );
 };
 
-export default PhotoDashboard;
+export default React.memo(PhotoDashboard);

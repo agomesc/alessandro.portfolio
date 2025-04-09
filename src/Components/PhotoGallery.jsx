@@ -1,11 +1,12 @@
 import React, { useState, lazy } from "react";
-import { Card, CardMedia, CardContent, Typography, IconButton } from "@mui/material";
+import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
 const StarComponent = lazy(() => import("../Components/StarComponent"));
+const ImageComponent = lazy(() => import("../Components/ImageComponent"));
 
 const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,13 +35,11 @@ const PhotoGallery = ({ photos = [] }) => {
                 <Slideshow />
               </IconButton>
               <NavLink key={item.id} to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                <CardMedia
-                  media="photo"
-                  component="img"
-                  height="auto"
-                  image={item.url}
+                <ImageComponent
+                  src={item.url}
                   alt={item.title}
-                  loading="lazy"
+                  height="auto"
+                  style={{ padding: 8, borderRadius: 20 }}
                 />
               </NavLink>
               <CardContent>

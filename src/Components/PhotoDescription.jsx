@@ -20,4 +20,4 @@ const PhotoDescription = ({ imageUrl, description }) => {
   );
 };
 
-export default PhotoDescription;
+export default React.memo(PhotoDescription);

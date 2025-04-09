@@ -1,19 +1,12 @@
 import React, { lazy } from 'react';
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Importa o ícone
 
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 const StarComponent = lazy(() => import("../Components/StarComponent"));
-
-const cardMediaStyles = {
-  with: { xs: "100%", sm: "90%" },
-  height: "auto",
-  maxWidth: "320px",
-  margin: "0 auto",
-  objectFit: "cover"
-};
+const ImageComponent = lazy(() => import("../Components/ImageComponent"));
 
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery("(orientation: portrait)");
@@ -25,13 +18,12 @@ const ImageMasonry = ({ data = [] }) => {
           data.map((item) => (
             <Card key={item.id} sx={{ display: "flex", mb: 2, boxShadow: 3, width: { xs: "100%", sm: "90%" } }}>
               <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 140, height: 140, objectFit: "cover", padding: 1, borderRadius: 5 }}
-                  image={item.img}
+                <ImageComponent
+                  src={item.img}
                   alt={item.title}
-                  media="photo"
-                  loading="lazy"
+                  width={140}
+                  height={140}
+                  style={{ padding: 8, borderRadius: 20 }}
                 />
               </NavLink>
               <CardContent>
@@ -52,14 +44,12 @@ const ImageMasonry = ({ data = [] }) => {
             {data.map((item) => (
               <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, width: { xs: "100%", sm: "90%", maxWidth: "320px" } }}>
                 <NavLink key={item.id} to={`/Photos/${item.id}`} style={{ textDecoration: "none" }}>
-                  <CardMedia
-                    component="img"
-                    media="photo"
-                    image={item.img}
+                  <ImageComponent
+                    src={item.img}
                     alt={item.title}
-                    loading="lazy"
-                    style={cardMediaStyles}
-                    sx={{ width: '320', height: 'auto', objectFit: "cover", padding: 1, borderRadius: 5 }}
+                    width={352}
+                    height="auto"
+                    style={{ padding: 8, borderRadius: 20 }}
                   />
                 </NavLink>
                 <CardContent>
