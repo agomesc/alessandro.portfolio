@@ -55,15 +55,21 @@ const DisplayGalleries = () => {
             <Box
                 sx={{
                     p: 0,
-                    width: "auto",
+                    width: {
+                        xs: "100%", // Para telas extra pequenas (mobile)
+                        sm: "90%",  // Para telas pequenas
+                        md: "80%",  // Para telas médias
+                        lg: "70%",  // Para telas grandes
+                        xl: "80%"   // Para telas extra grandes
+                    },
                     alignContent: "center",
                     alignItems: "center",
                     margin: "0 auto",
-                    padding: "0 10px",
-                    mt: -30
+                    padding: "0 20px",
+                    mt: 10
                 }}
             >
-                <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
+                <Suspense fallback={<LoadingMessage />}>
                     <TypographyTitle src="Conteúdos" />
                 </Suspense>
                 <Grid container spacing={3}>
@@ -71,7 +77,7 @@ const DisplayGalleries = () => {
                         <Grid item xs={12} sm={6} md={4} key={gallery.id}>
                             <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
                                 {gallery.imagePath && (
-                                    <Suspense fallback={<div>Carregando...</div>}>
+                                    <Suspense fallback={<LoadingMessage />}>
                                         <LazyIframe
                                             src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
                                             title={`Gallery-${gallery.id}`}
@@ -153,8 +159,8 @@ const DisplayGalleries = () => {
                         </>
                     )}
                 </Dialog>
-            </Box>
-        </Suspense>
+            </Box >
+        </Suspense >
     );
 };
 

@@ -41,11 +41,18 @@ const Gallery = () => {
                 <Box
                     sx={{
                         p: 0,
-                        width: "auto",
+                        width: {
+                            xs: "100%", // Para telas extra pequenas (mobile)
+                            sm: "90%",  // Para telas pequenas
+                            md: "80%",  // Para telas médias
+                            lg: "70%",  // Para telas grandes
+                            xl: "80%"   // Para telas extra grandes
+                        },
                         alignContent: "center",
                         alignItems: "center",
                         margin: "0 auto",
-                        padding: "0 10px",
+                        padding: "0 20px",
+                        mt: 10
                     }}
                 >
                     <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
