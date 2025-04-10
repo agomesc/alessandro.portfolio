@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
@@ -9,14 +9,38 @@ const MessageSnackbar = ({
   autoHideDuration = 6000,
   onClose = () => { },
 }) => {
-  const handleClose = (event, reason) => {
+  const [show, setShow] = useState(open);
+  const [queue, setQueue] = useState([]);
+
+  useEffect(() => {
+    if (open && message) {
+      if (show) {
+        // Se já estiver exibindo uma, adiciona na fila
+        setQueue((prev) => [...prev, { message, severity }]);
+      } else {
+        setShow(true);
+      }
+    }
+  }, [open, message]);
+
+  const handleClose = (_, reason) => {
     if (reason === "clickaway") return;
-    onClose(); // permite controle externo
+    setShow(false);
+    onClose();
+
+    // Após o fechamento, mostra a próxima da fila (se houver)
+    if (queue.length > 0) {
+      setTimeout(() => {
+        const next = queue[0];
+        setQueue((prev) => prev.slice(1));
+        setShow(true);
+      }, 500);
+    }
   };
 
   return (
     <Snackbar
-      open={open}
+      open={show}
       autoHideDuration={autoHideDuration}
       onClose={handleClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
@@ -24,9 +48,9 @@ const MessageSnackbar = ({
       <Alert
         elevation={6}
         variant="filled"
-        onClose={handleClose}
         severity={severity}
-        sx={{ width: "100%" }}
+        onClose={handleClose}
+        sx={{ width: "100%", minWidth: 300, justifyContent: "center" }}
       >
         {message}
       </Alert>

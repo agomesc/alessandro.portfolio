@@ -28,12 +28,12 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [open, setOpen] = useState(false);
@@ -41,10 +41,24 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [user, setUser] = useState(null);
     const [galleryData, setGalleryData] = useState([]);
     const instance = useMemo(() => CreateFlickrApp(), []);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("info");
 
     useEffect(() => {
         if (galleryData.length === 0) {
-            instance.getGallery().then(setGalleryData);
+            instance.getGallery()
+                .then((data) => {
+                    setGalleryData(data);
+                    setSnackbarMessage("Galerias carregadas com sucesso.");
+                    setSnackbarSeverity("success");
+                    setSnackbarOpen(true);
+                })
+                .catch((error) => {
+                    setSnackbarMessage("Erro ao carregar as galerias: " + error.message);
+                    setSnackbarSeverity("error");
+                    setSnackbarOpen(true);
+                });
         }
     }, [galleryData, instance]);
 
@@ -62,12 +76,21 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const handleLogout = useCallback(() => {
         signOut(auth)
             .then(() => {
-                console.log('Usuário deslogado');
+                setSnackbarMessage("Usuário deslogado com sucesso.");
+                setSnackbarSeverity("success");
+                setSnackbarOpen(true);
+
             })
             .catch((error) => {
-                console.error('Erro ao deslogar', error);
+                setSnackbarMessage("Erro ao deslogar: " + error.message);
+                setSnackbarSeverity("error");
+                setSnackbarOpen(true);
             });
     }, []);
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     const items = useMemo(() => {
         const baseItems = [
@@ -180,32 +203,62 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     >
                         <MenuIcon />
                     </IconButton>
+
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span><span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
+                        <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span>
+                        <span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
                     </Typography>
-                    <IconButton onClick={toggleTheme} sx={{ color: "#78884c", mr: 1 }}>
-                        {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
-                    </IconButton>
-                    {user ? (
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
-                            <IconButton onClick={handleLogout} sx={{ color: "#78884c" }}>
-                                <LogoutIcon />
-                            </IconButton>
-                        </Box>
-                    ) : (
-                        <Link to="/Login">
-                            <IconButton sx={{ color: "#78884c" }}>
-                                <AccountCircle />
-                            </IconButton>
-                        </Link>
-                    )}
+
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <IconButton
+                            size="large"
+                            onClick={toggleTheme}
+                            sx={{
+                                backgroundColor: darkMode ? '#333333' : '#f0f0f0',
+                                color: darkMode ? '#ffffff' : '#000000',
+                                borderRadius: '50%',
+                            }}
+                            aria-label="Alternar tema"
+                        >
+                            {darkMode ? (
+                                <Brightness7Icon fontSize="medium" />
+                            ) : (
+                                <Brightness4Icon fontSize="medium" />
+                            )}
+                        </IconButton>
+
+
+                        {user ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
+                                <IconButton size="large" onClick={handleLogout} sx={{ color: "#78884c" }}>
+                                    <LogoutIcon fontSize="medium" />
+                                </IconButton>
+                            </Box>
+                        ) : (
+                            <Link to="/Login">
+                                <IconButton size="large" sx={{ color: "#78884c" }}>
+                                    <AccountCircle fontSize="medium" />
+                                </IconButton>
+                            </Link>
+
+                        )}
+                    </Box>
                 </Toolbar>
+
             </AppBar>
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
+            <MessageSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={handleSnackbarClose}
+            />
         </div>
+
     );
 };
 

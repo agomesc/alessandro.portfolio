@@ -38,7 +38,6 @@ function Login() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(`Erro ao fazer login com o Google: ${errorCode} ${errorMessage}`);
         setMessage(`Erro ao fazer login com o Google: ${errorCode} ${errorMessage}`);
         setSeverity('error');
         setOpen(true);
@@ -57,13 +56,15 @@ function Login() {
     <Box
       sx={{
         p: 0,
-        width: "90%",
+        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "60%" },
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
+        padding: "0 10px",
+        marginTop: 5
       }}
     >
-      <TypographyTitle src={user ? "Bem-vindo!" : "Login"}></TypographyTitle>
+      <TypographyTitle src={user ? "Bem-vindo!" : "Login"} style={{ mt: 50 }}></TypographyTitle>
       {user ? (
         <Button
           variant="contained"
