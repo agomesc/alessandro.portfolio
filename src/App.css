@@ -1,113 +1,45 @@
-
-/* Reset de estilos globais */
-:root {
-  --primary-color: #c0810d;
-  --secondary-color: #78884c;
-  --background-color: #ccc;
-  --text-color: #222;
-  --ion-background-color: #f5f5f5;
-}
-
-/* Variáveis para modo claro */
-:root.light-mode {
+body.light-mode {
   --primary-color: #c0810d;
   --secondary-color: #78884c;
   --background-color: #f5f5f5;
   --text-color: #222;
 }
 
-/* Variáveis para modo escuro */
-:root.dark-mode {
+body.dark-mode {
   --primary-color: #ffc107;
   --secondary-color: #a4b57c;
   --background-color: #121212;
   --text-color: #f0f0f0;
 }
 
-
 body,
 html {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  background: var(--ion-background-color);
+  background: var(--background-color);
   color: var(--text-color);
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  width: 100%;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-  touch-action: manipulation;
-  -ms-content-zooming: none;
-  word-wrap: break-word;
-  -webkit-text-size-adjust: none;
-  -moz-text-size-adjust: none;
-  -ms-text-size-adjust: none;
-  text-size-adjust: none;
+  transition: background 0.3s, color 0.3s;
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  touch-action: manipulation;
+  word-wrap: break-word;
+  text-size-adjust: none;
 }
 
-.overlay {
-  padding: 0.625rem;
-}
-
-
-/* Estilos dos Títulos */
-h1,
-h2,
-h3,
-h4 {
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--secondary-color);
   position: relative;
 }
 
-/* Ajustar tamanhos para dispositivos móveis */
-@media only screen and (max-width: 600px) {
-  h1 {
-    font-size: 18px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
-
-  h3 {
-    font-size: 14px;
-  }
-
-  h4 {
-    font-size: 12px;
-  }
-}
-
-/* Ajustar tamanhos para telas maiores */
-@media only screen and (min-width: 601px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 18px;
-  }
-
-  h3 {
-    font-size: 16px;
-  }
-
-  h4 {
-    font-size: 18px;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--secondary-color) !important;
-}
-
-/* Linha abaixo dos Títulos */
-h1::after,
-h2::after,
-h3::after,
-h4::after {
+/* Linha decorativa nos títulos */
+h1::after, h2::after, h3::after, h4::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -117,35 +49,48 @@ h4::after {
   background-color: var(--primary-color);
 }
 
+/* Responsivo */
+@media (max-width: 600px) {
+  h1 { font-size: 18px; }
+  h2 { font-size: 16px; }
+  h3 { font-size: 14px; }
+  h4 { font-size: 12px; }
+}
+@media (min-width: 601px) {
+  h1 { font-size: 20px; }
+  h2 { font-size: 18px; }
+  h3 { font-size: 16px; }
+  h4 { font-size: 18px; }
+}
+
+/* Links */
 a {
   color: var(--secondary-color);
   text-decoration: none;
 }
-
 a:hover {
   color: var(--primary-color);
 }
-
 a:focus {
   outline: 2px dashed var(--primary-color);
   outline-offset: 4px;
 }
 
+/* Imagens */
 img {
   height: auto;
   width: 100%;
 }
-
 a img {
   width: 300px;
-  transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
-
 a img:hover {
   filter: blur(3px);
   opacity: 0.8;
 }
 
+/* Container flexível */
 .Container > * {
   flex-grow: 1;
   flex-shrink: 0;

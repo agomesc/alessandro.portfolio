@@ -4,15 +4,23 @@ import { FaFlickr, Fa500Px, FaTwitter } from "react-icons/fa";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
-const Footer = () => {
+const Footer = ({ darkMode }) => {
     return (
-        <AppBar position="fixed" color="inherit" sx={{ top: 'auto', bottom: 0 }}>
-            <Toolbar sx={{ justifyContent: "center", backgroundColor: 'white' }}>
+        <AppBar
+            position="fixed"
+            color="inherit"
+            sx={{
+                top: 'auto',
+                bottom: 0,
+                backgroundColor: darkMode ? '#121212' : 'white',
+            }}
+        >
+            <Toolbar sx={{ justifyContent: "center" }}>
                 <IconButton
                     href="https://www.flickr.com/agomesc"
                     target="_blank"
                     sx={{
-                        color: '#78884c',
+                        color: darkMode ? '#bbb' : '#78884c',
                         transition: 'color 0.3s',
                         '&:hover': { color: '#000' }
                     }}
@@ -23,7 +31,7 @@ const Footer = () => {
                     href="https://500px.com/p/alessandrogomescunha?view=photos"
                     target="_blank"
                     sx={{
-                        color: '#78884c',
+                        color: darkMode ? '#bbb' : '#78884c',
                         transition: 'color 0.3s',
                         '&:hover': { color: '#000' }
                     }}
@@ -34,7 +42,7 @@ const Footer = () => {
                     href="https://x.com/olhotofografico"
                     target="_blank"
                     sx={{
-                        color: '#78884c',
+                        color: darkMode ? '#bbb' : '#78884c',
                         transition: 'color 0.3s',
                         '&:hover': { color: '#000' }
                     }}
@@ -46,4 +54,5 @@ const Footer = () => {
     );
 };
 
-export default React.memo(Footer);
+
+export default Footer;

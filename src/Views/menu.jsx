@@ -50,9 +50,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             instance.getGallery()
                 .then((data) => {
                     setGalleryData(data);
-                    setSnackbarMessage("Galerias carregadas com sucesso.");
-                    setSnackbarSeverity("success");
-                    setSnackbarOpen(true);
+                    // setSnackbarMessage("Galerias carregadas com sucesso.");
+                    // setSnackbarSeverity("success");
+                    // setSnackbarOpen(true);
                 })
                 .catch((error) => {
                     setSnackbarMessage("Erro ao carregar as galerias: " + error.message);

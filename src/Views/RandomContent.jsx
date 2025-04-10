@@ -71,11 +71,11 @@ const RandomAffiliateAd = () => {
         sx={{
           p: 0,
           width: {
-            xs: "100%", // Para telas extra pequenas (mobile)
-            sm: "90%",  // Para telas pequenas
-            md: "80%",  // Para telas médias
-            lg: "70%",  // Para telas grandes
-            xl: "80%"   // Para telas extra grandes
+            xs: "90%", // Para telas extra pequenas (mobile)
+            sm: "80%",  // Para telas pequenas
+            md: "70%",  // Para telas médias
+            lg: "60%",  // Para telas grandes
+            xl: "50%"   // Para telas extra grandes
           },
           alignContent: "center",
           alignItems: "center",

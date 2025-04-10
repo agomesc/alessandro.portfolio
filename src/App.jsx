@@ -9,7 +9,7 @@ const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
-const Footer = lazy(() => import("./Views/Footer"));
+const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 
@@ -20,6 +20,11 @@ const App = () => {
 	useEffect(() => {
 		setUrlAtual(window.location.href);
 	}, []);
+
+	useEffect(() => {
+		document.body.classList.toggle("dark-mode", darkMode);
+		document.body.classList.toggle("light-mode", !darkMode);
+	}, [darkMode]);
 
 	const toggleTheme = () => {
 		setDarkMode(prev => !prev);
@@ -34,7 +39,7 @@ const App = () => {
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<Back />
-			<Footer />
+			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);
 };
