@@ -192,7 +192,14 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     return (
         <div>
-            <AppBar position="fixed" sx={{ top: 0, backgroundColor: 'white', color: '#6c6a6b' }}>
+            <AppBar
+                position="fixed"
+                sx={{
+                    top: 0,
+                    backgroundColor: darkMode ? '#1e1e1e' : 'white',
+                    color: darkMode ? '#f5f5f5' : '#6c6a6b',
+                }}
+            >
                 <Toolbar>
                     <IconButton
                         size="large"
