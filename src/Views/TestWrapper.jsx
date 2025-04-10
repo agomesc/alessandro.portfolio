@@ -21,16 +21,20 @@ const TestWrapper = () => {
 
     return (
         <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
             sx={{
-                minHeight: '100vh',
-                maxWidth: 500,
-                margin: '0 auto',
-                padding: 2,
-                textAlign: 'center',
+                p: 0,
+                width: {
+                    xs: "100%", // Para telas extra pequenas (mobile)
+                    sm: "90%",  // Para telas pequenas
+                    md: "80%",  // Para telas médias
+                    lg: "70%",  // Para telas grandes
+                    xl: "80%"   // Para telas extra grandes
+                },
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: "0 20px",
+                mt: 10
             }}
         >
             <Typography variant="h4" component="h1" gutterBottom>

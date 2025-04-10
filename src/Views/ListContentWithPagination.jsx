@@ -41,7 +41,23 @@ const ListContentWithPagination = () => {
     );
 
     return (
-        <Box sx={{ p: 2, width: { xs: '100%', sm: '90%' }, margin: '0 auto' }}>
+        <Box
+            sx={{
+                p: 0,
+                width: {
+                    xs: "100%", // Para telas extra pequenas (mobile)
+                    sm: "90%",  // Para telas pequenas
+                    md: "80%",  // Para telas médias
+                    lg: "70%",  // Para telas grandes
+                    xl: "80%"   // Para telas extra grandes
+                },
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: "0 20px",
+                mt: 10
+            }}
+        >
             <TypographyTitle src="Seleção de ofertas"></TypographyTitle>
             <Grid container spacing={3}>
                 {paginatedAds.map(ad => (
