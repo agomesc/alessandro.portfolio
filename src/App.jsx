@@ -10,7 +10,7 @@ const ProTip = lazy(() => import("./Views/ProTip"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
-const PushNotification = lazy(() => import("./Components/PushNotification"));
+//const PushNotification = lazy(() => import("./Components/PushNotification"));
 const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const MessageSnackbar = lazy(() => import("./Components/MessageSnackbar"));
@@ -66,7 +66,7 @@ const App = () => {
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<Back />
-			<PushNotification />
+			{/* <PushNotification /> */}
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);

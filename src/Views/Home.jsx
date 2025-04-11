@@ -12,6 +12,8 @@ const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const MessageSnackbar = lazy(() => import("./Components/MessageSnackbar"));
+const [showSnackbarOnce, setShowSnackbarOnce] = useState(true); //
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -22,7 +24,16 @@ const Home = () => {
         if (!galleryData) {
             instance.getLatestPhotosThumbnail().then(setGalleryData);
         }
-    }, [galleryData, instance]);
+
+        if (showSnackbarOnce) {
+            setSnackbarMessage("Gostou de alguma foto? Deixe um comentário ou uma estrela para apoiar!");
+            setSnackbarSeverity("info");
+            setSnackbarOpen(true);
+            setShowSnackbarOnce(false);
+        }
+
+
+    }, [galleryData, instance, showSnackbarOnce]);
 
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
@@ -102,5 +113,7 @@ const Home = () => {
         </Suspense>
     );
 };
+
+
 
 export default React.memo(Home);
