@@ -74,7 +74,7 @@ const DisplayGalleries = () => {
                 </Suspense>
                 <Grid container spacing={3}>
                     {galleries.map((gallery) => (
-                        <Grid item xs={12} sm={6} md={4} key={gallery.id}>
+                        <Grid item xs={12} sm={6} md={4} lg={5} xl={6} key={gallery.id}>
                             <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
                                 {gallery.imagePath && (
                                     <Suspense fallback={<LoadingMessage />}>
