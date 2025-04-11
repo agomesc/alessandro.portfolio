@@ -13,11 +13,15 @@ const Footer = lazy(() => import("./Components/Footer"));
 const PushNotification = lazy(() => import("./Components/PushNotification"));
 const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
+const MessageSnackbar = lazy(() => import("./Components/MessageSnackbar"));
 
 
 const App = () => {
 	const [urlAtual, setUrlAtual] = useState('');
 	const [darkMode, setDarkMode] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState("");
+	const [snackbarSeverity, setSnackbarSeverity] = useState("info");
 
 	useEffect(() => {
 		setUrlAtual(window.location.href);
@@ -27,6 +31,27 @@ const App = () => {
 		document.body.classList.toggle("dark-mode", darkMode);
 		document.body.classList.toggle("light-mode", !darkMode);
 	}, [darkMode]);
+
+	useEffect(() => {
+		if (window.webkitNotifications) {
+			window.webkitNotifications.requestPermission((permission) => {
+				if (permission === "granted") {
+					setSnackbarMessage("Permissão concedida!");
+					setSnackbarSeverity("success");
+					setSnackbarOpen(true);
+				} else {
+					setSnackbarMessage("Permissão negada.");
+					setSnackbarSeverity("error");
+					setSnackbarOpen(true);
+				}
+			});
+		} else {
+			setSnackbarMessage("API de Notificações não é suportada neste navegador.");
+			setSnackbarSeverity("error");
+			setSnackbarOpen(true);
+		}
+	}, []);
+
 
 	const toggleTheme = () => {
 		setDarkMode(prev => !prev);
