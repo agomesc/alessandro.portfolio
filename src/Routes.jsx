@@ -18,13 +18,14 @@ const ImagePathForm = lazy(() => import("./Views/ImagePathForm"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 const GalleryList = lazy(() => import("./Views/GalleryList"));
 const EditGallery = lazy(() => import("./Views/EditGallery"));
+const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
 
 const AppRoutes = () => {
 
   const isLocalhost = window.location.hostname === "localhost";
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingMessage />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />

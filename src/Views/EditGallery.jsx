@@ -39,7 +39,7 @@ const EditGallery = () => {
             const docRef = doc(db, 'galleries', id);
             await updateDoc(docRef, {
                 title,
-                text, // Inclui o texto formatado
+                text,
                 imagePath,
                 link,
                 isActive,

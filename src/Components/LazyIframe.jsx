@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
-import PropTypes from 'prop-types';
 
 const LoadingMessage = lazy(() => import('./LoadingMessage'));
 
@@ -22,7 +21,10 @@ const iframeStyle = {
     border: 0,
 };
 
-const LazyIframe = ({ src, title }) => {
+const LazyIframe = ({
+    src,
+    title = 'Vídeo incorporado'
+}) => {
     const containerRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
     const hasLoaded = useRef(loadedIframesCache.has(src));
@@ -74,15 +76,6 @@ const LazyIframe = ({ src, title }) => {
             </div>
         </Suspense>
     );
-};
-
-LazyIframe.propTypes = {
-    src: PropTypes.string.isRequired,
-    title: PropTypes.string,
-};
-
-LazyIframe.defaultProps = {
-    title: 'Vídeo incorporado',
 };
 
 export default React.memo(LazyIframe);

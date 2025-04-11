@@ -23,6 +23,6 @@ export const db = getFirestore(app);
 export const messaging = getMessaging(app);
 export const storage = getStorage(app);
 
-const firebaseConfig = { messaging, auth, db, provider, storage, onMessage, getToken }; // Include storage in the export
+const firebaseConfig = { messaging, auth, db, provider, storage, onMessage, getToken };
 
 export default firebaseConfig;

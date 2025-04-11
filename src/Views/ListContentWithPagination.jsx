@@ -11,7 +11,7 @@ const StarComponent = lazy(() => import("../Components/StarComponent"));
 const ListContentWithPagination = () => {
     const [ads, setAds] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6; // Número de cards por página
+    const itemsPerPage = 6;
 
     useEffect(() => {
         const fetchAds = async () => {
