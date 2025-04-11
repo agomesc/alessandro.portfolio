@@ -55,7 +55,7 @@ const ImageComponent = ({
             style={{
               width: '100%',
               height: 'auto',
-              objectFit: 'cover',
+              objectFit: 'contain',
               borderRadius: 8,
               display: 'block',
               padding: 4,
