@@ -144,7 +144,7 @@ const DisplayGalleries = () => {
                             </DialogTitle>
                             <DialogContent>
                                 {selectedGallery.imagePath && (
-                                    <Suspense fallback={<div>Carregando...</div>}>
+                                    <Suspense fallback={<LoadingMessage />}>
                                         <LazyIframe
                                             src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
                                             title={`Gallery-${selectedGallery.id}`}

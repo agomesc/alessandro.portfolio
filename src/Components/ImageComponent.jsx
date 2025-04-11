@@ -53,6 +53,7 @@ const ImageComponent = ({
             alt={alt}
             loading="lazy"
             style={{
+              margin: 8,
               width: '100%',
               height: 'auto',
               objectFit: 'contain',
