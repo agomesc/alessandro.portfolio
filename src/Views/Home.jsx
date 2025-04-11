@@ -28,15 +28,26 @@ const Home = () => {
             instance.getLatestPhotosThumbnail().then(setGalleryData);
         }
 
-        if (showSnackbarOnce) {
+        const snackbarKey = "snackbarShownAt";
+        const lastShown = localStorage.getItem(snackbarKey);
+        const oneDay = 24 * 60 * 60 * 1000;
+
+        const now = new Date().getTime();
+
+        if (
+            showSnackbarOnce &&
+            (!lastShown || now - parseInt(lastShown, 10) > oneDay)
+        ) {
             setSnackbarMessage(
-                "Gostou de alguma foto? Deixe um comentário ou uma estrela para apoiar!"
+                "Curtiu alguma foto? Por gentileza, deixe uma estrela ou comentário para apoiar o trabalho! 😊"
             );
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
             setShowSnackbarOnce(false);
+            localStorage.setItem(snackbarKey, now.toString());
         }
     }, [galleryData, instance, showSnackbarOnce]);
+
 
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
