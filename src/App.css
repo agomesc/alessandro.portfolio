@@ -76,11 +76,12 @@ a:focus {
   outline-offset: 4px;
 }
 
-/* Imagens */
 img {
-  height: auto;
   width: 100%;
+  height: auto;
+  object-fit: contain;
 }
+
 a img {
   width: 300px;
   transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -90,8 +91,9 @@ a img:hover {
   opacity: 0.8;
 }
 
-/* Container flexível */
 .Container > * {
   flex-grow: 1;
   flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
 }
