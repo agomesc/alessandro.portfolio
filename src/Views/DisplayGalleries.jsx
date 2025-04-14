@@ -1,10 +1,12 @@
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
+import {
+    Card, CardContent, Typography, Dialog, DialogTitle,
+    DialogContent, Box, Button, Stack, IconButton
+} from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
@@ -14,6 +16,9 @@ const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         const fetchGalleries = async () => {
@@ -46,24 +51,23 @@ const DisplayGalleries = () => {
         setSelectedGallery(null);
     };
 
-    if (!galleries) {
-        return <LoadingMessage />;
-    }
+    const totalPages = Math.ceil(galleries.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentGalleries = galleries.slice(startIndex, startIndex + itemsPerPage);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+    }, [currentPage]);
 
     return (
         <Suspense fallback={<LoadingMessage />}>
             <Box
                 sx={{
-                    p: 0,
                     width: {
-                        xs: "100%", // Para telas extra pequenas (mobile)
-                        sm: "90%",  // Para telas pequenas
-                        md: "80%",  // Para telas médias
-                        lg: "70%",  // Para telas grandes
-                        xl: "80%"   // Para telas extra grandes
+                        xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
                     },
-                    alignContent: "center",
-                    alignItems: "center",
                     margin: "0 auto",
                     padding: "0 20px",
                     mt: 10
@@ -72,47 +76,106 @@ const DisplayGalleries = () => {
                 <Suspense fallback={<LoadingMessage />}>
                     <TypographyTitle src="Conteúdos" />
                 </Suspense>
-                <Grid container spacing={3}>
-                    {galleries.map((gallery) => (
-                        <Grid item xs={12} sm={6} md={4} lg={5} xl={6} key={gallery.id}>
-                            <Card onClick={() => handleOpen(gallery)} sx={{ cursor: 'pointer', maxWidth: 345 }}>
-                                {gallery.imagePath && (
-                                    <Suspense fallback={<LoadingMessage />}>
-                                        <LazyIframe
-                                            src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
-                                            title={`Gallery-${gallery.id}`}
-                                        />
-                                    </Suspense>
+
+                <Box
+                    ref={scrollRef}
+                    sx={{
+                        display: 'flex',
+                        overflowX: 'auto',
+                        gap: 3,
+                        pb: 2,
+                        pt: 1,
+                        '&::-webkit-scrollbar': {
+                            height: '8px',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#ccc',
+                            borderRadius: '4px',
+                        },
+                    }}
+                >
+                    {currentGalleries.map((gallery) => (
+                        <Card
+                            key={gallery.id}
+                            onClick={() => handleOpen(gallery)}
+                            sx={{
+                                cursor: 'pointer',
+                                minWidth: 300,
+                                maxWidth: 345,
+                                flexShrink: 0,
+                            }}
+                        >
+                            {gallery.imagePath && (
+                                <Suspense fallback={<LoadingMessage />}>
+                                    <LazyIframe
+                                        src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
+                                        title={`Gallery-${gallery.id}`}
+                                    />
+                                </Suspense>
+                            )}
+                            <CardContent>
+                                <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
+                                    {gallery.title}
+                                    <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                </Typography>
+                                {gallery.link && (
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography
+                                            variant="body2"
+                                            component="a"
+                                            href={gallery.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                textDecoration: 'none',
+                                                color: '#78884c',
+                                            }}
+                                        >
+                                            Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                        </Typography>
+                                    </Box>
                                 )}
-                                <CardContent>
-                                    <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
-                                        {gallery.title}
-                                        <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                    </Typography>
-                                    {gallery.link && (
-                                        <Box sx={{ mt: 1 }}>
-                                            <Typography
-                                                variant="body2"
-                                                component="a"
-                                                href={gallery.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                sx={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    textDecoration: 'none',
-                                                    color: '#78884c',
-                                                }}
-                                            >
-                                                Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                            </Typography>
-                                        </Box>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                            </CardContent>
+                        </Card>
                     ))}
-                </Grid>
+                </Box>
+
+                {/* Paginação centralizada */}
+                <Box
+                    sx={{
+                        width: {
+                            xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
+                        },
+                        margin: "0 auto",
+                        mt: 4,
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        <Button
+                            variant="outlined"
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                        >
+                            Anterior
+                        </Button>
+                        <Typography variant="body1">
+                            Página {currentPage} de {totalPages}
+                        </Typography>
+                        <Button
+                            variant="outlined"
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                        >
+                            Próxima
+                        </Button>
+                    </Stack>
+                </Box>
+
+                {/* Modal */}
                 <Dialog
                     open={open}
                     onClose={handleClose}
@@ -159,8 +222,8 @@ const DisplayGalleries = () => {
                         </>
                     )}
                 </Dialog>
-            </Box >
-        </Suspense >
+            </Box>
+        </Suspense>
     );
 };
 
