@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import {
     Card, CardContent, Typography, Dialog, DialogTitle,
-    DialogContent, Box, Button, Stack, IconButton
+    DialogContent, Box, IconButton
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,8 +16,6 @@ const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
     const scrollRef = useRef(null);
 
     useEffect(() => {
@@ -50,16 +48,6 @@ const DisplayGalleries = () => {
         setOpen(false);
         setSelectedGallery(null);
     };
-
-    const totalPages = Math.ceil(galleries.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentGalleries = galleries.slice(startIndex, startIndex + itemsPerPage);
-
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        }
-    }, [currentPage]);
 
     return (
         <Suspense fallback={<LoadingMessage />}>
@@ -94,7 +82,7 @@ const DisplayGalleries = () => {
                         },
                     }}
                 >
-                    {currentGalleries.map((gallery) => (
+                    {galleries.map((gallery) => (
                         <Card
                             key={gallery.id}
                             onClick={() => handleOpen(gallery)}
@@ -140,39 +128,6 @@ const DisplayGalleries = () => {
                             </CardContent>
                         </Card>
                     ))}
-                </Box>
-
-                {/* Paginação centralizada */}
-                <Box
-                    sx={{
-                        width: {
-                            xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
-                        },
-                        margin: "0 auto",
-                        mt: 4,
-                        display: 'flex',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <Button
-                            variant="outlined"
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                        >
-                            Anterior
-                        </Button>
-                        <Typography variant="body1">
-                            Página {currentPage} de {totalPages}
-                        </Typography>
-                        <Button
-                            variant="outlined"
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                        >
-                            Próxima
-                        </Button>
-                    </Stack>
                 </Box>
 
                 {/* Modal */}
