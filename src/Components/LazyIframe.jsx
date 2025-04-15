@@ -4,26 +4,10 @@ const LoadingMessage = lazy(() => import('./LoadingMessage'));
 
 const loadedIframesCache = new Set(); // Mantém o cache dos iframes já carregados
 
-const containerStyle = {
-    position: 'relative',
-    overflow: 'hidden',
-    width: '100%',
-    paddingTop: '56.25%', // 16:9 ratio
-    backgroundColor: '#000',
-};
-
-const iframeStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    border: 0,
-};
-
 const LazyIframe = ({
     src,
-    title = 'Vídeo incorporado'
+    title = 'Vídeo incorporado',
+    ratio = '56.25%' // proporção padrão 16:9
 }) => {
     const containerRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -59,6 +43,25 @@ const LazyIframe = ({
             }
         };
     }, [src]);
+
+    const containerStyle = {
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100%',
+        paddingTop: ratio,
+        backgroundColor: '#000',
+    };
+
+    const iframeStyle = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        border: 0,
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out'
+    };
 
     return (
         <Suspense fallback={<LoadingMessage />}>
