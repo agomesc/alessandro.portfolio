@@ -22,6 +22,10 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebaseConfig';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+
 
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
@@ -149,6 +153,13 @@ function CommentBox({ itemID }) {
               : ''
           }
         />
+        {!isLoggedIn && (
+          <Link to="/Login">
+            <IconButton size="large" sx={{ color: "#78884c" }}>
+              <AccountCircle fontSize="medium" />
+            </IconButton>
+          </Link>
+        )}
         <Button
           sx={{ mb: 2, mt: 2, backgroundColor: "#78884c" }}
           type="submit"

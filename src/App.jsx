@@ -62,7 +62,7 @@ const App = () => {
 			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			<RandomAffiliateAd />
+			{/* <RandomAffiliateAd /> */}
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<Back />

@@ -4,6 +4,8 @@ import logo from "../images/logo_192.png";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import BrushIcon from "@mui/icons-material/Brush";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -29,7 +31,7 @@ const Home = () => {
         }
 
         const snackbarKey = "snackbarShownAt";
-        const lastShown = localStorage.getItem(snackbarKey);
+        const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
 
         const now = new Date().getTime();
@@ -44,7 +46,7 @@ const Home = () => {
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
             setShowSnackbarOnce(false);
-            localStorage.setItem(snackbarKey, now.toString());
+            sessionStorage.setItem(snackbarKey, now.toString());
         }
     }, [galleryData, instance, showSnackbarOnce]);
 
@@ -99,6 +101,8 @@ const Home = () => {
                     }}
                 >
                     <Tab
+                        icon={<PhotoLibraryIcon />}
+                        iconPosition="start"
                         label="Galeria"
                         sx={{
                             color: tabIndex === 0 ? "#78884c" : "#c0810d",
@@ -109,6 +113,8 @@ const Home = () => {
                         }}
                     />
                     <Tab
+                        icon={<BrushIcon />}
+                        iconPosition="start"
                         label="Meus Trabalhos"
                         sx={{
                             color: tabIndex === 1 ? "#78884c" : "#c0810d",
@@ -119,6 +125,7 @@ const Home = () => {
                         }}
                     />
                 </Tabs>
+
 
                 {tabIndex === 0 && <Gallery />}
                 {tabIndex === 1 && <GalleryWork />}
@@ -141,4 +148,4 @@ const Home = () => {
     );
 };
 
-export default React.memo(Home);
+export default Home;
