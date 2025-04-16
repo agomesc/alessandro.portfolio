@@ -85,7 +85,7 @@ const Home = () => {
                     mt: 10,
                 }}
             >
-                <TypographyTitle title="Novas Atualizações" />
+                <TypographyTitle src="Novas Atualizações" />
                 <SwipeableSlider itemData={galleryData} />
 
                 <Tabs

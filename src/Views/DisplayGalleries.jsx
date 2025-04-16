@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import {
     Card, CardContent, Typography, Dialog, DialogTitle,
-    DialogContent, Box, IconButton
+    DialogContent, Box, IconButton, Pagination
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,6 +16,8 @@ const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedGallery, setSelectedGallery] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
     const scrollRef = useRef(null);
 
     useEffect(() => {
@@ -39,6 +41,11 @@ const DisplayGalleries = () => {
         fetchGalleries();
     }, []);
 
+    const totalPages = Math.ceil(galleries.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = galleries.slice(startIndex, endIndex);
+
     const handleOpen = (gallery) => {
         setSelectedGallery(gallery);
         setOpen(true);
@@ -47,6 +54,11 @@ const DisplayGalleries = () => {
     const handleClose = () => {
         setOpen(false);
         setSelectedGallery(null);
+    };
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+        scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -82,7 +94,7 @@ const DisplayGalleries = () => {
                         },
                     }}
                 >
-                    {galleries.map((gallery) => (
+                    {currentItems.map((gallery) => (
                         <Card
                             key={gallery.id}
                             onClick={() => handleOpen(gallery)}
@@ -130,6 +142,20 @@ const DisplayGalleries = () => {
                     ))}
                 </Box>
 
+                {/* Paginação */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                    <Pagination
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        color="primary"
+                        shape="rounded"
+                        size="large"
+                        showFirstButton
+                        showLastButton
+                    />
+                </Box>
+
                 {/* Modal */}
                 <Dialog
                     open={open}
@@ -173,24 +199,25 @@ const DisplayGalleries = () => {
                                     style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
                                     dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
                                 />
-
-                                {selectedGallery.link && <Box sx={{ mt: 1 }}>
-                                    <Typography
-                                        variant="body2"
-                                        component="a"
-                                        href={selectedGallery.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            textDecoration: 'none',
-                                            color: '#78884c',
-                                        }}
-                                    >
-                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                    </Typography>
-                                </Box>}
+                                {selectedGallery.link && (
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography
+                                            variant="body2"
+                                            component="a"
+                                            href={selectedGallery.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                textDecoration: 'none',
+                                                color: '#78884c',
+                                            }}
+                                        >
+                                            Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                        </Typography>
+                                    </Box>
+                                )}
                             </DialogContent>
                         </>
                     )}
