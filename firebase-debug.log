@@ -1,0 +1,17 @@
+[debug] [2025-04-16T12:45:38.082Z] ----------------------------------------------------------------------
+[debug] [2025-04-16T12:45:38.085Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\agome\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-04-16T12:45:38.085Z] CLI Version:   14.1.0
+[debug] [2025-04-16T12:45:38.085Z] Platform:      win32
+[debug] [2025-04-16T12:45:38.085Z] Node Version:  v22.14.0
+[debug] [2025-04-16T12:45:38.086Z] Time:          Wed Apr 16 2025 09:45:38 GMT-0300 (Horário Padrão de Brasília)
+[debug] [2025-04-16T12:45:38.086Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-16T12:45:38.304Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-16T12:45:38.305Z] > authorizing via signed-in user (alessandrogomescunha@gmail.com)
+[debug] [2025-04-16T12:45:38.305Z] [iam] checking project alessandro-portfolio for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-04-16T12:45:38.313Z] Checked if tokens are valid: false, expires at: 1744807888664
+[debug] [2025-04-16T12:45:38.313Z] Checked if tokens are valid: false, expires at: 1744807888664
+[debug] [2025-04-16T12:45:38.314Z] > refreshing access token with scopes: []
+[debug] [2025-04-16T12:45:38.316Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-04-16T12:45:38.316Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-04-16T12:45:39.629Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
