@@ -173,6 +173,24 @@ const DisplayGalleries = () => {
                                     style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
                                     dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
                                 />
+
+                                {selectedGallery.link && <Box sx={{ mt: 1 }}>
+                                    <Typography
+                                        variant="body2"
+                                        component="a"
+                                        href={selectedGallery.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            textDecoration: 'none',
+                                            color: '#78884c',
+                                        }}
+                                    >
+                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                    </Typography>
+                                </Box>}
                             </DialogContent>
                         </>
                     )}
