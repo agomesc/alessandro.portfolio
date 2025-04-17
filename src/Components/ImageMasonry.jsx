@@ -19,15 +19,27 @@ const ImageMasonry = ({ data = [] }) => {
         boxShadow: 3,
         width: { xs: '100%', sm: '90%' },
         maxWidth: '100%',
-        borderRadius: 2,
+        borderRadius: 0,
       }}
     >
-      <NavLink to={`/Photos/${item.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: portrait ? 'row' : 'column' }}>
+      <NavLink
+        to={`/Photos/${item.id}`}
+        style={{
+          textDecoration: 'none',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <ImageComponent
           src={item.img}
           alt={item.title}
-          width={portrait ? 140 : 220}
-          height={portrait ? 140 : 'auto'}
+          style={{
+            width: "100%",
+            display: "block",
+            objectFit: "cover",
+            borderTopLeftRadius: 5,
+            borderTopRightRadius: 5
+          }}
         />
         <CardContent sx={{ flex: 1 }}>
           <Typography component="div" variant={portrait ? 'subtitle1' : 'h5'} fontWeight={portrait ? 'bold' : 'normal'} sx={{ padding: 1, m: 0 }}>

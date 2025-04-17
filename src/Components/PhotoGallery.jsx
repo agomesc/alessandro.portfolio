@@ -22,7 +22,7 @@ const PhotoGallery = ({ photos = [] }) => {
       {!showModal && (
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {photos.map((item, index) => (
-            <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3, position: "relative" }}>
+            <Card key={item.id} sx={{ borderRadius: 0, boxShadow: 3, position: "relative" }}>
               <IconButton
                 sx={{
                   position: "absolute",
@@ -41,8 +41,13 @@ const PhotoGallery = ({ photos = [] }) => {
                 <ImageComponent
                   src={item.url}
                   alt={item.title}
-                  height="auto"
-                  style={{ padding: 8, borderRadius: 20 }}
+                  style={{
+                    width: "100%",
+                    display: "block",
+                    objectFit: "cover",
+                    borderTopLeftRadius: 5,
+                    borderTopRightRadius: 5
+                  }}
                 />
               </NavLink>
 
