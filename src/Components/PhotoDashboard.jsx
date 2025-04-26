@@ -16,6 +16,7 @@ import Paper from "@mui/material/Paper";
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const ImageComponent = lazy(() => import("./ImageComponent"));
+const ViewComponent = lazy(() => import("./ViewComponent"));
 
 const PhotoDashboard = ({ photoData }) => {
   return (
@@ -71,6 +72,7 @@ const PhotoDashboard = ({ photoData }) => {
 
       <CardActions>
         <StarComponent id={photoData.id} />
+        <ViewComponent id={photoData.id} />
         <Link target="_blank" to={photoData.photopage}>
           <IconButton>
             <FaFlickr />

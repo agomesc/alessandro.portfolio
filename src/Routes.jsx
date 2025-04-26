@@ -44,7 +44,7 @@ const AppRoutes = () => {
         {isLocalhost && <Route path="/list" element={<GalleryList />} />}
         {isLocalhost && <Route path="/edit/:id" element={<EditGallery />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
-        {/* <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} /> */}
+        <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
 
       </Routes>
     </Suspense>

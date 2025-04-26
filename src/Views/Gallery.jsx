@@ -8,6 +8,7 @@ const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const ViewComponent = lazy(() => import("../Components/ViewComponent"));
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -57,6 +58,7 @@ const Gallery = () => {
                 >
                     <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
                         <TypographyTitle src="Galeria de Fotos" />
+                        <ViewComponent id="Gallery"/>
                     </Suspense>
 
                     <ImageMasonry data={galleryData} />
