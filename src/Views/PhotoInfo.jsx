@@ -1,12 +1,17 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  Suspense,
+  lazy,
+  useMemo,
+  useCallback,
+} from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
-import { Box } from "@mui/material";
-
+import { Box, Skeleton } from "@mui/material";
+import TypographyTitle from "../Components/TypographyTitle";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
@@ -23,6 +28,7 @@ const PhotoInfo = () => {
         description: galleryData.description,
       };
     }
+    return {};
   }, [galleryData]);
 
   const fetchData = useCallback(async () => {
@@ -34,43 +40,58 @@ const PhotoInfo = () => {
     fetchData();
   }, [fetchData]);
 
-  if (!galleryData) {
-    return <LoadingMessage />;
-  }
+  const skeleton = (
+    <Box sx={{ mt: 10, px: 2 }}>
+      <TypographyTitle src="Informações da Foto" />
+      <Skeleton variant="rectangular" height={400} sx={{ mt: 2 }} />
+      <Skeleton variant="text" sx={{ mt: 1 }} />
+      <Skeleton variant="text" width="60%" />
+    </Box>
+  );
 
   return (
     <>
-      <Suspense fallback={<LoadingMessage />}>
+      {!galleryData ? (
+        skeleton
+      ) : (
         <Box
           sx={{
             p: 0,
             width: {
-              xs: "100%", // Para telas extra pequenas (mobile)
-              sm: "90%",  // Para telas pequenas
-              md: "80%",  // Para telas médias
-              lg: "70%",  // Para telas grandes
-              xl: "80%"   // Para telas extra grandes
+              xs: "100%",
+              sm: "90%",
+              md: "80%",
+              lg: "70%",
+              xl: "80%",
             },
             alignContent: "center",
             alignItems: "center",
             margin: "0 auto",
             padding: "0 20px",
-            mt: 10
+            mt: 10,
           }}
         >
           <TypographyTitle src="Informações da Foto" />
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            {galleryData && <PhotoDashboard photoData={galleryData} />}
+          <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+            <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+              <PhotoDashboard photoData={galleryData} />
+            </Suspense>
           </Box>
-          <CommentBox itemID={id} />
+
+          <Suspense fallback={<Skeleton variant="text" sx={{ mt: 4 }} />}>
+            <CommentBox itemID={id} />
+          </Suspense>
         </Box>
+      )}
+
+      <Suspense fallback={null}>
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.image}
+          description={metaData.description}
+        />
       </Suspense>
-      <SocialMetaTags
-        title={metaData.title}
-        image={metaData.url}
-        description={metaData.description}
-      />
     </>
   );
 };

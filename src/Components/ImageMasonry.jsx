@@ -1,5 +1,5 @@
-import React, { lazy } from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import React, { lazy, Suspense } from 'react';
+import { Card, CardContent, Typography, Skeleton } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from 'react-router-dom';
@@ -30,28 +30,45 @@ const ImageMasonry = ({ data = [] }) => {
           flexDirection: 'column'
         }}
       >
-        <ImageComponent
-          src={item.img}
-          alt={item.title}
-          style={{
-            width: "100%",
-            display: "block",
-            objectFit: "cover",
-            borderTopLeftRadius: 5,
-            borderTopRightRadius: 5
-          }}
-        />
+        <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+          <ImageComponent
+            src={item.img}
+            alt={item.title}
+            style={{
+              width: "100%",
+              display: "block",
+              objectFit: "cover",
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5
+            }}
+          />
+        </Suspense>
+
         <CardContent sx={{ flex: 1 }}>
-          <Typography component="div" variant={portrait ? 'subtitle1' : 'h5'} fontWeight={portrait ? 'bold' : 'normal'} sx={{ padding: 1, m: 0 }}>
+          <Typography
+            component="div"
+            variant={portrait ? 'subtitle1' : 'h5'}
+            fontWeight={portrait ? 'bold' : 'normal'}
+            sx={{ padding: 1, m: 0 }}
+          >
             {item.title}
             <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
           </Typography>
-          <Typography component="div" variant={portrait ? 'caption' : 'body1'} color="text.secondary" sx={{ padding: 1, m: 0 }}>
+
+          <Typography
+            component="div"
+            variant={portrait ? 'caption' : 'body1'}
+            color="text.secondary"
+            sx={{ padding: 1, m: 0 }}
+          >
             {item.description.length > (portrait ? 100 : 200)
               ? `${item.description.substring(0, portrait ? 150 : 200)}...`
               : item.description}
           </Typography>
-          <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
+
+          <Suspense fallback={<Skeleton variant="text" width={100} sx={{ padding: 1 }} />}>
+            <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
+          </Suspense>
         </CardContent>
       </NavLink>
     </Card>

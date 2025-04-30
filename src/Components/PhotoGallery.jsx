@@ -1,5 +1,5 @@
-import React, { useState, lazy } from "react";
-import { Card, CardContent, Typography, IconButton } from "@mui/material";
+import React, { useState, lazy, Suspense } from "react";
+import { Card, CardContent, Typography, IconButton, Skeleton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
@@ -38,24 +38,28 @@ const PhotoGallery = ({ photos = [] }) => {
               </IconButton>
 
               <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                <ImageComponent
-                  src={item.url}
-                  alt={item.title}
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    objectFit: "cover",
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5
-                  }}
-                />
+                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+                  <ImageComponent
+                    src={item.url}
+                    alt={item.title}
+                    style={{
+                      width: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                      borderTopLeftRadius: 5,
+                      borderTopRightRadius: 5
+                    }}
+                  />
+                </Suspense>
               </NavLink>
 
               <CardContent>
                 <Typography component="div" variant="caption" sx={{ padding: 1, m: 0 }}>
                   {item.title}
                 </Typography>
-                <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
+                <Suspense fallback={<Skeleton variant="text" width={100} sx={{ padding: 1 }} />}>
+                  <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
+                </Suspense>
               </CardContent>
             </Card>
           ))}
@@ -63,11 +67,13 @@ const PhotoGallery = ({ photos = [] }) => {
       )}
 
       {showModal && (
-        <PhotoModal
-          photos={photos}
-          initialIndex={selectedPhotoIndex}
-          onClose={() => setShowModal(false)}
-        />
+        <Suspense fallback={null}>
+          <PhotoModal
+            photos={photos}
+            initialIndex={selectedPhotoIndex}
+            onClose={() => setShowModal(false)}
+          />
+        </Suspense>
       )}
     </>
   );
