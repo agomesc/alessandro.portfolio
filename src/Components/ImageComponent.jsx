@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
-
-const LoadingMessage = lazy(() => import('./LoadingMessage'));
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import Skeleton from '@mui/material/Skeleton';
 
 const ImageComponent = ({
   src,
@@ -46,7 +45,7 @@ const ImageComponent = ({
         margin: '0 auto',
       }}
     >
-      <Suspense fallback={<div style={{ padding: 16 }}><LoadingMessage /></div>}>
+      <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
         {isVisible ? (
           <img
             src={src}
@@ -63,7 +62,7 @@ const ImageComponent = ({
             }}
           />
         ) : (
-          <LoadingMessage />
+          <Skeleton variant="rectangular" height={200} />
         )}
       </Suspense>
     </div>
