@@ -26,7 +26,7 @@ const PhotoGallery = ({ photos = [] }) => {
               <IconButton
                 sx={{
                   position: "absolute",
-                  top: 8,
+                  top: 16,
                   right: 8,
                   bgcolor: "#c0810d",
                   zIndex: 2

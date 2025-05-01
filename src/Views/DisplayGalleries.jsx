@@ -3,13 +3,12 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import {
     Card, CardContent, Typography, Dialog, DialogTitle,
-    DialogContent, Box, IconButton, Pagination
+    DialogContent, Box, IconButton, Pagination, Skeleton
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CloseIcon from '@mui/icons-material/Close';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const LazyIframe = lazy(() => import("../Components/LazyIframe"));
 
 const DisplayGalleries = () => {
@@ -62,7 +61,7 @@ const DisplayGalleries = () => {
     };
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
             <Box
                 sx={{
                     width: {
@@ -73,7 +72,7 @@ const DisplayGalleries = () => {
                     mt: 10
                 }}
             >
-                <Suspense fallback={<LoadingMessage />}>
+                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
                     <TypographyTitle src="Conteúdos" />
                 </Suspense>
 
@@ -106,7 +105,7 @@ const DisplayGalleries = () => {
                             }}
                         >
                             {gallery.imagePath && (
-                                <Suspense fallback={<LoadingMessage />}>
+                                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
                                     <LazyIframe
                                         src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
                                         title={`Gallery-${gallery.id}`}
@@ -188,7 +187,7 @@ const DisplayGalleries = () => {
                             </DialogTitle>
                             <DialogContent>
                                 {selectedGallery.imagePath && (
-                                    <Suspense fallback={<LoadingMessage />}>
+                                    <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
                                         <LazyIframe
                                             src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
                                             title={`Gallery-${selectedGallery.id}`}

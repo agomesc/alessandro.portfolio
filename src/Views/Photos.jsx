@@ -69,10 +69,10 @@ const Photos = () => {
 					mt: 10
 				}}
 			>
-				<Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+				<Suspense fallback={<Skeleton variant="text" height={100} />}>
 					<TypographyTitle src="Minhas Fotos" />
 				</Suspense>
-				<Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+				<Suspense fallback={<Skeleton variant="text" height={100} />}>
 					<Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
 						{galleryInfoData}
 					</Typography>

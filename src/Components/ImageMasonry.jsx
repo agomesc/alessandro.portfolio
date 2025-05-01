@@ -33,17 +33,17 @@ const ImageMasonry = ({ data = [] }) => {
       }}
     >
       {/* 🔗 Apenas imagem e textos estão no link */}
-      <NavLink
-        to={`/Photos/${item.id}`}
-        style={{
-          textDecoration: 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          flex: 1
-        }}
-      >
 
-        <CardContent sx={{ flex: 1 }}>
+      <CardContent sx={{ flex: 1 }}>
+        <NavLink
+          to={`/Photos/${item.id}`}
+          style={{
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1
+          }}
+        >
           <Suspense fallback={<Skeleton variant="circular" height={100} />}>
             <ImageComponent
               src={item.img}
@@ -67,29 +67,32 @@ const ImageMasonry = ({ data = [] }) => {
             <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
           </Typography>
 
-          <Typography
-            component="div"
-            variant={isPortrait ? 'caption' : 'body1'}
-            color="text.secondary"
-            sx={{ padding: 1, m: 0 }}
-          >
-            {item.description.length > (isPortrait ? 100 : 200)
-              ? `${item.description.substring(0, isPortrait ? 150 : 200)}...`
-              : item.description}
-          </Typography>
-          {/* ⭐ Estrela fora do link */}
-          <Box
-            sx={{
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
-            <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
-              <StarComponent id={item.id} />
-            </Suspense>
-          </Box>
-        </CardContent>
-      </NavLink>
+        </NavLink>
+
+        <Typography
+          component="div"
+          variant={isPortrait ? 'caption' : 'body1'}
+          color="text.secondary"
+          sx={{ padding: 1, m: 0 }}
+        >
+          {item.description.length > (isPortrait ? 100 : 200)
+            ? `${item.description.substring(0, isPortrait ? 150 : 200)}...`
+            : item.description}
+        </Typography>
+
+        <Box
+          sx={{
+            position: 'relative',
+            top: 8,
+            right: 8,
+            zIndex: 2,
+          }}
+        >
+          <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+            <StarComponent id={item.id} />
+          </Suspense>
+        </Box>
+      </CardContent>
     </Card>
   ));
 

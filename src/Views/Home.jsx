@@ -51,7 +51,7 @@ const Home = () => {
     }, [galleryData, instance, showSnackbarOnce]);
 
 
-    const handleTabChange = (event, newIndex) => {
+    const handleTabChange = (newIndex) => {
         setTabIndex(newIndex);
     };
 
