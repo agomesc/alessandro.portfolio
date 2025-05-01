@@ -45,7 +45,7 @@ const ImageComponent = ({
         margin: '0 auto',
       }}
     >
-      <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+      <Suspense fallback={<Skeleton variant="circular"  width={40} height={40} />}>
         {isVisible ? (
           <img
             src={src}
@@ -62,7 +62,7 @@ const ImageComponent = ({
             }}
           />
         ) : (
-          <Skeleton variant="rectangular" height={200} />
+          <Skeleton variant="circular" height={200} />
         )}
       </Suspense>
     </div>
