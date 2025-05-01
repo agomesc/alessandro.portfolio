@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
+import Skeleton from '@mui/material/Skeleton';
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -7,7 +8,6 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-const LoadingMessage = lazy(() => import("./LoadingMessage"));
 const ImageComponent = lazy(() => import("./ImageComponent"));
 
 const LinkPreview = ({ url }) => {
@@ -53,18 +53,18 @@ const LinkPreview = ({ url }) => {
         fetchData();
     }, [url]);
 
-    if (loading) return <LoadingMessage />;
+    if (loading) return <Skeleton variant="rectangular" height={100} />;
 
     if (hasError || !previewData) {
         return (
-            <Typography variant="body2" align="center" color="text.secondary">
+            <Typography variant="body2"  align="center" color="text.secondary" fallback={<Skeleton variant="rectangular" height={100} />}>
                 Não foi possível carregar a pré-visualização.
             </Typography>
         );
     }
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
             <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
                 <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
                     {previewData.image && (
@@ -77,14 +77,14 @@ const LinkPreview = ({ url }) => {
                         </Box>
                     )}
                     <CardContent>
-                        <Typography variant="caption" align="center" sx={{ color: "red" }}>
+                        <Typography variant="caption" align="center" sx={{ color: "red" }} fallback={<Skeleton variant="rectangular" height={200} />}>
                             Publicidade / Indicação
                         </Typography>
-                        <Typography variant="body1" align="center" fontWeight="bold">
+                        <Typography variant="body1" align="center" fontWeight="bold" fallback={<Skeleton variant="rectangular" height={200} />}>
                             {previewData.title}
                             <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} />
                         </Typography>
-                        <Typography variant="body2" align="center">
+                        <Typography variant="body2" align="center" fallback={<Skeleton variant="rectangular" height={200} />}>
                             {previewData.description}
                         </Typography>
                     </CardContent>

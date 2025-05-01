@@ -2,11 +2,11 @@ import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const ViewComponent = lazy(() => import("../Components/ViewComponent"));
 
@@ -33,12 +33,12 @@ const Gallery = () => {
     }, [galleryData, instance]);
 
     if (!galleryData) {
-        return <LoadingMessage />;
+        return <Skeleton variant="rectangular" height={100} />;
     }
 
     return (
         <>
-            <Suspense fallback={<LoadingMessage />}>
+            <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
                 <Box
                     sx={{
                         p: 0,
@@ -56,7 +56,7 @@ const Gallery = () => {
                         mt: 10
                     }}
                 >
-                    <Suspense fallback={<Typography component="div" variant="h4">Carregando...</Typography>}>
+                    <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
                         <TypographyTitle src="Galeria de Fotos" />
                         <ViewComponent id="Gallery"/>
                     </Suspense>

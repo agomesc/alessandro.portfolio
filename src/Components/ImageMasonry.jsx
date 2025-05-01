@@ -44,7 +44,7 @@ const ImageMasonry = ({ data = [] }) => {
       >
 
         <CardContent sx={{ flex: 1 }}>
-          <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+          <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
             <ImageComponent
               src={item.img}
               alt={item.title}

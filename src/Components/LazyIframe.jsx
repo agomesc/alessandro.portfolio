@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
-
-const LoadingMessage = lazy(() => import('./LoadingMessage'));
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import Skeleton from '@mui/material/Skeleton';
 
 const loadedIframesCache = new Set(); // Mantém o cache dos iframes já carregados
 
@@ -64,7 +63,7 @@ const LazyIframe = ({
     };
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
             <div ref={containerRef} style={containerStyle}>
                 {isVisible && (
                     <iframe
