@@ -5,10 +5,10 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
+import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import("../Components/LinkPreview"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const CACHE_KEY = "randomAdCache";
 const CACHE_EXPIRY_KEY = "randomAdCacheExpiry";
@@ -60,13 +60,13 @@ const RandomAffiliateAd = () => {
   }, []);
 
   if (!randomAd) {
-    return <LoadingMessage />;
+    return <Skeleton variant="rectangular" height={100} />;
   }
 
   const isValidLink = randomAd.isLink && randomAd.text?.startsWith("http");
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
+    <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
       <Box
         sx={{
           p: 0,
@@ -84,14 +84,18 @@ const RandomAffiliateAd = () => {
           mt: 10
         }}
       >
-        <TypographyTitle src="Anúncio" />
+        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+          <TypographyTitle src="Anúncio" />
+        </Suspense>
 
         {isValidLink ? (
           <Link to={randomAd.text} target="_blank" style={{ textDecoration: "none" }}>
             <LinkPreview url={randomAd.text} />
           </Link>
         ) : (
-          <Typography variant="body1" sx={{ mb: 2 }}>{randomAd.text}</Typography>
+          <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+            <Typography variant="body1" sx={{ mb: 2 }}>{randomAd.text}</Typography>
+          </Suspense>
         )}
 
         <Link

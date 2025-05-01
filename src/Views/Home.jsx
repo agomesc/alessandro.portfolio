@@ -6,10 +6,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
+import Skeleton from '@mui/material/Skeleton';
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
@@ -63,11 +63,11 @@ const Home = () => {
     const description = "Últimas Atualizações";
 
     if (!galleryData) {
-        return <LoadingMessage />;
+        return <Skeleton variant="rectangular" height={100} />;
     }
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
             <Box
                 sx={{
                     p: 0,
