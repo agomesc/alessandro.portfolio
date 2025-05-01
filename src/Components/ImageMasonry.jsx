@@ -13,65 +13,67 @@ const ImageMasonry = ({ data = [] }) => {
 
   const renderCard = (item, portrait = false) => (
     <Card
-      sx={{
-        display: portrait ? 'flex' : 'block',
-        mb: 2,
-        boxShadow: 3,
-        width: { xs: '100%', sm: '90%' },
-        maxWidth: '100%',
-        borderRadius: 0,
+    sx={{
+      display: portrait ? 'flex' : 'block',
+      mb: 2,
+      boxShadow: 3,
+      width: { xs: '100%', sm: '90%' },
+      maxWidth: '100%',
+      borderRadius: 0,
+    }}
+  >
+    <NavLink
+      to={`/Photos/${item.id}`}
+      style={{
+        textDecoration: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1
       }}
     >
-      <NavLink
-        to={`/Photos/${item.id}`}
-        style={{
-          textDecoration: 'none',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-          <ImageComponent
-            src={item.img}
-            alt={item.title}
-            style={{
-              width: "100%",
-              display: "block",
-              objectFit: "cover",
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5
-            }}
-          />
-        </Suspense>
-
-        <CardContent sx={{ flex: 1 }}>
-          <Typography
-            component="div"
-            variant={portrait ? 'subtitle1' : 'h5'}
-            fontWeight={portrait ? 'bold' : 'normal'}
-            sx={{ padding: 1, m: 0 }}
-          >
-            {item.title}
-            <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-          </Typography>
-
-          <Typography
-            component="div"
-            variant={portrait ? 'caption' : 'body1'}
-            color="text.secondary"
-            sx={{ padding: 1, m: 0 }}
-          >
-            {item.description.length > (portrait ? 100 : 200)
-              ? `${item.description.substring(0, portrait ? 150 : 200)}...`
-              : item.description}
-          </Typography>
-
-          <Suspense fallback={<Skeleton variant="text" width={100} sx={{ padding: 1 }} />}>
-            <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
-          </Suspense>
-        </CardContent>
-      </NavLink>
-    </Card>
+      <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+        <ImageComponent
+          src={item.img}
+          alt={item.title}
+          style={{
+            width: "100%",
+            display: "block",
+            objectFit: "cover",
+            borderTopLeftRadius: 5,
+            borderTopRightRadius: 5
+          }}
+        />
+      </Suspense>
+  
+      <CardContent sx={{ flex: 1 }}>
+        <Typography
+          component="div"
+          variant={portrait ? 'subtitle1' : 'h5'}
+          fontWeight={portrait ? 'bold' : 'normal'}
+          sx={{ padding: 1, m: 0 }}
+        >
+          {item.title}
+          <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+        </Typography>
+  
+        <Typography
+          component="div"
+          variant={portrait ? 'caption' : 'body1'}
+          color="text.secondary"
+          sx={{ padding: 1, m: 0 }}
+        >
+          {item.description.length > (portrait ? 100 : 200)
+            ? `${item.description.substring(0, portrait ? 150 : 200)}...`
+            : item.description}
+        </Typography>
+      </CardContent>
+    </NavLink>
+  
+    {/* 🔥 StarComponent fora do NavLink */}
+    <Suspense fallback={<Skeleton variant="text" width={100} sx={{ padding: 1 }} />}>
+      <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
+    </Suspense>
+  </Card>
   );
 
   if (data.length === 0) {
