@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Skeleton from '@mui/material/Skeleton';
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
 
@@ -11,7 +12,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
     <>
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-          <Suspense fallback={<div>Carregando imagem...</div>}>
+          <Suspense fallback={<Skeleton variant="circular" height={100} />}>
             <ImageComponent
               src={imageUrl}
               alt={autor}
