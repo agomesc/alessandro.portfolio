@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Skeleton from '@mui/material/Skeleton';
 
@@ -8,7 +7,6 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
-const ViewComponent = lazy(() => import("../Components/ViewComponent"));
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -58,7 +56,6 @@ const Gallery = () => {
                 >
                     <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
                         <TypographyTitle src="Galeria de Fotos" />
-                        <ViewComponent id="Gallery"/>
                     </Suspense>
 
                     <ImageMasonry data={galleryData} />

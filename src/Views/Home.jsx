@@ -51,7 +51,7 @@ const Home = () => {
     }, [galleryData, instance, showSnackbarOnce]);
 
 
-    const handleTabChange = (newIndex) => {
+    const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
 
@@ -82,12 +82,11 @@ const Home = () => {
                     alignItems: "center",
                     margin: "0 auto",
                     padding: "0 20px",
-                    mt: 10,
+                    mt: 5,
                 }}
             >
                 <TypographyTitle src="Novas Atualizações" />
                 <SwipeableSlider itemData={galleryData} />
-
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
@@ -131,8 +130,9 @@ const Home = () => {
                 {tabIndex === 1 && <GalleryWork />}
 
                 <DisplayGalleries />
+                
             </Box>
-
+            
             <SocialMetaTags
                 title={title}
                 image={logo}
