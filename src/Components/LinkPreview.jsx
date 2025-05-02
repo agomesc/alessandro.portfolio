@@ -57,40 +57,47 @@ const LinkPreview = ({ url }) => {
 
     if (hasError || !previewData) {
         return (
-            <Typography variant="body2"  align="center" color="text.secondary" fallback={<Skeleton variant="rectangular" height={100} />}>
+            <Typography variant="body2" align="center" color="text.secondary" fallback={<Skeleton variant="rectangular" height={100} />}>
                 Não foi possível carregar a pré-visualização.
             </Typography>
         );
     }
 
     return (
-        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-            <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
-                <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
-                    {previewData.image && (
-                        <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+
+        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
+            <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
+                {previewData.image && (
+                    <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+                        <Suspense fallback={<Skeleton variant="circle" />}>
                             <ImageComponent
                                 src={previewData.image}
                                 alt={previewData.description || "Imagem da prévia"}
                                 width="150"
                             />
-                        </Box>
-                    )}
-                    <CardContent>
+                        </Suspense>
+                    </Box>
+                )}
+                <CardContent>
+                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
                         <Typography variant="caption" align="center" sx={{ color: "red" }} fallback={<Skeleton variant="rectangular" height={200} />}>
                             Publicidade / Indicação
                         </Typography>
+                    </Suspense>
+                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
                         <Typography variant="body1" align="center" fontWeight="bold" fallback={<Skeleton variant="rectangular" height={200} />}>
                             {previewData.title}
                             <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} />
                         </Typography>
+                    </Suspense>
+                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
                         <Typography variant="body2" align="center" fallback={<Skeleton variant="rectangular" height={200} />}>
                             {previewData.description}
                         </Typography>
-                    </CardContent>
-                </Card>
-            </Box>
-        </Suspense>
+                    </Suspense>
+                </CardContent>
+            </Card>
+        </Box>
     );
 };
 
