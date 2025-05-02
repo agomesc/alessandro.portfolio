@@ -3,7 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import "./App.css";
 import { lightTheme, darkTheme } from "./Views/Theme";
-
+import Box from "@mui/material/Box";
 
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
@@ -14,6 +14,7 @@ const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const MessageSnackbar = lazy(() => import("./Components/MessageSnackbar"));
+const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 
 
 const App = () => {
@@ -66,6 +67,9 @@ const App = () => {
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<Back />
+			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
+                <ViewComponent id="Gallery"/> 
+            </Box>           
 			{/* <PushNotification /> */}
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
