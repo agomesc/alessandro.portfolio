@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import LoadingMessage from './LoadingMessage'
 
 const MainDrawer = ({ open, handleClose, title = "", children }) => {
   return (
@@ -31,9 +32,11 @@ const MainDrawer = ({ open, handleClose, title = "", children }) => {
             mb: 2,
           }}
         >
-          <Typography id="drawer-title" variant="h6" fontWeight="bold">
-            {title}
-          </Typography>
+          <Suspense fallback={<LoadingMessage />}>
+            <Typography id="drawer-title" variant="h6" fontWeight="bold">
+              {title}
+            </Typography>
+          </Suspense>
           <IconButton onClick={handleClose} aria-label="Fechar">
             <CloseIcon />
           </IconButton>

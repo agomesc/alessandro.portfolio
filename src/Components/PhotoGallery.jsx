@@ -1,8 +1,9 @@
 import React, { useState, lazy, Suspense } from "react";
-import { Card, CardContent, Typography, IconButton, Skeleton } from "@mui/material";
+import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
+import LoadingMessage from "./LoadingMessage"
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
 const StarComponent = lazy(() => import("../Components/StarComponent"));
@@ -38,26 +39,25 @@ const PhotoGallery = ({ photos = [] }) => {
               </IconButton>
 
               <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                  <ImageComponent
-                    src={item.url}
-                    alt={item.title}
-                    style={{
-                      width: "100%",
-                      display: "block",
-                      objectFit: "cover",
-                      borderTopLeftRadius: 5,
-                      borderTopRightRadius: 5
-                    }}
-                  />
-                </Suspense>
+                <ImageComponent
+                  src={item.url}
+                  alt={item.title}
+                  style={{
+                    width: "100%",
+                    display: "block",
+                    objectFit: "cover",
+                    borderTopLeftRadius: 5,
+                    borderTopRightRadius: 5
+                  }}
+                />
               </NavLink>
-
               <CardContent>
-                <Typography component="div" variant="caption" sx={{ padding: 1, m: 0 }}>
-                  {item.title}
-                </Typography>
-                <Suspense fallback={<Skeleton variant="text" width={100} sx={{ padding: 1 }} />}>
+                <Suspense fallback={<LoadingMessage />}>
+                  <Typography component="div" variant="caption" sx={{ padding: 1, m: 0 }}>
+                    {item.title}
+                  </Typography>
+                </Suspense>
+                <Suspense fallback={<LoadingMessage />}>
                   <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
                 </Suspense>
               </CardContent>

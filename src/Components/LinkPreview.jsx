@@ -1,12 +1,11 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
-import Skeleton from '@mui/material/Skeleton';
-
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import LoadingMessage from "./LoadingMessage";
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
 
@@ -53,11 +52,11 @@ const LinkPreview = ({ url }) => {
         fetchData();
     }, [url]);
 
-    if (loading) return <Skeleton variant="rectangular" height={100} />;
+    if (loading) return <LoadingMessage />;
 
     if (hasError || !previewData) {
         return (
-            <Typography variant="body2" align="center" color="text.secondary" fallback={<Skeleton variant="rectangular" height={100} />}>
+            <Typography variant="body2" align="center" color="text.secondary" fallback={<LoadingMessage />}>
                 Não foi possível carregar a pré-visualização.
             </Typography>
         );
@@ -69,7 +68,7 @@ const LinkPreview = ({ url }) => {
             <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
                 {previewData.image && (
                     <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
-                        <Suspense fallback={<Skeleton variant="circle" />}>
+                        <Suspense fallback={<LoadingMessage />}>
                             <ImageComponent
                                 src={previewData.image}
                                 alt={previewData.description || "Imagem da prévia"}
@@ -79,19 +78,19 @@ const LinkPreview = ({ url }) => {
                     </Box>
                 )}
                 <CardContent>
-                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
-                        <Typography variant="caption" align="center" sx={{ color: "red" }} fallback={<Skeleton variant="rectangular" height={200} />}>
+                    <Suspense fallback={<LoadingMessage />}>
+                        <Typography variant="caption" align="center" sx={{ color: "red" }}>
                             Publicidade / Indicação
                         </Typography>
                     </Suspense>
-                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
-                        <Typography variant="body1" align="center" fontWeight="bold" fallback={<Skeleton variant="rectangular" height={200} />}>
+                    <Suspense fallback={<LoadingMessage />}>
+                        <Typography variant="body1" align="center" fontWeight="bold" >
                             {previewData.title}
                             <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} />
                         </Typography>
                     </Suspense>
-                    <Suspense fallback={<Skeleton variant="text" height={100} />}>
-                        <Typography variant="body2" align="center" fallback={<Skeleton variant="rectangular" height={200} />}>
+                    <Suspense fallback={<LoadingMessage />}>
+                        <Typography variant="body2" align="center">
                             {previewData.description}
                         </Typography>
                     </Suspense>

@@ -1,9 +1,10 @@
 import React, { lazy, Suspense } from 'react';
-import { Card, CardContent, Typography, Skeleton, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import LoadingMessage from '../Components/LoadingMessage'
 
 const StarComponent = lazy(() => import('../Components/StarComponent'));
 const ImageComponent = lazy(() => import('../Components/ImageComponent'));
@@ -44,7 +45,7 @@ const ImageMasonry = ({ data = [] }) => {
             flex: 1
           }}
         >
-          <Suspense fallback={<Skeleton variant="circular" height={100} />}>
+          <Suspense fallback={<LoadingMessage />}>
             <ImageComponent
               src={item.img}
               alt={item.title}
@@ -88,7 +89,7 @@ const ImageMasonry = ({ data = [] }) => {
             zIndex: 2,
           }}
         >
-          <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+          <Suspense fallback={<LoadingMessage />}>
             <StarComponent id={item.id} />
           </Suspense>
         </Box>

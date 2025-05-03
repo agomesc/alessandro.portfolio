@@ -1,29 +1,26 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
-import Skeleton from '@mui/material/Skeleton';
+import React, { useRef,useEffect, Suspense } from 'react';
+import LoadingMessage from '../Components/LoadingMessage'
 
 const loadedIframesCache = new Set(); // Mantém o cache dos iframes já carregados
 
 const LazyIframe = ({
     src,
     title = 'Vídeo incorporado',
-    ratio = '56.25%' // proporção padrão 16:9
+    ratio = '56.25%' 
 }) => {
     const containerRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
     const hasLoaded = useRef(loadedIframesCache.has(src));
 
     useEffect(() => {
         if (!src) return;
 
         if (hasLoaded.current) {
-            setIsVisible(true);
             return;
         }
 
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    setIsVisible(true);
                     loadedIframesCache.add(src);
                     hasLoaded.current = true;
                     if (containerRef.current) observer.unobserve(containerRef.current);
@@ -58,14 +55,13 @@ const LazyIframe = ({
         width: '100%',
         height: '100%',
         border: 0,
-        opacity: isVisible ? 1 : 0,
+        opacity: 1,
         transition: 'opacity 0.5s ease-in-out'
     };
 
     return (
-        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+        <Suspense fallback={<LoadingMessage />}>
             <div ref={containerRef} style={containerStyle}>
-                {isVisible && (
                     <iframe
                         src={src}
                         title={title}
@@ -74,7 +70,6 @@ const LazyIframe = ({
                         allowFullScreen
                         style={iframeStyle}
                     />
-                )}
             </div>
         </Suspense>
     );

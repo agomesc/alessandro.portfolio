@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Card, CardContent, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
+import LoadingMessage from "./LoadingMessage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
 const ImageComponent = lazy(() => import("../Components/ImageComponent"));
@@ -13,23 +14,23 @@ const PhotoGrid = ({ itemData = [] }) => {
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
           {itemData.map((item) => (
             <Card key={item.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
-              <Suspense fallback={<div>Carregando imagem...</div>}>
 
-                <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                  <ImageComponent
-                    src={item.url}
-                    alt={item.title}
-                    width="320"
-                    height="240"
-                    style={{ padding: 8, borderRadius: 20 }}
-                  />
-                </NavLink>
-              </Suspense>
+              <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
+                <ImageComponent
+                  src={item.url}
+                  alt={item.title}
+                  width="320"
+                  height="240"
+                  style={{ padding: 8, borderRadius: 20 }}
+                />
+              </NavLink>
               <CardContent>
-                <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>
-                  {item.title}
-                </Typography>
-                <Suspense fallback={<div>Carregando estrela...</div>}>
+                <Suspense fallback={<LoadingMessage />}>
+                  <Typography component="div" variant="subtitle1" sx={{ padding: 1, m: 0 }}>
+                    {item.title}
+                  </Typography>
+                </Suspense>
+                <Suspense fallback={<LoadingMessage />}>
                   <StarComponent sx={{ padding: 1, m: 0 }} id={item.id} />
                 </Suspense>
               </CardContent>

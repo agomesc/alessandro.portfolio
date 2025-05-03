@@ -12,7 +12,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
     <>
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-          <Suspense fallback={<Skeleton variant="circular" height={100} />}>
+          
             <ImageComponent
               src={imageUrl}
               alt={autor}
@@ -23,12 +23,13 @@ const PhotoDescription = ({ imageUrl, description }) => {
                 borderRadius: "8px",
               }}
             />
-          </Suspense>
         </Box>
       )}
+      <Suspense fallback={<Skeleton variant="circular" height={100} />}>
       <Typography variant="body1" component="div" sx={{ mt: 2, textAlign: "left" }}>
         {description}
       </Typography>
+      </Suspense>
     </>
   );
 };

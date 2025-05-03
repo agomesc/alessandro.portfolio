@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
+import LoadingMessage from './LoadingMessage'
 
 const ImageGallery = lazy(() => import("react-image-gallery"));
-const LoadingMessage = lazy(() => import('./LoadingMessage'));
 
 const PhotoCarousel = ({ photos }) => {
   const galleryImages = photos.map((item) => ({

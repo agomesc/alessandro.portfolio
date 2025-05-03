@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
-import Skeleton from '@mui/material/Skeleton';
+import React, { useState } from 'react';
+import LoadingMessage from './LoadingMessage'
 
 const ImageComponent = ({
   src,
@@ -7,35 +7,10 @@ const ImageComponent = ({
   width = '100%',
   height = 'auto'
 }) => {
-  const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div
-      ref={containerRef}
       style={{
         width,
         height,
@@ -43,28 +18,29 @@ const ImageComponent = ({
         justifyContent: 'center',
         alignItems: 'center',
         margin: '0 auto',
+        position: 'relative',
       }}
     >
-      <Suspense fallback={<Skeleton variant="circular"  width={40} height={40} />}>
-        {isVisible ? (
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            style={{
-              margin: 8,
-              width: '100%',
-              height: 'auto',
-              objectFit: 'contain',
-              borderRadius: 8,
-              display: 'block',
-              padding: 4,
-            }}
-          />
-        ) : (
-          <Skeleton variant="circular" height={200} />
-        )}
-      </Suspense>
+      {!loaded && (
+        <LoadingMessage/>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        style={{
+          margin: 8,
+          width: '100%',
+          height: 'auto',
+          objectFit: 'contain',
+          borderRadius: 8,
+          display: 'block',
+          padding: 4,
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out',
+        }}
+      />
     </div>
   );
 };

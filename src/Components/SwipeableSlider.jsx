@@ -2,6 +2,7 @@ import React from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Box from "@mui/material/Box";
 import { NavLink } from "react-router-dom";
+import LoadingMessage from './LoadingMessage'
 
 const SwipeableSlider = ({ itemData }) => {
     const handlers = useSwipeable({
@@ -20,6 +21,7 @@ const SwipeableSlider = ({ itemData }) => {
                 gap: 1,
                 px: 1,
                 '&::-webkit-scrollbar': { display: 'none' },
+                margin:'auto 0'
             }}
         >
             {itemData.map((image) => (
@@ -27,6 +29,7 @@ const SwipeableSlider = ({ itemData }) => {
                     <img
                         src={image.url}
                         alt={image.title}
+                        loading="lazy"
                         style={{
                             width: 120,
                             height: 90,
