@@ -45,4 +45,4 @@ const ImageComponent = ({
   );
 };
 
-export default ImageComponent;
+export default React.memo(ImageComponent);

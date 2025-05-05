@@ -205,4 +205,4 @@ function CommentBox({ itemID }) {
   );
 }
 
-export default CommentBox;
+export default React.memo(CommentBox);
