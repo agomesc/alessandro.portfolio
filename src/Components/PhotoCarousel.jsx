@@ -10,12 +10,11 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-  // Força o mesmo tamanho para todas as imagens
-  const renderItem = (item) => (
+    const renderItem = (item) => (
     <div
       style={{
         width: '100%',
-        height: '400px', // você pode ajustar essa altura conforme o layout
+        height: '400px', 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -23,12 +22,13 @@ const PhotoCarousel = ({ photos }) => {
       }}
     >
       <img
+        loading="lazy"
         src={item.original}
-        alt=""
+        alt={item.title}
         style={{
           maxWidth: '100%',
           maxHeight: '100%',
-          objectFit: 'contain', // ou "cover" se quiser preencher
+          objectFit: 'contain', 
         }}
       />
     </div>
