@@ -80,11 +80,11 @@ const Photos = () => {
 				<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
 					<PhotoGallery photos={galleryData} />
 				</Suspense>
-				<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
-					<CommentBox itemID={id} />
-				</Suspense>
 			</Box>
 
+			<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
+				<CommentBox itemID={id} />
+			</Suspense>
 
 			<SocialMetaTags
 				title={metaData.title}

@@ -59,9 +59,8 @@ const Gallery = () => {
                     </Suspense>
 
                     <ImageMasonry data={galleryData} />
-
-                    <CommentBox itemID="Gallery" />
                 </Box>
+                <CommentBox itemID="Gallery" />
             </Suspense>
 
             {metaData && (
