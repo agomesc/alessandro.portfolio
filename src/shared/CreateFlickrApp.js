@@ -82,7 +82,7 @@ const CreateFlickrApp = () => {
 		const data = await instance.getLatestPhotos(userID);
 		const itemData = data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_t.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_c.jpg`,
 			title: photo.title,
 		}));
 		return itemData;
@@ -92,7 +92,7 @@ const CreateFlickrApp = () => {
 		const data = await instance.getLatestPhotos(userwORKID);
 		const itemData = data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_t.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_c.jpg`,
 			title: photo.title,
 		}));
 		return itemData;

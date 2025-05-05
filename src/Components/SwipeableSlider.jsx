@@ -1,66 +1,34 @@
 import React from 'react';
-import { useSwipeable } from 'react-swipeable';
 import Box from "@mui/material/Box";
-import { NavLink } from "react-router-dom";
-import TypographyTitle from './TypographyTitle'
+import TypographyTitle from './TypographyTitle';
+import PhotoCarousel from './PhotoCarousel'; // já deve estar implementado
+import { useSwipeable } from 'react-swipeable';
 
 const SwipeableSlider = ({ itemData }) => {
-    const handlers = useSwipeable({
-        onSwipedLeft: () => console.log('Swiped Left'),
-        onSwipedRight: () => console.log('Swiped Right'),
-    });
+  const handlers = useSwipeable({
+    onSwipedLeft: () => console.log('Swiped Left'),
+    onSwipedRight: () => console.log('Swiped Right'),
+  });
 
-    return (
-        <Box
-            {...handlers}
-            sx={{
-                width: {
-                    xs: "100%", // Para telas extra pequenas (mobile)
-                    sm: "90%",  // Para telas pequenas
-                    md: "80%",  // Para telas médias
-                    lg: "70%",  // Para telas grandes
-                    xl: "80%"   // Para telas extra grandes
-                },
-                alignContent: "center",
-                alignItems: "center",
-                margin: "0 auto",
-                padding: "0 20px",
-                overflowX: 'auto',
-                scrollSnapType: 'x mandatory',
-                scrollBehavior: 'smooth',
-                gap: 1,
-                px: 1,
-                '&::-webkit-scrollbar': { display: 'none' },
-            }}
-        >
-            <TypographyTitle src="Atualizações" />
-
-            {itemData.map((image) => (
-                <NavLink key={image.id} to={`/latestphotos`} style={{ scrollSnapAlign: 'center', textDecoration: 'none' }}>
-                    <img
-                        src={image.url}
-                        alt={image.title}
-                        loading="lazy"
-                        style={{
-                            width: 120,
-                            height: 90,
-                            objectFit: "cover",
-                            borderRadius: 8,
-                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = "scale(1.05)";
-                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "scale(1)";
-                            e.currentTarget.style.boxShadow = "none";
-                        }}
-                    />
-                </NavLink>
-            ))}
-        </Box>
-    );
+  return (
+    <Box
+      {...handlers}
+      sx={{
+        width: {
+          xs: "100%",
+          sm: "90%",
+          md: "80%",
+          lg: "70%",
+          xl: "80%",
+        },
+        margin: "0 auto",
+        padding: "0 20px",
+      }}
+    >
+      <TypographyTitle src="Atualizações" />
+      <PhotoCarousel photos={itemData} />
+    </Box>
+  );
 };
 
 export default React.memo(SwipeableSlider);
