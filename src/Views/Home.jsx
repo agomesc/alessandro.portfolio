@@ -26,10 +26,14 @@ const Home = () => {
     const instance = useMemo(() => CreateFlickrApp(), []);
 
     useEffect(() => {
-        if (!galleryData) {
+        
+            
+        if (tabIndex === 0) {
             instance.getLatestPhotosThumbnail().then(setGalleryData);
+        } else {
+            instance.getLatestPhotosThumbnailWork().then(setGalleryData);
         }
-
+    
         const snackbarKey = "snackbarShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
@@ -85,8 +89,7 @@ const Home = () => {
                     mt: 5,
                 }}
             >
-                <TypographyTitle src="Novas Atualizações" />
-                <SwipeableSlider itemData={galleryData} />
+
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
@@ -126,13 +129,27 @@ const Home = () => {
                 </Tabs>
 
 
-                {tabIndex === 0 && <Gallery />}
-                {tabIndex === 1 && <GalleryWork />}
+                {tabIndex === 0 &&
+
+                    <>
+                        <TypographyTitle src="Atualizações" />
+                        <SwipeableSlider itemData={galleryData} />
+                        <Gallery />
+                    </>
+                }
+                {tabIndex === 1 &&
+
+                    <>
+                        <TypographyTitle src="Atualizações" />
+                        <SwipeableSlider itemData={galleryData} />
+                        <GalleryWork />
+                    </>
+                }
 
                 <DisplayGalleries />
-                
+
             </Box>
-            
+
             <SocialMetaTags
                 title={title}
                 image={logo}
