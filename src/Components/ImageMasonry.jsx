@@ -45,19 +45,19 @@ const ImageMasonry = ({ data = [] }) => {
             flex: 1
           }}
         >
-          <Suspense fallback={<LoadingMessage />}>
-            <ImageComponent
-              src={item.img}
-              alt={item.title}
-              style={{
-                width: "100%",
-                display: "block",
-                objectFit: "cover",
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5
-              }}
-            />
-          </Suspense>
+
+          <ImageComponent
+            src={item.img}
+            alt={item.title}
+            style={{
+              width: "100%",
+              display: "block",
+              objectFit: "cover",
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5
+            }}
+          />
+
           <Typography
             component="div"
             variant={isPortrait ? 'subtitle1' : 'h5'}

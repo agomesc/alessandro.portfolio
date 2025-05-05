@@ -2,6 +2,7 @@ import React from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Box from "@mui/material/Box";
 import { NavLink } from "react-router-dom";
+import TypographyTitle from './TypographyTitle'
 
 const SwipeableSlider = ({ itemData }) => {
     const handlers = useSwipeable({
@@ -13,16 +14,27 @@ const SwipeableSlider = ({ itemData }) => {
         <Box
             {...handlers}
             sx={{
-                display: 'flex',
+                width: {
+                    xs: "100%", // Para telas extra pequenas (mobile)
+                    sm: "90%",  // Para telas pequenas
+                    md: "80%",  // Para telas médias
+                    lg: "70%",  // Para telas grandes
+                    xl: "80%"   // Para telas extra grandes
+                },
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: "0 20px",
                 overflowX: 'auto',
                 scrollSnapType: 'x mandatory',
                 scrollBehavior: 'smooth',
                 gap: 1,
                 px: 1,
                 '&::-webkit-scrollbar': { display: 'none' },
-                margin:'auto 0'
             }}
         >
+            <TypographyTitle src="Atualizações" />
+
             {itemData.map((image) => (
                 <NavLink key={image.id} to={`/latestphotos`} style={{ scrollSnapAlign: 'center', textDecoration: 'none' }}>
                     <img

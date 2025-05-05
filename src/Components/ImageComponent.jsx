@@ -30,7 +30,7 @@ const ImageComponent = ({
         loading="lazy"
         onLoad={() => setLoaded(true)}
         style={{
-          margin: 8,
+          margin: '0 auto',
           width: '100%',
           height: 'auto',
           objectFit: 'contain',

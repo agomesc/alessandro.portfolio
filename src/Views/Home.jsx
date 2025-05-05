@@ -13,7 +13,6 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const Home = () => {
@@ -26,18 +25,15 @@ const Home = () => {
     const instance = useMemo(() => CreateFlickrApp(), []);
 
     useEffect(() => {
-        
-            
         if (tabIndex === 0) {
             instance.getLatestPhotosThumbnail().then(setGalleryData);
         } else {
             instance.getLatestPhotosThumbnailWork().then(setGalleryData);
         }
-    
+
         const snackbarKey = "snackbarShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
-
         const now = new Date().getTime();
 
         if (
@@ -52,7 +48,8 @@ const Home = () => {
             setShowSnackbarOnce(false);
             sessionStorage.setItem(snackbarKey, now.toString());
         }
-    }, [galleryData, instance, showSnackbarOnce]);
+    }, [tabIndex, instance, showSnackbarOnce]);
+
 
 
     const handleTabChange = (event, newIndex) => {
@@ -71,7 +68,7 @@ const Home = () => {
     }
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <>
             <Box
                 sx={{
                     p: 0,
@@ -131,24 +128,27 @@ const Home = () => {
 
                 {tabIndex === 0 &&
 
-                    <>
-                        <TypographyTitle src="Atualizações" />
-                        <SwipeableSlider itemData={galleryData} />
-                        <Gallery />
-                    </>
+                    <Suspense fallback={<LoadingMessage />}>
+                        <Box mt={4}>
+                            <SwipeableSlider itemData={galleryData} />
+                            <Gallery />
+                        </Box>
+                    </Suspense>
                 }
                 {tabIndex === 1 &&
 
-                    <>
-                        <TypographyTitle src="Atualizações" />
-                        <SwipeableSlider itemData={galleryData} />
-                        <GalleryWork />
-                    </>
+                    <Suspense fallback={<LoadingMessage />}>
+                        <Box mt={4}>
+                            <SwipeableSlider itemData={galleryData} />
+                            <GalleryWork />
+                        </Box>
+                    </Suspense>
                 }
 
                 <DisplayGalleries />
 
             </Box>
+
 
             <SocialMetaTags
                 title={title}
@@ -161,7 +161,8 @@ const Home = () => {
                 severity={snackbarSeverity}
                 onClose={handleSnackbarClose}
             />
-        </Suspense>
+        </>
+
     );
 };
 
