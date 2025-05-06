@@ -32,12 +32,12 @@ const ListContent = () => {
         await deleteDoc(docRef);
         setAds(ads.filter((ad) => ad.id !== id));
         setTimeout(() => {
-            navigate('/ListContent'); // Alterar para a rota correta de ListContent
+            navigate('/ListContent');
         }, 1000);
     };
 
     const handleAddNew = () => {
-        navigate('/FormContent'); // Certifique-se de que essa rota está configurada corretamente
+        navigate('/FormContent'); 
     };
 
     return (

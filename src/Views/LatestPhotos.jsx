@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import Skeleton from '@mui/material/Skeleton';
 import logo from "../images/logo_192.png";
 import Box from "@mui/material/Box";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
@@ -19,13 +19,13 @@ const LatestPhotos = () => {
 		}
 	}, [galleryData, instance]);
 
-	if (!galleryData) return <Skeleton variant="rectangular" height={200} />;
+	if (!galleryData) return <LoadingMessage />;
 
 	const title = 'Atualizações';
 	const description = 'Últimas Atualizações';
 
 	return (
-		<Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+		<Suspense fallback={<LoadingMessage />}>
 			<Box
 				sx={{
 					p: 0,
