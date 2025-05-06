@@ -98,9 +98,9 @@ const ImageMasonry = ({ data = [] }) => {
   ));
 
   return isPortrait ? (
-    <>{cards}</>
+    { cards }
   ) : (
-    <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+    <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={1}>
       {cards}
     </Masonry>
   );
