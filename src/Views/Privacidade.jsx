@@ -63,6 +63,7 @@ const Privacidade = () => {
                         {description}
                     </Typography>
                 </Paper>
+                <span id="ezoic-privacy-policy-embed"></span>
             </Box>
         </>
     );

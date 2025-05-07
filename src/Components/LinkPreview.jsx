@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LoadingMessage from "./LoadingMessage";
+import MessageSnackbar from "./MessageSnackbar"; // Certifique-se de que o caminho está correto
 
 const ImageComponent = lazy(() => import("./ImageComponent"));
 
@@ -13,6 +14,8 @@ const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const [message, setMessage] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
 
     useEffect(() => {
         if (!url) return;
@@ -23,6 +26,14 @@ const LinkPreview = ({ url }) => {
             );
 
         const fetchData = async () => {
+            if (!process.env.REACT_APP_LINK_PREVIEW) {
+                setMessage("Configuração do servidor de preview não encontrada.");
+                setShowMessage(true);
+                setHasError(true);
+                setLoading(false);
+                return;
+            }
+
             try {
                 const response = await Promise.race([
                     fetch(
@@ -42,7 +53,8 @@ const LinkPreview = ({ url }) => {
                     setHasError(true);
                 }
             } catch (error) {
-                console.error("Erro ao buscar preview:", error);
+                setMessage("Erro ao buscar prévia do link.");
+                setShowMessage(true);
                 setHasError(true);
             } finally {
                 setLoading(false);
@@ -56,47 +68,56 @@ const LinkPreview = ({ url }) => {
 
     if (hasError || !previewData) {
         return (
-            <Typography variant="body2" align="center" color="text.secondary" fallback={<LoadingMessage />}>
-                Não foi possível carregar a pré-visualização.
-            </Typography>
+            <>
+                <MessageSnackbar
+                    open={showMessage}
+                    message={message}
+                    severity="error"
+                    onClose={() => setShowMessage(false)}
+                />
+                <Typography variant="body2" align="center" color="text.secondary">
+                    Não foi possível carregar a pré-visualização.
+                </Typography>
+            </>
         );
     }
 
     return (
-
-        <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
-            <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
-                {previewData.image && (
-                    <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
-                        <Suspense fallback={<LoadingMessage />}>
-                            <ImageComponent
-                                src={previewData.image}
-                                alt={previewData.description || "Imagem da prévia"}
-                                width="150"
-                            />
-                        </Suspense>
-                    </Box>
-                )}
-                <CardContent>
-                    <Suspense fallback={<LoadingMessage />}>
+        <>
+            <MessageSnackbar
+                open={showMessage}
+                message={message}
+                severity="error"
+                onClose={() => setShowMessage(false)}
+            />
+            <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
+                <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
+                    {previewData.image && (
+                        <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+                            <Suspense fallback={<LoadingMessage />}>
+                                <ImageComponent
+                                    src={previewData.image}
+                                    alt={previewData.description || "Imagem da prévia"}
+                                    width="150"
+                                />
+                            </Suspense>
+                        </Box>
+                    )}
+                    <CardContent>
                         <Typography variant="caption" align="center" sx={{ color: "red" }}>
                             Publicidade / Indicação
                         </Typography>
-                    </Suspense>
-                    <Suspense fallback={<LoadingMessage />}>
-                        <Typography variant="body1" align="center" fontWeight="bold" >
+                        <Typography variant="body1" align="center" fontWeight="bold">
                             {previewData.title}
-                            <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} />
+                            <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
                         </Typography>
-                    </Suspense>
-                    <Suspense fallback={<LoadingMessage />}>
                         <Typography variant="body2" align="center">
                             {previewData.description}
                         </Typography>
-                    </Suspense>
-                </CardContent>
-            </Card>
-        </Box>
+                    </CardContent>
+                </Card>
+            </Box>
+        </>
     );
 };
 
