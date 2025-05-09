@@ -1,41 +1,40 @@
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import React, { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Collapse from "@mui/material/Collapse";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import CreateFlickrApp from "../shared/CreateFlickrApp";
-import InfoIcon from "@mui/icons-material/Info";
-import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
-import ArtTrackIcon from "@mui/icons-material/ArtTrack";
-import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import { Link } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+
+import {
+    AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
+    List, ListItem, ListItemButton, ListItemIcon, ListItemText,
+    Collapse, Avatar
+} from "@mui/material";
+
+import {
+    Menu as MenuIcon,
+    AccountCircle,
+    Info as InfoIcon,
+    PhotoLibrary as PhotoLibraryIcon,
+    ArtTrack as ArtTrackIcon,
+    DynamicFeed as DynamicFeedIcon,
+    Logout as LogoutIcon,
+    Policy as PolicyIcon,
+    AdminPanelSettings as AdminPanelSettingsIcon,
+    Home as HomeIcon,
+    ExpandMore as ExpandMoreIcon,
+    ShoppingCart as ShoppingCartIcon,
+    Brightness4 as Brightness4Icon,
+    Brightness7 as Brightness7Icon
+} from "@mui/icons-material";
+
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebaseConfig';
-import Avatar from '@mui/material/Avatar';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PolicyIcon from '@mui/icons-material/Policy';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import HomeIcon from '@mui/icons-material/Home';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
+    const theme = useTheme();
+
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [user, setUser] = useState(null);
@@ -48,12 +47,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     useEffect(() => {
         if (galleryData.length === 0) {
             instance.getGallery()
-                .then((data) => {
-                    setGalleryData(data);
-                    // setSnackbarMessage("Galerias carregadas com sucesso.");
-                    // setSnackbarSeverity("success");
-                    // setSnackbarOpen(true);
-                })
+                .then(setGalleryData)
                 .catch((error) => {
                     setSnackbarMessage("Erro ao carregar as galerias: " + error.message);
                     setSnackbarSeverity("error");
@@ -79,7 +73,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage("Usuário deslogado com sucesso.");
                 setSnackbarSeverity("success");
                 setSnackbarOpen(true);
-
             })
             .catch((error) => {
                 setSnackbarMessage("Erro ao deslogar: " + error.message);
@@ -119,7 +112,14 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     const DrawerList = (
         <Suspense fallback={<LoadingMessage />}>
-            <Box sx={{ width: 250, backgroundColor: 'white', color: '#6c6a6b' }} role="presentation">
+            <Box
+                sx={{
+                    width: 250,
+                    bgcolor: theme.palette.background.default,
+                    color: theme.palette.text.primary
+                }}
+                role="presentation"
+            >
                 <Divider />
                 <List>
                     {items.map((item, index) => {
@@ -140,9 +140,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                                 setOpen(false);
                                             }
                                         }}
-                                        sx={{ color: '#6c6a6b' }}
                                     >
-                                        <ListItemIcon sx={{ color: '#78884c' }}>
+                                        <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                                             {item.icon}
                                         </ListItemIcon>
                                         <ListItemText primary={item.description} />
@@ -162,7 +161,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                 <Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
                                         <ListItemButton
-                                            sx={{ pl: 4, color: '#6c6a6b' }}
+                                            sx={{ pl: 4 }}
                                             component="a"
                                             href={item.route}
                                             onClick={(event) => {
@@ -170,7 +169,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                                 setOpen(false);
                                             }}
                                         >
-                                            <ListItemIcon sx={{ color: '#78884c' }}>
+                                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                                                 {item.icon}
                                             </ListItemIcon>
                                             <ListItemText primary={item.description} />
@@ -186,9 +185,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         </Suspense>
     );
 
-    if (!galleryData.length) {
-        return <LoadingMessage />;
-    }
+    if (!galleryData.length) return <LoadingMessage />;
 
     return (
         <div>
@@ -196,15 +193,15 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 position="fixed"
                 sx={{
                     top: 0,
-                    backgroundColor: darkMode ? '#1e1e1e' : 'white',
-                    color: darkMode ? '#f5f5f5' : '#6c6a6b',
+                    bgcolor: theme.palette.background.paper,
+                    color: theme.palette.text.primary,
                 }}
             >
                 <Toolbar>
                     <IconButton
                         size="large"
                         edge="start"
-                        sx={{ color: "#78884c", mr: 2 }}
+                        sx={{ color: theme.palette.primary.main, mr: 2 }}
                         aria-label="Abrir menu de navegação"
                         onClick={toggleDrawer(true)}
                     >
@@ -212,52 +209,46 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     </IconButton>
 
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <span style={{ color: "#78884c", fontSize: 20, fontWeight: 'bold' }}>Olho</span>
-                        <span style={{ color: "#6c6a6b", fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
+                        <span style={{ color: theme.palette.primary.main, fontSize: 20, fontWeight: 'bold' }}>Olho</span>
+                        <span style={{ color: theme.palette.text.primary, fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
                     </Typography>
-
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <IconButton
                             size="large"
                             onClick={toggleTheme}
                             sx={{
-                                backgroundColor: darkMode ? '#333333' : '#f0f0f0',
-                                color: darkMode ? '#ffffff' : '#000000',
+                                bgcolor: theme.palette.action.hover,
+                                color: theme.palette.text.primary,
                                 borderRadius: '50%',
                             }}
                             aria-label="Alternar tema"
                         >
-                            {darkMode ? (
-                                <Brightness7Icon fontSize="medium" />
-                            ) : (
-                                <Brightness4Icon fontSize="medium" />
-                            )}
+                            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
-
 
                         {user ? (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
-                                <IconButton size="large" onClick={handleLogout} sx={{ color: "#78884c" }}>
-                                    <LogoutIcon fontSize="medium" />
+                                <IconButton size="large" onClick={handleLogout} sx={{ color: theme.palette.primary.main }}>
+                                    <LogoutIcon />
                                 </IconButton>
                             </Box>
                         ) : (
                             <Link to="/Login">
-                                <IconButton size="large" sx={{ color: "#78884c" }}>
-                                    <AccountCircle fontSize="medium" />
+                                <IconButton size="large" sx={{ color: theme.palette.primary.main }}>
+                                    <AccountCircle />
                                 </IconButton>
                             </Link>
-
                         )}
                     </Box>
                 </Toolbar>
-
             </AppBar>
+
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
+
             <MessageSnackbar
                 open={snackbarOpen}
                 message={snackbarMessage}
@@ -265,7 +256,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 onClose={handleSnackbarClose}
             />
         </div>
-
     );
 };
 
