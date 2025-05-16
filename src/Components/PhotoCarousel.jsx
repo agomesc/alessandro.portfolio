@@ -14,21 +14,31 @@ const PhotoCarousel = ({ photos }) => {
     <LazyImage
       src={item.original}
       alt={item.title || "Imagem da prévia"}
-      width={1200}
-      height={720}
+      style={{ width: "100%", height: "auto", maxWidth: "1200px" }}
     />
   );
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
-      <Suspense fallback={<Skeleton variant="rectangular" />}>
+      <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={200} />}>
         <ImageGallery
           items={galleryImages}
           showPlayButton={true}
           showFullscreenButton={true}
           renderItem={renderItem}
+          additionalClass="responsive-gallery"
         />
       </Suspense>
+
+      <style>
+        {`
+          .responsive-gallery .image-gallery-slide img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        `}
+      </style>
     </div>
   );
 };
