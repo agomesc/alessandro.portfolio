@@ -24,8 +24,8 @@ const PhotoCarousel = ({ photos }) => {
       <Suspense fallback={<Skeleton variant="rectangular" />}>
         <ImageGallery
           items={galleryImages}
-          showPlayButton={false}
-          showFullscreenButton={false}
+          showPlayButton={true}
+          showFullscreenButton={true}
           renderItem={renderItem}
         />
       </Suspense>
