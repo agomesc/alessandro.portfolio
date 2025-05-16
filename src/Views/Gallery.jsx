@@ -2,6 +2,7 @@ import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage"
+import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
@@ -36,7 +37,7 @@ const Gallery = () => {
 
     return (
         <>
-            <Suspense fallback={<LoadingMessage />}>
+            <Suspense fallback={<Skeleton variant="rectangular" />}>
                 <Box
                     sx={{
                         p: 0,
@@ -54,7 +55,7 @@ const Gallery = () => {
                         mt: 10
                     }}
                 >
-                    <Suspense fallback={<LoadingMessage />}>
+                    <Suspense fallback={<Skeleton variant="text" />}>
                         <TypographyTitle src="Galeria de Fotos" />
                     </Suspense>
 

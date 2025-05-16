@@ -7,7 +7,7 @@ import LoadingMessage from "./LoadingMessage"
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
 const StarComponent = lazy(() => import("../Components/StarComponent"));
-const ImageComponent = lazy(() => import("../Components/ImageComponent"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);
@@ -39,16 +39,9 @@ const PhotoGallery = ({ photos = [] }) => {
               </IconButton>
 
               <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                <ImageComponent
+                <LazyImage
                   src={item.url}
                   alt={item.title}
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    objectFit: "cover",
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5
-                  }}
                 />
               </NavLink>
               <CardContent>

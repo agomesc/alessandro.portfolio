@@ -6,9 +6,10 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LoadingMessage from "./LoadingMessage";
-import MessageSnackbar from "./MessageSnackbar"; // Certifique-se de que o caminho está correto
+import MessageSnackbar from "./MessageSnackbar";
+import Skeleton from '@mui/material/Skeleton';
 
-const ImageComponent = lazy(() => import("./ImageComponent"));
+const LazyImage = lazy(() => import("./LazyImage"));
 
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);
@@ -95,25 +96,32 @@ const LinkPreview = ({ url }) => {
                     {previewData.image && (
                         <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
                             <Suspense fallback={<LoadingMessage />}>
-                                <ImageComponent
+                                <LazyImage
                                     src={previewData.image}
                                     alt={previewData.description || "Imagem da prévia"}
-                                    width="150"
+                                    width="240"
+                                    height="auto"
                                 />
                             </Suspense>
                         </Box>
                     )}
                     <CardContent>
-                        <Typography variant="caption" align="center" sx={{ color: "red" }}>
-                            Publicidade / Indicação
-                        </Typography>
-                        <Typography variant="body1" align="center" fontWeight="bold">
-                            {previewData.title}
-                            <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
-                        </Typography>
-                        <Typography variant="body2" align="center">
-                            {previewData.description}
-                        </Typography>
+                        <Suspense fallback={<Skeleton variant="rectangular" />}>
+                            <Typography variant="caption" align="center" sx={{ color: "red" }}>
+                                Publicidade / Indicação
+                            </Typography>
+                        </Suspense>
+                        <Suspense fallback={<Skeleton variant="rectangular" />}>
+                            <Typography variant="body1" align="center" fontWeight="bold">
+                                {previewData.title}
+                                <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
+                            </Typography>
+                        </Suspense>
+                        <Suspense fallback={<Skeleton variant="rectangular" />}>
+                            <Typography variant="body2" align="center">
+                                {previewData.description}
+                            </Typography>
+                        </Suspense>
                     </CardContent>
                 </Card>
             </Box>

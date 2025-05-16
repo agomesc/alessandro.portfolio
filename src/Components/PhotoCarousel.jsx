@@ -3,6 +3,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import Skeleton from '@mui/material/Skeleton';
 
 const ImageGallery = lazy(() => import("react-image-gallery"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const PhotoCarousel = ({ photos }) => {
   const galleryImages = photos.map((item) => ({
@@ -10,27 +11,23 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-    const renderItem = (item) => (
+  const renderItem = (item) => (
     <div
       style={{
         width: '100%',
-        height: '400px', 
+        height: '400px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#000',
       }}
     >
-      <img
-        loading="lazy"
+      <LazyImage
         src={item.original}
-        alt={item.title}
-        style={{
-          maxWidth: '100%',
-          maxHeight: '100%',
-          objectFit: 'contain', 
-        }}
+        alt={item.title || "Imagem da prévia"}
+
       />
+
     </div>
   );
 

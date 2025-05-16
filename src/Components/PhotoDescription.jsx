@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Skeleton from '@mui/material/Skeleton';
 
-const ImageComponent = lazy(() => import("./ImageComponent"));
+const LazyImage = lazy(() => import("./LazyImage"));
 
 const PhotoDescription = ({ imageUrl, description }) => {
   const autor = "OlhoFotográfico";
@@ -13,15 +13,9 @@ const PhotoDescription = ({ imageUrl, description }) => {
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           
-            <ImageComponent
+            <LazyImage
               src={imageUrl}
               alt={autor}
-              width="240px"
-              height="240px"
-              style={{
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
             />
         </Box>
       )}

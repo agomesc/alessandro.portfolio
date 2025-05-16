@@ -10,7 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import LoadingMessage from '../Components/LoadingMessage';
 
 const StarComponent = lazy(() => import('../Components/StarComponent'));
-const ImageComponent = lazy(() => import('../Components/ImageComponent'));
+const LazyImage = lazy(() => import('../Components/LazyImage'));
 
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery('(orientation: portrait)');
@@ -52,17 +52,9 @@ const ImageMasonry = ({ data = [] }) => {
               flex: 1
             }}
           >
-              <ImageComponent
+              <LazyImage
                 src={item.img}
                 alt={item.title}
-                style={{
-                  width: "100%",
-                  display: "block",
-                  objectFit: "cover",
-                  borderTopLeftRadius: 5,
-                  borderTopRightRadius: 5
-                }}
-                loading="lazy"
               />
             <Suspense fallback={<Skeleton variant="text" height={100} />}>
               <Typography

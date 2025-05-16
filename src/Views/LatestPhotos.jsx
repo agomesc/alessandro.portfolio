@@ -45,9 +45,8 @@ const LatestPhotos = () => {
 			>
 				<TypographyTitle src="Atualizações" />
 				<PhotoGrid itemData={galleryData} />
-				<CommentBox itemID="LatestPhotos" />
 			</Box>
-
+			<CommentBox itemID="LatestPhotos" />
 			<SocialMetaTags title={title} image={logo} description={description} />
 		</Suspense>
 	);

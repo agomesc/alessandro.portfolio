@@ -15,7 +15,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 
 const StarComponent = lazy(() => import("./StarComponent"));
-const ImageComponent = lazy(() => import("./ImageComponent"));
+const LazyImage = lazy(() => import("./LazyImage"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
 
 const PhotoDashboard = ({ photoData }) => {
@@ -29,16 +29,9 @@ const PhotoDashboard = ({ photoData }) => {
         }
       />
 
-      <ImageComponent
+      <LazyImage
         src={photoData.url}
         alt={photoData.title}
-        width="100%"
-        height="auto"
-        style={{
-          objectFit: "cover",
-          objectPosition: "center",
-          display: "block"
-        }}
       />
 
       <CardContent>
