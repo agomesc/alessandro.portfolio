@@ -5,12 +5,12 @@ import Masonry from '@mui/lab/Masonry';
 import { NavLink } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { motion } from 'framer-motion';
+import LazyImage from "../Components/LazyImage";
 import Skeleton from '@mui/material/Skeleton';
 
 import LoadingMessage from '../Components/LoadingMessage';
 
 const StarComponent = lazy(() => import('../Components/StarComponent'));
-const LazyImage = lazy(() => import('../Components/LazyImage'));
 
 const ImageMasonry = ({ data = [] }) => {
   const isPortrait = useMediaQuery('(orientation: portrait)');

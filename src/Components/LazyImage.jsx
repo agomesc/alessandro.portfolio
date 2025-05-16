@@ -1,7 +1,16 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Skeleton from '@mui/material/Skeleton';
-const LazyImage = ({ src, alt = 'Imagem', width = '100%', height = 'auto', className = '', style = {} }) => {
+
+const LazyImage = ({
+  src,
+  alt = 'Imagem',
+  width = '100%',
+  height = 'auto',
+  className = '',
+  style = {}
+}) => {
   const [imageSrc, setImageSrc] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -27,22 +36,38 @@ const LazyImage = ({ src, alt = 'Imagem', width = '100%', height = 'auto', class
   }, [src]);
 
   return (
-    <Suspense fallback={<Skeleton variant="rounded" />}>
-      <img
-        ref={imgRef}
-        src={imageSrc}
-        alt={alt}
-        className={className}
-        style={{
-          margin: '0 auto',
-          width,
-          height,
-          objectFit: 'cover',
-          display: 'block',
-          ...style
-        }}
-      />
-    </Suspense>
+    <div
+      style={{
+        position: 'relative',
+        width,
+        height,
+        ...style
+      }}
+      ref={imgRef}
+    >
+      {!loaded && (
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+          style={{ position: 'absolute', top: 0, left: 0 }}
+        />
+      )}
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={alt}
+          className={className}
+          onLoad={() => setLoaded(true)}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        />
+      )}
+    </div>
   );
 };
 

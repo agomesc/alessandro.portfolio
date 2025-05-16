@@ -3,9 +3,9 @@ import { Card, CardContent, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
 import Skeleton from '@mui/material/Skeleton';
+import LazyImage from "../Components/LazyImage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
-const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (

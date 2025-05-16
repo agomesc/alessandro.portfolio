@@ -4,10 +4,10 @@ import Masonry from "@mui/lab/Masonry";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
 import LoadingMessage from "./LoadingMessage"
+import LazyImage from "../Components/LazyImage";
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
 const StarComponent = lazy(() => import("../Components/StarComponent"));
-const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const PhotoGallery = ({ photos = [] }) => {
   const [showModal, setShowModal] = useState(false);

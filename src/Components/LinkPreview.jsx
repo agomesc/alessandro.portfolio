@@ -8,8 +8,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LoadingMessage from "./LoadingMessage";
 import MessageSnackbar from "./MessageSnackbar";
 import Skeleton from '@mui/material/Skeleton';
-
-const LazyImage = lazy(() => import("./LazyImage"));
+import LazyImage from "../Components/LazyImage";
 
 const LinkPreview = ({ url }) => {
     const [previewData, setPreviewData] = useState(null);

@@ -2,8 +2,7 @@ import React, { lazy, Suspense } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Skeleton from '@mui/material/Skeleton';
-
-const LazyImage = lazy(() => import("./LazyImage"));
+import LazyImage from "./LazyImage";
 
 const PhotoDescription = ({ imageUrl, description }) => {
   const autor = "OlhoFotográfico";
@@ -12,17 +11,18 @@ const PhotoDescription = ({ imageUrl, description }) => {
     <>
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-          
-            <LazyImage
-              src={imageUrl}
-              alt={autor}
-            />
+
+          <LazyImage
+            src={imageUrl}
+            alt={autor}
+            width={240}
+          />
         </Box>
       )}
-      <Suspense fallback={<Skeleton variant="circular" height={100} />}>
-      <Typography variant="body1" component="div" sx={{ mt: 2, textAlign: "left" }}>
-        {description}
-      </Typography>
+      <Suspense fallback={<Skeleton variant="text" height={100} />}>
+        <Typography variant="body1" component="div" sx={{ mt: 2, textAlign: "left" }}>
+          {description}
+        </Typography>
       </Suspense>
     </>
   );

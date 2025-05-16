@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Skeleton from '@mui/material/Skeleton';
+import LazyImage from "../Components/LazyImage";
 
 const ImageGallery = lazy(() => import("react-image-gallery"));
-const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const PhotoCarousel = ({ photos }) => {
   const galleryImages = photos.map((item) => ({
@@ -12,23 +12,15 @@ const PhotoCarousel = ({ photos }) => {
   }));
 
   const renderItem = (item) => (
-    <div
-      style={{
-        width: '100%',
-        height: '400px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
-      }}
-    >
+  
       <LazyImage
         src={item.original}
         alt={item.title || "Imagem da prévia"}
-
+        width={1200}
+        height={720}
       />
 
-    </div>
+  
   );
 
   return (
