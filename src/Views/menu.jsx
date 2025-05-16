@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import Skeleton from '@mui/material/Skeleton';
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
@@ -29,7 +30,6 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebaseConfig';
 
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
@@ -111,7 +111,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }, [galleryData]);
 
     const DrawerList = (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
             <Box
                 sx={{
                     width: 250,
@@ -185,7 +185,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         </Suspense>
     );
 
-    if (!galleryData.length) return <LoadingMessage />;
+    if (!galleryData.length) return <Skeleton variant="rectangular" height={100} />;
 
     return (
         <div>

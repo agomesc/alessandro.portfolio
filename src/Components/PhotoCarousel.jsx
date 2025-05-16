@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
-import LoadingMessage from './LoadingMessage';
+import Skeleton from '@mui/material/Skeleton';
 
 const ImageGallery = lazy(() => import("react-image-gallery"));
 
@@ -35,7 +35,7 @@ const PhotoCarousel = ({ photos }) => {
   );
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
+    <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
       <ImageGallery
         items={galleryImages}
         showPlayButton={false}
