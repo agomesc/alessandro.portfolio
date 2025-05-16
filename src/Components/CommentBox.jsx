@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   collection,
   addDoc,
@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-
+import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
@@ -136,8 +136,9 @@ function CommentBox({ itemID }) {
         mt: 10
       }}
     >
-      <TypographyTitle src="Comentários" />
-
+      <Suspense fallback={<Skeleton variant="text" height={100} />}>
+        <TypographyTitle src="Comentários" />
+      </Suspense>
       <form onSubmit={handleSubmit}>
         <TextField
           value={comment}
@@ -190,14 +191,16 @@ function CommentBox({ itemID }) {
             })}
           />
           <CardContent>
-            <Typography
-              component="div"
-              variant="body1"
-              color="text.secondary"
-              sx={{ whiteSpace: 'pre-wrap' }}
-            >
-              {comment.text}
-            </Typography>
+            <Suspense fallback={<Skeleton variant="text" height={100} />}>
+              <Typography
+                component="div"
+                variant="body1"
+                color="text.secondary"
+                sx={{ whiteSpace: 'pre-wrap' }}
+              >
+                {comment.text}
+              </Typography>
+            </Suspense>
           </CardContent>
         </Card>
       ))}

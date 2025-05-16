@@ -5,6 +5,7 @@ import Masonry from '@mui/lab/Masonry';
 import { NavLink } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { motion } from 'framer-motion';
+import Skeleton from '@mui/material/Skeleton';
 
 import LoadingMessage from '../Components/LoadingMessage';
 
@@ -51,7 +52,6 @@ const ImageMasonry = ({ data = [] }) => {
               flex: 1
             }}
           >
-            <Suspense fallback={<LoadingMessage />}>
               <ImageComponent
                 src={item.img}
                 alt={item.title}
@@ -64,9 +64,7 @@ const ImageMasonry = ({ data = [] }) => {
                 }}
                 loading="lazy"
               />
-            </Suspense>
-
-            <Suspense fallback={<LoadingMessage />}>
+            <Suspense fallback={<Skeleton variant="text" height={100} />}>
               <Typography
                 component="div"
                 variant={isPortrait ? 'subtitle1' : 'h5'}
@@ -79,7 +77,7 @@ const ImageMasonry = ({ data = [] }) => {
             </Suspense>
           </NavLink>
 
-          <Suspense fallback={<LoadingMessage />}>
+          <Suspense fallback={<Skeleton variant="text" height={100} />}>
             <Typography
               component="div"
               variant={isPortrait ? 'caption' : 'body1'}
