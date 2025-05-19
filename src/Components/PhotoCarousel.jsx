@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Skeleton from "@mui/material/Skeleton";
 import LazyImage from "../Components/LazyImage";
@@ -10,32 +10,60 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-  const renderItem = (item) => (
+const renderItem = (item) => (
+  <div
+    style={{
+      width: "100%",
+      maxWidth: "1200px",
+      height: "675px", // 1200px de largura com proporção 16:9 = 675px de altura
+      overflow: "hidden",
+      backgroundColor: "#000", // opcional
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
     <LazyImage
       src={item.original}
       alt={item.title || "Imagem da prévia"}
-      style={{ width: "100%", height: "auto", maxWidth: "1200px" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      }}
     />
-  );
+  </div>
+);
+
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
-      <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={200} />}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      <Suspense
+        fallback={<Skeleton variant="rectangular" width="100%" height={200} />}
+      >
         <ImageGallery
           items={galleryImages}
           showPlayButton={true}
           showFullscreenButton={true}
           renderItem={renderItem}
-          additionalClass="responsive-gallery"
+          additionalClass="responsive-gallery-16x9"
         />
       </Suspense>
-
+      {/* Se quiser manter algum CSS extra, pode usar uma classe separada */}
       <style>
         {`
-          .responsive-gallery .image-gallery-slide img {
-            width: 100%;
-            height: auto;
-            max-width: 100%;
+          /* Garante que o container do slide não seja reajustado */
+          .responsive-gallery-16x9 .image-gallery-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
         `}
       </style>
