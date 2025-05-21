@@ -1,7 +1,6 @@
 import React from 'react';
 import Box from "@mui/material/Box";
 import TypographyTitle from './TypographyTitle';
-import PhotoCarousel from './PhotoCarousel'; // já deve estar implementado
 
 const SwipeableSlider = ({ itemData }) => {
   return (
@@ -9,11 +8,11 @@ const SwipeableSlider = ({ itemData }) => {
       sx={{
         p: 0,
         width: {
-          xs: "100%", // Para telas extra pequenas (mobile)
-          sm: "90%",  // Para telas pequenas
-          md: "80%",  // Para telas médias
-          lg: "70%",  // Para telas grandes
-          xl: "80%"   // Para telas extra grandes
+          xs: "100%",
+          sm: "90%",
+          md: "80%",
+          lg: "70%",
+          xl: "80%"
         },
         alignContent: "center",
         alignItems: "center",
@@ -23,7 +22,35 @@ const SwipeableSlider = ({ itemData }) => {
       }}
     >
       <TypographyTitle src="Atualizações" />
-      <PhotoCarousel photos={itemData} />
+      <Box
+        sx={{
+          display: "flex",
+          overflowX: "auto",
+          gap: 2, // Espaço entre as imagens
+          scrollbarWidth: "thin", // Ajuste da barra de rolagem
+          "&::-webkit-scrollbar": {
+            height: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#888",
+            borderRadius: "6px",
+          }
+        }}
+      >
+        {itemData.map((photo, index) => (
+          <img
+            key={index}
+            src={photo.url}
+            alt={`Imagem ${index + 1}`}
+            style={{
+              width: "120px",
+              height: "80px",
+              objectFit: "cover",
+              borderRadius: "8px"
+            }}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

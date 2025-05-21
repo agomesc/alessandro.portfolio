@@ -10,57 +10,62 @@ const PhotoCarousel = ({ photos }) => {
     thumbnail: item.thumbnail,
   }));
 
-const renderItem = (item) => (
-  <div
-    style={{
-      width: "100%",
-      maxWidth: "1200px",
-      height: "675px", // 1200px de largura com proporção 16:9 = 675px de altura
-      overflow: "hidden",
-      backgroundColor: "#000", // opcional
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
-    <LazyImage
-      src={item.original}
-      alt={item.title || "Imagem da prévia"}
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      }}
-    />
-  </div>
-);
-
+  const renderItem = (item) => (
+    <div className="carousel-container">
+      <LazyImage
+        src={item.original}
+        alt={item.title || "Imagem da galeria"}
+        className="carousel-image"
+      />
+    </div>
+  );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <Suspense
-        fallback={<Skeleton variant="rectangular" width="100%" height={200} />}
-      >
+    <div className="carousel-wrapper">
+      <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={200} />}>
         <ImageGallery
           items={galleryImages}
-          showPlayButton={true}
+          showPlayButton={false}
           showFullscreenButton={true}
           renderItem={renderItem}
-          additionalClass="responsive-gallery-16x9"
+          slideDuration={700}
+          slideInterval={5000}
+          showThumbnails={true}
+          autoPlay={true}
+          additionalClass="gallery-styled"
         />
       </Suspense>
-      {/* Se quiser manter algum CSS extra, pode usar uma classe separada */}
       <style>
         {`
-          /* Garante que o container do slide não seja reajustado */
-          .responsive-gallery-16x9 .image-gallery-slide {
+          .carousel-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background-color: #f5f5f5;
+          }
+
+          .carousel-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 675px;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+          }
+
+          .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+          }
+
+          .gallery-styled .image-gallery-slide {
             display: flex;
             justify-content: center;
             align-items: center;
