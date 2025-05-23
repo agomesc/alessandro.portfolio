@@ -1,7 +1,7 @@
 import React, { useRef,useEffect, Suspense } from 'react';
 import LoadingMessage from '../Components/LoadingMessage'
 
-const loadedIframesCache = new Set(); // Mantém o cache dos iframes já carregados
+const loadedIframesCache = new Set(); 
 
 const LazyIframe = ({
     src,

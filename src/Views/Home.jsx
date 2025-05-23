@@ -64,7 +64,7 @@ const Home = () => {
     const description = "Atualizações";
 
     if (!galleryData) {
-        return <Skeleton variant="circular" />;
+        return <Skeleton variant="rectangular" />;
     }
 
     return (

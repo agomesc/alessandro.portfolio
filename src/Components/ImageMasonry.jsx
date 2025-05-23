@@ -19,10 +19,10 @@ const ImageMasonry = ({ data = [] }) => {
   }
 
   return (
-    <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+    <Masonry columns={{ xs: 2, sm: 2, md: 3, lg: 4 }} spacing={2}>
       {data.map((item, index) => (
         <motion.div
-          key={item.id}
+          key={index}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           whileHover={{ scale: 1.05 }}
