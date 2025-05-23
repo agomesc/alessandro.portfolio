@@ -18,6 +18,7 @@ const ImagePathForm = lazy(() => import("./Views/ImagePathForm"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 const GalleryList = lazy(() => import("./Views/GalleryList"));
 const EditGallery = lazy(() => import("./Views/EditGallery"));
+const EquipmentValueCalculator  = lazy(() => import("./Views/EquipmentValueCalculator"));
 const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
 
 const AppRoutes = () => {
@@ -45,6 +46,7 @@ const AppRoutes = () => {
         {isLocalhost && <Route path="/edit/:id" element={<EditGallery />} />}
         <Route path="/TestWrapper" element={<TestWrapper />} />
         <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
+        <Route path="/EquipmentValueCalculator" element={<EquipmentValueCalculator />} />
 
       </Routes>
     </Suspense>

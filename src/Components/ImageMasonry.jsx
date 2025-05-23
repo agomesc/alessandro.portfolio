@@ -42,9 +42,7 @@ const ImageMasonry = ({ data = [] }) => {
               zIndex: 2,
             }}
           >
-            <Suspense fallback={<LoadingMessage />}>
-              <StarComponent id={item.id} />
-            </Suspense>
+            <StarComponent id={item.id} />
           </Box>
         </motion.div>
       ))}

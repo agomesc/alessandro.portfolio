@@ -23,7 +23,8 @@ import {
     ExpandMore as ExpandMoreIcon,
     ShoppingCart as ShoppingCartIcon,
     Brightness4 as Brightness4Icon,
-    Brightness7 as Brightness7Icon
+    Brightness7 as Brightness7Icon,
+    Calculate as CalculateIcon,
 } from "@mui/icons-material";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
@@ -103,6 +104,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/ListContentWithPagination", description: "Seleção de Ofertas", chid: false, icon: <ShoppingCartIcon /> },
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
+            { route: "/EquipmentValueCalculator", description: "Calcular valor de equipamentos usados", chid: false, icon: <CalculateIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
             { route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> }
         ];
