@@ -86,11 +86,13 @@ const Photos = () => {
 				<CommentBox itemID={id} />
 			</Suspense>
 
+			<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
 			<SocialMetaTags
 				title={metaData.title}
 				image={metaData.image}
 				description={metaData.description}
 			/>
+			</Suspense>
 		</>
 	);
 };

@@ -62,11 +62,13 @@ const GalleryWork = () => {
             </Suspense>
 
             {metaData && (
-                <SocialMetaTags
-                    title={metaData.title}
-                    image={metaData.url}
-                    description={metaData.description}
-                />
+                <Suspense fallback={<LoadingMessage />}>
+                    <SocialMetaTags
+                        title={metaData.title}
+                        image={metaData.url}
+                        description={metaData.description}
+                    />
+                </Suspense>
             )}
         </>
     );

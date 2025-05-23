@@ -10,6 +10,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import { Box, Skeleton } from "@mui/material";
 import TypographyTitle from "../Components/TypographyTitle";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -85,7 +86,7 @@ const PhotoInfo = () => {
         </Box>
       )}
 
-      <Suspense fallback={null}>
+       <Suspense fallback={<LoadingMessage />}>
         <SocialMetaTags
           title={metaData.title}
           image={metaData.image}

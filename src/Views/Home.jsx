@@ -7,6 +7,7 @@ import Tab from "@mui/material/Tab";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
+import LoadingMessage from "../Components/LoadingMessage";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -143,12 +144,13 @@ const Home = () => {
                 }
                 <DisplayGalleries />
             </Box>
-
-            <SocialMetaTags
-                title={title}
-                image={logo}
-                description={description}
-            />
+            <Suspense fallback={<LoadingMessage />}>
+                <SocialMetaTags
+                    title={title}
+                    image={logo}
+                    description={description}
+                />
+            </Suspense>
             <MessageSnackbar
                 open={snackbarOpen}
                 message={snackbarMessage}

@@ -1,44 +1,29 @@
-import React, { useEffect } from "react";
+// SocialMetaTags.js
+import React from "react";
+import { Helmet } from "react-helmet";
 
-const SocialMetaTags = ({ title, image, description }) => {
+const SocialMetaTags = ({ title, description, image }) => {
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  useEffect(() => {
-    document.title = title;
+  return (
+    <Helmet>
+      <title>{title}</title>
 
-    const setMetaTag = (name, content, isProperty = false) => {
-      let selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-      let metaTag = document.querySelector(selector);
+      {/* Open Graph */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={image || currentUrl} />
+      <meta property="og:url" content={currentUrl} />
+      <meta property="og:type" content="website" />
 
-      if (!metaTag) {
-        metaTag = document.createElement("meta");
-        if (isProperty) {
-          metaTag.setAttribute("property", name);
-        } else {
-          metaTag.setAttribute("name", name);
-        }
-        document.head.appendChild(metaTag);
-      }
-      metaTag.setAttribute("content", content);
-    };
-
-    // Open Graph
-    setMetaTag("og:title", title, true);
-    setMetaTag("og:description", description, true);
-    setMetaTag("og:image", image || currentUrl, true);
-    setMetaTag("og:url", currentUrl, true);
-    setMetaTag("og:type", "website", true);
-
-    // Twitter Cards
-    setMetaTag("twitter:title", title);
-    setMetaTag("twitter:description", description);
-    setMetaTag("twitter:image", image || currentUrl);
-    setMetaTag("twitter:card", "summary_large_image");
-    setMetaTag("twitter:site", "@olhotografico");
-
-  }, [title, image, description, currentUrl]);
-
-  return null;
+      {/* Twitter Card */}
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image || currentUrl} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@olhotografico" />
+    </Helmet>
+  );
 };
 
-export default React.memo(SocialMetaTags);
+export default SocialMetaTags;

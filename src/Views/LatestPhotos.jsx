@@ -47,7 +47,9 @@ const LatestPhotos = () => {
 				<PhotoGrid itemData={galleryData} />
 			</Box>
 			<CommentBox itemID="LatestPhotos" />
-			<SocialMetaTags title={title} image={logo} description={description} />
+			 <Suspense fallback={<LoadingMessage />}>
+				<SocialMetaTags title={title} image={logo} description={description} />
+			</Suspense>
 		</Suspense>
 	);
 };

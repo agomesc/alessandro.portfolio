@@ -47,7 +47,9 @@ const About = () => {
                 <PhotoDescription imageUrl={minhaImagem} description={minhaDescricao} />
             </Suspense>
 
-            <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
+            <Suspense fallback={<LoadingMessage />}>
+                <SocialMetaTags title={title} image={minhaImagem} description={minhaDescricao} />
+            </Suspense>
 
             <CommentBox itemID="About" />
         </Box>
