@@ -38,6 +38,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
+    const [openEquipamentos, setOpenEquipamentos] = useState(false);
     const [user, setUser] = useState(null);
     const [galleryData, setGalleryData] = useState([]);
     const instance = useMemo(() => CreateFlickrApp(), []);
@@ -99,17 +100,21 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             icon: <ArtTrackIcon />,
         }));
 
+        const equipamentosGroup = [
+            { route: "JavaScript:void(0);", description: "Equipamentos", chid: false, icon: <AdminPanelSettingsIcon />, isEquipamentos: true },
+            { route: "/EquipmentValueCalculator", description: "Calcular valor de equipamentos usados", chid: true, icon: <CalculateIcon />, parent: "Equipamentos" },
+        ];
+
         const additionalItems = [
             { route: "/LatestPhotos", description: "Atualizações", chid: false, icon: <DynamicFeedIcon /> },
             { route: "/ListContentWithPagination", description: "Seleção de Ofertas", chid: false, icon: <ShoppingCartIcon /> },
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
-            { route: "/EquipmentValueCalculator", description: "Calcular valor de equipamentos usados", chid: false, icon: <CalculateIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
             { route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> }
         ];
 
-        return [...baseItems, ...galleryItems, ...additionalItems];
+        return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
     }, [galleryData]);
 
     const DrawerList = (
@@ -126,7 +131,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 <List>
                     {items.map((item, index) => {
                         const isChild = item.chid;
-                        const hasChildren = items[index + 1] && items[index + 1].chid;
+                        const hasChildren = items[index + 1] && items[index + 1].chid && !items[index + 1].parent;
+                        const isEquipamentosChild = item.parent === "Equipamentos";
 
                         if (!isChild) {
                             return (
@@ -136,7 +142,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                         href={item.route}
                                         onClick={(event) => {
                                             event.stopPropagation();
-                                            if (hasChildren) {
+                                            if (item.isEquipamentos) {
+                                                setOpenEquipamentos(!openEquipamentos);
+                                            } else if (hasChildren) {
                                                 setOpenSub(!openSub);
                                             } else {
                                                 setOpen(false);
@@ -147,10 +155,12 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                             {item.icon}
                                         </ListItemIcon>
                                         <ListItemText primary={item.description} />
-                                        {hasChildren && (
+                                        {(item.isEquipamentos || hasChildren) && (
                                             <ExpandMoreIcon
                                                 sx={{
-                                                    transform: openSub ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                    transform: item.isEquipamentos
+                                                        ? (openEquipamentos ? 'rotate(180deg)' : 'rotate(0deg)')
+                                                        : (openSub ? 'rotate(180deg)' : 'rotate(0deg)'),
                                                     transition: 'transform 0.3s ease'
                                                 }}
                                             />
@@ -159,8 +169,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                 </ListItem>
                             );
                         } else {
+                            const openChild = isEquipamentosChild ? openEquipamentos : openSub;
                             return (
-                                <Collapse in={openSub} timeout="auto" unmountOnExit key={index}>
+                                <Collapse in={openChild} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
                                         <ListItemButton
                                             sx={{ pl: 4 }}
