@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Skeleton from '@mui/material/Skeleton';
