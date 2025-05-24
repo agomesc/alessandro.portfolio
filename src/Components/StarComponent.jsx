@@ -59,25 +59,46 @@ const StarComponent = ({ id }) => {
     };
 
     return (
-        <div key={id} style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-            <button
-                onClick={handleClick}
-                disabled={isProcessing}
-                aria-pressed={isClicked}
-                aria-label={isClicked ? "Remover estrela" : "Adicionar estrela"}
-                style={{
-                    fontSize: "14px",
-                    background: "none",
-                    border: "none",
-                    cursor: isClicked ? "not-allowed" : "pointer",
-                    color: isClicked ? "gold" : "gray",
-                    transition: "transform 0.1s",
-                }}
-            >
-                <span role="img" aria-hidden="true">⭐</span>
-            </button>
-            <span style={{ fontWeight: "bold", fontSize: 10 }}>{count}</span>
-        </div>
+        <div
+    style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "5px",
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        padding: "4px 8px",
+        borderRadius: "12px",
+        position: "relative",
+        zIndex: 10,
+    }}
+>
+    <button
+        onClick={handleClick}
+        disabled={isProcessing}
+        aria-pressed={isClicked}
+        aria-label={isClicked ? "Remover estrela" : "Adicionar estrela"}
+        style={{
+            fontSize: "18px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: isClicked ? "gold" : "white",
+            textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+        }}
+    >
+        <span role="img" aria-hidden="true">⭐</span>
+    </button>
+    <span
+        style={{
+            fontWeight: "bold",
+            fontSize: "14px",
+            color: "white",
+            textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+        }}
+    >
+        {count}
+    </span>
+</div>
+
     );
 };
 

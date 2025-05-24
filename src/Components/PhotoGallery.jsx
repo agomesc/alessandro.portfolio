@@ -1,9 +1,10 @@
 import React, { useState, lazy, Suspense } from "react";
-import { Card, CardContent, Typography, IconButton } from "@mui/material";
+import { Typography, IconButton, Box } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
+import { motion } from "framer-motion";
 import Slideshow from '@mui/icons-material/Slideshow';
 import { NavLink } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage"
+import LoadingMessage from "./LoadingMessage";
 import LazyImage from "../Components/LazyImage";
 
 const PhotoModal = lazy(() => import("./PhotoModal"));
@@ -21,16 +22,26 @@ const PhotoGallery = ({ photos = [] }) => {
   return (
     <>
       {!showModal && (
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={1}>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {photos.map((item, index) => (
-            <Card key={item.id} sx={{ borderRadius: 0, boxShadow: 3, position: "relative" }}>
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
+              style={{ position: "relative", overflow: "hidden" }}
+            >
+              {/* Botão flutuante de slideshow */}
               <IconButton
                 sx={{
                   position: "absolute",
-                  top: 16,
-                  right: 8,
+                  top: 8,
+                  left: 8,
                   bgcolor: "#c0810d",
-                  zIndex: 2
+                  color: "white",
+                  zIndex: 2,
+                  "&:hover": { bgcolor: "#b0720a" }
                 }}
                 aria-label="Abrir Modal"
                 onClick={() => openModal(index)}
@@ -38,23 +49,46 @@ const PhotoGallery = ({ photos = [] }) => {
                 <Slideshow />
               </IconButton>
 
+              {/* Link para detalhes da imagem */}
               <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
-                <LazyImage
-                  src={item.url}
-                  alt={item.title}
-                />
+                <LazyImage src={item.url} alt={item.title} />
               </NavLink>
-              <CardContent>
+
+              {/* Título e estrela sobrepostos */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                  bgcolor: "rgba(0,0,0,0.4)",
+                  px: 1,
+                  py: 0.5,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  zIndex: 1,
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: "white",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                    fontWeight: "bold",
+                    maxWidth: "70%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  {item.title}
+                </Typography>
                 <Suspense fallback={<LoadingMessage />}>
-                  <Typography component="div" variant="caption" sx={{ padding: 1, m: 0 }}>
-                    {item.title}
-                  </Typography>
+                  <StarComponent id={item.id} />
                 </Suspense>
-                <Suspense fallback={<LoadingMessage />}>
-                  <StarComponent id={item.id} sx={{ padding: 1, m: 0 }} />
-                </Suspense>
-              </CardContent>
-            </Card>
+              </Box>
+            </motion.div>
           ))}
         </Masonry>
       )}
