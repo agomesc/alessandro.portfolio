@@ -36,6 +36,10 @@ const EquipmentValueCalculator = () => {
         Calculadora de Valor Usado
       </Typography>
 
+      <Typography variant="body2" color="textSecondary" gutterBottom>
+        Informe o valor de um equipamento novo e a condição atual dele. A calculadora estima quanto ele vale usado com base nessa condição.
+      </Typography>
+
       <TextField
         fullWidth
         type="number"

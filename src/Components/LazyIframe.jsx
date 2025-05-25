@@ -5,7 +5,7 @@ const loadedIframesCache = new Set();
 
 const LazyIframe = ({
     src,
-    title = 'Vídeo incorporado',
+    title = 'Photo incorporado',
     ratio = '56.25%' 
 }) => {
     const containerRef = useRef(null);
