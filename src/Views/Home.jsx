@@ -42,7 +42,7 @@ const Home = () => {
             (!lastShown || now - parseInt(lastShown, 10) > oneDay)
         ) {
             setSnackbarMessage(
-                "Curtiu alguma foto? Por gentileza, deixe uma estrela ou comentário para apoiar o trabalho! 😊"
+                "Curtiu alguma foto? Se possível, deixe uma estrela ou comentário para apoiar o meu trabalho! 😊"
             );
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
@@ -65,7 +65,7 @@ const Home = () => {
     const description = "Atualizações";
 
     if (!galleryData) {
-        return <Skeleton variant="rectangular" />;
+        return <Skeleton variant="rectangular" height={640} width={640} />;
     }
 
     return (

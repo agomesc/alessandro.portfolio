@@ -67,7 +67,7 @@ const ImagePathForm = () => {
             setMessage('Informações adicionadas com sucesso!');
             setSeverity('success');
             setOpen(true);
-            navigate('/ListGalleries');
+            navigate('/list');
         } catch (error) {
             console.error('Erro ao adicionar galeria:', error.message);
             setMessage(`Erro ao adicionar galeria: ${error.message}`);
