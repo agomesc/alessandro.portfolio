@@ -11,90 +11,85 @@ const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Photos = () => {
-	const { id } = useParams();
-	const [galleryData, setGalleryData] = useState(null);
-	const [galleryInfoData, setGalleryInfoData] = useState("");
-	const instance = useMemo(() => CreateFlickrApp(), []);
+  const { id } = useParams();
+  const [galleryData, setGalleryData] = useState(null);
+  const [galleryInfoData, setGalleryInfoData] = useState("");
+  const instance = useMemo(() => CreateFlickrApp(), []);
 
-	const metaData = useMemo(() => {
-		if (galleryData?.length > 0) {
-			const randomIndex = Math.floor(Math.random() * galleryData.length);
-			const randomItem = galleryData[randomIndex];
-			return {
-				title: randomItem.title || "Galeria de Fotos",
-				image: randomItem.url || "",
-				description: randomItem.title || "Veja as fotos dessa galeria."
-			};
-		}
-		return {
-			title: "Galeria de Fotos",
-			image: "",
-			description: "Veja as fotos dessa galeria."
-		};
-	}, [galleryData]);
+  const metaData = useMemo(() => {
+    if (galleryData?.length > 0) {
+      const randomIndex = Math.floor(Math.random() * galleryData.length);
+      const randomItem = galleryData[randomIndex];
+      return {
+        title: randomItem.title || "Galeria de Fotos",
+        image: randomItem.url || "",
+        description: randomItem.title || "Veja as fotos dessa galeria."
+      };
+    }
+    return {
+      title: "Galeria de Fotos",
+      image: "",
+      description: "Veja as fotos dessa galeria."
+    };
+  }, [galleryData]);
 
-	const fetchData = useCallback(async () => {
-		const data = await instance.getPhotosLarge(id);
-		setGalleryData(data);
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await instance.getPhotosLarge(id);
+      setGalleryData(data);
 
-		const albumInfo = await instance.getAlbum(id);
-		setGalleryInfoData(albumInfo?.description?._content || "");
-	}, [id, instance]);
+      const albumInfo = await instance.getAlbum(id);
+      setGalleryInfoData(albumInfo?.description?._content || "");
+    } catch (error) {
+      console.error("Erro ao carregar a galeria:", error);
+      // Poderia setar um estado de erro aqui para feedback ao usuário, se quiser
+    }
+  }, [id, instance]);
 
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-	if (!galleryData) {
-		return <Skeleton variant="rectangular" height={100} />;
-	}
+  if (!galleryData) {
+    return <Skeleton variant="rectangular" height={300} />;
+  }
 
-	return (
-		<>
+  return (
+    <>
+      <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+        <Box
+          sx={{
+            p: 0,
+            width: {
+              xs: "100%",
+              sm: "90%",
+              md: "80%",
+              lg: "70%",
+              xl: "80%"
+            },
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+            padding: "0 20px",
+            mt: 10
+          }}
+        >
+          <TypographyTitle src="Minhas Fotos" />
+          <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
+            {galleryInfoData}
+          </Typography>
+          <PhotoGallery photos={galleryData} />
+        </Box>
 
-			<Box
-				sx={{
-					p: 0,
-					width: {
-						xs: "100%", // Para telas extra pequenas (mobile)
-						sm: "90%",  // Para telas pequenas
-						md: "80%",  // Para telas médias
-						lg: "70%",  // Para telas grandes
-						xl: "80%"   // Para telas extra grandes
-					},
-					alignContent: "center",
-					alignItems: "center",
-					margin: "0 auto",
-					padding: "0 20px",
-					mt: 10
-				}}
-			>
-				<Suspense fallback={<Skeleton variant="text" height={100} />}>
-					<TypographyTitle src="Minhas Fotos" />
-				</Suspense>
-				<Suspense fallback={<Skeleton variant="text" height={100} />}>
-					<Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-						{galleryInfoData}
-					</Typography>
-				</Suspense>
-				<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
-					<PhotoGallery photos={galleryData} />
-				</Suspense>
-			</Box>
-
-			<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
-				<CommentBox itemID={id} />
-			</Suspense>
-
-			<Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
-			<SocialMetaTags
-				title={metaData.title}
-				image={metaData.image}
-				description={metaData.description}
-			/>
-			</Suspense>
-		</>
-	);
+        <CommentBox itemID={id} />
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.image}
+          description={metaData.description}
+        />
+      </Suspense>
+    </>
+  );
 };
 
 export default React.memo(Photos);

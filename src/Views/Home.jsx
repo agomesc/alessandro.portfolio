@@ -25,22 +25,24 @@ const Home = () => {
     const [showSnackbarOnce, setShowSnackbarOnce] = useState(true);
     const instance = useMemo(() => CreateFlickrApp(), []);
 
+    // Busca as imagens quando muda a aba
     useEffect(() => {
+        setGalleryData(null); // opcional: limpa dados para mostrar Skeleton no loading
         if (tabIndex === 0) {
             instance.getLatestPhotosThumbnail().then(setGalleryData);
         } else {
             instance.getLatestPhotosThumbnailWork().then(setGalleryData);
         }
+    }, [tabIndex, instance]);
 
+    // Controla exibição do snackbar uma vez por dia
+    useEffect(() => {
         const snackbarKey = "snackbarShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
-        const now = new Date().getTime();
+        const now = Date.now();
 
-        if (
-            showSnackbarOnce &&
-            (!lastShown || now - parseInt(lastShown, 10) > oneDay)
-        ) {
+        if (showSnackbarOnce && (!lastShown || now - parseInt(lastShown, 10) > oneDay)) {
             setSnackbarMessage(
                 "Curtiu alguma foto? Se possível, deixe uma estrela ou comentário para apoiar o meu trabalho! 😊"
             );
@@ -49,9 +51,7 @@ const Home = () => {
             setShowSnackbarOnce(false);
             sessionStorage.setItem(snackbarKey, now.toString());
         }
-    }, [tabIndex, instance, showSnackbarOnce]);
-
-
+    }, [showSnackbarOnce]);
 
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
@@ -65,7 +65,7 @@ const Home = () => {
     const description = "Atualizações";
 
     if (!galleryData) {
-        return <Skeleton variant="rectangular" height={640} width={640} />;
+        return <Skeleton variant="rectangular" height={640} width="100%" />;
     }
 
     return (
@@ -74,11 +74,11 @@ const Home = () => {
                 sx={{
                     p: 0,
                     width: {
-                        xs: "100%", // Para telas extra pequenas (mobile)
-                        sm: "90%", // Para telas pequenas
-                        md: "80%", // Para telas médias
-                        lg: "70%", // Para telas grandes
-                        xl: "80%", // Para telas extra grandes
+                        xs: "100%", // mobile
+                        sm: "90%",
+                        md: "80%",
+                        lg: "70%",
+                        xl: "80%",
                     },
                     alignContent: "center",
                     alignItems: "center",
@@ -87,7 +87,6 @@ const Home = () => {
                     mt: 5,
                 }}
             >
-
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
@@ -126,39 +125,42 @@ const Home = () => {
                     />
                 </Tabs>
 
-
-                {tabIndex === 0 &&
-
-                    <Suspense fallback={<Skeleton variant="rectangular" />}>
+                {tabIndex === 0 && (
+                    <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
                             <SwipeableSlider itemData={galleryData} />
                             <Gallery />
                         </Box>
                     </Suspense>
-                }
-                {tabIndex === 1 &&
-                    <Box mt={4}>
-                        <SwipeableSlider itemData={galleryData} />
-                        <GalleryWork />
-                    </Box>
-                }
-                <DisplayGalleries />
+                )}
+
+                {tabIndex === 1 && (
+                    <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+                        <Box mt={4}>
+                            <SwipeableSlider itemData={galleryData} />
+                            <GalleryWork />
+                        </Box>
+                    </Suspense>
+                )}
+
+                <Suspense fallback={<LoadingMessage />}>
+                    <DisplayGalleries />
+                </Suspense>
             </Box>
+
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags
-                    title={title}
-                    image={logo}
-                    description={description}
+                <SocialMetaTags title={title} image={logo} description={description} />
+            </Suspense>
+
+            <Suspense fallback={<></>}>
+                <MessageSnackbar
+                    open={snackbarOpen}
+                    message={snackbarMessage}
+                    severity={snackbarSeverity}
+                    onClose={handleSnackbarClose}
                 />
             </Suspense>
-            <MessageSnackbar
-                open={snackbarOpen}
-                message={snackbarMessage}
-                severity={snackbarSeverity}
-                onClose={handleSnackbarClose}
-            />
         </>
-
     );
 };
 

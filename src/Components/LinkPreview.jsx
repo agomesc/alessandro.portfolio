@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -7,129 +7,121 @@ import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LoadingMessage from "./LoadingMessage";
 import MessageSnackbar from "./MessageSnackbar";
-import Skeleton from '@mui/material/Skeleton';
 import LazyImage from "../Components/LazyImage";
 
 const LinkPreview = ({ url }) => {
-    const [previewData, setPreviewData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
-    const [message, setMessage] = useState("");
-    const [showMessage, setShowMessage] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
 
-    useEffect(() => {
-        if (!url) return;
+  useEffect(() => {
+    if (!url) return;
 
-        const timeout = (ms) =>
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error("Tempo limite excedido")), ms)
-            );
+    const timeout = (ms) =>
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Tempo limite excedido")), ms)
+      );
 
-        const fetchData = async () => {
-            if (!process.env.REACT_APP_LINK_PREVIEW) {
-                setMessage("Configuração do servidor de preview não encontrada.");
-                setShowMessage(true);
-                setHasError(true);
-                setLoading(false);
-                return;
-            }
+    const fetchData = async () => {
+      if (!process.env.REACT_APP_LINK_PREVIEW) {
+        setMessage("Configuração do servidor de preview não encontrada.");
+        setShowMessage(true);
+        setHasError(true);
+        setLoading(false);
+        return;
+      }
 
-            try {
-                const response = await Promise.race([
-                    fetch(
-                        `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
-                    ),
-                    timeout(10000)
-                ]);
+      try {
+        const response = await Promise.race([
+          fetch(
+            `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
+          ),
+          timeout(10000)
+        ]);
 
-                if (!response.ok) {
-                    throw new Error(`Erro na requisição: ${response.statusText}`);
-                }
+        if (!response.ok) {
+          throw new Error(`Erro na requisição: ${response.statusText}`);
+        }
 
-                const data = await response.json();
-                if (data) {
-                    setPreviewData(data);
-                } else {
-                    setHasError(true);
-                }
-            } catch (error) {
-                setMessage("Erro ao buscar prévia do link.");
-                setShowMessage(true);
-                setHasError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const data = await response.json();
+        if (data) {
+          setPreviewData(data);
+          setHasError(false);
+        } else {
+          setHasError(true);
+        }
+      } catch (error) {
+        setMessage("Erro ao buscar prévia do link.");
+        setShowMessage(true);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchData();
-    }, [url]);
+    fetchData();
+  }, [url]);
 
-    if (loading) return <LoadingMessage />;
+  if (loading) return <LoadingMessage />;
 
-    if (hasError || !previewData) {
-        return (
-            <>
-                <MessageSnackbar
-                    open={showMessage}
-                    message={message}
-                    severity="error"
-                    onClose={() => setShowMessage(false)}
-                />
-                <Typography variant="body2" align="center" color="text.secondary">
-                    Não foi possível carregar a pré-visualização.
-                </Typography>
-            </>
-        );
-    }
-
+  if (hasError || !previewData) {
     return (
-        <>
-            <MessageSnackbar
-                open={showMessage}
-                message={message}
-                severity="error"
-                onClose={() => setShowMessage(false)}
-            />
-            <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
-                <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
-                    {previewData.image && (
-                        <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
-                            <Suspense fallback={<LoadingMessage />}>
-                                <LazyImage
-                                    src={previewData.image}
-                                    alt={previewData.description || "Imagem da prévia"}
-                                    width="240"
-                                    height="auto"
-                                />
-                            </Suspense>
-                        </Box>
-                    )}
-                    <CardContent>
-                        <Suspense fallback={<Skeleton variant="rectangular" />}>
-                            <Typography variant="caption" align="center" sx={{ color: "red" }}>
-                                Publicidade / Indicação
-                            </Typography>
-                        </Suspense>
-                        <Suspense fallback={<Skeleton variant="rectangular" />}>
-                            <Typography variant="body1" align="center" fontWeight="bold">
-                                {previewData.title}
-                                <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
-                            </Typography>
-                        </Suspense>
-                        <Suspense fallback={<Skeleton variant="rectangular" />}>
-                            <Typography variant="body2" align="center">
-                                {previewData.description}
-                            </Typography>
-                        </Suspense>
-                    </CardContent>
-                </Card>
-            </Box>
-        </>
+      <>
+        <MessageSnackbar
+          open={showMessage}
+          message={message}
+          severity="error"
+          onClose={() => setShowMessage(false)}
+        />
+        <Typography variant="body2" align="center" color="text.secondary">
+          Não foi possível carregar a pré-visualização.
+        </Typography>
+      </>
     );
+  }
+
+  return (
+    <>
+      <MessageSnackbar
+        open={showMessage}
+        message={message}
+        severity="error"
+        onClose={() => setShowMessage(false)}
+      />
+      <Box sx={{ p: 0, mt: 0, width: "90%", margin: "0 auto" }}>
+        <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
+          {previewData.image && (
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+              <LazyImage
+                src={previewData.image}
+                alt={previewData.description || "Imagem da prévia"}
+                width="240"
+                height="auto"
+              />
+            </Box>
+          )}
+          <CardContent>
+            <Typography variant="caption" align="center" sx={{ color: "red" }}>
+              Publicidade / Indicação
+            </Typography>
+            <Typography variant="body1" align="center" fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              {previewData.title}
+              <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
+            </Typography>
+            <Typography variant="body2" align="center">
+              {previewData.description}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    </>
+  );
 };
 
 LinkPreview.propTypes = {
-    url: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 export default React.memo(LinkPreview);

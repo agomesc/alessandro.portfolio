@@ -1,13 +1,18 @@
 // SocialMetaTags.js
-import React from "react";
 import { Helmet } from "react-helmet";
 
 const SocialMetaTags = ({ title, description, image }) => {
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+  if (typeof window === "undefined") return null;
+
+  const currentUrl = window.location.href;
 
   return (
     <Helmet>
       <title>{title}</title>
+
+      {/* Meta geral */}
+      <meta name="description" content={description} />
+      <link rel="canonical" href={currentUrl} />
 
       {/* Open Graph */}
       <meta property="og:title" content={title} />

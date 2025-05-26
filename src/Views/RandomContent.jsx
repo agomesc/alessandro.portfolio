@@ -4,8 +4,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link } from "react-router-dom";
 import Skeleton from '@mui/material/Skeleton';
+import { Link } from "react-router-dom";  // <-- IMPORTAÇÃO CORRETA DO LINK
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LinkPreview = lazy(() => import("../Components/LinkPreview"));
@@ -24,8 +24,12 @@ const RandomAffiliateAd = () => {
   };
 
   const getCachedAd = () => {
-    const cached = sessionStorage.getItem(CACHE_KEY);
-    return cached ? JSON.parse(cached) : null;
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      return cached ? JSON.parse(cached) : null;
+    } catch {
+      return null;
+    }
   };
 
   useEffect(() => {
@@ -38,21 +42,25 @@ const RandomAffiliateAd = () => {
         }
       }
 
-      const querySnapshot = await getDocs(collection(db, "content"));
-      const adsData = querySnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate().toLocaleString(),
-        }))
-        .filter(ad => ad.isActive);
+      try {
+        const querySnapshot = await getDocs(collection(db, "content"));
+        const adsData = querySnapshot.docs
+          .map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate().toLocaleString(),
+          }))
+          .filter(ad => ad.isActive);
 
-      if (adsData.length > 0) {
-        const selectedAd = adsData[Math.floor(Math.random() * adsData.length)];
-        setRandomAd(selectedAd);
+        if (adsData.length > 0) {
+          const selectedAd = adsData[Math.floor(Math.random() * adsData.length)];
+          setRandomAd(selectedAd);
 
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify(selectedAd));
-        sessionStorage.setItem(CACHE_EXPIRY_KEY, (Date.now() + CACHE_DURATION_MS).toString());
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(selectedAd));
+          sessionStorage.setItem(CACHE_EXPIRY_KEY, (Date.now() + CACHE_DURATION_MS).toString());
+        }
+      } catch (error) {
+        console.error("Erro ao buscar anúncios:", error);
       }
     };
 
@@ -84,33 +92,37 @@ const RandomAffiliateAd = () => {
           mt: 10
         }}
       >
-        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-          <TypographyTitle src="Anúncio" />
-        </Suspense>
+        <TypographyTitle src="Anúncio" />
 
         {isValidLink ? (
-          <Link to={randomAd.text} target="_blank" style={{ textDecoration: "none" }}>
+          <a
+            href={randomAd.text}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", display: 'block' }}
+          >
             <LinkPreview url={randomAd.text} />
-          </Link>
+          </a>
         ) : (
-          <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-            <Typography variant="body1" sx={{ mb: 2 }}>{randomAd.text}</Typography>
-          </Suspense>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {randomAd.text}
+          </Typography>
         )}
 
-        <Link
+        <Box
+          component={Link}
           to="/ListContentWithPagination"
-          style={{
+          sx={{
             textDecoration: "none",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: "16px",
+            marginTop: 2,
           }}
         >
           <ShoppingCartIcon sx={{ mr: 1 }} />
           {TITLE}
-        </Link>
+        </Box>
       </Box>
     </Suspense>
   );
