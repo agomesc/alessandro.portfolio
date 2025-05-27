@@ -14,20 +14,22 @@ const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 
-
 const App = () => {
 	const [urlAtual, setUrlAtual] = useState('');
-	const [darkMode, setDarkMode] = useState(false);
+	const [darkMode, setDarkMode] = useState(() => {
+		const savedTheme = localStorage.getItem('darkMode');
+		return savedTheme ? JSON.parse(savedTheme) : false;
+	});
 
 	useEffect(() => {
 		setUrlAtual(window.location.href);
 	}, []);
 
 	useEffect(() => {
+		localStorage.setItem('darkMode', JSON.stringify(darkMode));
 		document.body.classList.toggle("dark-mode", darkMode);
 		document.body.classList.toggle("light-mode", !darkMode);
 	}, [darkMode]);
-
 
 	const toggleTheme = () => {
 		setDarkMode(prev => !prev);
@@ -43,8 +45,8 @@ const App = () => {
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<Back />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
-                <ViewComponent id="Gallery"/> 
-            </Box>           
+				<ViewComponent id="Gallery"/> 
+			</Box>           
 			{/* <PushNotification /> */}
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>

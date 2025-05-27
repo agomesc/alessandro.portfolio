@@ -3,14 +3,23 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from '@mui/material/Paper';
-import HomeIcon from '@mui/icons-material/Home'; // Importando ícones adicionais
-
+import HomeIcon from '@mui/icons-material/Home';
 
 const ProTip = () => {
 	return (
 		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
 			<Paper elevation={1} sx={{ boxShadow: 0, border: 0 }}>
 				<Typography component="div" sx={{ mt: 2, mb: 2, p: 1, justifyContent: "center" }} color="text.secondary">
+
+					{/* Bandeira do Brasil centralizada */}
+					<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+						<img
+							src="https://flagcdn.com/w80/br.png"
+							alt="Bandeira do Brasil"
+							style={{ width: '40px', height: 'auto', borderRadius: '2px' }}
+						/>
+					</Box>
+
 					<Typography component="div" variant="subtitle1" sx={{ textAlign: "center" }}>
 						<HomeIcon sx={{ mr: 1 }} /> Olhofotográfico / Alessandro Portfólio
 					</Typography>
@@ -36,6 +45,6 @@ const ProTip = () => {
 			</Paper>
 		</Box>
 	);
-}
+};
 
 export default ProTip;

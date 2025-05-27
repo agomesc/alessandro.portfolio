@@ -32,10 +32,10 @@ const SocialShareBar = ({ url, title }) => {
             {network.icon}
           </a>
         ))}
+        <Typography component="div" variant="subtitle2" style={{ marginTop: '10px' }}>
+          Ajude-nos!
+        </Typography>
       </div>
-      <Typography component="div" variant="subtitle2" style={{ marginTop: '10px' }}>
-        Ajude-nos!
-      </Typography>
     </div>
   );
 };
