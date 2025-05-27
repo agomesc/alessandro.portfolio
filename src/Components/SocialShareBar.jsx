@@ -14,7 +14,7 @@ const SocialShareBar = ({ url, title }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
       <Typography component="div" variant="subtitle1" style={{ marginBottom: '5px' }}>
-        Compartilhe
+        Compartilhar
       </Typography>
       <div style={{ display: 'flex', gap: '15px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
@@ -32,10 +32,10 @@ const SocialShareBar = ({ url, title }) => {
             {network.icon}
           </a>
         ))}
-        <Typography component="div" variant="subtitle2" style={{ marginTop: '10px' }}>
+      </div>
+      <Typography component="div" variant="subtitle2" style={{ marginTop: '10px' }}>
           Ajude-nos!
         </Typography>
-      </div>
     </div>
   );
 };
