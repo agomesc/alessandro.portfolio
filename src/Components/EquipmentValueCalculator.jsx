@@ -5,11 +5,17 @@ import {
   Button,
   Typography,
   Paper,
+  Box,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 const EquipmentValueCalculator = () => {
   const [newPrice, setNewPrice] = useState('');
   const [condition, setCondition] = useState('');
+  const [yearsUsed, setYearsUsed] = useState('');
+  const [isDiscontinued, setIsDiscontinued] = useState(false);
   const [estimatedValue, setEstimatedValue] = useState(null);
 
   const conditionFactors = {
@@ -20,11 +26,26 @@ const EquipmentValueCalculator = () => {
     'Com problemas (danos ou defeitos)': 0.4,
   };
 
+  const depreciationPerYear = 0.05; // 5% ao ano
+  const discontinuedPenalty = 0.85; // 15% de desconto adicional
+
   const calculateValue = () => {
     const price = parseFloat(newPrice);
     const factor = conditionFactors[condition];
+    const years = parseInt(yearsUsed, 10);
+
     if (!isNaN(price) && factor) {
-      setEstimatedValue((price * factor).toFixed(2));
+      let baseValue = price * factor;
+
+      if (!isNaN(years) && years > 0) {
+        baseValue *= Math.pow(1 - depreciationPerYear, years);
+      }
+
+      if (isDiscontinued) {
+        baseValue *= discontinuedPenalty;
+      }
+
+      setEstimatedValue(baseValue.toFixed(2));
     } else {
       setEstimatedValue(null);
     }
@@ -32,12 +53,16 @@ const EquipmentValueCalculator = () => {
 
   return (
     <Paper elevation={3} sx={{ maxWidth: 400, mx: 'auto', p: 3 }}>
+      <Box display="flex" justifyContent="center" mb={1}>
+        <PhotoCameraIcon fontSize="large" color="action" />
+      </Box>
+
       <Typography variant="h6" gutterBottom>
         Calculadora de Valor Usado
       </Typography>
 
       <Typography variant="body2" color="textSecondary" gutterBottom>
-        Informe o valor de um equipamento novo e a condição atual dele. A calculadora estima quanto ele vale usado com base nessa condição.
+        Informe o valor de um equipamento novo, a condição atual, tempo de uso e se o modelo foi descontinuado.
       </Typography>
 
       <TextField
@@ -65,6 +90,27 @@ const EquipmentValueCalculator = () => {
           </MenuItem>
         ))}
       </TextField>
+
+      <TextField
+        fullWidth
+        type="number"
+        label="Tempo de uso (anos)"
+        value={yearsUsed}
+        onChange={(e) => setYearsUsed(e.target.value)}
+        margin="normal"
+        placeholder="Ex: 2"
+      />
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isDiscontinued}
+            onChange={(e) => setIsDiscontinued(e.target.checked)}
+          />
+        }
+        label="Equipamento saiu de linha"
+        sx={{ mt: 1 }}
+      />
 
       <Button
         fullWidth
