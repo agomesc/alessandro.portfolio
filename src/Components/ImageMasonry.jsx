@@ -14,14 +14,24 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-    }
-  }
+      staggerChildren: 0.12,
+      ease: "easeOut",
+    },
+  },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 70,
+      damping: 15
+    }
+  },
 };
 
 const ImageMasonry = ({ data = [] }) => {
@@ -39,42 +49,64 @@ const ImageMasonry = ({ data = [] }) => {
       initial="hidden"
       animate="show"
     >
-      <Masonry columns={{ xs: 2, sm: 2, md: 3, lg: 4 }} spacing={2}>
+      <Masonry columns={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
         {data.map((item, index) => (
           <motion.div
             key={index}
             variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-            style={{ position: "relative", overflow: "hidden", borderRadius: "12px" }}
+            whileHover={{
+              scale: 1.03,
+              rotateZ: 0.2,
+              boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+            }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              borderRadius: "16px",
+              background: "#fff",
+              willChange: 'transform',
+              cursor: 'pointer',
+            }}
           >
             <NavLink to={`/Photos/${item.id}`} style={{ textDecoration: 'none' }}>
-              <LazyImage
-                src={item.img}
-                alt={item.title}
-                style={{
-                  width: '100%',
-                  display: 'block',
-                  borderRadius: '12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  transition: 'transform 0.3s ease',
-                }}
-              />
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.4 }}
+              >
+                <LazyImage
+                  src={item.img}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    display: 'block',
+                    borderRadius: '16px',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                    transition: 'all 0.3s ease-in-out',
+                  }}
+                />
+              </motion.div>
             </NavLink>
 
-            {/* Estrela sobreposta (mantida como estava) */}
-            <Box
-              sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                zIndex: 2,
-              }}
+            {/* Estrela com fade-in */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
             >
-              <Suspense fallback={<LoadingMessage />}>
-                <StarComponent id={item.id} />
-              </Suspense>
-            </Box>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  zIndex: 2,
+                }}
+              >
+                <Suspense fallback={<LoadingMessage />}>
+                  <StarComponent id={item.id} />
+                </Suspense>
+              </Box>
+            </motion.div>
           </motion.div>
         ))}
       </Masonry>
