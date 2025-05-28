@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import logo from "../images/logo_192.png";
 import Box from "@mui/material/Box";
 import LoadingMessage from "../Components/LoadingMessage";
 
@@ -27,13 +26,13 @@ const LatestPhotos = () => {
       return {
         title: randomItem.title || "Atualizações",
         description: randomItem.description || "Últimas atualizações da galeria.",
-        image: randomItem.img || logo,
+        image: randomItem.img || '/public/logo_192.png',
       };
     }
     return {
       title: "Atualizações",
       description: "Últimas atualizações da galeria.",
-      image: logo,
+      image: '/logo_192.png',
     };
   }, [galleryData]);
 

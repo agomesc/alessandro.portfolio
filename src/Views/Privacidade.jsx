@@ -1,7 +1,6 @@
 import React, { useMemo, lazy } from "react";
 import { Typography, Box, Paper } from "@mui/material";
 
-import logo from "../images/logo_192.png";
 import SocialMetaTags from "../Components/SocialMetaTags";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
@@ -38,7 +37,7 @@ const Privacidade = () => {
 
     return (
         <>
-            <SocialMetaTags title={title} image={logo} description={description} />
+            <SocialMetaTags title={title} image="../../public/logo_192.png" description={description} />
 
             <Box
                 sx={{

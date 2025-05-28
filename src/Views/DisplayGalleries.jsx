@@ -105,12 +105,14 @@ const DisplayGalleries = () => {
                             }}
                         >
                             {gallery.imagePath && (
-                                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                                    <LazyImage
-                                        src={`src/images/${gallery.imagePath}`}
-                                        alt={`Gallery-${gallery.id}`}
-                                    />
-                                </Suspense>
+
+                                <LazyImage
+                                    src={`/images/${gallery.imagePath}`}
+                                    alt={`Gallery-${gallery.id}`}
+                                    width={320}
+                                    height={240}
+                                />
+
                             )}
                             <CardContent>
                                 <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
@@ -187,12 +189,14 @@ const DisplayGalleries = () => {
                             </DialogTitle>
                             <DialogContent>
                                 {selectedGallery.imagePath && (
-                                    <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                                        <LazyImage
-                                            src={`src/images/${selectedGallery.imagePath}`}
-                                            alt={`Gallery-${selectedGallery.id}`}
-                                        />
-                                    </Suspense>
+
+                                    <LazyImage
+                                        src={`/images/${selectedGallery.imagePath}`}
+                                        alt={`Gallery-${selectedGallery.id}`}
+                                        width={320}
+                                        height={240}
+                                    />
+
                                 )}
                                 <div
                                     style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import logo from "../images/logo_192.png";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -149,7 +148,7 @@ const Home = () => {
             </Box>
 
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags title={title} image={logo} description={description} />
+                <SocialMetaTags title={title} image="/logo_192.png" description={description} />
             </Suspense>
 
             <Suspense fallback={<></>}>
