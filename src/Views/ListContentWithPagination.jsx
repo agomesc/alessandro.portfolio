@@ -61,7 +61,7 @@ const ListContentWithPagination = () => {
             <TypographyTitle src="Seleção de ofertas"></TypographyTitle>
             <Grid container spacing={3}>
                 {paginatedAds.map(ad => (
-                    <Grid item xs={12} sm={6} md={4} key={ad.id}>
+                    <Grid item xs={8} md={4} sm={6} key={ad.id}>
                         <Card>
                             <CardContent>
                                 {ad.isLink ? (
