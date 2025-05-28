@@ -9,7 +9,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CloseIcon from '@mui/icons-material/Close';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const LazyIframe = lazy(() => import("../Components/LazyIframe"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
@@ -106,9 +106,9 @@ const DisplayGalleries = () => {
                         >
                             {gallery.imagePath && (
                                 <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                                    <LazyIframe
-                                        src={`https://drive.google.com/file/d/${gallery.imagePath}/preview`}
-                                        title={`Gallery-${gallery.id}`}
+                                    <LazyImage
+                                        src={`src/images/${gallery.imagePath}`}
+                                        alt={`Gallery-${gallery.id}`}
                                     />
                                 </Suspense>
                             )}
@@ -188,9 +188,9 @@ const DisplayGalleries = () => {
                             <DialogContent>
                                 {selectedGallery.imagePath && (
                                     <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                                        <LazyIframe
-                                            src={`https://drive.google.com/file/d/${selectedGallery.imagePath}/preview`}
-                                            title={`Gallery-${selectedGallery.id}`}
+                                        <LazyImage
+                                            src={`src/images/${selectedGallery.imagePath}`}
+                                            alt={`Gallery-${selectedGallery.id}`}
                                         />
                                     </Suspense>
                                 )}
