@@ -26,3 +26,5 @@ export const storage = getStorage(app);
 const firebaseConfig = { messaging, auth, db, provider, storage, onMessage, getToken };
 
 export default firebaseConfig;
+
+//https://console.cloud.google.com/auth/overview?inv=1&invt=Abyu-Q&project=alessandro-portfolio
