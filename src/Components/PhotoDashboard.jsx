@@ -23,7 +23,7 @@ const PhotoDashboard = ({ photoData }) => {
     <Card>
       <CardHeader
         title={
-          <Typography component="div" variant="h4">
+          <Typography component="div" variant="h6">
             {photoData.title}
           </Typography>
         }
