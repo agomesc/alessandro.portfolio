@@ -222,8 +222,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     </IconButton>
 
                     <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <span style={{ color: theme.palette.primary.main, fontSize: 20, fontWeight: 'bold' }}>Olho</span>
-                        <span style={{ color: theme.palette.text.primary, fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
+                        <Link to="/home">
+                            <span style={{ color: theme.palette.primary.main, fontSize: 20, fontWeight: 'bold' }}>Olho</span>
+                            <span style={{ color: theme.palette.text.secondary, fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
+                        </Link>
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
