@@ -1,12 +1,13 @@
 import React, { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Skeleton from '@mui/material/Skeleton';
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
     List, ListItem, ListItemButton, ListItemIcon, ListItemText,
-    Collapse, Avatar
+    Collapse, Avatar, Menu, MenuItem
 } from "@mui/material";
 
 import {
@@ -35,6 +36,7 @@ const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
@@ -45,6 +47,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+    const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
         if (galleryData.length === 0) {
@@ -70,6 +73,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }, []);
 
     const handleLogout = useCallback(() => {
+        handleMenuClose();
         signOut(auth)
             .then(() => {
                 setSnackbarMessage("Usuário deslogado com sucesso.");
@@ -85,6 +89,14 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
+    };
+
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
     };
 
     const items = useMemo(() => {
@@ -119,14 +131,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     const DrawerList = (
         <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-            <Box
-                sx={{
-                    width: 250,
-                    bgcolor: theme.palette.background.default,
-                    color: theme.palette.text.primary
-                }}
-                role="presentation"
-            >
+            <Box sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }} role="presentation">
                 <Divider />
                 <List>
                     {items.map((item, index) => {
@@ -151,16 +156,12 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                             }
                                         }}
                                     >
-                                        <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                                            {item.icon}
-                                        </ListItemIcon>
+                                        <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
                                         <ListItemText primary={item.description} />
                                         {(item.isEquipamentos || hasChildren) && (
                                             <ExpandMoreIcon
                                                 sx={{
-                                                    transform: item.isEquipamentos
-                                                        ? (openEquipamentos ? 'rotate(180deg)' : 'rotate(0deg)')
-                                                        : (openSub ? 'rotate(180deg)' : 'rotate(0deg)'),
+                                                    transform: item.isEquipamentos ? (openEquipamentos ? 'rotate(180deg)' : 'rotate(0deg)') : (openSub ? 'rotate(180deg)' : 'rotate(0deg)'),
                                                     transition: 'transform 0.3s ease'
                                                 }}
                                             />
@@ -173,18 +174,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             return (
                                 <Collapse in={openChild} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
-                                        <ListItemButton
-                                            sx={{ pl: 4 }}
-                                            component="a"
-                                            href={item.route}
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                                                {item.icon}
-                                            </ListItemIcon>
+                                        <ListItemButton sx={{ pl: 4 }} component="a" href={item.route} onClick={() => setOpen(false)}>
+                                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
                                             <ListItemText primary={item.description} />
                                         </ListItemButton>
                                     </List>
@@ -202,53 +193,42 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     return (
         <div>
-            <AppBar
-                position="fixed"
-                sx={{
-                    top: 0,
-                    bgcolor: theme.palette.background.paper,
-                    color: theme.palette.text.primary,
-                }}
-            >
+            <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }}>
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        sx={{ color: theme.palette.primary.main, mr: 2 }}
-                        aria-label="Abrir menu de navegação"
-                        onClick={toggleDrawer(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-
-                    <Typography component="div" variant="subtitle1" sx={{ flexGrow: 1 }}>
-                        <Link to="/home">
-                            <span style={{ color: theme.palette.primary.main, fontSize: 20, fontWeight: 'bold' }}>Olho</span>
-                            <span style={{ color: theme.palette.text.secondary, fontSize: 20, fontWeight: 'bold' }}>Fotográfico</span>
-                        </Link>
-                    </Typography>
-
+                    {isMobile ? (
+                        <IconButton size="large" edge="start" sx={{ color: theme.palette.primary.main, mr: 2 }} aria-label="Abrir menu de navegação" onClick={toggleDrawer(true)}>
+                            <MenuIcon />
+                        </IconButton>
+                    ) : (
+                      <Box sx={{ display: 'flex', gap: 2, mr: 4 }}>
+    {items.filter(item => !item.chid).map((item, index) => (
+        <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                    {item.icon}
+                </IconButton>
+                <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
+                    {item.description}
+                </Typography>
+            </Box>
+        </Link>
+    ))}
+</Box>
+                    )}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <IconButton
-                            size="large"
-                            onClick={toggleTheme}
-                            sx={{
-                                bgcolor: theme.palette.action.hover,
-                                color: theme.palette.text.primary,
-                                borderRadius: '50%',
-                            }}
-                            aria-label="Alternar tema"
-                        >
+                        <IconButton size="large" onClick={toggleTheme} sx={{ bgcolor: theme.palette.action.hover, color: theme.palette.text.primary, borderRadius: '50%' }} aria-label="Alternar tema">
                             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
 
                         {user ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
-                                <IconButton size="large" onClick={handleLogout} sx={{ color: theme.palette.primary.main }}>
-                                    <LogoutIcon />
+                            <>
+                                <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                                    <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
                                 </IconButton>
-                            </Box>
+                                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                                    <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                                </Menu>
+                            </>
                         ) : (
                             <Link to="/Login">
                                 <IconButton size="large" sx={{ color: theme.palette.primary.main }}>
@@ -260,16 +240,13 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 </Toolbar>
             </AppBar>
 
-            <Drawer open={open} onClose={toggleDrawer(false)}>
-                {DrawerList}
-            </Drawer>
+            {isMobile && (
+                <Drawer open={open} onClose={toggleDrawer(false)}>
+                    {DrawerList}
+                </Drawer>
+            )}
 
-            <MessageSnackbar
-                open={snackbarOpen}
-                message={snackbarMessage}
-                severity={snackbarSeverity}
-                onClose={handleSnackbarClose}
-            />
+            <MessageSnackbar open={snackbarOpen} message={snackbarMessage} severity={snackbarSeverity} onClose={handleSnackbarClose} />
         </div>
     );
 };
