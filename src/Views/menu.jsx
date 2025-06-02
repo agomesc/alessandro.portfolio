@@ -17,7 +17,6 @@ import {
     PhotoLibrary as PhotoLibraryIcon,
     ArtTrack as ArtTrackIcon,
     DynamicFeed as DynamicFeedIcon,
-    Logout as LogoutIcon,
     Policy as PolicyIcon,
     AdminPanelSettings as AdminPanelSettingsIcon,
     Home as HomeIcon,
@@ -200,22 +199,22 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             <MenuIcon />
                         </IconButton>
                     ) : (
-                      <Box sx={{ display: 'flex', gap: 2, mr: 4 }}>
-    {items.filter(item => !item.chid).map((item, index) => (
-        <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                    {item.icon}
-                </IconButton>
-                <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
-                    {item.description}
-                </Typography>
-            </Box>
-        </Link>
-    ))}
-</Box>
+                        <Box sx={{ display: 'flex', gap: 2, mr: 4 }}>
+                            {items.filter(item => !item.chid).map((item, index) => (
+                                <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                            {item.icon}
+                                        </IconButton>
+                                        <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
+                                            {item.description}
+                                        </Typography>
+                                    </Box>
+                                </Link>
+                            ))}
+                        </Box>
                     )}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 'auto' }}>
                         <IconButton size="large" onClick={toggleTheme} sx={{ bgcolor: theme.palette.action.hover, color: theme.palette.text.primary, borderRadius: '50%' }} aria-label="Alternar tema">
                             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
