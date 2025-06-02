@@ -199,21 +199,106 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             <MenuIcon />
                         </IconButton>
                     ) : (
-                        <Box sx={{ display: 'flex', gap: 2, mr: 4 }}>
-                            {items.filter(item => !item.chid).map((item, index) => (
-                                <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                            {item.icon}
-                                        </IconButton>
-                                        <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
-                                            {item.description}
-                                        </Typography>
-                                    </Box>
-                                </Link>
-                            ))}
+                        <Box sx={{ display: 'flex', gap: 2, mr: 4 }} onMouseLeave={() => {
+                            setOpenSub(false);
+                            setOpenEquipamentos(false);
+                            setAnchorEl(null);
+                        }}>
+                            {items.filter(item => !item.chid).map((item, index) => {
+                                const isEquipamentos = item.isEquipamentos;
+                                const isGaleria = item.description === "Minhas Galerias";
+
+                                const childItems = items.filter(i => {
+                                    if (isEquipamentos) return i.parent === "Equipamentos";
+                                    if (isGaleria) return i.chid && !i.parent;
+                                    return false;
+                                });
+
+                                const hasChildren = childItems.length > 0;
+
+                                if (hasChildren) {
+                                    const menuId = isEquipamentos ? 'equipamentos-menu' : 'galerias-menu';
+                                    const menuOpen = isEquipamentos ? openEquipamentos : openSub;
+
+                                    return (
+                                        <Box
+                                            key={index}
+                                            onMouseEnter={(e) => {
+                                                setAnchorEl(e.currentTarget);
+                                                if (isEquipamentos) {
+                                                    setOpenEquipamentos(true);
+                                                    setOpenSub(false);
+                                                } else {
+                                                    setOpenSub(true);
+                                                    setOpenEquipamentos(false);
+                                                }
+                                            }}
+                                        >
+                                            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                                                <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                                    {item.icon}
+                                                </IconButton>
+                                                <Typography
+                                                    variant="button"
+                                                    sx={{
+                                                        color: theme.palette.primary.main,
+                                                        fontWeight: 'bold',
+                                                        '&:hover': { textDecoration: 'underline' }
+                                                    }}
+                                                >
+                                                    {item.description}
+                                                </Typography>
+                                            </Box>
+                                            <Menu
+                                                id={menuId}
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl) && menuOpen}
+                                                onClose={() => {
+                                                    setOpenEquipamentos(false);
+                                                    setOpenSub(false);
+                                                    setAnchorEl(null);
+                                                }}
+                                                MenuListProps={{ onMouseLeave: () => {
+                                                    setOpenEquipamentos(false);
+                                                    setOpenSub(false);
+                                                    setAnchorEl(null);
+                                                }}}
+                                            >
+                                                {childItems.map((child, i) => (
+                                                    <MenuItem
+                                                        key={i}
+                                                        component={Link}
+                                                        to={child.route}
+                                                        onClick={() => {
+                                                            setOpenEquipamentos(false);
+                                                            setOpenSub(false);
+                                                            setAnchorEl(null);
+                                                        }}
+                                                    >
+                                                        {child.description}
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </Box>
+                                    );
+                                }
+
+                                return (
+                                    <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                                {item.icon}
+                                            </IconButton>
+                                            <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
+                                                {item.description}
+                                            </Typography>
+                                        </Box>
+                                    </Link>
+                                );
+                            })}
                         </Box>
                     )}
+
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 'auto' }}>
                         <IconButton size="large" onClick={toggleTheme} sx={{ bgcolor: theme.palette.action.hover, color: theme.palette.text.primary, borderRadius: '50%' }} aria-label="Alternar tema">
                             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
