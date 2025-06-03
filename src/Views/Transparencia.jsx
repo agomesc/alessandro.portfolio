@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { Paper, Typography, Box } from '@mui/material';
 import Link from "@mui/material/Link";
 
@@ -27,7 +27,7 @@ const Transparencia = () => {
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, border: 0, boxShadow: 0 }}>
         <Typography component="div" variant="subtitle1">Quem Somos?</Typography>
         <Typography paragraph>
-          Somos apaixonados por fotografia e nosso site é dedicado a compartilhar nosso trabalho com o mundo. (Alessandro Portfólio.)
+          Somos apaixonados por fotografia e nosso site é dedicado a compartilhar nosso trabalho com o mundo. (OlhoFotográfico)
         </Typography>
 
         <Typography component="div" variant="subtitle1">Contato</Typography>
