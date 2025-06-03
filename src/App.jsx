@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
+const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
 const Back = lazy(() => import("./Components/Back"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
@@ -43,6 +44,7 @@ const App = () => {
 			{/* <RandomAffiliateAd /> */}
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+			<ConsentScreen />
 			<Back />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
