@@ -1,4 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import ReactFlagsSelect from 'react-flags-select'; // bandeiras alternativo
 import {
   collection,
   addDoc,
@@ -20,7 +21,9 @@ import {
   CardContent,
   Typography,
   Avatar,
-  IconButton
+  IconButton,
+  FormHelperText,
+  FormControl,
 } from '@mui/material';
 import { db } from '../firebaseConfig';
 import Skeleton from '@mui/material/Skeleton';
@@ -36,23 +39,20 @@ function CommentBox({ itemID }) {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState('BR'); // código do país inicial (Brasil)
   const [comment, setComment] = useState('');
   const [ipAddress, setIpAddress] = useState('');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
-  // Agora armazenamos também o id do documento Firestore
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    // Buscar IP
     fetch("https://api.ipify.org?format=json")
       .then(res => res.json())
       .then(data => setIpAddress(data.ip))
       .catch(() => setIpAddress(""));
 
-    // Buscar comentários
     const q = query(
       collection(db, 'comments'),
       where('itemID', '==', itemID),
@@ -84,23 +84,22 @@ function CommentBox({ itemID }) {
       await addDoc(collection(db, 'comments'), {
         name: name.trim(),
         email: email.trim() || null,
-        country: country.trim(),
+        country,
         text: comment.trim(),
         timestamp: Date.now(),
         itemID,
         userPhoto: null,
         ip: ipAddress,
-        userId: currentUser?.uid || null,  // Salva uid ou null
+        userId: currentUser?.uid || null,
       });
 
       setMessage('Comentário adicionado com sucesso!');
       setSeverity('success');
       setOpen(true);
 
-      // Limpar campos
       setName('');
       setEmail('');
-      setCountry('');
+      setCountry('BR'); // resetar para Brasil
       setComment('');
     } catch (error) {
       setMessage('Erro ao adicionar comentário: ' + error.message);
@@ -143,7 +142,20 @@ function CommentBox({ itemID }) {
       <form onSubmit={handleSubmit}>
         <TextField label="Nome" value={name} onChange={e => setName(e.target.value)} fullWidth required sx={{ mb: 2 }} />
         <TextField label="E-mail (opcional)" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} />
-        <TextField label="País" value={country} onChange={e => setCountry(e.target.value)} fullWidth required sx={{ mb: 2 }} />
+
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <ReactFlagsSelect
+            selected={country}
+            onSelect={code => setCountry(code)}
+            countries={["BR","US","FR","DE","IN"]} // Pode ajustar ou remover para todos os países
+            customLabels={{ BR: "Brasil", US: "EUA", FR: "França", DE: "Alemanha", IN: "Índia" }}
+            showSelectedLabel={true}
+            showOptionLabel={true}
+            placeholder="Selecione o país"
+          />
+          <FormHelperText>Selecione o país</FormHelperText>
+        </FormControl>
+
         <TextField label="Comentário" value={comment} onChange={e => setComment(e.target.value)} multiline rows={4} fullWidth required sx={{ mb: 2 }} />
         <Button type="submit" variant="contained" sx={{ backgroundColor: "#78884c" }}>Enviar comentário</Button>
       </form>
@@ -165,7 +177,6 @@ function CommentBox({ itemID }) {
             title={`${comment.name} (${comment.country})`}
             subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
             action={
-              // Mostrar botão de remover só se userId do comentário == currentUser.uid
               currentUser && comment.userId === currentUser.uid ? (
                 <IconButton
                   aria-label="Remover comentário"
