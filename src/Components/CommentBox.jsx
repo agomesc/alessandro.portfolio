@@ -19,28 +19,31 @@ import {
   Typography,
   Avatar
 } from '@mui/material';
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebaseConfig';
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { db } from '../firebaseConfig';
 import Skeleton from '@mui/material/Skeleton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 function CommentBox({ itemID }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('');
   const [comment, setComment] = useState('');
-  const [user, setUser] = useState(null);
+  const [ipAddress, setIpAddress] = useState('');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
+    // Buscar IP
+    fetch("https://api.ipify.org?format=json")
+      .then(res => res.json())
+      .then(data => setIpAddress(data.ip))
+      .catch(() => setIpAddress(""));
+
+    // Buscar comentários
     const q = query(
       collection(db, 'comments'),
       where('itemID', '==', itemID),
@@ -55,38 +58,11 @@ function CommentBox({ itemID }) {
     return unsubscribe;
   }, [itemID]);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setIsLoggedIn(true);
-      } else {
-        setUser(null);
-        setIsLoggedIn(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleCommentChange = (event) => {
-    setComment(event.target.value);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!user) {
-      setMessage('Por favor, faça login para comentar.');
-      setSeverity('warning');
-      setOpen(true);
-
-      setTimeout(() => navigate('/Login'), 3000);
-      return;
-    }
-
-    if (!comment.trim()) {
-      setMessage('O campo de comentário não pode estar vazio.');
+    if (!name.trim() || !country.trim() || !comment.trim()) {
+      setMessage('Preencha nome, país e comentário.');
       setSeverity('warning');
       setOpen(true);
       return;
@@ -94,17 +70,24 @@ function CommentBox({ itemID }) {
 
     try {
       await addDoc(collection(db, 'comments'), {
-        text: comment,
-        userId: user.uid,
+        name: name.trim(),
+        email: email.trim() || null,
+        country: country.trim(),
+        text: comment.trim(),
         timestamp: Date.now(),
-        itemID: itemID,
-        userName: user.displayName,
-        userPhoto: user.photoURL,
+        itemID,
+        userPhoto: null,
+        ip: ipAddress
       });
 
       setMessage('Comentário adicionado com sucesso!');
       setSeverity('success');
       setOpen(true);
+
+      // Limpar campos
+      setName('');
+      setEmail('');
+      setCountry('');
       setComment('');
     } catch (error) {
       setMessage('Erro ao adicionar comentário: ' + error.message);
@@ -119,56 +102,17 @@ function CommentBox({ itemID }) {
   };
 
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: {
-          xs: "100%", // Para telas extra pequenas (mobile)
-          sm: "90%",  // Para telas pequenas
-          md: "80%",  // Para telas médias
-          lg: "70%",  // Para telas grandes
-          xl: "80%"   // Para telas extra grandes
-        },
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 10
-      }}
-    >
+    <Box sx={{ width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" }, margin: "0 auto", padding: "0 20px", mt: 10 }}>
       <Suspense fallback={<Skeleton variant="text" height={100} />}>
         <TypographyTitle src="Comentários" />
       </Suspense>
+
       <form onSubmit={handleSubmit}>
-        <TextField
-          value={comment}
-          onChange={handleCommentChange}
-          multiline
-          rows={4}
-          variant="outlined"
-          fullWidth
-          disabled={!isLoggedIn}
-          placeholder={
-            !isLoggedIn
-              ? 'Caro visitante, sua opinião é muito importante para nós! Faça login para comentar.'
-              : ''
-          }
-        />
-        {!isLoggedIn && (
-          <Link to="/Login">
-            <IconButton size="large" sx={{ color: "#78884c" }}>
-              <AccountCircle fontSize="medium" />
-            </IconButton>
-          </Link>
-        )}
-        <Button
-          sx={{ mb: 2, mt: 2, backgroundColor: "#78884c" }}
-          type="submit"
-          disabled={!isLoggedIn}
-          variant="contained"
-        >
-          Enviar comentário
-        </Button>
+        <TextField label="Nome" value={name} onChange={e => setName(e.target.value)} fullWidth required sx={{ mb: 2 }} />
+        <TextField label="E-mail (opcional)" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} />
+        <TextField label="País" value={country} onChange={e => setCountry(e.target.value)} fullWidth required sx={{ mb: 2 }} />
+        <TextField label="Comentário" value={comment} onChange={e => setComment(e.target.value)} multiline rows={4} fullWidth required sx={{ mb: 2 }} />
+        <Button type="submit" variant="contained" sx={{ backgroundColor: "#78884c" }}>Enviar comentário</Button>
       </form>
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -180,27 +124,18 @@ function CommentBox({ itemID }) {
       {comments.map((comment, index) => (
         <Card key={index} sx={{ mb: 2, mt: 2, p: 1 }}>
           <CardHeader
-            avatar={<Avatar alt={comment.userName} src={comment.userPhoto} />}
-            title={comment.userName}
-            subheader={new Date(comment.timestamp).toLocaleString('pt-BR', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
+            avatar={
+              <Avatar>
+                <AccountCircle />
+              </Avatar>
+            }
+            title={`${comment.name} (${comment.country})`}
+            subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
           />
           <CardContent>
-            <Suspense fallback={<Skeleton variant="text" height={100} />}>
-              <Typography
-                component="div"
-                variant="body1"
-                color="text.secondary"
-                sx={{ whiteSpace: 'pre-wrap' }}
-              >
-                {comment.text}
-              </Typography>
-            </Suspense>
+            <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
+              {comment.text}
+            </Typography>
           </CardContent>
         </Card>
       ))}

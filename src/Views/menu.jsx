@@ -7,12 +7,11 @@ import Skeleton from '@mui/material/Skeleton';
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
     List, ListItem, ListItemButton, ListItemIcon, ListItemText,
-    Collapse, Avatar, Menu, MenuItem
+    Collapse, Menu, MenuItem
 } from "@mui/material";
 
 import {
     Menu as MenuIcon,
-    AccountCircle,
     Info as InfoIcon,
     PhotoLibrary as PhotoLibraryIcon,
     ArtTrack as ArtTrackIcon,
@@ -28,8 +27,6 @@ import {
 } from "@mui/icons-material";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebaseConfig';
 
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
@@ -40,7 +37,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [openEquipamentos, setOpenEquipamentos] = useState(false);
-    const [user, setUser] = useState(null);
     const [galleryData, setGalleryData] = useState([]);
     const instance = useMemo(() => CreateFlickrApp(), []);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -60,42 +56,12 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         }
     }, [galleryData, instance]);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user || null);
-        });
-        return () => unsubscribe();
-    }, []);
-
     const toggleDrawer = useCallback((newOpen) => () => {
         setOpen(newOpen);
     }, []);
 
-    const handleLogout = useCallback(() => {
-        handleMenuClose();
-        signOut(auth)
-            .then(() => {
-                setSnackbarMessage("Usuário deslogado com sucesso.");
-                setSnackbarSeverity("success");
-                setSnackbarOpen(true);
-            })
-            .catch((error) => {
-                setSnackbarMessage("Erro ao deslogar: " + error.message);
-                setSnackbarSeverity("error");
-                setSnackbarOpen(true);
-            });
-    }, []);
-
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
-    };
-
-    const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
     };
 
     const items = useMemo(() => {
@@ -122,7 +88,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
-            { route: "/Login", description: "Login", chid: false, icon: <AccountCircle /> }
+            // Removido item de Login
         ];
 
         return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
@@ -303,23 +269,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         <IconButton size="large" onClick={toggleTheme} sx={{ bgcolor: theme.palette.action.hover, color: theme.palette.text.primary, borderRadius: '50%' }} aria-label="Alternar tema">
                             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
-
-                        {user ? (
-                            <>
-                                <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                                    <Avatar alt={user?.displayName || "Usuário"} src={user?.photoURL || ""} />
-                                </IconButton>
-                                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                                    <MenuItem onClick={handleLogout}>Sair</MenuItem>
-                                </Menu>
-                            </>
-                        ) : (
-                            <Link to="/Login">
-                                <IconButton size="large" sx={{ color: theme.palette.primary.main }}>
-                                    <AccountCircle />
-                                </IconButton>
-                            </Link>
-                        )}
                     </Box>
                 </Toolbar>
             </AppBar>

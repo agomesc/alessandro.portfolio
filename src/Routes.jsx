@@ -8,7 +8,6 @@ const Photos = lazy(() => import("./Views/Photos"));
 const About = lazy(() => import("./Views/About"));
 const LatestPhotos = lazy(() => import("./Views/LatestPhotos"));
 const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
-const Login = lazy(() => import("./Views/auth/index"));
 const Privacidade = lazy(() => import("./Views/Privacidade"));
 const Transparencia = lazy(() => import("./Views/Transparencia"));
 const ListContent = lazy(() => import("./Views/ListContent"));
@@ -30,7 +29,6 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/galleryWork" element={<GalleryWork />} />
         <Route path="/latestphotos" element={<LatestPhotos />} />
