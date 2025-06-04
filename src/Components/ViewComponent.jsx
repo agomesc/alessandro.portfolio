@@ -9,18 +9,23 @@ const ViewComponent = ({ id }) => {
     if (typeof window === "undefined") return;
 
     const registerView = async () => {
-      const viewedImages = JSON.parse(localStorage.getItem("viewedImages") || "[]");
-      const docRef = doc(db, "views", id);
+      const now = Date.now();
+      const EXPIRATION_TIME = 3600000; // 1 hora em milissegundos
+      const stored = JSON.parse(localStorage.getItem("viewedImages") || "{}");
 
-      if (viewedImages.includes(id)) {
-        const snap = await getDoc(docRef);
+      const lastViewTime = stored[id];
+      if (lastViewTime && now - lastViewTime < EXPIRATION_TIME) {
+        // Já foi visualizado recentemente
+        const snap = await getDoc(doc(db, "views", id));
         if (snap.exists()) {
           setCount(snap.data().count || 0);
         }
         return;
       }
 
+      const docRef = doc(db, "views", id);
       const snap = await getDoc(docRef);
+
       if (!snap.exists()) {
         await setDoc(docRef, { count: 1 });
         setCount(1);
@@ -29,8 +34,9 @@ const ViewComponent = ({ id }) => {
         setCount((snap.data().count || 0) + 1);
       }
 
-      viewedImages.push(id);
-      localStorage.setItem("viewedImages", JSON.stringify(viewedImages));
+      // Salva a hora atual como última visualização
+      stored[id] = now;
+      localStorage.setItem("viewedImages", JSON.stringify(stored));
     };
 
     registerView();
