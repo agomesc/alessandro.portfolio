@@ -1,9 +1,16 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
-import CreateFlickrApp from "../shared/CreateFlickrApp";
+import React, {
+  useEffect,
+  useState,
+  Suspense,
+  lazy,
+  useMemo,
+  useCallback
+} from "react";
 import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Skeleton from '@mui/material/Skeleton';
+import Typography from "@mui/material/Typography";
+import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
@@ -18,8 +25,7 @@ const Photos = () => {
 
   const metaData = useMemo(() => {
     if (galleryData?.length > 0) {
-      const randomIndex = Math.floor(Math.random() * galleryData.length);
-      const randomItem = galleryData[randomIndex];
+      const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
       return {
         title: randomItem.title || "Galeria de Fotos",
         image: randomItem.url || "",
@@ -42,7 +48,6 @@ const Photos = () => {
       setGalleryInfoData(albumInfo?.description?._content || "");
     } catch (error) {
       console.error("Erro ao carregar a galeria:", error);
-      // Poderia setar um estado de erro aqui para feedback ao usuário, se quiser
     }
   }, [id, instance]);
 
@@ -51,12 +56,11 @@ const Photos = () => {
   }, [fetchData]);
 
   if (!galleryData) {
-    return <Skeleton variant="rectangular" height={300} />;
+    return <CustomSkeleton height={300} />;
   }
 
   return (
     <>
-
       <Box
         sx={{
           p: 0,
@@ -67,30 +71,37 @@ const Photos = () => {
             lg: "70%",
             xl: "80%"
           },
-          alignContent: "center",
-          alignItems: "center",
           margin: "0 auto",
           padding: "0 20px",
           mt: 10
         }}
       >
-        <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+        <Suspense fallback={<CustomSkeleton height={80} />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
-        <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+
+        <Suspense fallback={<CustomSkeleton height={80} />}>
           <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
             {galleryInfoData}
           </Typography>
         </Suspense>
-        <PhotoGallery photos={galleryData} />
+
+        <Suspense fallback={<CustomSkeleton height={400} />}>
+          <PhotoGallery photos={galleryData} />
+        </Suspense>
       </Box>
 
-      <CommentBox itemID={id} />
-      <SocialMetaTags
-        title={metaData.title}
-        image={metaData.image}
-        description={metaData.description}
-      />
+      <Suspense fallback={<CustomSkeleton height={150} />}>
+        <CommentBox itemID={id} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.image}
+          description={metaData.description}
+        />
+      </Suspense>
     </>
   );
 };

@@ -6,10 +6,10 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import CreateFlickrApp from "../shared/CreateFlickrApp";
 import { useParams } from "react-router-dom";
 import { Box, Skeleton } from "@mui/material";
 import TypographyTitle from "../Components/TypographyTitle";
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
@@ -24,69 +24,75 @@ const PhotoInfo = () => {
   const metaData = useMemo(() => {
     if (galleryData) {
       return {
-        title: galleryData.title,
-        image: galleryData.url,
-        description: galleryData.description,
+        title: galleryData.title || "Informações da Foto",
+        image: galleryData.url || "",
+        description: galleryData.description || "",
       };
     }
-    return {};
+    return {
+      title: "Informações da Foto",
+      image: "",
+      description: "",
+    };
   }, [galleryData]);
 
   const fetchData = useCallback(async () => {
-    const data = await instance.getPhotoInfo(id);
-    setGalleryData(data);
+    try {
+      const data = await instance.getPhotoInfo(id);
+      setGalleryData(data);
+    } catch (error) {
+      console.error("Erro ao buscar informações da foto:", error);
+    }
   }, [id, instance]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const skeleton = (
-    <Box sx={{ mt: 10, px: 2 }}>
-      <TypographyTitle src="Informações da Foto" />
-      <Skeleton variant="rectangular" height={400} sx={{ mt: 2 }} />
-      <Skeleton variant="text" sx={{ mt: 1 }} />
-      <Skeleton variant="text" width="60%" />
-    </Box>
-  );
+  if (!galleryData) {
+    return (
+      <Box sx={{ mt: 10, px: 2 }}>
+        <TypographyTitle src="Informações da Foto" />
+        <Skeleton variant="rectangular" height={400} sx={{ mt: 2 }} />
+        <Skeleton variant="text" sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="60%" />
+      </Box>
+    );
+  }
 
   return (
     <>
-      {!galleryData ? (
-        skeleton
-      ) : (
-        <Box
-          sx={{
-            p: 0,
-            width: {
-              xs: "100%",
-              sm: "90%",
-              md: "80%",
-              lg: "70%",
-              xl: "80%",
-            },
-            alignContent: "center",
-            alignItems: "center",
-            margin: "0 auto",
-            padding: "0 20px",
-            mt: 10,
-          }}
-        >
+      <Box
+        sx={{
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          margin: "0 auto",
+          padding: "0 20px",
+          mt: 10,
+        }}
+      >
+        <Suspense fallback={<LoadingMessage />}>
           <TypographyTitle src="Informações da Foto" />
+        </Suspense>
 
-          <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-            <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
-              <PhotoDashboard photoData={galleryData} />
-            </Suspense>
-          </Box>
-
-          <Suspense fallback={<Skeleton variant="text" sx={{ mt: 4 }} />}>
-            <CommentBox itemID={id} />
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+            <PhotoDashboard photoData={galleryData} />
           </Suspense>
         </Box>
-      )}
 
-       <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<Skeleton height={150} />}>
+          <CommentBox itemID={id} />
+        </Suspense>
+      </Box>
+
+      <Suspense fallback={null}>
         <SocialMetaTags
           title={metaData.title}
           image={metaData.image}

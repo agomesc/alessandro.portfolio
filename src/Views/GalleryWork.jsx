@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import LoadingMessage from "../Components/LoadingMessage";
+import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
 
 const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -20,7 +20,6 @@ const GalleryWork = () => {
 
     const metaData = useMemo(() => {
         if (!galleryData?.length) return null;
-
         const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
         return {
             title: randomItem.title,
@@ -29,40 +28,36 @@ const GalleryWork = () => {
         };
     }, [galleryData]);
 
-    if (!galleryData) {
-        return <LoadingMessage />;
-    }
-
     return (
         <>
-            <Suspense fallback={<LoadingMessage />}>
-                <Box
-                    sx={{
-                        p: 0,
-                        width: {
-                            xs: "100%", // Para telas extra pequenas (mobile)
-                            sm: "90%",  // Para telas pequenas
-                            md: "80%",  // Para telas médias
-                            lg: "70%",  // Para telas grandes
-                            xl: "80%"   // Para telas extra grandes
-                        },
-                        alignContent: "center",
-                        alignItems: "center",
-                        margin: "0 auto",
-                        padding: "0 20px",
-                        mt: 10
-                    }}
-                >
-                    <Suspense fallback={<LoadingMessage />}>
-                        <TypographyTitle src="Meus Trabalhos" />
-                    </Suspense>
-                    <ImageMasonry data={galleryData} />
-                </Box>
+            <Box
+                sx={{
+                    p: 0,
+                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+                    margin: "0 auto",
+                    padding: "0 20px",
+                    mt: 10
+                }}
+            >
+                <Suspense fallback={<CustomSkeleton height={100} />}>
+                    <TypographyTitle src="Meus Trabalhos" />
+                </Suspense>
+
+                <Suspense fallback={<CustomSkeleton height={400} />}>
+                    {galleryData ? (
+                        <ImageMasonry data={galleryData} />
+                    ) : (
+                        <CustomSkeleton height={400} />
+                    )}
+                </Suspense>
+            </Box>
+
+            <Suspense fallback={<CustomSkeleton height={150} />}>
                 <CommentBox itemID="GalleryWork" />
             </Suspense>
 
             {metaData && (
-                <Suspense fallback={<LoadingMessage />}>
+                <Suspense fallback={null}>
                     <SocialMetaTags
                         title={metaData.title}
                         image={metaData.url}

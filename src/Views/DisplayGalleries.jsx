@@ -25,18 +25,15 @@ const DisplayGalleries = () => {
                 const galleriesRef = collection(db, 'galleries');
                 const q = query(galleriesRef, where('isActive', '==', true));
                 const querySnapshot = await getDocs(q);
-
                 const fetchedGalleries = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
                 }));
-
                 setGalleries(fetchedGalleries);
             } catch (error) {
                 console.error('Erro ao buscar galerias:', error);
             }
         };
-
         fetchGalleries();
     }, []);
 
@@ -61,18 +58,15 @@ const DisplayGalleries = () => {
     };
 
     return (
-
         <Box
             sx={{
-                width: {
-                    xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
-                },
+                width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
                 margin: "0 auto",
-                padding: "0 20px",
+                px: 2,
                 mt: 10
             }}
         >
-            <Suspense fallback={<Skeleton variant="text" height={200} />}>
+            <Suspense fallback={<Skeleton variant="text" height={60} width="30%" sx={{ mb: 3 }} />}>
                 <TypographyTitle src="Conteúdos" />
             </Suspense>
 
@@ -84,9 +78,7 @@ const DisplayGalleries = () => {
                     gap: 3,
                     pb: 2,
                     pt: 1,
-                    '&::-webkit-scrollbar': {
-                        height: '8px',
-                    },
+                    '&::-webkit-scrollbar': { height: '8px' },
                     '&::-webkit-scrollbar-thumb': {
                         backgroundColor: '#ccc',
                         borderRadius: '4px',
@@ -104,43 +96,39 @@ const DisplayGalleries = () => {
                             flexShrink: 0,
                         }}
                     >
-                        {gallery.imagePath && (
+                        <Suspense fallback={<Skeleton variant="rectangular" width={320} height={240} />}>
+                            {gallery.imagePath && (
+                                <LazyImage
+                                    src={`/images/${gallery.imagePath}`}
+                                    alt={`Gallery-${gallery.id}`}
+                                    width={320}
+                                    height={240}
+                                />
+                            )}
+                        </Suspense>
 
-                            <LazyImage
-                                src={`/images/${gallery.imagePath}`}
-                                alt={`Gallery-${gallery.id}`}
-                                width={320}
-                                height={240}
-                                style={{ mt: 10 }}
-                            />
-
-                        )}
                         <CardContent>
-                            <Suspense fallback={<Skeleton variant="text" height={200} />}>
-                                <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
-                                    {gallery.title}
-                                    <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                </Typography>
-                            </Suspense>
+                            <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
+                                {gallery.title}
+                                <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                            </Typography>
                             {gallery.link && (
                                 <Box sx={{ mt: 1 }}>
-                                    <Suspense fallback={<Skeleton variant="text" height={200} />}>
-                                        <Typography
-                                            variant="body2"
-                                            component="a"
-                                            href={gallery.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            sx={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                textDecoration: 'none',
-                                                color: '#78884c',
-                                            }}
-                                        >
-                                            Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                        </Typography>
-                                    </Suspense>
+                                    <Typography
+                                        variant="body2"
+                                        component="a"
+                                        href={gallery.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            textDecoration: 'none',
+                                            color: '#78884c',
+                                        }}
+                                    >
+                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                    </Typography>
                                 </Box>
                             )}
                         </CardContent>
@@ -148,7 +136,6 @@ const DisplayGalleries = () => {
                 ))}
             </Box>
 
-            {/* Paginação */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                 <Pagination
                     count={totalPages}
@@ -194,40 +181,38 @@ const DisplayGalleries = () => {
                         </DialogTitle>
                         <DialogContent>
                             {selectedGallery.imagePath && (
-
-                                <Box sx={{ mt: 8 }}>
-                                    <LazyImage
-                                        src={`/images/${selectedGallery.imagePath}`}
-                                        alt={`Gallery-${selectedGallery.id}`}
-                                        width={320}
-                                        height={240}
-                                        style={{ mt: 10 }}
-                                    />
+                                <Box sx={{ mt: 2, mb: 3 }}>
+                                    <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={300} />}>
+                                        <LazyImage
+                                            src={`/images/${selectedGallery.imagePath}`}
+                                            alt={`Gallery-${selectedGallery.id}`}
+                                            width="100%"
+                                            height={300}
+                                        />
+                                    </Suspense>
                                 </Box>
                             )}
-                            <div
-                                style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
+                            <Box
+                                sx={{ mt: 2, fontSize: '16px', color: '#333' }}
                                 dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
                             />
                             {selectedGallery.link && (
-                                <Box sx={{ mt: 1 }}>
-                                    <Suspense fallback={<Skeleton variant="rectangular" width={320} height={200} />}>
-                                        <Typography
-                                            variant="body2"
-                                            component="a"
-                                            href={selectedGallery.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            sx={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                textDecoration: 'none',
-                                                color: '#78884c',
-                                            }}
-                                        >
-                                            Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                        </Typography>
-                                    </Suspense>
+                                <Box sx={{ mt: 2 }}>
+                                    <Typography
+                                        variant="body2"
+                                        component="a"
+                                        href={selectedGallery.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            textDecoration: 'none',
+                                            color: '#78884c',
+                                        }}
+                                    >
+                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                    </Typography>
                                 </Box>
                             )}
                         </DialogContent>
@@ -235,7 +220,6 @@ const DisplayGalleries = () => {
                 )}
             </Dialog>
         </Box>
-
     );
 };
 

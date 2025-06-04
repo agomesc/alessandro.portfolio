@@ -1,7 +1,6 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import LoadingMessage from "../Components/LoadingMessage";
 import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
@@ -32,11 +31,11 @@ const Gallery = () => {
   }, [galleryData, instance]);
 
   if (!galleryData) {
-    return <LoadingMessage />;
+    return <Skeleton variant="rectangular" height={400} />;
   }
 
   return (
-    <Suspense fallback={<Skeleton variant="rectangular" height={300} />}>
+    <>
       <Box
         sx={{
           p: 0,
@@ -54,26 +53,27 @@ const Gallery = () => {
           mt: 10,
         }}
       >
-        <TypographyTitle src="Galeria de Fotos" />
         <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
-          <ImageMasonry data={galleryData} />
+          <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
+        <ImageMasonry data={galleryData} />
+
       </Box>
 
-      <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-        <CommentBox itemID="Gallery" />
-      </Suspense>
+
+      <CommentBox itemID="Gallery" />
+
 
       {metaData && (
-        <Suspense fallback={<LoadingMessage />}>
+        
           <SocialMetaTags
             title={metaData.title}
             image={metaData.img}
             description={metaData.description}
           />
-        </Suspense>
+        
       )}
-    </Suspense>
+    </>
   );
 };
 
