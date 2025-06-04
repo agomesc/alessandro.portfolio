@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Skeleton from '@mui/material/Skeleton';
+import { motion } from "framer-motion";
+
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
@@ -47,7 +49,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // Novo estado para usuário logado
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -254,7 +255,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         </IconButton>
                     ) : (
                         <>
-                            {/* Menu principal - empurra para esquerda */}
                             <Box
                                 sx={{ display: 'flex', gap: 2, mr: 'auto' }}
                                 onMouseLeave={() => {
@@ -293,21 +293,24 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                                     }
                                                 }}
                                             >
-                                                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                                                    <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                                        {item.icon}
-                                                    </IconButton>
-                                                    <Typography
-                                                        variant="button"
-                                                        sx={{
-                                                            color: theme.palette.primary.main,
-                                                            fontWeight: 'bold',
-                                                            '&:hover': { textDecoration: 'underline' }
-                                                        }}
-                                                    >
-                                                        {item.description}
-                                                    </Typography>
-                                                </Box>
+                                                <motion.div whileHover={{ scale: 1.05 }}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}>
+                                                        <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                                            {item.icon}
+                                                        </IconButton>
+                                                        <Typography
+                                                            variant="button"
+                                                            sx={{
+                                                                color: theme.palette.primary.main,
+                                                                fontWeight: 'bold',
+                                                                transition: 'all 0.3s ease',
+                                                                '&:hover': { textDecoration: 'underline' }
+                                                            }}
+                                                        >
+                                                            {item.description}
+                                                        </Typography>
+                                                    </Box>
+                                                </motion.div>
                                                 <Menu
                                                     id={menuId}
                                                     anchorEl={anchorEl}
@@ -324,6 +327,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                                             setAnchorEl(null);
                                                         }
                                                     }}
+                                                    transitionDuration={300}
                                                 >
                                                     {childItems.map((child, i) => (
                                                         <MenuItem
@@ -346,47 +350,57 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
                                     return (
                                         <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                                    {item.icon}
-                                                </IconButton>
-                                                <Typography
-                                                    variant="button"
-                                                    sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}
-                                                >
-                                                    {item.description}
-                                                </Typography>
-                                            </Box>
+                                            <motion.div whileHover={{ scale: 1.05 }}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1 }}>
+                                                    <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                                        {item.icon}
+                                                    </IconButton>
+                                                    <Typography
+                                                        variant="button"
+                                                        sx={{
+                                                            color: theme.palette.primary.main,
+                                                            fontWeight: 'bold',
+                                                            transition: 'all 0.3s ease',
+                                                            '&:hover': { textDecoration: 'underline' }
+                                                        }}
+                                                    >
+                                                        {item.description}
+                                                    </Typography>
+                                                </Box>
+                                            </motion.div>
                                         </Link>
                                     );
                                 })}
                             </Box>
 
-                            {/* Login/avatar + botão tema alinhados à direita */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 {user ? (
-                                    <Box sx={{ cursor: 'pointer' }} onClick={handleLogout} title="Logout">
-                                        <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} sx={{ width: 32, height: 32 }} />
-                                    </Box>
+                                    <motion.div whileTap={{ scale: 0.9 }}>
+                                        <Box sx={{ cursor: 'pointer' }} onClick={handleLogout} title="Logout">
+                                            <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} sx={{ width: 32, height: 32 }} />
+                                        </Box>
+                                    </motion.div>
                                 ) : (
-                                    <Box
-                                        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                                        onClick={handleLogin}
-                                        title="Login"
-                                    >
-                                        <AdminPanelSettingsIcon sx={{ color: theme.palette.primary.main }} />
-                                        <Typography
-                                            variant="button"
-                                            sx={{
-                                                color: theme.palette.primary.main,
-                                                fontWeight: 'bold',
-                                                ml: 1,
-                                                '&:hover': { textDecoration: 'underline' },
-                                            }}
+                                    <motion.div whileHover={{ scale: 1.05 }}>
+                                        <Box
+                                            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}
+                                            onClick={handleLogin}
+                                            title="Login"
                                         >
-                                            Login
-                                        </Typography>
-                                    </Box>
+                                            <AdminPanelSettingsIcon sx={{ color: theme.palette.primary.main }} />
+                                            <Typography
+                                                variant="button"
+                                                sx={{
+                                                    color: theme.palette.primary.main,
+                                                    fontWeight: 'bold',
+                                                    ml: 1,
+                                                    '&:hover': { textDecoration: 'underline' },
+                                                }}
+                                            >
+                                                Login
+                                            </Typography>
+                                        </Box>
+                                    </motion.div>
                                 )}
 
                                 <IconButton
@@ -405,6 +419,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         </>
                     )}
                 </Toolbar>
+
             </AppBar>
 
             <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
