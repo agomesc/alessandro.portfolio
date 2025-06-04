@@ -1,98 +1,95 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebaseConfig';
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import { TextField, Button, Box, Typography, Switch, FormControlLabel, Snackbar, Alert } from '@mui/material';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-const Editor = lazy(() => import("../Components/Editor")); // Ajuste do caminho
-
-const ImagePathForm = () => {
-    const [user, setUser] = useState(null);
-    const [title, setTitle] = useState('');
-    const [text, setText] = useState(''); // Estado para o conteúdo do editor
-    const [isActive, setIsActive] = useState(true);
-    const [imagePath, setImagePath] = useState('');
-    const [link, setLink] = useState(''); // Novo estado para o campo "link"
-    const [message, setMessage] = useState('');
-    const [severity, setSeverity] = useState('success');
-    const [open, setOpen] = useState(false);
-
+const EditGallery = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
+    const [title, setTitle] = useState('');
+    const [text, setText] = useState('');
+    const [imagePath, setImagePath] = useState('');
+    const [link, setLink] = useState('');
+    const [isActive, setIsActive] = useState(true);
+
+    // Estado para o Snackbar
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' ou 'error'
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user || null);
-        });
-        return () => unsubscribe();
-    }, []);
+        const fetchData = async () => {
+            const docRef = doc(db, 'galleries', id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setTitle(data.title || '');
+                setText(data.text || '');
+                setImagePath(data.imagePath || '');
+                setLink(data.link || '');
+                setIsActive(data.isActive ?? false);
+            } else {
+                console.error('Nenhum documento encontrado!');
+            }
+        };
+        fetchData();
+    }, [id]);
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') return;
-        setOpen(false);
-    };
-
-    const handleSubmit = async (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
-
-        if (!user) {
-            setMessage('Por favor, faça login para postar.');
-            setSeverity('warning');
-            setOpen(true);
-            navigate('/Login');
-            return;
-        }
-
         try {
-            const docData = {
+            const docRef = doc(db, 'galleries', id);
+            await updateDoc(docRef, {
                 title,
-                text, // Agora armazena o texto formatado
-                createdAt: serverTimestamp(),
-                isActive,
+                text,
                 imagePath,
                 link,
-                userId: user.uid,
-            };
-            await addDoc(collection(db, 'galleries'), docData);
+                isActive,
+            });
+            // Aqui abre o Snackbar com mensagem de sucesso
+            setSnackbarMessage('Dados atualizados com sucesso!');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
 
-            setTitle('');
-            setText('');
-            setIsActive(true);
-            setImagePath('');
-            setLink('');
-            setMessage('Informações adicionadas com sucesso!');
-            setSeverity('success');
-            setOpen(true);
-            navigate('/list');
+            // Após 1.5 segundos, navega pra /list
+            setTimeout(() => {
+                navigate('/list');
+            }, 1500);
         } catch (error) {
-            console.error('Erro ao adicionar galeria:', error.message);
-            setMessage(`Erro ao adicionar galeria: ${error.message}`);
-            setSeverity('error');
-            setOpen(true);
+            // Se der erro, abre o Snackbar com mensagem de erro
+            setSnackbarMessage(`Erro ao atualizar os dados: ${error.message}`);
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
         }
+    };
+
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
     };
 
     return (
-        <Box sx={{ p: 0, width: "90%", alignContent: "center", alignItems: "center", margin: "0 auto" }}>
-            <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
-                Passar Caminho da Imagem e Link
-            </Typography>
-            <form onSubmit={handleSubmit}>
+        <Box sx={{ p: 3 }}>
+            <Typography variant="h5" sx={{ mb: 3 }}>Editar Galeria</Typography>
+            <form onSubmit={handleUpdate}>
                 <TextField
-                    label="Título da Imagem"
+                    label="Título"
                     variant="outlined"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     fullWidth
                     margin="normal"
                 />
-                <Suspense fallback={<div>Carregando Editor...</div>}>
-                    <Editor onContentChange={(value) => setText(value)} />
-                </Suspense>
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant="subtitle1">Descrição</Typography>
+                    <ReactQuill value={text} onChange={setText} />
+                </Box>
                 <TextField
                     label="Caminho da Imagem"
                     variant="outlined"
@@ -109,37 +106,27 @@ const ImagePathForm = () => {
                     fullWidth
                     margin="normal"
                 />
-                {imagePath && (
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="body2">
-                            Link Imagem: <a href={imagePath} target="_blank" rel="noopener noreferrer">{title || "Ver Imagem"}</a>
-                        </Typography>
-                    </Box>
-                )}
-                {link && (
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="body2">
-                            Link: <a href={link} target="_blank" rel="noopener noreferrer">{title || "Acessar Link"}</a>
-                        </Typography>
-                    </Box>
-                )}
-                <FormGroup>
-                    <FormControlLabel
-                        control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />}
-                        label="Ativo"
-                    />
-                </FormGroup>
+                <FormControlLabel
+                    control={<Switch checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />}
+                    label="Ativo"
+                />
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Salvar Informações
+                    Salvar Alterações
                 </Button>
             </form>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-                    {message}
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
                 </Alert>
             </Snackbar>
         </Box>
     );
 };
 
-export default React.memo(ImagePathForm);
+export default React.memo(EditGallery);

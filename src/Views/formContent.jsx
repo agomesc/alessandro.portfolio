@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebaseConfig';
+import { db } from '../firebaseConfig';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
@@ -10,7 +9,6 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 
 const FormContent = () => {
-  const [user, setUser] = useState(null);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(true);
@@ -21,13 +19,6 @@ const FormContent = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user || null);
-    });
-    return () => unsubscribe();
-  }, []);
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setOpen(false);
@@ -35,14 +26,6 @@ const FormContent = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (!user) {
-      setMessage('Por favor, faça login para postar.');
-      setSeverity('warning');
-      setOpen(true);
-      navigate('/Login');
-      return;
-    }
 
     try {
       await addDoc(collection(db, 'content'), {
@@ -56,7 +39,7 @@ const FormContent = () => {
       setTitle('');
       setText('');
       setIsActive(true);
-      setIsLink(false); // Resetar o campo após salvar
+      setIsLink(false);
       setMessage('Postagem adicionada com sucesso!');
       setSeverity('success');
       setOpen(true);
