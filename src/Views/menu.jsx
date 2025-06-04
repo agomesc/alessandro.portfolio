@@ -7,7 +7,7 @@ import Skeleton from '@mui/material/Skeleton';
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
     List, ListItem, ListItemButton, ListItemIcon, ListItemText,
-    Collapse, Menu, MenuItem
+    Collapse, Menu, MenuItem, Avatar
 } from "@mui/material";
 
 import {
@@ -25,6 +25,9 @@ import {
     Brightness7 as Brightness7Icon,
     Calculate as CalculateIcon,
 } from "@mui/icons-material";
+
+import { signInWithPopup, signOut } from "firebase/auth";
+import firebaseConfig from "../firebaseConfig";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
@@ -44,6 +47,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [anchorEl, setAnchorEl] = useState(null);
 
+    // Novo estado para usuário logado
+    const [user, setUser] = useState(null);
+
     useEffect(() => {
         if (galleryData.length === 0) {
             instance.getGallery()
@@ -56,6 +62,18 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         }
     }, [galleryData, instance]);
 
+    // Opção para monitorar mudança no usuário logado (ex: persistência)
+    useEffect(() => {
+        const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
+            if (usr) {
+                setUser(usr);
+            } else {
+                setUser(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
     const toggleDrawer = useCallback((newOpen) => () => {
         setOpen(newOpen);
     }, []);
@@ -63,6 +81,44 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
+
+    const handleLogin = () => {
+        signInWithPopup(firebaseConfig.auth, firebaseConfig.provider)
+            .then((result) => {
+                const usr = result.user;
+                setUser(usr);
+                setSnackbarMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`);
+                setSnackbarSeverity("success");
+                setSnackbarOpen(true);
+                setOpen(false);
+                setOpenEquipamentos(false);
+                setOpenSub(false);
+                setAnchorEl(null);
+            })
+            .catch((error) => {
+                setSnackbarMessage("Erro ao fazer login: " + error.message);
+                setSnackbarSeverity("error");
+                setSnackbarOpen(true);
+            });
+    };
+
+    // Função para logout
+    const handleLogout = () => {
+        signOut(firebaseConfig.auth)
+            .then(() => {
+                setUser(null);
+                setSnackbarMessage("Desconectado com sucesso.");
+                setSnackbarSeverity("info");
+                setSnackbarOpen(true);
+            })
+            .catch((error) => {
+                setSnackbarMessage("Erro ao desconectar: " + error.message);
+                setSnackbarSeverity("error");
+                setSnackbarOpen(true);
+            });
+    };
+
+    // Mantém o resto do seu código igual...
 
     const items = useMemo(() => {
         const baseItems = [
@@ -88,7 +144,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
-            // Removido item de Login
+            // Remover Login daqui, porque vamos mostrar em outro lugar
         ];
 
         return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
@@ -148,6 +204,32 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             );
                         }
                     })}
+                    {!user && (
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={() => {
+                                handleLogin();
+                                setOpen(false);
+                            }}>
+                                <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                                    <AdminPanelSettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Login" />
+                            </ListItemButton>
+                        </ListItem>
+                    )}
+                    {user && (
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={() => {
+                                handleLogout();
+                                setOpen(false);
+                            }}>
+                                <ListItemIcon>
+                                    <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} />
+                                </ListItemIcon>
+                                <ListItemText primary="Logout" />
+                            </ListItemButton>
+                        </ListItem>
+                    )}
                 </List>
                 <Divider />
             </Box>
@@ -161,127 +243,183 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }}>
                 <Toolbar>
                     {isMobile ? (
-                        <IconButton size="large" edge="start" sx={{ color: theme.palette.primary.main, mr: 2 }} aria-label="Abrir menu de navegação" onClick={toggleDrawer(true)}>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            sx={{ color: theme.palette.primary.main, mr: 2 }}
+                            aria-label="Abrir menu de navegação"
+                            onClick={toggleDrawer(true)}
+                        >
                             <MenuIcon />
                         </IconButton>
                     ) : (
-                        <Box sx={{ display: 'flex', gap: 2, mr: 4 }} onMouseLeave={() => {
-                            setOpenSub(false);
-                            setOpenEquipamentos(false);
-                            setAnchorEl(null);
-                        }}>
-                            {items.filter(item => !item.chid).map((item, index) => {
-                                const isEquipamentos = item.isEquipamentos;
-                                const isGaleria = item.description === "Minhas Galerias";
+                        <>
+                            {/* Menu principal - empurra para esquerda */}
+                            <Box
+                                sx={{ display: 'flex', gap: 2, mr: 'auto' }}
+                                onMouseLeave={() => {
+                                    setOpenSub(false);
+                                    setOpenEquipamentos(false);
+                                    setAnchorEl(null);
+                                }}
+                            >
+                                {items.filter(item => !item.chid).map((item, index) => {
+                                    const isEquipamentos = item.isEquipamentos;
+                                    const isGaleria = item.description === "Minhas Galerias";
 
-                                const childItems = items.filter(i => {
-                                    if (isEquipamentos) return i.parent === "Equipamentos";
-                                    if (isGaleria) return i.chid && !i.parent;
-                                    return false;
-                                });
+                                    const childItems = items.filter(i => {
+                                        if (isEquipamentos) return i.parent === "Equipamentos";
+                                        if (isGaleria) return i.chid && !i.parent;
+                                        return false;
+                                    });
 
-                                const hasChildren = childItems.length > 0;
+                                    const hasChildren = childItems.length > 0;
 
-                                if (hasChildren) {
-                                    const menuId = isEquipamentos ? 'equipamentos-menu' : 'galerias-menu';
-                                    const menuOpen = isEquipamentos ? openEquipamentos : openSub;
+                                    if (hasChildren) {
+                                        const menuId = isEquipamentos ? 'equipamentos-menu' : 'galerias-menu';
+                                        const menuOpen = isEquipamentos ? openEquipamentos : openSub;
+
+                                        return (
+                                            <Box
+                                                key={index}
+                                                onMouseEnter={(e) => {
+                                                    setAnchorEl(e.currentTarget);
+                                                    if (isEquipamentos) {
+                                                        setOpenEquipamentos(true);
+                                                        setOpenSub(false);
+                                                    } else {
+                                                        setOpenSub(true);
+                                                        setOpenEquipamentos(false);
+                                                    }
+                                                }}
+                                            >
+                                                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                                                    <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                                                        {item.icon}
+                                                    </IconButton>
+                                                    <Typography
+                                                        variant="button"
+                                                        sx={{
+                                                            color: theme.palette.primary.main,
+                                                            fontWeight: 'bold',
+                                                            '&:hover': { textDecoration: 'underline' }
+                                                        }}
+                                                    >
+                                                        {item.description}
+                                                    </Typography>
+                                                </Box>
+                                                <Menu
+                                                    id={menuId}
+                                                    anchorEl={anchorEl}
+                                                    open={Boolean(anchorEl) && menuOpen}
+                                                    onClose={() => {
+                                                        setOpenEquipamentos(false);
+                                                        setOpenSub(false);
+                                                        setAnchorEl(null);
+                                                    }}
+                                                    MenuListProps={{
+                                                        onMouseLeave: () => {
+                                                            setOpenEquipamentos(false);
+                                                            setOpenSub(false);
+                                                            setAnchorEl(null);
+                                                        }
+                                                    }}
+                                                >
+                                                    {childItems.map((child, i) => (
+                                                        <MenuItem
+                                                            key={i}
+                                                            component={Link}
+                                                            to={child.route}
+                                                            onClick={() => {
+                                                                setOpenEquipamentos(false);
+                                                                setOpenSub(false);
+                                                                setAnchorEl(null);
+                                                            }}
+                                                        >
+                                                            {child.description}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Menu>
+                                            </Box>
+                                        );
+                                    }
 
                                     return (
-                                        <Box
-                                            key={index}
-                                            onMouseEnter={(e) => {
-                                                setAnchorEl(e.currentTarget);
-                                                if (isEquipamentos) {
-                                                    setOpenEquipamentos(true);
-                                                    setOpenSub(false);
-                                                } else {
-                                                    setOpenSub(true);
-                                                    setOpenEquipamentos(false);
-                                                }
-                                            }}
-                                        >
-                                            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                                        <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                 <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
                                                     {item.icon}
                                                 </IconButton>
                                                 <Typography
                                                     variant="button"
-                                                    sx={{
-                                                        color: theme.palette.primary.main,
-                                                        fontWeight: 'bold',
-                                                        '&:hover': { textDecoration: 'underline' }
-                                                    }}
+                                                    sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}
                                                 >
                                                     {item.description}
                                                 </Typography>
                                             </Box>
-                                            <Menu
-                                                id={menuId}
-                                                anchorEl={anchorEl}
-                                                open={Boolean(anchorEl) && menuOpen}
-                                                onClose={() => {
-                                                    setOpenEquipamentos(false);
-                                                    setOpenSub(false);
-                                                    setAnchorEl(null);
-                                                }}
-                                                MenuListProps={{ onMouseLeave: () => {
-                                                    setOpenEquipamentos(false);
-                                                    setOpenSub(false);
-                                                    setAnchorEl(null);
-                                                }}}
-                                            >
-                                                {childItems.map((child, i) => (
-                                                    <MenuItem
-                                                        key={i}
-                                                        component={Link}
-                                                        to={child.route}
-                                                        onClick={() => {
-                                                            setOpenEquipamentos(false);
-                                                            setOpenSub(false);
-                                                            setAnchorEl(null);
-                                                        }}
-                                                    >
-                                                        {child.description}
-                                                    </MenuItem>
-                                                ))}
-                                            </Menu>
-                                        </Box>
+                                        </Link>
                                     );
-                                }
+                                })}
+                            </Box>
 
-                                return (
-                                    <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                                {item.icon}
-                                            </IconButton>
-                                            <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { textDecoration: 'underline' } }}>
-                                                {item.description}
-                                            </Typography>
-                                        </Box>
-                                    </Link>
-                                );
-                            })}
-                        </Box>
+                            {/* Login/avatar + botão tema alinhados à direita */}
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                {user ? (
+                                    <Box sx={{ cursor: 'pointer' }} onClick={handleLogout} title="Logout">
+                                        <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} sx={{ width: 32, height: 32 }} />
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                                        onClick={handleLogin}
+                                        title="Login"
+                                    >
+                                        <AdminPanelSettingsIcon sx={{ color: theme.palette.primary.main }} />
+                                        <Typography
+                                            variant="button"
+                                            sx={{
+                                                color: theme.palette.primary.main,
+                                                fontWeight: 'bold',
+                                                ml: 1,
+                                                '&:hover': { textDecoration: 'underline' },
+                                            }}
+                                        >
+                                            Login
+                                        </Typography>
+                                    </Box>
+                                )}
+
+                                <IconButton
+                                    size="large"
+                                    onClick={toggleTheme}
+                                    sx={{
+                                        bgcolor: theme.palette.action.hover,
+                                        color: theme.palette.text.primary,
+                                        borderRadius: '50%',
+                                    }}
+                                    aria-label="Alternar tema"
+                                >
+                                    {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                                </IconButton>
+                            </Box>
+                        </>
                     )}
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 'auto' }}>
-                        <IconButton size="large" onClick={toggleTheme} sx={{ bgcolor: theme.palette.action.hover, color: theme.palette.text.primary, borderRadius: '50%' }} aria-label="Alternar tema">
-                            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-                        </IconButton>
-                    </Box>
                 </Toolbar>
             </AppBar>
 
-            {isMobile && (
-                <Drawer open={open} onClose={toggleDrawer(false)}>
-                    {DrawerList}
-                </Drawer>
-            )}
+            <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+                {DrawerList}
+            </Drawer>
 
-            <MessageSnackbar open={snackbarOpen} message={snackbarMessage} severity={snackbarSeverity} onClose={handleSnackbarClose} />
+            <MessageSnackbar
+                message={snackbarMessage}
+                open={snackbarOpen}
+                onClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+            />
         </div>
     );
+
 };
 
-export default React.memo(TemporaryDrawer);
+export default TemporaryDrawer;

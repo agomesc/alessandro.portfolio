@@ -4,12 +4,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const config = {
   apiKey: "AIzaSyAl75-7cxK0okEbOEnpEABmzmEJr_aQv-I",
   authDomain: "alessandro-portfolio.firebaseapp.com",
   databaseURL: "https://alessandro-portfolio-default-rtdb.firebaseio.com",
   projectId: "alessandro-portfolio",
-  storageBucket: "alessandro-portfolio.appspot.com",
+  storageBucket: "alessandro-portfolio.firebasestorage.app",
   messagingSenderId: "1077155633264",
   appId: "1:1077155633264:web:176463c5c50b9a28427cb5",
   measurementId: "G-WG3E4CSVFR"
