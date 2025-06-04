@@ -56,38 +56,41 @@ const Photos = () => {
 
   return (
     <>
-      <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
-        <Box
-          sx={{
-            p: 0,
-            width: {
-              xs: "100%",
-              sm: "90%",
-              md: "80%",
-              lg: "70%",
-              xl: "80%"
-            },
-            alignContent: "center",
-            alignItems: "center",
-            margin: "0 auto",
-            padding: "0 20px",
-            mt: 10
-          }}
-        >
+
+      <Box
+        sx={{
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%"
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: "0 20px",
+          mt: 10
+        }}
+      >
+        <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
           <TypographyTitle src="Minhas Fotos" />
+        </Suspense>
+        <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
           <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
             {galleryInfoData}
           </Typography>
-          <PhotoGallery photos={galleryData} />
-        </Box>
+        </Suspense>
+        <PhotoGallery photos={galleryData} />
+      </Box>
 
-        <CommentBox itemID={id} />
-        <SocialMetaTags
-          title={metaData.title}
-          image={metaData.image}
-          description={metaData.description}
-        />
-      </Suspense>
+      <CommentBox itemID={id} />
+      <SocialMetaTags
+        title={metaData.title}
+        image={metaData.image}
+        description={metaData.description}
+      />
     </>
   );
 };

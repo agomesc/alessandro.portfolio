@@ -27,8 +27,28 @@ const GalleryList = () => {
     };
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Box
+            sx={{
+                p: 0,
+                width: {
+                    xs: "100%",
+                    sm: "90%",
+                    md: "80%",
+                    lg: "70%",
+                    xl: "80%"
+                },
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: "0 20px",
+                mt: 10
+            }}
+        >
+
             <Typography variant="h5" sx={{ mb: 3 }}>Lista de Galerias</Typography>
+            <Button variant="contained" color="primary" component={Link} to="/create">
+                Criar Novo
+            </Button>
             {items.map((item) => (
                 <Box key={item.id} sx={{ mb: 2, border: '1px solid #ccc', p: 2 }}>
                     <Typography variant="h6">{item.title}</Typography>
