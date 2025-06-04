@@ -32,72 +32,69 @@ const StarComponent = ({ id }) => {
 
         const clickedImages = JSON.parse(localStorage.getItem("clickedImages") || "[]");
         const docRef = doc(db, "stars", id);
+        let updated = count;
 
         if (isClicked) {
-            setCount((prev) => {
-                const updated = prev - 1;
-                updateDoc(docRef, { count: updated });
-                return updated;
-            });
+            updated = count - 1;
+            await updateDoc(docRef, { count: updated });
 
             const updatedImages = clickedImages.filter((imageId) => imageId !== id);
             localStorage.setItem("clickedImages", JSON.stringify(updatedImages));
             setIsClicked(false);
         } else {
-            setCount((prev) => {
-                const updated = prev + 1;
-                updateDoc(docRef, { count: updated });
-                return updated;
-            });
+            updated = count + 1;
+            await updateDoc(docRef, { count: updated });
 
             clickedImages.push(id);
             localStorage.setItem("clickedImages", JSON.stringify(clickedImages));
             setIsClicked(true);
         }
 
+        setCount(updated);
         setIsProcessing(false);
     };
 
+
     return (
         <div
-    style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "5px",
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
-        padding: "4px 8px",
-        borderRadius: "12px",
-        position: "relative",
-        zIndex: 10,
-    }}
->
-    <button
-        onClick={handleClick}
-        disabled={isProcessing}
-        aria-pressed={isClicked}
-        aria-label={isClicked ? "Remover estrela" : "Adicionar estrela"}
-        style={{
-            fontSize: "18px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: isClicked ? "gold" : "white",
-            textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
-        }}
-    >
-        <span role="img" aria-hidden="true">⭐</span>
-    </button>
-    <span
-        style={{
-            fontWeight: "bold",
-            fontSize: "14px",
-            color: "white",
-            textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
-        }}
-    >
-        {count}
-    </span>
-</div>
+            style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                padding: "4px 8px",
+                borderRadius: "12px",
+                position: "relative",
+                zIndex: 10,
+            }}
+        >
+            <button
+                onClick={handleClick}
+                disabled={isProcessing}
+                aria-pressed={isClicked}
+                aria-label={isClicked ? "Remover estrela" : "Adicionar estrela"}
+                style={{
+                    fontSize: "18px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: isClicked ? "gold" : "white",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                }}
+            >
+                <span role="img" aria-hidden="true">⭐</span>
+            </button>
+            <span
+                style={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    color: "white",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                }}
+            >
+                {count}
+            </span>
+        </div>
 
     );
 };

@@ -5,7 +5,9 @@ import {
   onSnapshot,
   query,
   orderBy,
-  where
+  where,
+  deleteDoc,
+  doc
 } from 'firebase/firestore';
 import {
   Button,
@@ -17,15 +19,21 @@ import {
   CardHeader,
   CardContent,
   Typography,
-  Avatar
+  Avatar,
+  IconButton
 } from '@mui/material';
 import { db } from '../firebaseConfig';
 import Skeleton from '@mui/material/Skeleton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { getAuth } from "firebase/auth";
 
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 function CommentBox({ itemID }) {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
@@ -34,6 +42,7 @@ function CommentBox({ itemID }) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
+  // Agora armazenamos também o id do documento Firestore
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -51,7 +60,10 @@ function CommentBox({ itemID }) {
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const fetchedComments = querySnapshot.docs.map(doc => doc.data());
+      const fetchedComments = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
       setComments(fetchedComments);
     });
 
@@ -77,7 +89,8 @@ function CommentBox({ itemID }) {
         timestamp: Date.now(),
         itemID,
         userPhoto: null,
-        ip: ipAddress
+        ip: ipAddress,
+        userId: currentUser?.uid || null,  // Salva uid ou null
       });
 
       setMessage('Comentário adicionado com sucesso!');
@@ -91,6 +104,26 @@ function CommentBox({ itemID }) {
       setComment('');
     } catch (error) {
       setMessage('Erro ao adicionar comentário: ' + error.message);
+      setSeverity('error');
+      setOpen(true);
+    }
+  };
+
+  const handleDelete = async (commentId) => {
+    if (!currentUser) {
+      setMessage('Você precisa estar logado para remover comentários.');
+      setSeverity('warning');
+      setOpen(true);
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, 'comments', commentId));
+      setMessage('Comentário removido com sucesso!');
+      setSeverity('success');
+      setOpen(true);
+    } catch (error) {
+      setMessage('Erro ao remover comentário: ' + error.message);
       setSeverity('error');
       setOpen(true);
     }
@@ -121,8 +154,8 @@ function CommentBox({ itemID }) {
         </Alert>
       </Snackbar>
 
-      {comments.map((comment, index) => (
-        <Card key={index} sx={{ mb: 2, mt: 2, p: 1 }}>
+      {comments.map((comment) => (
+        <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
           <CardHeader
             avatar={
               <Avatar>
@@ -131,6 +164,18 @@ function CommentBox({ itemID }) {
             }
             title={`${comment.name} (${comment.country})`}
             subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
+            action={
+              // Mostrar botão de remover só se userId do comentário == currentUser.uid
+              currentUser && comment.userId === currentUser.uid ? (
+                <IconButton
+                  aria-label="Remover comentário"
+                  onClick={() => handleDelete(comment.id)}
+                  color="error"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              ) : null
+            }
           />
           <CardContent>
             <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
