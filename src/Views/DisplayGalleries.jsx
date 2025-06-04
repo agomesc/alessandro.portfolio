@@ -61,66 +61,70 @@ const DisplayGalleries = () => {
     };
 
     return (
-        <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
+
+        <Box
+            sx={{
+                width: {
+                    xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
+                },
+                margin: "0 auto",
+                padding: "0 20px",
+                mt: 10
+            }}
+        >
+            <Suspense fallback={<Skeleton variant="text" height={200} />}>
+                <TypographyTitle src="Conteúdos" />
+            </Suspense>
+
             <Box
+                ref={scrollRef}
                 sx={{
-                    width: {
-                        xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
+                    display: 'flex',
+                    overflowX: 'auto',
+                    gap: 3,
+                    pb: 2,
+                    pt: 1,
+                    '&::-webkit-scrollbar': {
+                        height: '8px',
                     },
-                    margin: "0 auto",
-                    padding: "0 20px",
-                    mt: 10
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#ccc',
+                        borderRadius: '4px',
+                    },
                 }}
             >
-                <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-                    <TypographyTitle src="Conteúdos" />
-                </Suspense>
+                {currentItems.map((gallery) => (
+                    <Card
+                        key={gallery.id}
+                        onClick={() => handleOpen(gallery)}
+                        sx={{
+                            cursor: 'pointer',
+                            minWidth: 300,
+                            maxWidth: 345,
+                            flexShrink: 0,
+                        }}
+                    >
+                        {gallery.imagePath && (
 
-                <Box
-                    ref={scrollRef}
-                    sx={{
-                        display: 'flex',
-                        overflowX: 'auto',
-                        gap: 3,
-                        pb: 2,
-                        pt: 1,
-                        '&::-webkit-scrollbar': {
-                            height: '8px',
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#ccc',
-                            borderRadius: '4px',
-                        },
-                    }}
-                >
-                    {currentItems.map((gallery) => (
-                        <Card
-                            key={gallery.id}
-                            onClick={() => handleOpen(gallery)}
-                            sx={{
-                                cursor: 'pointer',
-                                minWidth: 300,
-                                maxWidth: 345,
-                                flexShrink: 0,
-                            }}
-                        >
-                            {gallery.imagePath && (
+                            <LazyImage
+                                src={`/images/${gallery.imagePath}`}
+                                alt={`Gallery-${gallery.id}`}
+                                width={320}
+                                height={240}
+                                style={{ mt: 10 }}
+                            />
 
-                                <LazyImage
-                                    src={`/images/${gallery.imagePath}`}
-                                    alt={`Gallery-${gallery.id}`}
-                                    width={320}
-                                    height={240}
-                                />
-
-                            )}
-                            <CardContent>
+                        )}
+                        <CardContent>
+                            <Suspense fallback={<Skeleton variant="text" height={200} />}>
                                 <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
                                     {gallery.title}
                                     <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                 </Typography>
-                                {gallery.link && (
-                                    <Box sx={{ mt: 1 }}>
+                            </Suspense>
+                            {gallery.link && (
+                                <Box sx={{ mt: 1 }}>
+                                    <Suspense fallback={<Skeleton variant="text" height={200} />}>
                                         <Typography
                                             variant="body2"
                                             component="a"
@@ -136,74 +140,78 @@ const DisplayGalleries = () => {
                                         >
                                             Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                         </Typography>
-                                    </Box>
-                                )}
-                            </CardContent>
-                        </Card>
-                    ))}
-                </Box>
+                                    </Suspense>
+                                </Box>
+                            )}
+                        </CardContent>
+                    </Card>
+                ))}
+            </Box>
 
-                {/* Paginação */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        color="primary"
-                        shape="rounded"
-                        size="large"
-                        showFirstButton
-                        showLastButton
-                    />
-                </Box>
+            {/* Paginação */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color="primary"
+                    shape="rounded"
+                    size="large"
+                    showFirstButton
+                    showLastButton
+                />
+            </Box>
 
-                {/* Modal */}
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    fullWidth
-                    maxWidth="xl"
-                    sx={{
-                        '& .MuiDialog-paper': {
-                            width: '90%',
-                            height: '90%',
-                        },
-                    }}
-                >
-                    {selectedGallery && (
-                        <>
-                            <DialogTitle>
-                                {selectedGallery.title}
-                                <IconButton
-                                    aria-label="close"
-                                    onClick={handleClose}
-                                    sx={{
-                                        position: 'absolute',
-                                        right: 8,
-                                        top: 8,
-                                        color: (theme) => theme.palette.grey[500],
-                                    }}
-                                >
-                                    <CloseIcon />
-                                </IconButton>
-                            </DialogTitle>
-                            <DialogContent>
-                                {selectedGallery.imagePath && (
+            {/* Modal */}
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="xl"
+                sx={{
+                    '& .MuiDialog-paper': {
+                        width: '90%',
+                        height: '90%',
+                    },
+                }}
+            >
+                {selectedGallery && (
+                    <>
+                        <DialogTitle>
+                            {selectedGallery.title}
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClose}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </DialogTitle>
+                        <DialogContent>
+                            {selectedGallery.imagePath && (
 
+                                <Box sx={{ mt: 8 }}>
                                     <LazyImage
                                         src={`/images/${selectedGallery.imagePath}`}
                                         alt={`Gallery-${selectedGallery.id}`}
                                         width={320}
                                         height={240}
+                                        style={{ mt: 10 }}
                                     />
-
-                                )}
-                                <div
-                                    style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
-                                    dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
-                                />
-                                {selectedGallery.link && (
-                                    <Box sx={{ mt: 1 }}>
+                                </Box>
+                            )}
+                            <div
+                                style={{ marginTop: '20px', fontSize: '16px', color: '#333' }}
+                                dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
+                            />
+                            {selectedGallery.link && (
+                                <Box sx={{ mt: 1 }}>
+                                    <Suspense fallback={<Skeleton variant="rectangular" width={320} height={200} />}>
                                         <Typography
                                             variant="body2"
                                             component="a"
@@ -219,14 +227,15 @@ const DisplayGalleries = () => {
                                         >
                                             Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                         </Typography>
-                                    </Box>
-                                )}
-                            </DialogContent>
-                        </>
-                    )}
-                </Dialog>
-            </Box>
-        </Suspense>
+                                    </Suspense>
+                                </Box>
+                            )}
+                        </DialogContent>
+                    </>
+                )}
+            </Dialog>
+        </Box>
+
     );
 };
 
