@@ -63,7 +63,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         }
     }, [galleryData, instance]);
 
-    // Opção para monitorar mudança no usuário logado (ex: persistência)
     useEffect(() => {
         const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
             if (usr) {
@@ -91,7 +90,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`);
                 setSnackbarSeverity("success");
                 setSnackbarOpen(true);
-                setOpen(false);
+                setOpen(false); // Fechar o drawer após o login
                 setOpenEquipamentos(false);
                 setOpenSub(false);
                 setAnchorEl(null);
@@ -103,7 +102,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             });
     };
 
-    // Função para logout
     const handleLogout = () => {
         signOut(firebaseConfig.auth)
             .then(() => {
@@ -118,8 +116,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarOpen(true);
             });
     };
-
-    // Mantém o resto do seu código igual...
 
     const items = useMemo(() => {
         const baseItems = [
@@ -145,7 +141,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
-            // Remover Login daqui, porque vamos mostrar em outro lugar
         ];
 
         return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
@@ -158,17 +153,19 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 <List>
                     {items.map((item, index) => {
                         const isChild = item.chid;
-                        const hasChildren = items[index + 1] && items[index + 1].chid && !items[index + 1].parent;
+                        const hasChildren = items[index + 1] && items[index + 1].chid && !items[index + 1].parent; // Check if next item is a child AND not part of "Equipamentos"
                         const isEquipamentosChild = item.parent === "Equipamentos";
 
                         if (!isChild) {
                             return (
                                 <ListItem key={index} disablePadding>
                                     <ListItemButton
-                                        component="a"
-                                        href={item.route}
+                                        component={item.route.startsWith("JavaScript") ? "div" : Link}
+                                        to={item.route.startsWith("JavaScript") ? undefined : item.route}
                                         onClick={(event) => {
-                                            event.stopPropagation();
+                                            if (item.route.startsWith("JavaScript")) {
+                                                event.preventDefault();
+                                            }
                                             if (item.isEquipamentos) {
                                                 setOpenEquipamentos(!openEquipamentos);
                                             } else if (hasChildren) {
@@ -196,7 +193,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             return (
                                 <Collapse in={openChild} timeout="auto" unmountOnExit key={index}>
                                     <List component="div" disablePadding>
-                                        <ListItemButton sx={{ pl: 4 }} component="a" href={item.route} onClick={() => setOpen(false)}>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to={item.route} onClick={() => setOpen(false)}>
                                             <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
                                             <ListItemText primary={item.description} />
                                         </ListItemButton>
@@ -205,25 +202,30 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             );
                         }
                     })}
-                    {!user && (
+
+                    {/* Theme Toggle Button - Always present in DrawerList */}
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={toggleTheme}>
+                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                            </ListItemIcon>
+                            <ListItemText primary={darkMode ? "Modo Claro" : "Modo Escuro"} />
+                        </ListItemButton>
+                    </ListItem>
+
+                    {/* Login/Logout - Always present in DrawerList */}
+                    {!user ? (
                         <ListItem disablePadding>
-                            <ListItemButton onClick={() => {
-                                handleLogin();
-                                setOpen(false);
-                            }}>
+                            <ListItemButton onClick={handleLogin}>
                                 <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                                     <AdminPanelSettingsIcon />
                                 </ListItemIcon>
                                 <ListItemText primary="Login" />
                             </ListItemButton>
                         </ListItem>
-                    )}
-                    {user && (
+                    ) : (
                         <ListItem disablePadding>
-                            <ListItemButton onClick={() => {
-                                handleLogout();
-                                setOpen(false);
-                            }}>
+                            <ListItemButton onClick={handleLogout}>
                                 <ListItemIcon>
                                     <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} />
                                 </ListItemIcon>
@@ -244,15 +246,21 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }}>
                 <Toolbar>
                     {isMobile ? (
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            sx={{ color: theme.palette.primary.main, mr: 2 }}
-                            aria-label="Abrir menu de navegação"
-                            onClick={toggleDrawer(true)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                        <>
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                sx={{ color: theme.palette.primary.main, mr: 2 }}
+                                aria-label="Abrir menu de navegação"
+                                onClick={toggleDrawer(true)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                Minha Galeria
+                            </Typography>
+                            {/* Theme Toggle and Login/Logout are now ONLY in the Drawer for mobile */}
+                        </>
                     ) : (
                         <>
                             <Box
@@ -419,7 +427,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         </>
                     )}
                 </Toolbar>
-
             </AppBar>
 
             <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
@@ -434,7 +441,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             />
         </div>
     );
-
 };
 
 export default TemporaryDrawer;
