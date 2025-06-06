@@ -104,3 +104,12 @@ rm -rf node_modules package-lock.json  # Apaga os módulos antigos
 npm install  # Reinstala tudo
 npm start  # Inicia o projeto novamente
 
+
+# 1. Analisa dependências não utilizadas
+npx depcheck &&
+
+# 2. Remove pacotes que não estão no package.json
+npm prune &&
+
+# 3. Verifica arquivos não utilizados
+npx unimported
