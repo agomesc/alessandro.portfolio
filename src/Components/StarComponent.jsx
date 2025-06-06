@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -6,6 +7,7 @@ const StarComponent = ({ id }) => {
     const [count, setCount] = useState(0);
     const [isClicked, setIsClicked] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [shake, setShake] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +36,10 @@ const StarComponent = ({ id }) => {
         const docRef = doc(db, "stars", id);
         let updated = count;
 
+        // Aciona a animação de vibração
+        setShake(true);
+        setTimeout(() => setShake(false), 300); // desativa após 300ms
+
         if (isClicked) {
             updated = count - 1;
             await updateDoc(docRef, { count: updated });
@@ -54,6 +60,15 @@ const StarComponent = ({ id }) => {
         setIsProcessing(false);
     };
 
+    const shakeAnimation = {
+        shake: {
+            x: [0, -2, 2, -2, 2, 0],
+            transition: { duration: 0.3 },
+        },
+        still: {
+            x: 0,
+        },
+    };
 
     return (
         <div
@@ -68,11 +83,13 @@ const StarComponent = ({ id }) => {
                 zIndex: 10,
             }}
         >
-            <button
+            <motion.button
                 onClick={handleClick}
                 disabled={isProcessing}
                 aria-pressed={isClicked}
                 aria-label={isClicked ? "Remover estrela" : "Adicionar estrela"}
+                animate={shake ? "shake" : "still"}
+                variants={shakeAnimation}
                 style={{
                     fontSize: "18px",
                     background: "none",
@@ -80,10 +97,11 @@ const StarComponent = ({ id }) => {
                     cursor: "pointer",
                     color: isClicked ? "gold" : "white",
                     textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                    padding: 0,
                 }}
             >
                 <span role="img" aria-hidden="true">⭐</span>
-            </button>
+            </motion.button>
             <span
                 style={{
                     fontWeight: "bold",
@@ -95,7 +113,6 @@ const StarComponent = ({ id }) => {
                 {count}
             </span>
         </div>
-
     );
 };
 
