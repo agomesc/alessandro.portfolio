@@ -4,8 +4,6 @@ import Skeleton from '@mui/material/Skeleton';
 const App = ({
   src,
   alt = 'Imagem',
-  width = '100%',
-  height = 'auto',
   className = '',
   style = {}
 }) => {
@@ -13,6 +11,7 @@ const App = ({
   const canvasRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,7 +39,7 @@ const App = ({
     if (shouldLoad) {
       const img = new Image();
       img.src = src;
-      img.crossOrigin = 'anonymous'; // evita erro de CORS se você quiser toDataURL depois
+      img.crossOrigin = 'anonymous';
 
       img.onload = () => {
         const canvas = canvasRef.current;
@@ -49,6 +48,7 @@ const App = ({
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
+          setAspectRatio(img.height / img.width);
           setLoaded(true);
         }
       };
@@ -60,11 +60,11 @@ const App = ({
       ref={containerRef}
       style={{
         position: 'relative',
-        width,
-        height,
+        width: '100%',
+        paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%', // fallback 16:9
         ...style
       }}
-      onContextMenu={(e) => e.preventDefault()} // bloqueia botão direito
+      onContextMenu={(e) => e.preventDefault()}
     >
       {!loaded && (
         <Skeleton
@@ -78,6 +78,9 @@ const App = ({
         ref={canvasRef}
         className={className}
         style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
           width: '100%',
           height: '100%',
           display: loaded ? 'block' : 'none'
