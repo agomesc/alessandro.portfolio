@@ -32,6 +32,8 @@ const PhotoDashboard = ({ photoData }) => {
       <LazyImage
         src={photoData.url}
         alt={photoData.title}
+        width="100%"
+        heig
       />
 
       <CardContent>

@@ -101,8 +101,8 @@ const DisplayGalleries = () => {
                                 <LazyImage
                                     src={`/images/${gallery.imagePath}`}
                                     alt={`Gallery-${gallery.id}`}
-                                    width={320}
-                                    height={240}
+                                    width="100%"
+                                    height="auto"
                                 />
                             )}
                         </Suspense>
@@ -187,7 +187,7 @@ const DisplayGalleries = () => {
                                             src={`/images/${selectedGallery.imagePath}`}
                                             alt={`Gallery-${selectedGallery.id}`}
                                             width="100%"
-                                            height={300}
+                                            height="auto"
                                         />
                                     </Suspense>
                                 </Box>
