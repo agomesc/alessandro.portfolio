@@ -142,9 +142,15 @@ function CommentBox({ itemID }) {
         parentId: replyingTo?.id || null,
         image: image || null,
       });
+
+      // Limpar os campos após o envio bem-sucedido
+      setName('');
+      setEmail('');
+      setCountry('BR');
       setComment('');
       setReplyingTo(null);
       setImage(null);
+
       showMessage('Comentário adicionado com sucesso!', 'success');
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
