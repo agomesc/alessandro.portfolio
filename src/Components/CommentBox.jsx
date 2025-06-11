@@ -35,6 +35,39 @@ const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
+const resizeImage = (file, maxWidth, maxHeight) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const img = new Image();
+      img.onload = function () {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const scale = Math.min(maxWidth / width, maxHeight / height);
+          width *= scale;
+          height *= scale;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        resolve(resizedBase64);
+      };
+      img.onerror = reject;
+      img.src = event.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 function CommentBox({ itemID }) {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -49,6 +82,7 @@ function CommentBox({ itemID }) {
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
   const [replyingTo, setReplyingTo] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (currentUser) {
@@ -59,11 +93,6 @@ function CommentBox({ itemID }) {
   }, [currentUser]);
 
   useEffect(() => {
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => setIpAddress(data.ip))
-      .catch(() => setIpAddress(''));
-
     const q = query(
       collection(db, 'comments'),
       where('itemID', '==', itemID),
@@ -111,9 +140,11 @@ function CommentBox({ itemID }) {
         ip: ipAddress,
         userId: currentUser?.uid || null,
         parentId: replyingTo?.id || null,
+        image: image || null,
       });
       setComment('');
       setReplyingTo(null);
+      setImage(null);
       showMessage('Comentário adicionado com sucesso!', 'success');
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
@@ -162,6 +193,19 @@ function CommentBox({ itemID }) {
         <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
           <span dangerouslySetInnerHTML={{ __html: comment.text }} />
         </Typography>
+        {comment.image && (
+          <img
+            src={comment.image}
+            alt="comentário"
+            style={{
+              maxWidth: '240px',
+              height: 'auto',
+              marginTop: '10px',
+              borderRadius: '6px',
+              display: 'block'
+            }}
+          />
+        )}
         <Box mt={1}>
           <Button size="small" onClick={() => setReplyingTo(comment)}>Responder</Button>
         </Box>
@@ -205,6 +249,19 @@ function CommentBox({ itemID }) {
 
         <Box sx={{ mb: 2 }}>
           <Editor onContentChange={setComment} defaultValue={comment} height="200px" />
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <input
+            accept="image/*"
+            type="file"
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              const resized = await resizeImage(file, 240, 240);
+              setImage(resized);
+            }}
+          />
         </Box>
 
         <Button type="submit" variant="contained" sx={{ backgroundColor: '#78884c' }}>

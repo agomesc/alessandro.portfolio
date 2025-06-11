@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
-const Back = lazy(() => import("./Components/Back"));
+const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
@@ -45,7 +45,7 @@ const App = () => {
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<ConsentScreen />
-			<Back />
+			<NavigationButtons />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
 			</Box>           
