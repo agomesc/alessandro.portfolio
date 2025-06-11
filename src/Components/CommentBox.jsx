@@ -12,7 +12,6 @@ import {
 } from 'firebase/firestore';
 import {
   Button,
-  TextField,
   Snackbar,
   Alert,
   Box,
@@ -24,23 +23,26 @@ import {
   IconButton,
   FormHelperText,
   FormControl,
+  TextField,
 } from '@mui/material';
-import { db } from '../firebaseConfig';
 import Skeleton from '@mui/material/Skeleton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { db } from '../firebaseConfig';
 import { getAuth } from "firebase/auth";
-
+import Editor from './Editor'; // ⬅️ ajuste o caminho se necessário
 const TypographyTitle = lazy(() => import("./TypographyTitle"));
+
+// Remove tags HTML para validação do conteúdo
+const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
 function CommentBox({ itemID }) {
   const auth = getAuth();
   const currentUser = auth.currentUser;
 
-  // Campos do formulário
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [country, setCountry] = useState('BR'); // padrão Brasil
+  const [country, setCountry] = useState('BR');
   const [comment, setComment] = useState('');
   const [ipAddress, setIpAddress] = useState('');
   const [open, setOpen] = useState(false);
@@ -48,21 +50,10 @@ function CommentBox({ itemID }) {
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
 
-  // Ao montar, preenche com dados do usuário logado (se existir)
   useEffect(() => {
     if (currentUser) {
-      // Nome do usuário, ou fallback para vazio
       setName(currentUser.displayName || '');
-
-      // Email do usuário, ou vazio
       setEmail(currentUser.email || '');
-
-      // Se você armazenar o país no perfil, coloque aqui, senão deixa padrão BR
-      // Exemplo: currentUser.country (não existe nativamente no Firebase Auth)
-      // Se quiser usar um atributo custom, adapte aqui:
-      // setCountry(currentUser.country || 'BR');
-
-      // Se quiser usar o país padrão BR para todos os usuários:
       setCountry('BR');
     }
   }, [currentUser]);
@@ -93,7 +84,7 @@ function CommentBox({ itemID }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!name.trim() || !country.trim() || !comment.trim()) {
+    if (!name.trim() || !country.trim() || !stripHtml(comment)) {
       setMessage('Preencha nome, país e comentário.');
       setSeverity('warning');
       setOpen(true);
@@ -108,7 +99,7 @@ function CommentBox({ itemID }) {
         text: comment.trim(),
         timestamp: Date.now(),
         itemID,
-        userPhoto: currentUser?.photoURL || null,  // foto do usuário logado, se tiver
+        userPhoto: currentUser?.photoURL || null,
         ip: ipAddress,
         userId: currentUser?.uid || null,
       });
@@ -116,15 +107,7 @@ function CommentBox({ itemID }) {
       setMessage('Comentário adicionado com sucesso!');
       setSeverity('success');
       setOpen(true);
-
-      // Se quiser resetar só o comentário, deixando os dados do usuário preenchidos:
       setComment('');
-
-      // Se quiser resetar tudo, descomente abaixo:
-      // setName('');
-      // setEmail('');
-      // setCountry('BR');
-      // setComment('');
     } catch (error) {
       setMessage('Erro ao adicionar comentário: ' + error.message);
       setSeverity('error');
@@ -171,7 +154,7 @@ function CommentBox({ itemID }) {
           fullWidth
           required
           sx={{ mb: 2 }}
-          disabled={Boolean(currentUser)} // desabilita se estiver logado
+          disabled={Boolean(currentUser)}
         />
         <TextField
           label="E-mail (opcional)"
@@ -179,33 +162,31 @@ function CommentBox({ itemID }) {
           onChange={e => setEmail(e.target.value)}
           fullWidth
           sx={{ mb: 2 }}
-          disabled={Boolean(currentUser)} // desabilita se estiver logado
+          disabled={Boolean(currentUser)}
         />
 
         <FormControl fullWidth sx={{ mb: 2 }}>
           <ReactFlagsSelect
             selected={country}
             onSelect={code => setCountry(code)}
-            countries={["BR","US","FR","DE","IN"]}
+            countries={["BR", "US", "FR", "DE", "IN"]}
             customLabels={{ BR: "Brasil", US: "EUA", FR: "França", DE: "Alemanha", IN: "Índia" }}
             showSelectedLabel={true}
             showOptionLabel={true}
             placeholder="Selecione o país"
-            disabled={Boolean(currentUser)} // desabilita se estiver logado
+            disabled={Boolean(currentUser)}
           />
           <FormHelperText>Selecione o país</FormHelperText>
         </FormControl>
 
-        <TextField
-          label="Comentário"
-          value={comment}
-          onChange={e => setComment(e.target.value)}
-          multiline
-          rows={4}
-          fullWidth
-          required
-          sx={{ mb: 2 }}
-        />
+        <Box sx={{ mb: 2 }}>
+          <Editor
+            onContentChange={setComment}
+            defaultValue={comment}
+            height="200px"
+          />
+        </Box>
+
         <Button type="submit" variant="contained" sx={{ backgroundColor: "#78884c" }}>
           Enviar comentário
         </Button>
@@ -245,7 +226,8 @@ function CommentBox({ itemID }) {
           />
           <CardContent>
             <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
-              {comment.text}
+              {/* Exibe HTML do Quill como texto simples (seguro) */}
+              <span dangerouslySetInnerHTML={{ __html: comment.text }} />
             </Typography>
           </CardContent>
         </Card>

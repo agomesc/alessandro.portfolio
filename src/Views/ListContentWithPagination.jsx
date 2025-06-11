@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react';
+import { useState, useEffect, lazy } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Grid, Card, CardContent, Typography, Pagination, Box } from '@mui/material';

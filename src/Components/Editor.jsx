@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const Editor = ({ onContentChange, defaultValue = '' }) => {
+const Editor = ({ onContentChange, defaultValue = '', height = '300px' }) => {
   const [content, setContent] = useState(defaultValue);
   const quillRef = useRef(null);
 
@@ -14,14 +14,22 @@ const Editor = ({ onContentChange, defaultValue = '' }) => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
+    input.value = ''; // Garante que o mesmo arquivo possa ser reprocessado
     input.click();
 
     input.onchange = () => {
-      const file = input.files[0];
+      const file = input.files?.[0];
       if (file) {
+        if (file.size > 1024 * 1024) {
+          alert('Imagem muito grande! Limite: 1MB');
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = () => {
-          const editor = quillRef.current.getEditor();
+          const editor = quillRef.current?.getEditor?.();
+          if (!editor) return;
+
           const range = editor.getSelection();
           const position = range ? range.index : editor.getLength();
           editor.insertEmbed(position, 'image', reader.result);
@@ -60,7 +68,7 @@ const Editor = ({ onContentChange, defaultValue = '' }) => {
       onChange={setContent}
       modules={modules}
       formats={formats}
-      style={{ height: '300px', marginBottom: '50px' }}
+      style={{ height, marginBottom: '50px' }}
     />
   );
 };
