@@ -1,11 +1,9 @@
-// SocialMetaTags.js
-import React from 'react';
 import { Helmet } from 'react-helmet-async'; // Mudado para react-helmet-async
 
 const SocialMetaTags = ({ title, description, image, url }) => {
   // Define uma imagem padrão caso nenhuma seja fornecida.
   // SUBSTITUA PELA URL DA SUA IMAGEM PADRÃO
-  const defaultImage = "https://seusite.com.br/imagens/imagem-padrao-og.jpg"; 
+  const defaultImage = "https://olhofotografico.com.br/logo_192.png"; 
   const finalImage = image || defaultImage;
 
   // Usa a URL fornecida ou window.location.href como fallback (para SPA)
