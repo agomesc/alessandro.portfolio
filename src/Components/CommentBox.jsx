@@ -29,11 +29,10 @@ import Skeleton from '@mui/material/Skeleton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
-import { getAuth } from "firebase/auth";
-import Editor from './Editor'; // ⬅️ ajuste o caminho se necessário
-const TypographyTitle = lazy(() => import("./TypographyTitle"));
+import { getAuth } from 'firebase/auth';
+import Editor from './Editor';
+const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
-// Remove tags HTML para validação do conteúdo
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
 function CommentBox({ itemID }) {
@@ -49,6 +48,7 @@ function CommentBox({ itemID }) {
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [comments, setComments] = useState([]);
+  const [replyingTo, setReplyingTo] = useState(null);
 
   useEffect(() => {
     if (currentUser) {
@@ -59,10 +59,10 @@ function CommentBox({ itemID }) {
   }, [currentUser]);
 
   useEffect(() => {
-    fetch("https://api.ipify.org?format=json")
+    fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
       .then(data => setIpAddress(data.ip))
-      .catch(() => setIpAddress(""));
+      .catch(() => setIpAddress(''));
 
     const q = query(
       collection(db, 'comments'),
@@ -71,23 +71,31 @@ function CommentBox({ itemID }) {
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const fetchedComments = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setComments(fetchedComments);
+      const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setComments(groupComments(fetched));
     });
 
     return unsubscribe;
   }, [itemID]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const groupComments = (list) => {
+    const map = {};
+    list.forEach(c => (map[c.id] = { ...c, replies: [] }));
+    const roots = [];
+    list.forEach(c => {
+      if (c.parentId && map[c.parentId]) {
+        map[c.parentId].replies.push(map[c.id]);
+      } else {
+        roots.push(map[c.id]);
+      }
+    });
+    return roots;
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!name.trim() || !country.trim() || !stripHtml(comment)) {
-      setMessage('Preencha nome, país e comentário.');
-      setSeverity('warning');
-      setOpen(true);
+      showMessage('Preencha nome, país e comentário.', 'warning');
       return;
     }
 
@@ -102,37 +110,33 @@ function CommentBox({ itemID }) {
         userPhoto: currentUser?.photoURL || null,
         ip: ipAddress,
         userId: currentUser?.uid || null,
+        parentId: replyingTo?.id || null,
       });
-
-      setMessage('Comentário adicionado com sucesso!');
-      setSeverity('success');
-      setOpen(true);
       setComment('');
-    } catch (error) {
-      setMessage('Erro ao adicionar comentário: ' + error.message);
-      setSeverity('error');
-      setOpen(true);
+      setReplyingTo(null);
+      showMessage('Comentário adicionado com sucesso!', 'success');
+    } catch (err) {
+      showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
     }
   };
 
-  const handleDelete = async (commentId) => {
+  const handleDelete = async (id) => {
     if (!currentUser) {
-      setMessage('Você precisa estar logado para remover comentários.');
-      setSeverity('warning');
-      setOpen(true);
+      showMessage('Você precisa estar logado para remover comentários.', 'warning');
       return;
     }
-
     try {
-      await deleteDoc(doc(db, 'comments', commentId));
-      setMessage('Comentário removido com sucesso!');
-      setSeverity('success');
-      setOpen(true);
-    } catch (error) {
-      setMessage('Erro ao remover comentário: ' + error.message);
-      setSeverity('error');
-      setOpen(true);
+      await deleteDoc(doc(db, 'comments', id));
+      showMessage('Comentário removido com sucesso!', 'success');
+    } catch (err) {
+      showMessage('Erro ao remover comentário: ' + err.message, 'error');
     }
+  };
+
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setSeverity(type);
+    setOpen(true);
   };
 
   const handleClose = (_, reason) => {
@@ -140,30 +144,50 @@ function CommentBox({ itemID }) {
     setOpen(false);
   };
 
+  const renderComment = (comment) => (
+    <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
+      <CardHeader
+        avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
+        title={`${comment.name} (${comment.country})`}
+        subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
+        action={
+          currentUser && comment.userId === currentUser.uid && (
+            <IconButton onClick={() => handleDelete(comment.id)} color="error">
+              <DeleteIcon />
+            </IconButton>
+          )
+        }
+      />
+      <CardContent>
+        <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
+          <span dangerouslySetInnerHTML={{ __html: comment.text }} />
+        </Typography>
+        <Box mt={1}>
+          <Button size="small" onClick={() => setReplyingTo(comment)}>Responder</Button>
+        </Box>
+        <Box sx={{ ml: 4 }}>
+          {comment.replies.map(renderComment)}
+        </Box>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <Box sx={{ width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" }, margin: "0 auto", padding: "0 20px", mt: 10 }}>
+    <Box sx={{ width: { xs: '100%', sm: '90%', md: '80%', lg: '70%', xl: '80%' }, m: '0 auto', p: '0 20px', mt: 10 }}>
       <Suspense fallback={<Skeleton variant="text" height={100} />}>
         <TypographyTitle src="Comentários" />
       </Suspense>
 
+      {replyingTo && (
+        <Box mb={2}>
+          <Typography variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
+          <Button size="small" onClick={() => setReplyingTo(null)}>Cancelar</Button>
+        </Box>
+      )}
+
       <form onSubmit={handleSubmit}>
-        <TextField
-          label="Nome"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          fullWidth
-          required
-          sx={{ mb: 2 }}
-          disabled={Boolean(currentUser)}
-        />
-        <TextField
-          label="E-mail (opcional)"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          fullWidth
-          sx={{ mb: 2 }}
-          disabled={Boolean(currentUser)}
-        />
+        <TextField label="Nome" value={name} onChange={e => setName(e.target.value)} fullWidth required sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
+        <TextField label="E-mail (opcional)" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
 
         <FormControl fullWidth sx={{ mb: 2 }}>
           <ReactFlagsSelect
@@ -171,8 +195,8 @@ function CommentBox({ itemID }) {
             onSelect={code => setCountry(code)}
             countries={["BR", "US", "FR", "DE", "IN"]}
             customLabels={{ BR: "Brasil", US: "EUA", FR: "França", DE: "Alemanha", IN: "Índia" }}
-            showSelectedLabel={true}
-            showOptionLabel={true}
+            showSelectedLabel
+            showOptionLabel
             placeholder="Selecione o país"
             disabled={Boolean(currentUser)}
           />
@@ -180,14 +204,10 @@ function CommentBox({ itemID }) {
         </FormControl>
 
         <Box sx={{ mb: 2 }}>
-          <Editor
-            onContentChange={setComment}
-            defaultValue={comment}
-            height="200px"
-          />
+          <Editor onContentChange={setComment} defaultValue={comment} height="200px" />
         </Box>
 
-        <Button type="submit" variant="contained" sx={{ backgroundColor: "#78884c" }}>
+        <Button type="submit" variant="contained" sx={{ backgroundColor: '#78884c' }}>
           Enviar comentário
         </Button>
       </form>
@@ -198,40 +218,7 @@ function CommentBox({ itemID }) {
         </Alert>
       </Snackbar>
 
-      {comments.map((comment) => (
-        <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
-          <CardHeader
-            avatar={
-              comment.userPhoto ? (
-                <Avatar src={comment.userPhoto} alt={comment.name} />
-              ) : (
-                <Avatar>
-                  <AccountCircle />
-                </Avatar>
-              )
-            }
-            title={`${comment.name} (${comment.country})`}
-            subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
-            action={
-              currentUser && comment.userId === currentUser.uid ? (
-                <IconButton
-                  aria-label="Remover comentário"
-                  onClick={() => handleDelete(comment.id)}
-                  color="error"
-                >
-                  <DeleteIcon />
-                </IconButton>
-              ) : null
-            }
-          />
-          <CardContent>
-            <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
-              {/* Exibe HTML do Quill como texto simples (seguro) */}
-              <span dangerouslySetInnerHTML={{ __html: comment.text }} />
-            </Typography>
-          </CardContent>
-        </Card>
-      ))}
+      {comments.map(renderComment)}
     </Box>
   );
 }
