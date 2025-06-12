@@ -13,7 +13,7 @@ const LazyImage = lazy(() => import("../Components/LazyImage"));
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 4;
     const scrollRef = useRef(null);
 
     useEffect(() => {
@@ -86,8 +86,8 @@ const DisplayGalleries = () => {
                         to={`/GalleryDetail/${gallery.id}`}
                         sx={{
                             cursor: 'pointer',
-                            minWidth: 300,
-                            maxWidth: 345,
+                            minWidth: 240,
+                            maxWidth: 320,
                             flexShrink: 0,
                             textDecoration: 'none',
                             color: 'inherit',
