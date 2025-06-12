@@ -12,12 +12,13 @@ const Privacidade = lazy(() => import("./Views/Privacidade"));
 const Transparencia = lazy(() => import("./Views/Transparencia"));
 const ListContent = lazy(() => import("./Views/ListContent"));
 const FormContent = lazy(() => import("./Views/FormContent"));
+const GalleryDetail = lazy(() => import("./Views/GalleryDetail"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
 const ImagePathForm = lazy(() => import("./Views/ImagePathForm"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 const GalleryList = lazy(() => import("./Views/GalleryList"));
 const EditGallery = lazy(() => import("./Views/EditGallery"));
-const EquipmentValueCalculator  = lazy(() => import("./Views/EquipmentValueCalculator"));
+const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalculator"));
 const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
 
 const AppRoutes = () => {
@@ -45,6 +46,9 @@ const AppRoutes = () => {
         <Route path="/TestWrapper" element={<TestWrapper />} />
         <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
         <Route path="/EquipmentValueCalculator" element={<EquipmentValueCalculator />} />
+        <Route path="/GalleryDetail/:id" element={<GalleryDetail />} />
+        {/* Opcional: uma rota para 404 */}
+        <Route path="*" element={<div>Página não encontrada</div>} />
 
       </Routes>
     </Suspense>

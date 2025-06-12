@@ -1,29 +1,26 @@
 import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import { Link } from 'react-router-dom'; // Importe Link
 import {
-    Card, CardContent, Typography, Dialog, DialogTitle,
-    DialogContent, Box, IconButton, Pagination, Skeleton
+    Card, CardContent, Typography, Box, Pagination, Skeleton
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import CloseIcon from '@mui/icons-material/Close';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [selectedGallery, setSelectedGallery] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 4;
     const scrollRef = useRef(null);
 
     useEffect(() => {
         const fetchGalleries = async () => {
             try {
                 const galleriesRef = collection(db, 'galleries');
-                const q = query(galleriesRef, where('isActive', '==', true));
+                const q = query(galleriesRef, where('isActive', '==', true), orderBy('createdAt', 'desc'));
                 const querySnapshot = await getDocs(q);
                 const fetchedGalleries = querySnapshot.docs.map(doc => ({
                     id: doc.id,
@@ -41,16 +38,6 @@ const DisplayGalleries = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentItems = galleries.slice(startIndex, endIndex);
-
-    const handleOpen = (gallery) => {
-        setSelectedGallery(gallery);
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        setSelectedGallery(null);
-    };
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
@@ -88,12 +75,16 @@ const DisplayGalleries = () => {
                 {currentItems.map((gallery) => (
                     <Card
                         key={gallery.id}
-                        onClick={() => handleOpen(gallery)}
+                        // Use Link para navegar para a rota de detalhes
+                        component={Link} // Renderiza o Card como um Link
+                        to={`/GalleryDetail/${gallery.id}`} // Define o destino da rota
                         sx={{
                             cursor: 'pointer',
                             minWidth: 300,
                             maxWidth: 345,
                             flexShrink: 0,
+                            textDecoration: 'none', // Remove sublinhado do Link
+                            color: 'inherit', // Mantém a cor do texto padrão
                         }}
                     >
                         <Suspense fallback={<Skeleton variant="rectangular" width={320} height={240} />}>
@@ -110,16 +101,18 @@ const DisplayGalleries = () => {
                         <CardContent>
                             <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
                                 {gallery.title}
-                                <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                {/* O ícone OpenInNewIcon agora pode indicar que o clique levará para uma página de detalhes */}
                             </Typography>
                             {gallery.link && (
                                 <Box sx={{ mt: 1 }}>
+                                    {/* Este link interno levaria para a página de detalhes, mas se você quiser um link externo específico, pode manter como estava */}
                                     <Typography
                                         variant="body2"
-                                        component="a"
+                                        component="a" // Permite que este seja um link externo separado
                                         href={gallery.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()} // Impede o clique do Card de propagar
                                         sx={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -127,7 +120,7 @@ const DisplayGalleries = () => {
                                             color: '#78884c',
                                         }}
                                     >
-                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                        Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                     </Typography>
                                 </Box>
                             )}
@@ -148,77 +141,6 @@ const DisplayGalleries = () => {
                     showLastButton
                 />
             </Box>
-
-            {/* Modal */}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                fullWidth
-                maxWidth="xl"
-                sx={{
-                    '& .MuiDialog-paper': {
-                        width: '90%',
-                        height: '90%',
-                    },
-                }}
-            >
-                {selectedGallery && (
-                    <>
-                        <DialogTitle>
-                            {selectedGallery.title}
-                            <IconButton
-                                aria-label="close"
-                                onClick={handleClose}
-                                sx={{
-                                    position: 'absolute',
-                                    right: 8,
-                                    top: 8,
-                                    color: (theme) => theme.palette.grey[500],
-                                }}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </DialogTitle>
-                        <DialogContent>
-                            {selectedGallery.imagePath && (
-                                <Box sx={{ mt: 2, mb: 3 }}>
-                                    <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={300} />}>
-                                        <LazyImage
-                                            src={`/images/${selectedGallery.imagePath}`}
-                                            alt={`Gallery-${selectedGallery.id}`}
-                                            width="100%"
-                                            height="auto"
-                                        />
-                                    </Suspense>
-                                </Box>
-                            )}
-                            <Box
-                                sx={{ mt: 2, fontSize: '16px', color: '#333' }}
-                                dangerouslySetInnerHTML={{ __html: selectedGallery.text }}
-                            />
-                            {selectedGallery.link && (
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography
-                                        variant="body2"
-                                        component="a"
-                                        href={selectedGallery.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            textDecoration: 'none',
-                                            color: '#78884c',
-                                        }}
-                                    >
-                                        Abrir Link <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                    </Typography>
-                                </Box>
-                            )}
-                        </DialogContent>
-                    </>
-                )}
-            </Dialog>
         </Box>
     );
 };
