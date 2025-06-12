@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
+import { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Skeleton from '@mui/material/Skeleton';
 import { motion } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
@@ -37,8 +37,8 @@ const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // This checks if the screen is smaller than 'md' breakpoint
-
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); 
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [openEquipamentos, setOpenEquipamentos] = useState(false);
@@ -110,7 +110,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage("Desconectado com sucesso.");
                 setSnackbarSeverity("info");
                 setSnackbarOpen(true);
-            })
+                navigate("/"); // se estiver usando react-router-dom
+           })
             .catch((error) => {
                 setSnackbarMessage("Erro ao desconectar: " + error.message);
                 setSnackbarSeverity("error");
@@ -260,7 +261,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                Minha Galeria
+                                Alessandro Cunha | FOTO
                         </Typography>
                         <IconButton
                             size="large"

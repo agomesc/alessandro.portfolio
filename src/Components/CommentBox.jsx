@@ -71,7 +71,7 @@ const resizeImage = (file, maxWidth, maxHeight) => {
 function CommentBox({ itemID }) {
   const auth = getAuth();
   const currentUser = auth.currentUser;
-
+  
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('BR');
@@ -128,6 +128,11 @@ function CommentBox({ itemID }) {
       return;
     }
 
+    if (image && !currentUser) {
+      showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'comments'), {
         name: name.trim(),
@@ -142,15 +147,9 @@ function CommentBox({ itemID }) {
         parentId: replyingTo?.id || null,
         image: image || null,
       });
-
-      // Limpar os campos após o envio bem-sucedido
-      setName('');
-      setEmail('');
-      setCountry('BR');
       setComment('');
       setReplyingTo(null);
       setImage(null);
-
       showMessage('Comentário adicionado com sucesso!', 'success');
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
@@ -188,7 +187,7 @@ function CommentBox({ itemID }) {
         title={`${comment.name} (${comment.country})`}
         subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
         action={
-          currentUser && comment.userId === currentUser.uid && (
+          currentUser && (comment.userId === currentUser.uid || currentUser.uid === process.env.REACT_APP_ADMIN_UID) && (
             <IconButton onClick={() => handleDelete(comment.id)} color="error">
               <DeleteIcon />
             </IconButton>
@@ -262,6 +261,10 @@ function CommentBox({ itemID }) {
             accept="image/*"
             type="file"
             onChange={async (e) => {
+              if (!currentUser) {
+                showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
+                return;
+              }
               const file = e.target.files[0];
               if (!file) return;
               const resized = await resizeImage(file, 240, 240);
