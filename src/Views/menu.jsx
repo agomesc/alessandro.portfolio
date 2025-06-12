@@ -95,6 +95,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setOpenEquipamentos(false);
                 setOpenSub(false);
                 setAnchorEl(null);
+                navigate("/"); 
             })
             .catch((error) => {
                 setSnackbarMessage("Erro ao fazer login: " + error.message);
@@ -110,7 +111,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage("Desconectado com sucesso.");
                 setSnackbarSeverity("info");
                 setSnackbarOpen(true);
-                navigate("/"); // se estiver usando react-router-dom
+                navigate("/"); 
            })
             .catch((error) => {
                 setSnackbarMessage("Erro ao desconectar: " + error.message);
