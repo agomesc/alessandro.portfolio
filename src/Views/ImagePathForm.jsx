@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebaseConfig'; // 'storage' removido
+import { db } from '../firebaseConfig';
 import { TextField, Button, Box, Typography, Switch, FormControlLabel, Snackbar, Alert } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getAuth } from 'firebase/auth';
 
-// Função auxiliar para redimensionar a imagem e convertê-la para Base64
-// Esta função é a mesma que você usa no CommentBox e EditGallery
-const resizeImage = (file, maxWidth, maxHeight) => {
+// --- Função auxiliar para redimensionar a imagem e convertê-la para Base64 ---
+// Ajustado para redimensionar a 240x240 e usar qualidade JPEG 0.5
+const resizeImage = (file) => { // Removi os parâmetros maxWidth e maxHeight daqui, pois serão fixos
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function (event) {
@@ -18,7 +18,11 @@ const resizeImage = (file, maxWidth, maxHeight) => {
                 let width = img.width;
                 let height = img.height;
 
-                // Calcula as novas dimensões mantendo a proporção
+                // Definindo as dimensões máximas fixas
+                const maxWidth = 240;
+                const maxHeight = 240;
+
+                // Calcula as novas dimensões mantendo a proporção, sem exceder 240x240
                 if (width > maxWidth || height > maxHeight) {
                     const scale = Math.min(maxWidth / width, maxHeight / height);
                     width *= scale;
@@ -33,15 +37,16 @@ const resizeImage = (file, maxWidth, maxHeight) => {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Converte o canvas para uma string Base64 (JPEG com qualidade 0.8)
-                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                // Converte o canvas para uma string Base64 (JPEG com qualidade 0.5)
+                // Uma qualidade menor (0.5) ajuda a reduzir o tamanho do arquivo
+                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.5); // Qualidade ajustada
                 resolve(resizedBase64);
             };
-            img.onerror = reject; // Trata erros ao carregar a imagem
-            img.src = event.target.result; // Define a fonte da imagem como o resultado da leitura do arquivo
+            img.onerror = reject;
+            img.src = event.target.result;
         };
-        reader.onerror = reject; // Trata erros ao ler o arquivo
-        reader.readAsDataURL(file); // Lê o arquivo como uma URL de dados (Base64)
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
     });
 };
 
@@ -52,9 +57,8 @@ const CreateGallery = () => {
 
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
-    // Agora 'imageBase64' armazenará a string Base64 da imagem selecionada
     const [imageBase64, setImageBase64] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null); // Para pré-visualização da imagem
+    const [imagePreview, setImagePreview] = useState(null);
     const [link, setLink] = useState('');
     const [isActive, setIsActive] = useState(true);
 
@@ -62,7 +66,6 @@ const CreateGallery = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-    // Função para exibir as mensagens no Snackbar
     const showSnackbar = (msg, severity) => {
         setSnackbarMessage(msg);
         setSnackbarSeverity(severity);
@@ -73,18 +76,19 @@ const CreateGallery = () => {
     const handleImageChange = async (e) => {
         if (!currentUser) {
             showSnackbar('Você precisa estar logado para enviar uma imagem.', 'warning');
-            e.target.value = ''; // Limpa o input de arquivo
+            e.target.value = '';
             return;
         }
 
         const file = e.target.files[0];
         if (file) {
             try {
-                // Redimensiona e converte para Base64 imediatamente
-                // Ajuste maxWidth e maxHeight conforme a necessidade do seu projeto
-                const resizedBase64 = await resizeImage(file, 600, 400);
-                setImageBase64(resizedBase64); // Armazena a string Base64
-                setImagePreview(resizedBase64); // Atualiza a pré-visualização
+                // Chama resizeImage sem passar maxWidth e maxHeight, pois agora são fixos na função
+                const resizedBase64 = await resizeImage(file);
+                setImageBase64(resizedBase64);
+                setImagePreview(resizedBase64);
+                // Opcional: Log para verificar o tamanho da imagem em KB
+                console.log('Tamanho da imagem Base64:', (resizedBase64.length / 1024).toFixed(2), 'KB');
             } catch (error) {
                 console.error('Erro ao processar imagem:', error);
                 showSnackbar('Erro ao processar imagem. Tente novamente.', 'error');
@@ -92,47 +96,41 @@ const CreateGallery = () => {
                 setImagePreview(null);
             }
         } else {
-            // Se nenhum arquivo for selecionado (e.g., usuário cancela a seleção), limpa os estados da imagem
             setImageBase64(null);
             setImagePreview(null);
         }
     };
 
-    // Lida com o envio do formulário
     const handleCreate = async (event) => {
-        event.preventDefault(); // Previne o comportamento padrão do formulário
+        event.preventDefault();
 
-        // Verifica se o usuário está logado
         if (!currentUser) {
             showSnackbar('Você precisa estar logado para criar uma galeria.', 'warning');
             return;
         }
 
         try {
-            // Adiciona os dados da galeria ao Firestore
-            // A imagem (string Base64) é salva diretamente no campo 'image'
             await addDoc(collection(db, 'galleries'), {
                 title,
                 text,
-                image: imageBase64, // 'imageBase64' já contém a imagem redimensionada ou null
+                image: imageBase64,
                 link,
                 isActive,
-                createdAt: serverTimestamp() // Usa o timestamp do servidor para consistência
+                createdAt: serverTimestamp()
             });
 
             showSnackbar('Galeria criada com sucesso!', 'success');
 
-            // Navega para a página de lista após um pequeno atraso
             setTimeout(() => {
                 navigate('/list');
             }, 1500);
         } catch (error) {
             console.error('Erro ao criar galeria:', error);
-            showSnackbar(`Erro ao criar galeria: ${error.message}`, 'error');
+            // Mensagem de erro mais útil se for um problema de tamanho/rede
+            showSnackbar(`Erro ao criar galeria: ${error.message}. A imagem pode ser muito grande.`, 'error');
         }
     };
 
-    // Lida com o fechamento do Snackbar
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') return;
         setSnackbarOpen(false);
@@ -172,16 +170,16 @@ const CreateGallery = () => {
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Carregar Imagem</Typography>
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Carregar Imagem (Max. 240x240)</Typography>
                     <input
                         accept="image/*"
                         type="file"
-                        onChange={handleImageChange} // Usa o handler que converte para Base64
+                        onChange={handleImageChange}
                     />
                     {imagePreview && (
                         <Box mt={2}>
                             <Typography variant="body2">Pré-visualização da imagem:</Typography>
-                            <img src={imagePreview} alt="Pré-visualização" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }} />
+                            <img src={imagePreview} alt="Pré-visualização" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', border: '1px solid #ddd' }} />
                         </Box>
                     )}
                 </Box>

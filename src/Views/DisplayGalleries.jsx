@@ -27,8 +27,6 @@ const DisplayGalleries = () => {
                 // Get a reference to the 'galleries' collection
                 const galleriesRef = collection(db, 'galleries');
                 // Create a query to fetch active galleries, ordered by creation time in descending order
-                // IMPORTANT: orderBy() can sometimes require composite indexes in Firestore.
-                // If you encounter issues, consider fetching all data and sorting in-memory.
                 const q = query(galleriesRef, where('isActive', '==', true), orderBy('createdAt', 'desc'));
                 // Execute the query
                 const querySnapshot = await getDocs(q);
@@ -38,6 +36,12 @@ const DisplayGalleries = () => {
                     ...doc.data(),
                 }));
                 setGalleries(fetchedGalleries); // Update state with fetched galleries
+                // --- NOVO LOG PARA DEPURAR ---
+                console.log('Dados de galerias buscados:', fetchedGalleries);
+                if (fetchedGalleries.length === 0) {
+                    console.warn('Nenhuma galeria ativa encontrada ou problema na query/índices.');
+                }
+                // ---------------------------
             } catch (error) {
                 console.error('Erro ao buscar galerias:', error);
                 // In a production app, you might want to display a user-friendly error message here
@@ -48,6 +52,7 @@ const DisplayGalleries = () => {
 
     // Sort galleries client-side as an additional safety measure,
     // in case Firestore's orderBy isn't fully reliable or for more complex sorting logic.
+    // (Ainda é válido para ordenação extra ou se o índice não funcionar)
     const sortedGalleries = [...galleries].sort((a, b) => {
         // Access 'seconds' property of Firestore Timestamp or default to 0 for safety
         const aTime = a.createdAt?.seconds || 0;
@@ -172,18 +177,20 @@ const DisplayGalleries = () => {
             </Box>
 
             {/* Pagination controls */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                <Pagination
-                    count={totalPages} // Total number of pages
-                    page={currentPage} // Current active page
-                    onChange={handlePageChange} // Handler for page change
-                    color="primary" // Primary color theme
-                    shape="rounded" // Rounded buttons
-                    size="large" // Larger pagination buttons
-                    showFirstButton // Show button to go to first page
-                    showLastButton // Show button to go to last page
-                />
-            </Box>
+            {totalPages > 1 && ( // Render pagination only if there's more than one page
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                    <Pagination
+                        count={totalPages} // Total number of pages
+                        page={currentPage} // Current active page
+                        onChange={handlePageChange} // Handler for page change
+                        color="primary" // Primary color theme
+                        shape="rounded" // Rounded buttons
+                        size="large" // Larger pagination buttons
+                        showFirstButton // Show button to go to first page
+                        showLastButton // Show button to go to last page
+                    />
+                </Box>
+            )}
         </Box>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig'; // Não precisamos mais do 'storage'
+import { db } from '../firebaseConfig';
 import {
     TextField, Button, Box, Typography, Switch, FormControlLabel, Snackbar, Alert
 } from '@mui/material';
@@ -9,8 +9,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getAuth } from 'firebase/auth';
 
-// Adicione a função resizeImage aqui (ou importe-a de um arquivo de utilidades)
-const resizeImage = (file, maxWidth, maxHeight) => {
+// --- Função auxiliar para redimensionar a imagem e convertê-la para Base64 ---
+// Ajustada para redimensionar a 240x240 e usar qualidade JPEG 0.5
+const resizeImage = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function (event) {
@@ -19,12 +20,18 @@ const resizeImage = (file, maxWidth, maxHeight) => {
                 let width = img.width;
                 let height = img.height;
 
+                // Definindo as dimensões máximas fixas
+                const maxWidth = 240;
+                const maxHeight = 240;
+
+                // Calcula as novas dimensões mantendo a proporção, sem exceder 240x240
                 if (width > maxWidth || height > maxHeight) {
                     const scale = Math.min(maxWidth / width, maxHeight / height);
                     width *= scale;
                     height *= scale;
                 }
 
+                // Cria um canvas e desenha a imagem redimensionada
                 const canvas = document.createElement('canvas');
                 canvas.width = width;
                 canvas.height = height;
@@ -32,7 +39,9 @@ const resizeImage = (file, maxWidth, maxHeight) => {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                // Converte o canvas para uma string Base64 (JPEG com qualidade 0.5)
+                // Uma qualidade menor (0.5) ajuda a reduzir o tamanho do arquivo para o Firestore
+                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.5); // Qualidade ajustada
                 resolve(resizedBase64);
             };
             img.onerror = reject;
@@ -85,7 +94,7 @@ const EditGallery = () => {
                     setTitle(data.title || '');
                     setText(data.text || '');
                     setOriginalImageUrl(data.image || null); // Agora será uma string Base64 ou null
-                    setImagePreview(data.image || null); // Initialize preview with existing Base64 image
+                    setImagePreview(data.image || null); // Inicializa preview com a imagem existente
                     setLink(data.link || '');
                     setIsActive(data.isActive || false);
                 } else {
@@ -111,30 +120,36 @@ const EditGallery = () => {
         const file = e.target.files[0];
         if (file) {
             try {
-                // Redimensiona e converte para Base64 imediatamente
-                const resizedBase64 = await resizeImage(file, 600, 400); // Ajuste max width/height conforme necessário
+                // Chama resizeImage sem passar maxWidth e maxHeight, pois agora são fixos na função
+                const resizedBase64 = await resizeImage(file);
                 setNewImageBase64(resizedBase64); // Guarda a nova imagem em Base64
                 setImagePreview(resizedBase64); // Atualiza a pré-visualização
+                // Opcional: Log para verificar o tamanho da imagem em KB
+                console.log('Tamanho da nova imagem Base64:', (resizedBase64.length / 1024).toFixed(2), 'KB');
             } catch (error) {
                 console.error('Erro ao redimensionar imagem:', error);
                 showSnackbar('Erro ao processar imagem. Tente novamente.', 'error');
                 setNewImageBase64(null);
-                setImagePreview(originalImageUrl || null);
+                setImagePreview(originalImageUrl || null); // Reverte para a imagem original no erro
             }
         } else {
+            // Se nenhum arquivo for selecionado (e.g., usuário cancela a seleção no diálogo),
+            // a pré-visualização deve voltar para a imagem original (se houver)
+            // e newImageBase64 deve ser limpo.
             setNewImageBase64(null);
-            setImagePreview(originalImageUrl || null); // Reverte para a imagem original se a seleção for cancelada
+            setImagePreview(originalImageUrl || null);
         }
     };
 
     // Handle image removal
     const handleRemoveImage = () => {
-        setNewImageBase64(null); // Clear any newly selected Base64 image
-        setOriginalImageUrl(null); // Clear the original Base64 image URL from state
-        setImagePreview(null); // Clear the preview
-        // Se precisar limpar o input file visualmente:
+        setNewImageBase64(null); // Limpa qualquer nova imagem selecionada
+        setOriginalImageUrl(null); // Limpa a imagem original (Base64 do Firestore)
+        setImagePreview(null); // Limpa a pré-visualização
+        // Limpa o input file visualmente para que o usuário possa selecionar o mesmo arquivo novamente, se quiser
         const fileInput = document.getElementById('gallery-image-input');
         if (fileInput) fileInput.value = '';
+        showSnackbar('Imagem removida com sucesso!', 'info');
     };
 
     // Handle form submission for update
@@ -147,20 +162,18 @@ const EditGallery = () => {
         }
 
         try {
-            // finalImageUrl será a nova Base64, a original Base64 ou null
-            let finalImageUrl = newImageBase64 !== null ? newImageBase64 : originalImageUrl;
-
-            // Se o usuário clicou em remover E não selecionou uma nova imagem, finalImageUrl deve ser null
-            if (newImageBase64 === null && originalImageUrl === null) {
-                finalImageUrl = null;
-            }
-
             const docRef = doc(db, 'galleries', id);
+
+            // Determina qual imagem será salva:
+            // 1. Se uma nova imagem foi selecionada, use newImageBase64.
+            // 2. Se nenhuma nova imagem foi selecionada, mas havia uma original, use originalImageUrl.
+            // 3. Se a imagem foi removida (ambos null), salve null.
+            const imageToSave = newImageBase64 !== null ? newImageBase64 : originalImageUrl;
 
             await updateDoc(docRef, {
                 title,
                 text,
-                image: finalImageUrl, // Salva a string Base64 ou null diretamente
+                image: imageToSave, // Salva a string Base64 ou null diretamente
                 link,
                 isActive,
             });
@@ -171,8 +184,11 @@ const EditGallery = () => {
         } catch (error) {
             console.error('Erro geral ao tentar atualizar galeria:', error);
             let userMessage = 'Erro ao atualizar dados da galeria.';
-            if (error.message) {
-                userMessage = `Erro ao atualizar dados: ${error.message}`;
+            // Mensagem de erro mais útil se for um problema de tamanho/rede
+            if (error.message && error.message.includes('Function Document.prototype.update() called with invalid data.')) {
+                userMessage = 'Erro: A imagem pode ser muito grande ou os dados são inválidos. Tente uma imagem menor.';
+            } else if (error.message) {
+                 userMessage = `Erro ao atualizar dados: ${error.message}`;
             }
             showSnackbar(userMessage, 'error');
         }
@@ -211,12 +227,12 @@ const EditGallery = () => {
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem</Typography>
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem (Max. 240x240)</Typography>
                     <input
                         id="gallery-image-input" // Adicione um ID para referenciar no handleRemoveImage
                         accept="image/*"
                         type="file"
-                        onChange={handleImageChange} // Use o novo handler
+                        onChange={handleImageChange}
                     />
 
                     {/* Image Preview */}
@@ -226,7 +242,7 @@ const EditGallery = () => {
                             <img
                                 src={imagePreview} // Será a string Base64
                                 alt="Pré-visualização"
-                                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
+                                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', border: '1px solid #ddd' }}
                             />
                         </Box>
                     )}
