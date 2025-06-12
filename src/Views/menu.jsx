@@ -4,7 +4,6 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Skeleton from '@mui/material/Skeleton';
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
@@ -37,8 +36,7 @@ const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')); 
-    const navigate = useNavigate();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [openEquipamentos, setOpenEquipamentos] = useState(false);
@@ -90,12 +88,15 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`);
                 setSnackbarSeverity("success");
                 setSnackbarOpen(true);
-                // Close any open menus after login on desktop
+
                 setOpen(false);
                 setOpenEquipamentos(false);
                 setOpenSub(false);
                 setAnchorEl(null);
-                navigate("/"); 
+                window.setTimeout(function () {
+                    window.location.reload();
+                }, 3000);
+
             })
             .catch((error) => {
                 setSnackbarMessage("Erro ao fazer login: " + error.message);
@@ -111,8 +112,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarMessage("Desconectado com sucesso.");
                 setSnackbarSeverity("info");
                 setSnackbarOpen(true);
-                navigate("/"); 
-           })
+                window.setTimeout(function () {
+                    window.location.reload();
+                }, 3000);
+
+            })
             .catch((error) => {
                 setSnackbarMessage("Erro ao desconectar: " + error.message);
                 setSnackbarSeverity("error");
@@ -262,7 +266,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                Alessandro Cunha | FOTO
+                            Alessandro Cunha | FOTO
                         </Typography>
                         <IconButton
                             size="large"
