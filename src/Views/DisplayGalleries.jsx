@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Link } from 'react-router-dom'; // Importe Link
+import { Link } from 'react-router-dom';
 import {
     Card, CardContent, Typography, Box, Pagination, Skeleton
 } from '@mui/material';
@@ -13,7 +13,7 @@ const LazyImage = lazy(() => import("../Components/LazyImage"));
 const DisplayGalleries = () => {
     const [galleries, setGalleries] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
     const scrollRef = useRef(null);
 
     useEffect(() => {
@@ -34,10 +34,17 @@ const DisplayGalleries = () => {
         fetchGalleries();
     }, []);
 
-    const totalPages = Math.ceil(galleries.length / itemsPerPage);
+    // Ordenação adicional por segurança (caso o Firestore não ordene corretamente)
+    const sortedGalleries = [...galleries].sort((a, b) => {
+        const aTime = a.createdAt?.seconds || 0;
+        const bTime = b.createdAt?.seconds || 0;
+        return bTime - aTime;
+    });
+
+    const totalPages = Math.ceil(sortedGalleries.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = galleries.slice(startIndex, endIndex);
+    const currentItems = sortedGalleries.slice(startIndex, endIndex);
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
@@ -75,16 +82,15 @@ const DisplayGalleries = () => {
                 {currentItems.map((gallery) => (
                     <Card
                         key={gallery.id}
-                        // Use Link para navegar para a rota de detalhes
-                        component={Link} // Renderiza o Card como um Link
-                        to={`/GalleryDetail/${gallery.id}`} // Define o destino da rota
+                        component={Link}
+                        to={`/GalleryDetail/${gallery.id}`}
                         sx={{
                             cursor: 'pointer',
                             minWidth: 300,
                             maxWidth: 345,
                             flexShrink: 0,
-                            textDecoration: 'none', // Remove sublinhado do Link
-                            color: 'inherit', // Mantém a cor do texto padrão
+                            textDecoration: 'none',
+                            color: 'inherit',
                         }}
                     >
                         <Suspense fallback={<Skeleton variant="rectangular" width={320} height={240} />}>
@@ -101,18 +107,16 @@ const DisplayGalleries = () => {
                         <CardContent>
                             <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
                                 {gallery.title}
-                                {/* O ícone OpenInNewIcon agora pode indicar que o clique levará para uma página de detalhes */}
                             </Typography>
                             {gallery.link && (
                                 <Box sx={{ mt: 1 }}>
-                                    {/* Este link interno levaria para a página de detalhes, mas se você quiser um link externo específico, pode manter como estava */}
                                     <Typography
                                         variant="body2"
-                                        component="a" // Permite que este seja um link externo separado
+                                        component="a"
                                         href={gallery.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()} // Impede o clique do Card de propagar
+                                        onClick={(e) => e.stopPropagation()}
                                         sx={{
                                             display: 'flex',
                                             alignItems: 'center',
