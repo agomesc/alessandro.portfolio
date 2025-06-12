@@ -5,10 +5,17 @@ import { db } from '../firebaseConfig';
 import { Box, Typography, CircularProgress, Alert, Skeleton } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-const LazyImage = React.lazy(() => import("../Components/LazyImage")); // Assumindo que LazyImage está em Components
+const TypographyTitle = React.lazy(() => import("../Components/TypographyTitle"));
+
+// Função utilitária para garantir que a string base64 tenha o prefixo necessário
+const getImageSrc = (imageData) => {
+    if (!imageData) return '';
+    if (imageData.startsWith('data:image')) return imageData;
+    return `data:image/jpeg;base64,${imageData}`;
+};
 
 const GalleryDetail = () => {
-    const { id } = useParams(); // Pega o ID da URL
+    const { id } = useParams();
     const [gallery, setGallery] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -56,7 +63,7 @@ const GalleryDetail = () => {
     if (!gallery) {
         return (
             <Box sx={{ mt: 10, px: 2 }}>
-                <Alert severity="info">Nenhuma galeria selecionada.</Alert>
+                <Alert severity="info">Nenhuma galeria selecionada ou encontrada.</Alert>
             </Box>
         );
     }
@@ -75,15 +82,21 @@ const GalleryDetail = () => {
                 {gallery.title}
             </Typography>
 
-            {gallery.imagePath && (
+            {gallery.image && (
                 <Box sx={{ mt: 2, mb: 3 }}>
                     <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
-                        <LazyImage
-                            src={`/images/${gallery.imagePath}`}
-                            alt={`Gallery-${gallery.id}`}
-                            width={320}
-                            height="auto"
-                            style={{ maxHeight: '600px', objectFit: 'contain' }}
+                        <img
+                            src={getImageSrc(gallery.image)}
+                            alt={`Gallery - ${gallery.title}`}
+                            style={{
+                                width: '100%',
+                                height: 'auto',
+                                maxHeight: '600px',
+                                objectFit: 'contain',
+                                borderRadius: '8px',
+                                display: 'block',
+                                margin: '0 auto'
+                            }}
                         />
                     </Suspense>
                 </Box>
@@ -95,7 +108,7 @@ const GalleryDetail = () => {
             />
 
             {gallery.link && (
-                <Box sx={{ mt: 3, display:"flex" }}>
+                <Box sx={{ mt: 3, display: "flex" }}>
                     <Typography
                         variant="body1"
                         component="a"
