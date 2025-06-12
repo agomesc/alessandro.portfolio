@@ -89,7 +89,7 @@ const GalleryDetail = () => {
                             src={getImageSrc(gallery.image)}
                             alt={`Gallery - ${gallery.title}`}
                             style={{
-                                width: '100%',
+                                width: '640px',
                                 height: 'auto',
                                 maxHeight: '600px',
                                 objectFit: 'contain',

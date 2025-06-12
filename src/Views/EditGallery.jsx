@@ -10,7 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import { getAuth } from 'firebase/auth';
 
 // --- Função auxiliar para redimensionar a imagem e convertê-la para Base64 ---
-// Ajustada para redimensionar a 240x240 e usar qualidade JPEG 0.5
+// Ajustada para redimensionar a 640x640 e usar qualidade JPEG 0.5
 const resizeImage = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -21,10 +21,10 @@ const resizeImage = (file) => {
                 let height = img.height;
 
                 // Definindo as dimensões máximas fixas
-                const maxWidth = 240;
-                const maxHeight = 240;
+                const maxWidth = 640;
+                const maxHeight = 640;
 
-                // Calcula as novas dimensões mantendo a proporção, sem exceder 240x240
+                // Calcula as novas dimensões mantendo a proporção, sem exceder 340x640
                 if (width > maxWidth || height > maxHeight) {
                     const scale = Math.min(maxWidth / width, maxHeight / height);
                     width *= scale;
@@ -227,7 +227,7 @@ const EditGallery = () => {
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem (Max. 240x240)</Typography>
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem (Max. 640x640)</Typography>
                     <input
                         id="gallery-image-input" // Adicione um ID para referenciar no handleRemoveImage
                         accept="image/*"

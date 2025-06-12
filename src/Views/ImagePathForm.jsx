@@ -19,10 +19,10 @@ const resizeImage = (file) => { // Removi os parâmetros maxWidth e maxHeight da
                 let height = img.height;
 
                 // Definindo as dimensões máximas fixas
-                const maxWidth = 240;
-                const maxHeight = 240;
+                const maxWidth = 640;
+                const maxHeight = 640;
 
-                // Calcula as novas dimensões mantendo a proporção, sem exceder 240x240
+                // Calcula as novas dimensões mantendo a proporção, sem exceder 640x640
                 if (width > maxWidth || height > maxHeight) {
                     const scale = Math.min(maxWidth / width, maxHeight / height);
                     width *= scale;
@@ -170,7 +170,7 @@ const CreateGallery = () => {
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Carregar Imagem (Max. 240x240)</Typography>
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Carregar Imagem (Max. 640x640)</Typography>
                     <input
                         accept="image/*"
                         type="file"
