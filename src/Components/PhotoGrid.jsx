@@ -93,7 +93,7 @@ const PhotoGrid = ({ itemData = [] }) => {
                       maxWidth: "calc(100% - 80px)",
                     }}
                   >
-                    <Typography variant="subtitle2" noWrap>
+                    <Typography variant="subtitle2" component="div" noWrap>
                       {item.title}
                     </Typography>
                   </Box>

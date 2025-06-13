@@ -209,7 +209,7 @@ const EditGallery = () => {
             padding: "0 20px",
             mt: 10
         }}>
-            <Typography variant="h5" sx={{ mb: 3 }}>Editar Galeria</Typography>
+            <Typography component="div" variant="h5" sx={{ mb: 3 }}>Editar Galeria</Typography>
 
             <form onSubmit={handleUpdate}>
                 <TextField
@@ -222,12 +222,12 @@ const EditGallery = () => {
                 />
 
                 <Box sx={{ mb: 3 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Descrição</Typography>
+                    <Typography component="div" variant="subtitle1" sx={{ mb: 1 }}>Descrição</Typography>
                     <ReactQuill value={text} onChange={setText} />
                 </Box>
 
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem (Max. 640x640)</Typography>
+                    <Typography component="div" variant="subtitle1" sx={{ mb: 1 }}>Atualizar Imagem (Max. 640x640)</Typography>
                     <input
                         id="gallery-image-input" // Adicione um ID para referenciar no handleRemoveImage
                         accept="image/*"
@@ -238,7 +238,7 @@ const EditGallery = () => {
                     {/* Image Preview */}
                     {imagePreview && (
                         <Box mt={2}>
-                            <Typography variant="body2">Pré-visualização:</Typography>
+                            <Typography component="div" variant="body2">Pré-visualização:</Typography>
                             <img
                                 src={imagePreview} // Será a string Base64
                                 alt="Pré-visualização"

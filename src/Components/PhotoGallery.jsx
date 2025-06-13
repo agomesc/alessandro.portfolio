@@ -107,6 +107,7 @@ const PhotoGallery = ({ photos = [] }) => {
                 >
                   <Typography
                     variant="caption"
+                    component="div" 
                     sx={{
                       color: "white",
                       textShadow: "1px 1px 3px rgba(0,0,0,0.8)",

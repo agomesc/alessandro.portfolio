@@ -75,7 +75,7 @@ const LinkPreview = ({ url }) => {
           severity="error"
           onClose={() => setShowMessage(false)}
         />
-        <Typography variant="body2" align="center" color="text.secondary">
+        <Typography component="div" variant="body2" align="center" color="text.secondary">
           Não foi possível carregar a pré-visualização.
         </Typography>
       </>
@@ -103,14 +103,14 @@ const LinkPreview = ({ url }) => {
             </Box>
           )}
           <CardContent>
-            <Typography variant="caption" align="center" sx={{ color: "red" }}>
+            <Typography component="div"  variant="caption" align="center" sx={{ color: "red" }}>
               Publicidade / Indicação
             </Typography>
-            <Typography variant="body1" align="center" fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography component="div"  variant="body1" align="center" fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {previewData.title}
               <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
             </Typography>
-            <Typography variant="body2" align="center">
+            <Typography component="div" variant="body2" align="center">
               {previewData.description}
             </Typography>
           </CardContent>

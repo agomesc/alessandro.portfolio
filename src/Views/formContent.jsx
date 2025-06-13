@@ -71,7 +71,7 @@ const FormContent = () => {
       }}
     >
 
-      <Typography sx={{ mt: 10, mb: 3 }} variant="subtitle1">
+      <Typography component="div" sx={{ mt: 10, mb: 3 }} variant="subtitle1">
         Minhas Galerias
       </Typography>
       <form onSubmit={handleSubmit}>

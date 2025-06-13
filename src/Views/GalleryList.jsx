@@ -45,21 +45,21 @@ const GalleryList = () => {
             }}
         >
 
-            <Typography variant="h5" sx={{ mb: 3 }}>Lista de Galerias</Typography>
+            <Typography component="div" variant="h5" sx={{ mb: 3 }}>Lista de Galerias</Typography>
             <Button variant="contained" color="primary" component={Link} to="/create">
                 Criar Novo
             </Button>
             {items.map((item) => (
                 <Box key={item.id} sx={{ mb: 2, border: '1px solid #ccc', p: 2 }}>
-                    <Typography variant="h6">{item.title}</Typography>
-                    <Typography variant="body2">{item.text}</Typography>
+                    <Typography component="div" variant="h6">{item.title}</Typography>
+                    <Typography component="div" variant="body2">{item.text}</Typography>
                     {item.imagePath && (
-                        <Typography variant="body2">
+                        <Typography component="div" variant="body2">
                             <a href={item.imagePath} target="_blank" rel="noopener noreferrer">Ver Imagem</a>
                         </Typography>
                     )}
                     {item.link && (
-                        <Typography variant="body2">
+                        <Typography component="div" variant="body2">
                             <a href={item.link} target="_blank" rel="noopener noreferrer">Acessar Link</a>
                         </Typography>
                     )}

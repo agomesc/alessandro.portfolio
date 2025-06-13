@@ -37,7 +37,7 @@ const DisplayGalleries = () => {
                 }));
                 setGalleries(fetchedGalleries); // Update state with fetched galleries
                 // --- NOVO LOG PARA DEPURAR ---
-                console.log('Dados de galerias buscados:', fetchedGalleries);
+                //console.log('Dados de galerias buscados:', fetchedGalleries);
                 if (fetchedGalleries.length === 0) {
                     console.warn('Nenhuma galeria ativa encontrada ou problema na query/índices.');
                 }

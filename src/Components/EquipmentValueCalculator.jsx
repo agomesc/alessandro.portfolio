@@ -57,11 +57,11 @@ const EquipmentValueCalculator = () => {
         <PhotoCameraIcon fontSize="large" color="action" />
       </Box>
 
-      <Typography variant="h6" gutterBottom>
+      <Typography component="div" variant="h6" gutterBottom>
         Calculadora de Valor Usado
       </Typography>
 
-      <Typography variant="body2" color="textSecondary" gutterBottom>
+      <Typography component="div" variant="body2" color="textSecondary" gutterBottom>
         Informe o valor de um equipamento novo, a condição atual, tempo de uso e se o modelo foi descontinuado.
       </Typography>
 
@@ -122,7 +122,7 @@ const EquipmentValueCalculator = () => {
       </Button>
 
       {estimatedValue !== null && (
-        <Typography variant="h6" sx={{ mt: 3 }}>
+        <Typography component="div" variant="h6" sx={{ mt: 3 }}>
           💰 Valor estimado: <strong>R$ {estimatedValue}</strong>
         </Typography>
       )}

@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, useMemo, useCallback, lazy } from "react";
+import { useEffect, useState,  useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -154,9 +154,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }, [galleryData]);
 
     const DrawerList = (
-        <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
-            <Box sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }} role="presentation">
-                <Divider />
+
+        <Box sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }} role="presentation">
+            <Divider />
+            <nav>
                 <List>
                     {items.map((item, index) => {
                         const isChild = item.chid;
@@ -242,19 +243,18 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         </ListItem>
                     )}
                 </List>
-                <Divider />
-            </Box>
-        </Suspense>
+            </nav>
+            <Divider />
+        </Box>
     );
 
-    // Show skeleton while gallery data is loading
-    if (!galleryData.length) return <Skeleton variant="rectangular" height={100} />;
+    if (!galleryData.length) return <Skeleton variant="rectangular" height="auto" width="100%" />;
 
     return (
         <div>
             {isMobile ? (
                 // Mobile AppBar
-                <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }}>
+                <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}>
                     <Toolbar>
                         <IconButton
                             size="large"
@@ -283,22 +283,19 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     </Toolbar>
                 </AppBar>
             ) : (
-                // Desktop Navigation (no AppBar)
                 <Box
                     component="nav"
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        gap: 2, // Space between top-level items
-                        py: 2, // Vertical padding for the navigation bar
-                        bgcolor: theme.palette.background.paper, // Background color
+                        gap: 2,
+                        py: 2, 
+                        bgcolor: theme.palette.background.paper, 
                         color: theme.palette.text.primary,
-                        boxShadow: theme.shadows[1], // Subtle shadow for depth
-                        // Ensure it's not fixed to the top in desktop
-                        position: 'relative', // Or 'static', 'sticky' depending on desired scroll behavior
+                        boxShadow: theme.shadows[1], 
+                        position: 'relative', 
                     }}
-                    // Close all menus when mouse leaves the entire navigation bar
                     onMouseLeave={() => {
                         setOpenSub(false);
                         setOpenEquipamentos(false);
@@ -313,7 +310,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         // Determine child items for current parent (Galerias or Equipamentos)
                         const childItems = items.filter(i => {
                             if (isEquipamentos) return i.parent === "Equipamentos";
-                            if (isGaleria) return i.chid && !i.parent; // Children of "Minhas Galerias" have chid=true and no parent
+                            if (isGaleria) return i.chid && !i.parent; 
                             return false;
                         });
 
@@ -419,11 +416,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             </Link>
                         );
                     })}
-
-                    {/* This Box with flexGrow pushes the following elements to the far right */}
                     <Box sx={{ flexGrow: 1 }} />
-
-                    {/* Login/Logout for Desktop */}
                     {user ? (
                         <motion.div whileTap={{ scale: 0.9 }}>
                             <Box sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1 }} onClick={handleLogout} title="Sair">
