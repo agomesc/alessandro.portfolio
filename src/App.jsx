@@ -12,7 +12,7 @@ const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
-// const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
+const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
 			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			{/* <RandomAffiliateAd /> */}
+			<RandomAffiliateAd />
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<ConsentScreen />

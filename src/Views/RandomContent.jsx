@@ -74,7 +74,7 @@ const RandomAffiliateAd = () => {
   const isValidLink = randomAd.isLink && randomAd.text?.startsWith("http");
 
   return (
-    <Suspense fallback={<Skeleton variant="rectangular" height={100} />}>
+    <Suspense fallback={<Skeleton variant="rectangular" width={300} height={100} />}>
       <Box
         sx={{
           p: 0,
