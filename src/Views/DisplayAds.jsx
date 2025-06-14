@@ -10,7 +10,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 // Lazy load TypographyTitle component
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
-const DisplayGalleries = () => {
+const App = () => {
     // State to store the fetched galleries
     const [galleries, setGalleries] = useState([]);
     // State for current pagination page
@@ -195,4 +195,4 @@ const DisplayGalleries = () => {
     );
 };
 
-export default React.memo(DisplayGalleries);
+export default App;

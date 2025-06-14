@@ -12,7 +12,7 @@ const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
-const DisplayGalleries = lazy(() => import("./DisplayGalleries"));
+const DisplayAds = lazy(() => import("./DisplayAds"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const Home = () => {
@@ -143,7 +143,7 @@ const Home = () => {
                 )}
 
                 <Suspense fallback={<LoadingMessage />}>
-                    <DisplayGalleries />
+                    <DisplayAds />
                 </Suspense>
             </Box>
 
