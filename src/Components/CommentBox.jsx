@@ -45,7 +45,7 @@ function CommentBox({ itemID }) {
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('BR');
   const [comment, setComment] = useState('');
-  const [ipAddress, setIpAddress] = useState(''); // This state will be updated
+  const [ipAddress, setIpAddress] = useState('');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
@@ -53,7 +53,6 @@ function CommentBox({ itemID }) {
   const [replyingTo, setReplyingTo] = useState(null);
   const [image, setImage] = useState(null);
 
-  // Effect to fetch IP address when the component mounts
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
@@ -62,7 +61,6 @@ function CommentBox({ itemID }) {
         setIpAddress(data.ip);
       } catch (error) {
         console.error('Erro ao obter o endereço IP:', error);
-        // Optionally, set a default or null value if IP cannot be fetched
         setIpAddress(null);
       }
     };
@@ -74,7 +72,7 @@ function CommentBox({ itemID }) {
       setEmail(currentUser.email || '');
       setCountry('BR');
     }
-  }, [currentUser]); // Add ipAddress to dependency array if you plan to re-fetch on change, but generally you only need it once on mount.
+  }, [currentUser]);
 
   useEffect(() => {
     const q = query(
@@ -126,7 +124,7 @@ function CommentBox({ itemID }) {
         timestamp: Date.now(),
         itemID,
         userPhoto: currentUser?.photoURL || null,
-        ip: ipAddress, // Now ipAddress will have a value
+        ip: ipAddress,
         userId: currentUser?.uid || null,
         parentId: replyingTo?.id || null,
         image: image || null,
@@ -135,8 +133,6 @@ function CommentBox({ itemID }) {
       setReplyingTo(null);
       setImage(null);
       showMessage('Comentário adicionado com sucesso!', 'success');
-      // Removed the reload as it can be jarring for the user.
-      // Firebase's onSnapshot listener will update the comments automatically.
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
     }
@@ -170,7 +166,8 @@ function CommentBox({ itemID }) {
     <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
       <CardHeader
         avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
-        title={`<span class="math-inline">\{comment\.name\} \(</span>{comment.country})`}
+        // CORRECTED LINE BELOW:
+        title={`${comment.name} (${comment.country})`}
         subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
         action={
           currentUser && (comment.userId === currentUser.uid || currentUser.uid === process.env.REACT_APP_ADMIN_UID) && (
@@ -215,7 +212,7 @@ function CommentBox({ itemID }) {
 
       {replyingTo && (
         <Box mb={2}>
-          <Typography component="div" variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
+          <Typography component="div" variant="body2">Respondendo a: **{replyingTo.name}**</Typography>
           <Button size="small" onClick={() => setReplyingTo(null)}>Cancelar</Button>
         </Box>
       )}

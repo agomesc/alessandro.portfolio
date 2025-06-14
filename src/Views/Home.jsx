@@ -7,6 +7,7 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
 import LoadingMessage from "../Components/LoadingMessage";
+import ContactForm from "./ContactForm";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -145,6 +146,8 @@ const Home = () => {
                 <Suspense fallback={<LoadingMessage />}>
                     <DisplayAds />
                 </Suspense>
+
+                <ContactForm />
             </Box>
 
             <Suspense fallback={<LoadingMessage />}>
