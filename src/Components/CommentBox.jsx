@@ -45,7 +45,7 @@ function CommentBox({ itemID }) {
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('BR');
   const [comment, setComment] = useState('');
-  const [ipAddress, setIpAddress] = useState('');
+  const [ipAddress, setIpAddress] = useState(''); // This state will be updated
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
@@ -53,13 +53,28 @@ function CommentBox({ itemID }) {
   const [replyingTo, setReplyingTo] = useState(null);
   const [image, setImage] = useState(null);
 
+  // Effect to fetch IP address when the component mounts
   useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        setIpAddress(data.ip);
+      } catch (error) {
+        console.error('Erro ao obter o endereço IP:', error);
+        // Optionally, set a default or null value if IP cannot be fetched
+        setIpAddress(null);
+      }
+    };
+
+    fetchIpAddress();
+
     if (currentUser) {
       setName(currentUser.displayName || '');
       setEmail(currentUser.email || '');
       setCountry('BR');
     }
-  }, [currentUser]);
+  }, [currentUser]); // Add ipAddress to dependency array if you plan to re-fetch on change, but generally you only need it once on mount.
 
   useEffect(() => {
     const q = query(
@@ -111,7 +126,7 @@ function CommentBox({ itemID }) {
         timestamp: Date.now(),
         itemID,
         userPhoto: currentUser?.photoURL || null,
-        ip: ipAddress,
+        ip: ipAddress, // Now ipAddress will have a value
         userId: currentUser?.uid || null,
         parentId: replyingTo?.id || null,
         image: image || null,
@@ -120,10 +135,8 @@ function CommentBox({ itemID }) {
       setReplyingTo(null);
       setImage(null);
       showMessage('Comentário adicionado com sucesso!', 'success');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-
+      // Removed the reload as it can be jarring for the user.
+      // Firebase's onSnapshot listener will update the comments automatically.
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
     }
@@ -157,7 +170,7 @@ function CommentBox({ itemID }) {
     <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
       <CardHeader
         avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
-        title={`${comment.name} (${comment.country})`}
+        title={`<span class="math-inline">\{comment\.name\} \(</span>{comment.country})`}
         subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
         action={
           currentUser && (comment.userId === currentUser.uid || currentUser.uid === process.env.REACT_APP_ADMIN_UID) && (
@@ -229,7 +242,7 @@ function CommentBox({ itemID }) {
           <Editor onContentChange={setComment} defaultValue={comment} height="250px" />
         </Box>
 
-        <Box sx={{ mb: 5 }}>
+        <Box sx={{ position: "relative", mb: 2 }}>
           <input
             accept="image/*"
             type="file"
