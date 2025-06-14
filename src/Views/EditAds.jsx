@@ -8,51 +8,9 @@ import {
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getAuth } from 'firebase/auth';
+import { resizeImage } from '../shared/Util';
 
-// --- Função auxiliar para redimensionar a imagem e convertê-la para Base64 ---
-// Ajustada para redimensionar a 640x640 e usar qualidade JPEG 0.5
-const resizeImage = (file) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const img = new Image();
-            img.onload = function () {
-                let width = img.width;
-                let height = img.height;
-
-                // Definindo as dimensões máximas fixas
-                const maxWidth = 640;
-                const maxHeight = 640;
-
-                // Calcula as novas dimensões mantendo a proporção, sem exceder 340x640
-                if (width > maxWidth || height > maxHeight) {
-                    const scale = Math.min(maxWidth / width, maxHeight / height);
-                    width *= scale;
-                    height *= scale;
-                }
-
-                // Cria um canvas e desenha a imagem redimensionada
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Converte o canvas para uma string Base64 (JPEG com qualidade 0.5)
-                // Uma qualidade menor (0.5) ajuda a reduzir o tamanho do arquivo para o Firestore
-                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.5); // Qualidade ajustada
-                resolve(resizedBase64);
-            };
-            img.onerror = reject;
-            img.src = event.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-};
-
-const EditGallery = () => {
+const App = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const auth = getAuth();
@@ -82,7 +40,7 @@ const EditGallery = () => {
         const fetchData = async () => {
             if (!id) {
                 showSnackbar('ID da galeria ausente na URL.', 'error');
-                navigate('/list');
+                navigate('/listAds');
                 return;
             }
             try {
@@ -99,7 +57,7 @@ const EditGallery = () => {
                     setIsActive(data.isActive || false);
                 } else {
                     showSnackbar('Galeria não encontrada!', 'error');
-                    navigate('/list');
+                    navigate('/listAds');
                 }
             } catch (error) {
                 console.error('Erro ao buscar galeria:', error.message);
@@ -179,7 +137,7 @@ const EditGallery = () => {
             });
 
             showSnackbar('Dados da galeria atualizados com sucesso!', 'success');
-            setTimeout(() => navigate('/list'), 1500);
+            setTimeout(() => navigate('/listAds'), 1500);
 
         } catch (error) {
             console.error('Erro geral ao tentar atualizar galeria:', error);
@@ -299,4 +257,4 @@ const EditGallery = () => {
     );
 };
 
-export default React.memo(EditGallery);
+export default React.memo(App);

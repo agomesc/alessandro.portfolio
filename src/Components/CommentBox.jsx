@@ -31,47 +31,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import Editor from './Editor';
+import { resizeImage } from '../shared/Util';
+
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
-const resizeImage = (file, maxWidth, maxHeight) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const img = new Image();
-      img.onload = function () {
-        let width = img.width;
-        let height = img.height;
-
-        if (width > maxWidth || height > maxHeight) {
-          const scale = Math.min(maxWidth / width, maxHeight / height);
-          width *= scale;
-          height *= scale;
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
-        resolve(resizedBase64);
-      };
-      img.onerror = reject;
-      img.src = event.target.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
-
 function CommentBox({ itemID }) {
   const auth = getAuth();
   const currentUser = auth.currentUser;
-  
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('BR');
@@ -151,6 +120,10 @@ function CommentBox({ itemID }) {
       setReplyingTo(null);
       setImage(null);
       showMessage('Comentário adicionado com sucesso!', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+
     } catch (err) {
       showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
     }
@@ -229,7 +202,7 @@ function CommentBox({ itemID }) {
 
       {replyingTo && (
         <Box mb={2}>
-          <Typography variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
+          <Typography component="div" variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
           <Button size="small" onClick={() => setReplyingTo(null)}>Cancelar</Button>
         </Box>
       )}
@@ -253,10 +226,10 @@ function CommentBox({ itemID }) {
         </FormControl>
 
         <Box sx={{ mb: 2 }}>
-          <Editor onContentChange={setComment} defaultValue={comment} height="200px" />
+          <Editor onContentChange={setComment} defaultValue={comment} height="250px" />
         </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: 5 }}>
           <input
             accept="image/*"
             type="file"
@@ -267,7 +240,7 @@ function CommentBox({ itemID }) {
               }
               const file = e.target.files[0];
               if (!file) return;
-              const resized = await resizeImage(file, 240, 240);
+              const resized = await resizeImage(file);
               setImage(resized);
             }}
           />

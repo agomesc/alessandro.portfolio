@@ -6,51 +6,9 @@ import { TextField, Button, Box, Typography, Switch, FormControlLabel, Snackbar,
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getAuth } from 'firebase/auth';
+import { resizeImage } from '../shared/Util';
 
-// --- Função auxiliar para redimensionar a imagem e convertê-la para Base64 ---
-// Ajustado para redimensionar a 240x240 e usar qualidade JPEG 0.5
-const resizeImage = (file) => { // Removi os parâmetros maxWidth e maxHeight daqui, pois serão fixos
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const img = new Image();
-            img.onload = function () {
-                let width = img.width;
-                let height = img.height;
-
-                // Definindo as dimensões máximas fixas
-                const maxWidth = 640;
-                const maxHeight = 640;
-
-                // Calcula as novas dimensões mantendo a proporção, sem exceder 640x640
-                if (width > maxWidth || height > maxHeight) {
-                    const scale = Math.min(maxWidth / width, maxHeight / height);
-                    width *= scale;
-                    height *= scale;
-                }
-
-                // Cria um canvas e desenha a imagem redimensionada
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Converte o canvas para uma string Base64 (JPEG com qualidade 0.5)
-                // Uma qualidade menor (0.5) ajuda a reduzir o tamanho do arquivo
-                const resizedBase64 = canvas.toDataURL('image/jpeg', 0.5); // Qualidade ajustada
-                resolve(resizedBase64);
-            };
-            img.onerror = reject;
-            img.src = event.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-};
-
-const CreateGallery = () => {
+const App = () => {
     const navigate = useNavigate();
     const auth = getAuth();
     const currentUser = auth.currentUser;
@@ -122,7 +80,7 @@ const CreateGallery = () => {
             showSnackbar('Galeria criada com sucesso!', 'success');
 
             setTimeout(() => {
-                navigate('/list');
+                navigate('/listAds');
             }, 1500);
         } catch (error) {
             console.error('Erro ao criar galeria:', error);
@@ -199,7 +157,7 @@ const CreateGallery = () => {
                 />
 
                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Criar Galeria
+                    Criar Anúncio
                 </Button>
             </form>
 
@@ -212,4 +170,4 @@ const CreateGallery = () => {
     );
 };
 
-export default React.memo(CreateGallery);
+export default React.memo(App);

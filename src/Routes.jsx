@@ -15,10 +15,10 @@ const FormContent = lazy(() => import("./Views/FormContent"));
 const GalleryDetail = lazy(() => import("./Views/GalleryDetail"));
 const NotFound = lazy(() => import("./Views/NotFound"));
 const TestWrapper = lazy(() => import("./Views/TestWrapper"));
-const ImagePathForm = lazy(() => import("./Views/ImagePathForm"));
+const CreateAds = lazy(() => import("./Views/CreateAds"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
-const GalleryList = lazy(() => import("./Views/GalleryList"));
-const EditGallery = lazy(() => import("./Views/EditGallery"));
+const ListAds = lazy(() => import("./Views/ListAds"));
+const EditAds = lazy(() => import("./Views/EditAds"));
 const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalculator"));
 const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
 
@@ -41,13 +41,13 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
         {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
-        {isLocalhost && <Route path="/create" element={<ImagePathForm />} />}
-        {isLocalhost && <Route path="/list" element={<GalleryList />} />}
-        {isLocalhost && <Route path="/edit/:id" element={<EditGallery />} />}
-        <Route path="/TestWrapper" element={<TestWrapper />} />
-        <Route path="/ListContentWithPagination" element={<ListContentWithPagination />} />
-        <Route path="/EquipmentValueCalculator" element={<EquipmentValueCalculator />} />
-        <Route path="/GalleryDetail/:id" element={<GalleryDetail />} />
+        {isLocalhost && <Route path="/createAds" element={<CreateAds />} />}
+        {isLocalhost && <Route path="/listAds" element={<ListAds />} />}
+        {isLocalhost && <Route path="/editAds/:id" element={<EditAds />} />}
+        <Route path="/testWrapper" element={<TestWrapper />} />
+        <Route path="/listContentWithPagination" element={<ListContentWithPagination />} />
+        <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
+        <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
         <Route path="*" element={<NotFound />} />
 
       </Routes>

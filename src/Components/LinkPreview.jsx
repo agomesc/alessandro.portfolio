@@ -97,14 +97,14 @@ const LinkPreview = ({ url }) => {
               <LazyImage
                 src={previewData.image}
                 alt={previewData.description || "Imagem da prévia"}
-                width="240"
+                width={160}
                 height="auto"
               />
             </Box>
           )}
           <CardContent>
             <Typography component="div"  variant="caption" align="center" sx={{ color: "red" }}>
-              Publicidade / Indicação
+              Publicidade / Seleção de Ofertas
             </Typography>
             <Typography component="div"  variant="body1" align="center" fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {previewData.title}

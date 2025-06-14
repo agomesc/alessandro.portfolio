@@ -45,9 +45,9 @@ const GalleryList = () => {
             }}
         >
 
-            <Typography component="div" variant="h5" sx={{ mb: 3 }}>Lista de Galerias</Typography>
-            <Button variant="contained" color="primary" component={Link} to="/create">
-                Criar Novo
+            <Typography component="div" variant="h5" sx={{ mb: 3 }}>Lista de Conteúdos</Typography>
+            <Button variant="contained" color="primary" component={Link} to="/createAds">
+                Criar Novo Conteúdo
             </Button>
             {items.map((item) => (
                 <Box key={item.id} sx={{ mb: 2, border: '1px solid #ccc', p: 2 }}>
@@ -64,7 +64,7 @@ const GalleryList = () => {
                         </Typography>
                     )}
                     <Box sx={{ mt: 2 }}>
-                        <Button variant="outlined" color="primary" component={Link} to={`/edit/${item.id}`}>
+                        <Button variant="outlined" color="primary" component={Link} to={`/editAds/${item.id}`}>
                             Editar
                         </Button>
                         <Button variant="outlined" color="error" onClick={() => handleDelete(item.id)} sx={{ ml: 2 }}>
