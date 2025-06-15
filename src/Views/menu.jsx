@@ -5,6 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Skeleton from '@mui/material/Skeleton';
 import { motion } from "framer-motion";
 
+
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
     List, ListItem, ListItemButton, ListItemIcon, ListItemText,
@@ -25,6 +26,7 @@ import {
     Brightness4 as Brightness4Icon,
     Brightness7 as Brightness7Icon,
     Calculate as CalculateIcon,
+    ContactMail as ContactMailIcon
 } from "@mui/icons-material";
 
 import { signInWithPopup, signOut } from "firebase/auth";
@@ -33,6 +35,7 @@ import firebaseConfig from "../firebaseConfig";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
+const ContactForm = lazy(() => import('./ContactForm'));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
@@ -148,6 +151,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/Privacidade", description: "Política de Privacidade", chid: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", chid: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", chid: false, icon: <InfoIcon /> },
+            { route: "/contactForm", description: "Contato", chid: false, icon: <ContactMailIcon /> },
         ];
 
         return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];

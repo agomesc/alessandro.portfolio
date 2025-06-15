@@ -21,6 +21,8 @@ const ListAds = lazy(() => import("./Views/ListAds"));
 const EditAds = lazy(() => import("./Views/EditAds"));
 const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalculator"));
 const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
+const ContactForm = lazy(() => import('./Views/ContactForm'));
+
 
 const AppRoutes = () => {
 
@@ -48,6 +50,7 @@ const AppRoutes = () => {
         <Route path="/listContentWithPagination" element={<ListContentWithPagination />} />
         <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
         <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
+        <Route path="/contactForm" element={<ContactForm />} />
         <Route path="*" element={<NotFound />} />
 
       </Routes>
