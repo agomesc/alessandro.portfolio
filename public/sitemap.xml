@@ -4,9 +4,15 @@
     <loc>https://olhofotografico.com.br/</loc>
   </url>
   <url>
+    <loc>https://olhofotografico.com.br/home</loc>
+  </url>
+  <url>
     <loc>https://olhofotografico.com.br/latestphotos</loc>
   </url>
   <url>
+    <loc>https://olhofotografico.com.br/GalleryDetail</loc>
+  </url>
+    <url>
     <loc>https://olhofotografico.com.br/photos</loc>
   </url>
   <url>
@@ -23,5 +29,8 @@
   </url>
   <url>
     <loc>https://olhofotografico.com.br/about</loc>
+  </url>
+  <url>
+    <loc>https://olhofotografico.com.br/contactForm</loc>
   </url>
 </urlset>
