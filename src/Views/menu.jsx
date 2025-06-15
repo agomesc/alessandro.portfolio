@@ -258,7 +258,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         <div>
             {isMobile ? (
                 // Mobile AppBar
-                <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}>
+                <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex' }}>
                     <Toolbar>
                         <IconButton
                             size="large"
