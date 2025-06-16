@@ -7,7 +7,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const TypographyTitle = React.lazy(() => import("../Components/TypographyTitle"));
 
-// Função utilitária para garantir que a string base64 tenha o prefixo necessário
 const getImageSrc = (imageData) => {
     if (!imageData) return '';
     if (imageData.startsWith('data:image')) return imageData;

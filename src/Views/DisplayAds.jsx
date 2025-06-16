@@ -9,6 +9,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 // Lazy load TypographyTitle component
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const App = () => {
     // State to store the fetched galleries
@@ -116,7 +117,7 @@ const App = () => {
                         sx={{
                             cursor: 'pointer',
                             minWidth: 240, // Minimum width for each card
-                            maxWidth: { xs: 240, sm: 'calc(50% - 12px)', md: 'calc(33.33% - 16px)', lg: 'calc(25% - 18px)' }, // Responsive max width
+                            maxWidth: { xs: 240, sm: 'calc(50% - 12px)', md: 'calc(33.33% - 16px)', lg: 'calc(25% - 18px)' }, 
                             flexShrink: 0, // Prevent shrinking on small screens for horizontal scroll
                             textDecoration: 'none', // Remove underline from Link component
                             color: 'inherit', // Inherit text color
@@ -126,21 +127,17 @@ const App = () => {
                         <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={240} />}>
                             {/* Display the image if available. Use the base64 string directly. */}
                             {gallery.image && (
-                                <img
+                                <LazyImage
                                     src={gallery.image} // Use the base64 image data directly
                                     alt={`Gallery - ${gallery.title}`}
-                                    style={{
-                                        width: '100%',
-                                        height: 240, // Fixed height for consistent card appearance
-                                        objectFit: 'cover', // Cover the area without distorting aspect ratio
-                                        borderRadius: '4px 4px 0 0' // Rounded top corners
-                                    }}
+                                    width={240}
+                                    height='auto'
                                 />
                             )}
                             {/* Fallback for no image, or a placeholder if needed */}
                             {!gallery.image && (
                                 <Box sx={{ width: '100%', height: 240, backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Typography variant="caption" color="text.secondary">Sem Imagem</Typography>
+                                    <Typography component="div" variant="caption" color="text.secondary">Sem Imagem</Typography>
                                 </Box>
                             )}
                         </Suspense>
