@@ -1,21 +1,26 @@
-import { Helmet } from 'react-helmet-async'; // Mudado para react-helmet-async
+import { Helmet } from 'react-helmet-async';
 
 const SocialMetaTags = ({ title, description, image, url }) => {
-  // Define uma imagem padrão caso nenhuma seja fornecida.
-  // SUBSTITUA PELA URL DA SUA IMAGEM PADRÃO
+  // Define a default image if none is provided.
+  // IMPORTANT: Replace with the actual URL of your default image.
   const defaultImage = "https://olhofotografico.com.br/logo_192.png"; 
   const finalImage = image || defaultImage;
 
-  // Usa a URL fornecida ou window.location.href como fallback (para SPA)
-  // Mas lembre-se, window.location.href só estará disponível no cliente.
+  // Use the provided URL or window.location.href as a fallback.
+  // window.location.href is only available in the client-side environment.
+  // For Server-Side Rendering (SSR) frameworks, ensure 'url' is always provided.
   const currentUrl = url || (typeof window !== "undefined" ? window.location.href : '');
+
+  // Define a default site name and Twitter handle
+  const siteName = "Olho Fotográfico"; // Replace with your actual site name
+  const twitterHandle = "@olhofotografico"; // Replace with your actual Twitter handle
 
   return (
     <Helmet>
-      {/* Título da página (para aba do navegador e SEO) */}
-      <title>{title}</title>
+      {/* Page Title (for browser tab and SEO) */}
+      <title>{title} | {siteName}</title> {/* Added site name to title for better branding */}
 
-      {/* Meta tags para SEO geral */}
+      {/* General SEO Meta Tags */}
       <meta name="description" content={description} />
       <link rel="canonical" href={currentUrl} />
 
@@ -24,17 +29,21 @@ const SocialMetaTags = ({ title, description, image, url }) => {
       <meta property="og:description" content={description} />
       <meta property="og:image" content={finalImage} />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:type" content="website" /> {/* Pode ser 'article', 'product', etc. dependendo do conteúdo */}
-      {/* <meta property="og:site_name" content="Seu Nome do Site" /> Ex: olhotografico.com.br */}
+      <meta property="og:type" content="website" /> {/* 'article', 'product', etc. depending on content */}
+      <meta property="og:site_name" content={siteName} /> {/* Essential for branding */}
+      <meta property="og:image:width" content="1200" /> {/* Recommended image width for Open Graph */}
+      <meta property="og:image:height" content="630" /> {/* Recommended image height for Open Graph */}
+      {/* You can also add og:image:alt for accessibility */}
+      <meta property="og:image:alt" content={description} />
 
       {/* Twitter Card Tags */}
-      <meta name="twitter:card" content="summary_large_image" /> {/* Use 'summary' para imagens pequenas */}
+      <meta name="twitter:card" content="summary_large_image" /> {/* 'summary' for smaller images */}
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={finalImage} />
-      <meta name="twitter:site" content="@olhotografico" /> {/* Seu handle do Twitter */}
-      <meta property="og:logo" content={finalImage} />
-      <meta name="twitter:creator" content="@olhotografico" />
+      <meta name="twitter:site" content={twitterHandle} /> {/* Your Twitter handle */}
+      <meta name="twitter:creator" content={twitterHandle} /> {/* Your Twitter handle */}
+      {/* For Twitter, make sure your image meets the recommended dimensions (e.g., 1200x675 for summary_large_image) */}
     </Helmet>
   );
 };
