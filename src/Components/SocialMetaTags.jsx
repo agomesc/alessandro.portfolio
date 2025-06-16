@@ -33,7 +33,8 @@ const SocialMetaTags = ({ title, description, image, url }) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={finalImage} />
       <meta name="twitter:site" content="@olhotografico" /> {/* Seu handle do Twitter */}
-      {/* <meta name="twitter:creator" content="@seuCriador" /> */} {/* Opcional: para o autor do conteúdo */}
+      <meta property="og:logo" content={finalImage} />
+      <meta name="twitter:creator" content="@olhotografico" />
     </Helmet>
   );
 };
