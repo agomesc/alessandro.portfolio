@@ -33,7 +33,6 @@ const SocialMetaTags = ({ title, description, image, url }) => {
       <meta property="og:site_name" content={siteName} /> {/* Essential for branding */}
       <meta property="og:image:width" content="1200" /> {/* Recommended image width for Open Graph */}
       <meta property="og:image:height" content="630" /> {/* Recommended image height for Open Graph */}
-      {/* You can also add og:image:alt for accessibility */}
       <meta property="og:image:alt" content={description} />
 
       {/* Twitter Card Tags */}

@@ -3,10 +3,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
-import TypographyTitle from './TypographyTitle';
+import TypographyTitle from './TypographyTitle'; // Assuming this path is correct
 
-const App = ({ itemData }) => {
+const App = ({ itemData = [] }) => { // Added default empty array for itemData
   const navigate = useNavigate();
+
+  // Get the first item for the main highlighted photo
+  const mainPhoto = itemData.length > 0 ? itemData[0] : null;
+  // Get the rest of the items for the scrollable list, excluding the first one
+  const restOfPhotos = itemData.slice(1);
 
   return (
     <Box
@@ -27,6 +32,53 @@ const App = ({ itemData }) => {
       }}
     >
       <TypographyTitle src="Atualizações" />
+
+      {/* Main Highlighted Photo */}
+      {mainPhoto && (
+        <Box
+          sx={{
+            mb: 4, // Margin bottom for spacing
+            width: '100%',
+            position: 'relative',
+            paddingTop: '56.25%', // 16:9 Aspect Ratio (9 / 16 * 100)
+            overflow: 'hidden',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)', // Stronger shadow for highlight
+            border: '4px solid #1976d2', // Prominent border
+          }}
+        >
+          <img
+            src={mainPhoto.url}
+            alt="Destaque"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+          <Typography
+            variant="h6"
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: 'white',
+              p: 1,
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}
+          >
+            Última Atualização
+          </Typography>
+        </Box>
+      )}
+
+      {/* Scrollable List of Photos */}
       <Box
         sx={{
           display: "flex",
@@ -42,8 +94,10 @@ const App = ({ itemData }) => {
           }
         }}
       >
-        {itemData.map((photo, index) => {
-          const isHighlighted = index < 3; // Define destaque para os 3 primeiros
+        {restOfPhotos.map((photo, index) => {
+          // The 'Nova' tag now applies to the first two items in the *restOfPhotos* array
+          // which effectively means the 2nd and 3rd overall photos.
+          const isHighlighted = index < 2; 
 
           return (
             <Box
@@ -76,7 +130,7 @@ const App = ({ itemData }) => {
               )}
               <img
                 src={photo.url}
-                alt={`Imagem ${index + 1}`}
+                alt={`Imagem ${index + 2}`} 
                 style={{
                   width: isHighlighted ? "150px" : "120px",
                   height: isHighlighted ? "100px" : "80px",
