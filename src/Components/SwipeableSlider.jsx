@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
 import TypographyTitle from './TypographyTitle'; // Assuming this path is correct
+import LazyImage from './LazyImage'; // Assuming this path is correct
 
 const App = ({ itemData = [] }) => { // Added default empty array for itemData
   const navigate = useNavigate();
@@ -56,7 +57,8 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
               left: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              // Change from 'cover' to 'contain'
+              objectFit: 'contain', // This ensures the entire image is visible
             }}
           />
           <Typography
@@ -97,7 +99,7 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
         {restOfPhotos.map((photo, index) => {
           // The 'Nova' tag now applies to the first two items in the *restOfPhotos* array
           // which effectively means the 2nd and 3rd overall photos.
-          const isHighlighted = index < 2; 
+          const isHighlighted = index < 2;
 
           return (
             <Box
@@ -128,13 +130,14 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
                   Nova
                 </Typography>
               )}
-              <img
+              <LazyImage
                 src={photo.url}
-                alt={`Imagem ${index + 2}`} 
+                alt={`Imagem ${index + 2}`}
                 style={{
                   width: isHighlighted ? "150px" : "120px",
                   height: isHighlighted ? "100px" : "80px",
-                  objectFit: "cover",
+                  // Change from 'cover' to 'contain'
+                  objectFit: "contain", // This ensures the entire image is visible
                   borderRadius: "8px",
                   border: isHighlighted ? "3px solid #1976d2" : "none",
                   boxShadow: isHighlighted ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none",
