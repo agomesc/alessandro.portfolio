@@ -48,7 +48,7 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
             border: '4px solid #1976d2', // Prominent border
           }}
         >
-          <img
+          <LazyImage
             src={mainPhoto.url}
             alt="Destaque"
             style={{
@@ -73,6 +73,7 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
               p: 1,
               textAlign: 'center',
               fontWeight: 'bold',
+              objectFit: 'cover', // This ensures the entire image is visible
             }}
           >
             Última Atualização
