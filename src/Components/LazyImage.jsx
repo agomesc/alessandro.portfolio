@@ -41,7 +41,6 @@ const LazyImage = ({
 
     const img = new Image();
     img.src = src;
-    img.loading = 'lazy';
     if (srcSet) img.srcset = srcSet;
     img.crossOrigin = 'anonymous';
 
