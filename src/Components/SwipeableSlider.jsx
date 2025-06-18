@@ -38,25 +38,26 @@ const App = ({ itemData = [] }) => {
       {mainPhoto && (
         <Box
           sx={{
-            mb: 4, // Margin bottom for spacing
+            mb: 4,
             width: '100%',
             position: 'relative',
             paddingTop: '35%',
             overflow: 'hidden',
             borderRadius: '8px',
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)',
-            // --- AJUSTE AQUI: Cor da borda para verde ---
-            border: '4px solid #a4b57c', // Verde vibrante
-            // ------------------------------------------
+            border: '4px solid #a4b57c',
 
             backgroundImage: `url(${mainPhoto.url})`,
             backgroundSize: 'contain',
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
+            backgroundAttachment: {
+              xs: 'scroll',  // no mobile
+              sm: 'scroll',  // tablets pequenos
+              md: 'fixed',   // desktops e maiores
+            },
           }}
         >
-          {/* Conteúdo sobreposto, como o título da última atualização */}
           <Typography
             variant="h6"
             sx={{
@@ -75,6 +76,7 @@ const App = ({ itemData = [] }) => {
           </Typography>
         </Box>
       )}
+
 
       {/* Scrollable List of Photos */}
       <Box
@@ -135,7 +137,7 @@ const App = ({ itemData = [] }) => {
                   objectFit: "contain",
                   borderRadius: "8px",
                   // --- AJUSTE AQUI: Borda verde para os itens destacados na lista rolável também ---
-                  border: isHighlighted ? "3px solid #4CAF50" : "none", // Borda verde aqui também
+                  border: isHighlighted ? "3px solid #a4b57c" : "none", // Borda verde aqui também
                   // -----------------------------------------------------------------------------
                   boxShadow: isHighlighted ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none",
                   transition: "all 0.3s ease-in-out",
