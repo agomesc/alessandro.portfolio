@@ -103,7 +103,7 @@ const CreateFlickrApp = () => {
 
 		return {
 			id: data.id,
-			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}${sizeSuffix}`,
+			url: `https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`,
 			description: data.description._content,
 			location: data.owner.location,
 			title: data.title._content,

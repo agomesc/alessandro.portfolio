@@ -61,7 +61,6 @@ const CreateFlickrService = () => {
             throw new Error("id é obrigatório.");
         }
 		
-
 		const url = `${urlApi}/flickr/info/${id}`
 		const data = await instance.get(url);
 		return data;

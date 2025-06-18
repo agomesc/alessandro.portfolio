@@ -18,7 +18,7 @@ import LazyImage from "./LazyImage";
 const StarComponent = lazy(() => import("./StarComponent"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
 
-const PhotoDashboard = ({ photoData }) => {
+const PhotoDashboard = ({ photoData, onImageLoad }) => {
   return (
     <Card>
       <CardHeader
@@ -33,12 +33,13 @@ const PhotoDashboard = ({ photoData }) => {
         src={photoData.url}
         alt={photoData.title}
         width="100%"
-        heig
+        height="auto"
+        onLoad={onImageLoad} 
       />
 
       <CardContent>
         <TableContainer component={Paper}>
-          <Table sx={{ width: "100%" }} aria-label="photo specifications">
+          <Table sx={{ width: "100%", minWidth:1024 }} aria-label="photo specifications">
             <TableBody>
               {[
                 ["Title", photoData.title],

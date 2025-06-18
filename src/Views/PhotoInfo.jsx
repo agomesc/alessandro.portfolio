@@ -19,6 +19,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const PhotoInfo = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const instance = useMemo(() => CreateFlickrApp(), []);
 
   const metaData = useMemo(() => {
@@ -60,6 +61,10 @@ const PhotoInfo = () => {
     );
   }
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <>
       <Box
@@ -83,13 +88,15 @@ const PhotoInfo = () => {
 
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
-            <PhotoDashboard photoData={galleryData} />
+            <PhotoDashboard photoData={galleryData} onImageLoad={handleImageLoad} />
           </Suspense>
         </Box>
 
-        <Suspense fallback={<Skeleton height={150} />}>
-          <CommentBox itemID={id} />
-        </Suspense>
+        {imageLoaded && (
+          <Suspense fallback={<Skeleton height={150} />}>
+            <CommentBox itemID={id} />
+          </Suspense>
+        )}
       </Box>
 
       <Suspense fallback={null}>
@@ -102,5 +109,6 @@ const PhotoInfo = () => {
     </>
   );
 };
+
 
 export default React.memo(PhotoInfo);
