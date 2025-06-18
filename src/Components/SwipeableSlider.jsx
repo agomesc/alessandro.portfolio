@@ -3,16 +3,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
-import TypographyTitle from './TypographyTitle'; // Assuming this path is correct
-import LazyImage from './LazyImage'; // Assuming this path is correct
+import TypographyTitle from './TypographyTitle';
+import LazyImage from './LazyImage';
 
 const App = ({ itemData = [] }) => {
   const navigate = useNavigate();
 
-  // Get the first item for the main highlighted photo
-  const mainPhoto = itemData.length > 0 ? itemData[0] : null;
-  // Get the rest of the items for the scrollable list, excluding the first one
-  const restOfPhotos = itemData.slice(1);
+  // Sem destaque principal
+  const photos = itemData;
 
   return (
     <Box
@@ -25,8 +23,6 @@ const App = ({ itemData = [] }) => {
           lg: "70%",
           xl: "80%"
         },
-        alignContent: "center",
-        alignItems: "center",
         margin: "0 auto",
         padding: "0 20px",
         mt: 10
@@ -34,51 +30,7 @@ const App = ({ itemData = [] }) => {
     >
       <TypographyTitle src="Atualizações" />
 
-      {/* Main Highlighted Photo as Fixed Background */}
-      {mainPhoto && (
-        <Box
-          sx={{
-            mb: 4,
-            width: '100%',
-            position: 'relative',
-            paddingTop: '35%',
-            overflow: 'hidden',
-            borderRadius: '8px',
-            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)',
-            border: '4px solid #a4b57c',
-
-            backgroundImage: `url(${mainPhoto.url})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: {
-              xs: 'scroll',  // no mobile
-              sm: 'scroll',  // tablets pequenos
-              md: 'fixed',   // desktops e maiores
-            },
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
-              color: 'white',
-              p: 1,
-              textAlign: 'center',
-              fontWeight: 'bold',
-            }}
-          >
-            Última Atualização
-          </Typography>
-        </Box>
-      )}
-
-
-      {/* Scrollable List of Photos */}
+      {/* Lista de fotos horizontal */}
       <Box
         sx={{
           display: "flex",
@@ -94,10 +46,8 @@ const App = ({ itemData = [] }) => {
           }
         }}
       >
-        {restOfPhotos.map((photo, index) => {
-          // A tag 'Nova' agora se aplica aos dois primeiros itens do *restOfPhotos*
-          // o que efetivamente significa a 2ª e 3ª foto no geral.
-          const isHighlighted = index < 2;
+        {photos.map((photo, index) => {
+          const isHighlighted = index < 2; // primeiras duas com etiqueta
 
           return (
             <Box
@@ -115,7 +65,7 @@ const App = ({ itemData = [] }) => {
                     top: -5,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    backgroundColor: 'error.main', // Mantém a cor 'Nova' como vermelha
+                    backgroundColor: 'error.main',
                     color: 'white',
                     px: 1,
                     py: 0.5,
@@ -130,15 +80,13 @@ const App = ({ itemData = [] }) => {
               )}
               <LazyImage
                 src={photo.url}
-                alt={`Imagem ${index + 2}`}
+                alt={`Imagem ${index + 1}`}
                 style={{
                   width: isHighlighted ? "150px" : "120px",
                   height: isHighlighted ? "100px" : "80px",
                   objectFit: "contain",
                   borderRadius: "8px",
-                  // --- AJUSTE AQUI: Borda verde para os itens destacados na lista rolável também ---
-                  border: isHighlighted ? "3px solid #a4b57c" : "none", // Borda verde aqui também
-                  // -----------------------------------------------------------------------------
+                  border: isHighlighted ? "3px solid #a4b57c" : "none",
                   boxShadow: isHighlighted ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none",
                   transition: "all 0.3s ease-in-out",
                   display: 'block',
