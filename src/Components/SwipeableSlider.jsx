@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TypographyTitle from './TypographyTitle'; // Assuming this path is correct
 import LazyImage from './LazyImage'; // Assuming this path is correct
 
-const App = ({ itemData = [] }) => { // Added default empty array for itemData
+const App = ({ itemData = [] }) => {
   const navigate = useNavigate();
 
   // Get the first item for the main highlighted photo
@@ -34,32 +34,29 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
     >
       <TypographyTitle src="Atualizações" />
 
-      {/* Main Highlighted Photo */}
+      {/* Main Highlighted Photo as Fixed Background */}
       {mainPhoto && (
         <Box
           sx={{
             mb: 4, // Margin bottom for spacing
             width: '100%',
             position: 'relative',
-            paddingTop: '56.25%', // 16:9 Aspect Ratio (9 / 16 * 100)
+            paddingTop: '35%',
             overflow: 'hidden',
             borderRadius: '8px',
-            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)', // Stronger shadow for highlight
-            border: '4px solid #1976d2', // Prominent border
+            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)',
+            // --- AJUSTE AQUI: Cor da borda para verde ---
+            border: '4px solid #a4b57c', // Verde vibrante
+            // ------------------------------------------
+
+            backgroundImage: `url(${mainPhoto.url})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
           }}
         >
-          <img
-            src={mainPhoto.url}
-            alt="Destaque"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain', // This ensures the entire image is visible
-            }}
-          />
+          {/* Conteúdo sobreposto, como o título da última atualização */}
           <Typography
             variant="h6"
             sx={{
@@ -96,8 +93,8 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
         }}
       >
         {restOfPhotos.map((photo, index) => {
-          // The 'Nova' tag now applies to the first two items in the *restOfPhotos* array
-          // which effectively means the 2nd and 3rd overall photos.
+          // A tag 'Nova' agora se aplica aos dois primeiros itens do *restOfPhotos*
+          // o que efetivamente significa a 2ª e 3ª foto no geral.
           const isHighlighted = index < 2;
 
           return (
@@ -116,7 +113,7 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
                     top: -5,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    backgroundColor: 'error.main',
+                    backgroundColor: 'error.main', // Mantém a cor 'Nova' como vermelha
                     color: 'white',
                     px: 1,
                     py: 0.5,
@@ -135,10 +132,11 @@ const App = ({ itemData = [] }) => { // Added default empty array for itemData
                 style={{
                   width: isHighlighted ? "150px" : "120px",
                   height: isHighlighted ? "100px" : "80px",
-                  // Change from 'cover' to 'contain'
-                  objectFit: "contain", // This ensures the entire image is visible
+                  objectFit: "contain",
                   borderRadius: "8px",
-                  border: isHighlighted ? "3px solid #1976d2" : "none",
+                  // --- AJUSTE AQUI: Borda verde para os itens destacados na lista rolável também ---
+                  border: isHighlighted ? "3px solid #4CAF50" : "none", // Borda verde aqui também
+                  // -----------------------------------------------------------------------------
                   boxShadow: isHighlighted ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none",
                   transition: "all 0.3s ease-in-out",
                   display: 'block',
