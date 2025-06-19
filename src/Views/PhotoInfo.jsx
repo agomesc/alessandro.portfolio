@@ -7,7 +7,14 @@ import React, {
   useCallback,
 } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Skeleton } from "@mui/material";
+import {
+  Box,
+  Skeleton,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import TypographyTitle from "../Components/TypographyTitle";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import LoadingMessage from "../Components/LoadingMessage";
@@ -20,7 +27,21 @@ const PhotoInfo = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const instance = useMemo(() => CreateFlickrApp(), []);
+
+  const fetchInitialPhotoData = useCallback(async () => {
+    try {
+      const data = await instance.getPhotoInfo(id);
+      setGalleryData(data);
+    } catch (error) {
+      console.error("Erro ao buscar informações iniciais da foto:", error);
+    }
+  }, [id, instance]);
+
+  useEffect(() => {
+    fetchInitialPhotoData();
+  }, [fetchInitialPhotoData]);
 
   const metaData = useMemo(() => {
     if (galleryData) {
@@ -37,18 +58,22 @@ const PhotoInfo = () => {
     };
   }, [galleryData]);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const data = await instance.getPhotoInfo(id);
-      setGalleryData(data);
-    } catch (error) {
-      console.error("Erro ao buscar informações da foto:", error);
+  const fetchDetailedInfo = useCallback(async () => {
+    if (!showAdditionalInfo) {
+      try {
+        // Caso queira buscar mais dados futuramente, pode usar esse trecho:
+        // const detailedData = await instance.getDetailedPhotoInfo(id);
+        // setGalleryData(prev => ({ ...prev, ...detailedData }));
+        setShowAdditionalInfo(true);
+      } catch (error) {
+        console.error("Erro ao buscar informações adicionais da foto:", error);
+      }
     }
-  }, [id, instance]);
+  }, [showAdditionalInfo]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
   if (!galleryData) {
     return (
@@ -60,10 +85,6 @@ const PhotoInfo = () => {
       </Box>
     );
   }
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-  };
 
   return (
     <>
@@ -93,9 +114,41 @@ const PhotoInfo = () => {
         </Box>
 
         {imageLoaded && (
-          <Suspense fallback={<Skeleton height={150} />}>
-            <CommentBox itemID={id} />
-          </Suspense>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Tooltip title="Mostrar comentários e detalhes da foto">
+              <IconButton
+                aria-label="Mostrar informações adicionais"
+                onClick={fetchDetailedInfo}
+                color="primary"
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+
+        {showAdditionalInfo && (
+          <>
+            {/* Detalhes técnicos da foto (simulados ou futuros) */}
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="h6" gutterBottom>
+                Detalhes da Foto
+              </Typography>
+              <Typography variant="body2">
+                {/* Exemplo: você pode substituir por galleryData.exif?.cameraModel ou outro */}
+                Câmera: {galleryData.camera || "Não disponível"} <br />
+                Abertura: {galleryData.aperture || "Não disponível"} <br />
+                Velocidade: {galleryData.shutter || "Não disponível"} <br />
+                ISO: {galleryData.iso || "Não disponível"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ mt: 3 }}>
+              <Suspense fallback={<Skeleton height={150} />}>
+                <CommentBox itemID={id} />
+              </Suspense>
+            </Box>
+          </>
         )}
       </Box>
 
@@ -109,6 +162,5 @@ const PhotoInfo = () => {
     </>
   );
 };
-
 
 export default React.memo(PhotoInfo);

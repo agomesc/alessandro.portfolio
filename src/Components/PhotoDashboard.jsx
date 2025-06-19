@@ -34,12 +34,12 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
         alt={photoData.title}
         width="100%"
         height="auto"
-        onLoad={onImageLoad} 
+        onLoad={onImageLoad}
       />
 
       <CardContent>
-        <TableContainer component={Paper}>
-          <Table sx={{ width: "100%", minWidth:1024 }} aria-label="photo specifications">
+        <TableContainer sx={{ width: '100%', overflowX: 'auto' }}>
+          <Table aria-label="photo specifications" size="small">
             <TableBody>
               {[
                 ["Title", photoData.title],
@@ -57,14 +57,25 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
                 ["Aperture", photoData.aperture],
               ].map(([label, value]) => (
                 <TableRow key={label}>
-                  <TableCell component="th" scope="row">{label}</TableCell>
-                  <TableCell>{value}</TableCell>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '40%' }}
+                  >
+                    {label}
+                  </TableCell>
+                  <TableCell
+                    sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}
+                  >
+                    {value}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </CardContent>
+
 
       <CardActions>
         <StarComponent id={photoData.id} />
