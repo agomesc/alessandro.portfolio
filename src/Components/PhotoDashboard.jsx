@@ -38,7 +38,7 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
       />
 
       <CardContent>
-        <TableContainer sx={{ width: '100%', overflowX: 'auto' }}>
+        <TableContainer sx={{ width: '100%' }}>
           <Table aria-label="photo specifications" size="small">
             <TableBody>
               {[
@@ -60,12 +60,15 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
                   <TableCell
                     component="th"
                     scope="row"
-                    sx={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '40%' }}
+                    sx={{ whiteSpace: 'nowrap', verticalAlign: 'top' }} // ❗não quebra texto aqui
                   >
                     {label}
                   </TableCell>
                   <TableCell
-                    sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}
+                    sx={{
+                      wordBreak: 'break-word',
+                      whiteSpace: 'normal',
+                    }} // ❗só a segunda coluna quebra
                   >
                     {value}
                   </TableCell>
@@ -75,6 +78,7 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
           </Table>
         </TableContainer>
       </CardContent>
+
 
 
       <CardActions>
