@@ -48,24 +48,11 @@ const CreateFetchService = () => {
         if (!navigator.onLine) {
             throw new Error(TryError(521));
         }
-
-        const cachedResponse = getCache(url);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-
         const response = await fetchWithInterceptor(url);
-        setCache(url, response);
         return response;
     }
 
     async function post(url, data) {
-        const cacheKey = `${url}-${JSON.stringify(data)}`;
-        const cachedResponse = getCache(cacheKey);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-
         const options = {
             method: "POST",
             headers: {
@@ -77,32 +64,10 @@ const CreateFetchService = () => {
         };
 
         const response = await fetchWithInterceptor(url, options);
-        setCache(cacheKey, response);
         return response;
     }
 
     return { get, post, subscribe, unsubscribe };
-}
-
-function setCache(key, data) {
-    const cacheData = {
-        timestamp: Date.now(),
-        data
-    };
-    sessionStorage.setItem(key, JSON.stringify(cacheData));
-}
-
-function getCache(key) {
-    const cachedResponse = sessionStorage.getItem(key);
-    if (cachedResponse) {
-        const { timestamp, data } = JSON.parse(cachedResponse);
-        const cacheDuration = 5 * 60 * 1000; // 5 minutos
-        if (Date.now() - timestamp < cacheDuration) {
-            return data;
-        }
-        sessionStorage.removeItem(key);
-    }
-    return null;
 }
 
 function TryError(code) {

@@ -1,15 +1,14 @@
-import { useEffect, useState,  useMemo, useCallback, lazy } from "react";
+import { useEffect, useState, useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from '@mui/material/useMediaQuery';
+// Removed useMediaQuery as it's no longer needed for distinction
 import Skeleton from '@mui/material/Skeleton';
 import { motion } from "framer-motion";
-
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
     List, ListItem, ListItemButton, ListItemIcon, ListItemText,
-    Collapse, Menu, MenuItem, Avatar
+    Collapse, Avatar // Menu and MenuItem are no longer needed as desktop menu is removed
 } from "@mui/material";
 
 import {
@@ -35,11 +34,11 @@ import firebaseConfig from "../firebaseConfig";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
-const ContactForm = lazy(() => import('./ContactForm'));
+const ContactForm = lazy(() => import('./ContactForm')); // This import isn't used in the provided code, but I'll keep it as is.
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    // Removed isMobile as it's no longer needed
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
     const [openEquipamentos, setOpenEquipamentos] = useState(false);
@@ -48,8 +47,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
-    const [anchorEl, setAnchorEl] = useState(null);
-
+    // Removed anchorEl as desktop menu is removed
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -92,10 +90,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 setSnackbarSeverity("success");
                 setSnackbarOpen(true);
 
-                setOpen(false);
+                setOpen(false); // Close drawer after login
                 setOpenEquipamentos(false);
                 setOpenSub(false);
-                setAnchorEl(null);
+                // Removed setAnchorEl(null);
                 window.setTimeout(function () {
                     window.location.reload();
                 }, 3000);
@@ -158,14 +156,12 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }, [galleryData]);
 
     const DrawerList = (
-
         <Box sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }} role="presentation">
             <Divider />
             <nav>
                 <List>
                     {items.map((item, index) => {
                         const isChild = item.chid;
-                        // Determine if the current item is followed by a child that is NOT part of "Equipamentos"
                         const hasChildren = items[index + 1] && items[index + 1].chid && !items[index + 1].parent;
                         const isEquipamentosChild = item.parent === "Equipamentos";
 
@@ -184,8 +180,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                             } else if (hasChildren) {
                                                 setOpenSub(!openSub);
                                             } else {
-                                                // If it's a regular link, close the drawer
-                                                setOpen(false);
+                                                setOpen(false); // If it's a regular link, close the drawer
                                             }
                                         }}
                                     >
@@ -226,7 +221,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         </ListItemButton>
                     </ListItem>
 
-                    {/* Login/Logout for Drawer - Always present regardless of screen size */}
+                    {/* Login/Logout for Drawer */}
                     {!user ? (
                         <ListItem disablePadding>
                             <ListItemButton onClick={handleLogin}>
@@ -256,204 +251,21 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     return (
         <div>
-            {isMobile ? (
-                // Mobile AppBar
-                <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex' }}>
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            sx={{ color: theme.palette.primary.main, mr: 2 }}
-                            aria-label="Abrir menu de navegação"
-                            onClick={toggleDrawer(true)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Alessandro Cunha | FOTO
-                        </Typography>
-                        <IconButton
-                            size="large"
-                            onClick={toggleTheme}
-                            sx={{
-                                bgcolor: theme.palette.action.hover,
-                                color: theme.palette.text.primary,
-                                borderRadius: '50%',
-                            }}
-                            aria-label="Alternar tema"
-                        >
-                            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-            ) : (
-                <Box
-                    component="nav"
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 2,
-                        py: 2, 
-                        bgcolor: theme.palette.background.paper, 
-                        color: theme.palette.text.primary,
-                        boxShadow: theme.shadows[1], 
-                        position: 'relative', 
-                    }}
-                    onMouseLeave={() => {
-                        setOpenSub(false);
-                        setOpenEquipamentos(false);
-                        setAnchorEl(null);
-                    }}
-                >
-                    {/* Render top-level navigation items for desktop */}
-                    {items.filter(item => !item.chid).map((item, index) => {
-                        const isEquipamentos = item.isEquipamentos;
-                        const isGaleria = item.description === "Minhas Galerias";
-
-                        // Determine child items for current parent (Galerias or Equipamentos)
-                        const childItems = items.filter(i => {
-                            if (isEquipamentos) return i.parent === "Equipamentos";
-                            if (isGaleria) return i.chid && !i.parent; 
-                            return false;
-                        });
-
-                        const hasChildren = childItems.length > 0;
-
-                        if (hasChildren) {
-                            const menuId = isEquipamentos ? 'equipamentos-menu' : 'galerias-menu';
-                            const menuOpen = isEquipamentos ? openEquipamentos : openSub;
-
-                            return (
-                                <Box
-                                    key={index}
-                                    onMouseEnter={(e) => {
-                                        setAnchorEl(e.currentTarget); // Set anchor for the Menu
-                                        if (isEquipamentos) {
-                                            setOpenEquipamentos(true);
-                                            setOpenSub(false); // Close other sub-menu
-                                        } else {
-                                            setOpenSub(true);
-                                            setOpenEquipamentos(false); // Close other sub-menu
-                                        }
-                                    }}
-                                >
-                                    <motion.div whileHover={{ scale: 1.05 }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}>
-                                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                                {item.icon}
-                                            </IconButton>
-                                            <Typography
-                                                variant="button"
-                                                sx={{
-                                                    color: theme.palette.primary.main,
-                                                    fontWeight: 'bold',
-                                                    transition: 'all 0.3s ease',
-                                                    '&:hover': { textDecoration: 'underline' }
-                                                }}
-                                            >
-                                                {item.description}
-                                            </Typography>
-                                        </Box>
-                                    </motion.div>
-                                    <Menu
-                                        id={menuId}
-                                        anchorEl={anchorEl}
-                                        open={Boolean(anchorEl) && menuOpen} // Open only if anchor is set and specific menu state is true
-                                        onClose={() => {
-                                            // Close logic when clicking outside or item is selected
-                                            setOpenEquipamentos(false);
-                                            setOpenSub(false);
-                                            setAnchorEl(null);
-                                        }}
-                                        MenuListProps={{
-                                            // Close when mouse leaves the MenuList itself
-                                            onMouseLeave: () => {
-                                                setOpenEquipamentos(false);
-                                                setOpenSub(false);
-                                                setAnchorEl(null);
-                                            }
-                                        }}
-                                        transitionDuration={300}
-                                    >
-                                        {childItems.map((child, i) => (
-                                            <MenuItem
-                                                key={i}
-                                                component={Link}
-                                                to={child.route}
-                                                onClick={() => {
-                                                    // Close all menus when a child item is clicked
-                                                    setOpenEquipamentos(false);
-                                                    setOpenSub(false);
-                                                    setAnchorEl(null);
-                                                }}
-                                            >
-                                                {child.description}
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                </Box>
-                            );
-                        }
-
-                        // Render regular top-level items without children
-                        return (
-                            <Link key={index} to={item.route} style={{ textDecoration: 'none' }}>
-                                <motion.div whileHover={{ scale: 1.05 }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1 }}>
-                                        <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
-                                            {item.icon}
-                                        </IconButton>
-                                        <Typography
-                                            variant="button"
-                                            sx={{
-                                                color: theme.palette.primary.main,
-                                                fontWeight: 'bold',
-                                                transition: 'all 0.3s ease',
-                                                '&:hover': { textDecoration: 'underline' }
-                                            }}
-                                        >
-                                            {item.description}
-                                        </Typography>
-                                    </Box>
-                                </motion.div>
-                            </Link>
-                        );
-                    })}
-                    <Box sx={{ flexGrow: 1 }} />
-                    {user ? (
-                        <motion.div whileTap={{ scale: 0.9 }}>
-                            <Box sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1 }} onClick={handleLogout} title="Sair">
-                                <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} sx={{ width: 32, height: 32 }} />
-                                <Typography variant="button" sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>
-                                    Sair
-                                </Typography>
-                            </Box>
-                        </motion.div>
-                    ) : (
-                        <motion.div whileHover={{ scale: 1.05 }}>
-                            <Box
-                                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', px: 1 }}
-                                onClick={handleLogin}
-                                title="Fazer Login"
-                            >
-                                <AdminPanelSettingsIcon sx={{ color: theme.palette.primary.main }} />
-                                <Typography
-                                    variant="button"
-                                    sx={{
-                                        color: theme.palette.primary.main,
-                                        fontWeight: 'bold',
-                                        ml: 1,
-                                        '&:hover': { textDecoration: 'underline' },
-                                    }}
-                                >
-                                    Login
-                                </Typography>
-                            </Box>
-                        </motion.div>
-                    )}
-
-                    {/* Theme Toggle for Desktop */}
+            {/* AppBar is now always present and handles drawer toggle and theme toggle */}
+            <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex' }}>
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        sx={{ color: theme.palette.primary.main, mr: 2 }}
+                        aria-label="Abrir menu de navegação"
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Alessandro Cunha | FOTO
+                    </Typography>
                     <IconButton
                         size="large"
                         onClick={toggleTheme}
@@ -463,14 +275,13 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                             borderRadius: '50%',
                         }}
                         aria-label="Alternar tema"
-                        title="Alternar tema"
                     >
                         {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                     </IconButton>
-                </Box>
-            )}
+                </Toolbar>
+            </AppBar>
 
-            {/* Mobile Drawer (always present but only opens on mobile) */}
+            {/* Mobile Drawer (now the only navigation method) */}
             <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
