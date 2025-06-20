@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TypographyTitle from './TypographyTitle';
 import LazyImage from './LazyImage';
 
-const App = ({ itemData = [] }) => {
+const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => { // Add allUpdatesUrl as a prop
   const navigate = useNavigate();
 
   const photos = itemData;
@@ -91,7 +91,7 @@ const App = ({ itemData = [] }) => {
         <Link
           component="button"
           variant="body1"
-          onClick={() => navigate('/latestphotos')}
+          onClick={() => navigate(allUpdatesUrl)} // Use the allUpdatesUrl prop here
           sx={{
             color: 'primary.main',
             textDecoration: 'none',

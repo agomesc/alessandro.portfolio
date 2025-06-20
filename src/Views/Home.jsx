@@ -130,7 +130,7 @@ const Home = () => {
                 {tabIndex === 0 && (
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
-                            <SwipeableSlider itemData={galleryData} />
+                            <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
                             <Gallery />
                         </Box>
                     </Suspense>
@@ -139,7 +139,7 @@ const Home = () => {
                 {tabIndex === 1 && (
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
-                            <SwipeableSlider itemData={galleryData} />
+                            <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
                             <GalleryWork />
                         </Box>
                     </Suspense>

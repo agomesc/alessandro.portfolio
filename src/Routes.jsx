@@ -7,6 +7,7 @@ const GalleryWork = lazy(() => import("./Views/GalleryWork"));
 const Photos = lazy(() => import("./Views/Photos"));
 const About = lazy(() => import("./Views/About"));
 const LatestPhotos = lazy(() => import("./Views/LatestPhotos"));
+const LatestPhotosWorks = lazy(() => import("./Views/LatestPhotosWorks"));
 const PhotoInfo = lazy(() => import("./Views/PhotoInfo"));
 const Privacidade = lazy(() => import("./Views/Privacidade"));
 const Transparencia = lazy(() => import("./Views/Transparencia"));
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/galleryWork" element={<GalleryWork />} />
         <Route path="/latestphotos" element={<LatestPhotos />} />
+        <Route path="/latestPhotosWorks" element={<LatestPhotosWorks />} />
         <Route path="/photos/:id" element={<Photos />} />
         <Route path="/photoinfo/:id" element={<PhotoInfo />} />
         <Route path="/privacidade" element={<Privacidade />} />
