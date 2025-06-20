@@ -14,7 +14,7 @@ const LatestPhotos = () => {
 
   useEffect(() => {
     if (!galleryData) {
-      instance.getLatestPhotosMedium().then(setGalleryData);
+      instance.getLatestPhotos().then(setGalleryData);
     }
   }, [galleryData, instance]);
 

@@ -39,7 +39,7 @@ const PhotoGrid = ({ itemData = [] }) => {
           initial="hidden"
           animate="show"
         >
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
+          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} spacing={2}>
             {itemData.map((item) => (
               <motion.div
                 key={item.id}

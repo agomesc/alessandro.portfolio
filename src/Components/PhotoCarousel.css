@@ -1,0 +1,174 @@
+/* PhotoCarousel.css */
+
+/* --- Estilos Gerais para o Contêiner da Galeria --- */
+.image-gallery-content.fullscreen {
+  /* Fundo preto sólido para a experiência de tela cheia */
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Garante que o contêiner ocupa toda a viewport */
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important; /* Esconde qualquer barra de rolagem indesejada */
+}
+
+/* Garante que cada slide preenche o espaço e centraliza o conteúdo */
+.custom-photo-gallery .image-gallery-slide {
+  background-color: #000000; /* Fundo do slide preto */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Wrapper para centralizar a imagem dentro do slide */
+.image-gallery-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Estilos para a Imagem Principal (renderizada por LazyImage) --- */
+.photo-carousel-main-image {
+  /* A imagem preenche o slide, mas se ajusta para caber sem cortar */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important; /* ESSENCIAL: Mantém a proporção e garante que a imagem inteira seja visível */
+  display: block; /* Remove espaços extras comuns em imagens */
+  /* Transição suave para quando a imagem é carregada ou trocada */
+  transition: opacity 0.5s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sutil sombra para destacar a imagem */
+}
+
+/* --- Estilos para Botões de Navegação (Anterior/Próximo) --- */
+.image-gallery-icon {
+  color: #ffffff; /* Ícones brancos */
+  font-size: 3rem; /* Tamanho maior para os ícones */
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8); /* Sombra para visibilidade em fundos claros */
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+  opacity: 0.7; /* Levemente transparente quando parado */
+  padding: 20px; /* Aumenta a área clicável */
+}
+
+.image-gallery-icon:hover {
+  color: #ffd700; /* Cor dourada no hover para destacar */
+  transform: scale(1.1); /* Um pequeno zoom no hover */
+  opacity: 1; /* Totalmente visível no hover */
+}
+
+/* Ajustes específicos para botões de navegação */
+.image-gallery-left-nav,
+.image-gallery-right-nav {
+  /* Posicionamento dos botões (já são absolute por padrão na lib) */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10; /* Garante que fiquem acima da imagem */
+}
+
+.image-gallery-left-nav {
+  left: 10px;
+}
+
+.image-gallery-right-nav {
+  right: 10px;
+}
+
+/* --- Estilos para os Botões de Play e Fullscreen --- */
+.image-gallery-play-button,
+.image-gallery-fullscreen-button {
+  color: #ffffff;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.7));
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  padding: 15px; /* Aumenta a área clicável */
+}
+
+.image-gallery-play-button:hover,
+.image-gallery-fullscreen-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #ffd700; /* Cor dourada no hover */
+}
+
+/* --- Estilos para Miniaturas (Thumbnails) --- */
+.image-gallery-thumbnails-wrapper {
+  background: rgba(0, 0, 0, 0.8); /* Fundo semi-transparente escuro para as miniaturas */
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Linha divisória sutil */
+}
+
+.image-gallery-thumbnail {
+  border: 2px solid transparent; /* Borda transparente por padrão */
+  border-radius: 4px; /* Cantos levemente arredondados */
+  transition: border-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  opacity: 0.7; /* Miniaturas não selecionadas são um pouco transparentes */
+  margin: 0 5px; /* Espaçamento entre miniaturas */
+  overflow: hidden; /* Garante que a imagem não vaze */
+}
+
+.image-gallery-thumbnail.active {
+  border-color: #c0810d; /* Borda destacada com a cor do seu tema para a miniatura ativa */
+  opacity: 1; /* Totalmente opaca quando ativa */
+  transform: scale(1.05); /* Levemente maior quando ativa */
+}
+
+.image-gallery-thumbnail:hover {
+  border-color: #b0720a; /* Borda um pouco mais escura no hover */
+  opacity: 1;
+}
+
+/* Garante que a imagem dentro da miniatura se ajuste */
+.image-gallery-thumbnail .image-gallery-thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta a imagem para preencher a miniatura */
+  border-radius: 2px; /* Cantos da imagem dentro da miniatura */
+}
+
+/* --- Estilos para a Descrição (Título da Imagem) --- */
+.image-gallery-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #ffffff;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0)
+  ); /* Degradê sutil */
+  padding: 20px 15px 10px; /* Mais padding na parte inferior */
+  font-size: 1.1em;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  z-index: 5; /* Abaixo dos controles, mas acima da imagem */
+  pointer-events: none; /* Garante que não interfira com cliques na imagem */
+  width: 100%;
+  box-sizing: border-box; /* Inclui padding e borda no width */
+}
+
+/* Esconder barras de rolagem globais quando em tela cheia */
+body.image-gallery-fullscreen-opened {
+  overflow: hidden;
+}
+
+/* Ajustes para telas menores (opcional, mas recomendado) */
+@media (max-width: 768px) {
+  .image-gallery-icon {
+    font-size: 2.5rem;
+    padding: 10px;
+  }
+
+  .image-gallery-description {
+    font-size: 0.9em;
+    padding: 15px 10px 5px;
+  }
+
+  .image-gallery-thumbnail {
+    margin: 0 2px;
+  }
+}
