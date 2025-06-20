@@ -12,7 +12,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
 import LazyImage from "./LazyImage";
 
 const StarComponent = lazy(() => import("./StarComponent"));

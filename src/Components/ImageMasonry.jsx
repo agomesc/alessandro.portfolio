@@ -88,7 +88,38 @@ const ImageMasonry = ({ data = [] }) => {
               </motion.div>
             </NavLink>
 
-            {/* Estrela com fade-in */}
+            {/* Title with fade-in */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: 10,
+                  left: 10,
+                  zIndex: 2,
+                  // Added background for better readability on various images
+                  background: 'rgba(255, 255, 255, 0.7)',
+                  borderRadius: '8px',
+                  padding: '4px 8px',
+                }}
+              >
+                <Typography variant="subtitle1"
+                  sx={{
+                    color: '#333',
+                    fontWeight: 'bold',
+                    // Optional: text shadow for better contrast
+                    textShadow: '0 0 5px rgba(255,255,255,0.7)'
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </Box>
+            </motion.div>
+
+            {/* Star with fade-in */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}

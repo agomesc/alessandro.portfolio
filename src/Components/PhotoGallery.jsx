@@ -24,6 +24,15 @@ const itemVariants = {
 };
 
 const PhotoGallery = ({ photos = [] }) => {
+  // If there are no photos, display a message.
+  if (photos.length === 0) {
+    return (
+      <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 4 }}>
+        Nenhuma imagem disponível para exibir.
+      </Typography>
+    );
+  }
+
   return (
     <motion.div
       variants={containerVariants}
@@ -40,7 +49,8 @@ const PhotoGallery = ({ photos = [] }) => {
             style={{
               position: "relative",
               overflow: "hidden",
-              borderRadius: "12px"
+              borderRadius: "12px",
+              cursor: "pointer", // Ensure cursor indicates it's clickable
             }}
           >
             {/* Link para detalhes da imagem */}
@@ -58,22 +68,26 @@ const PhotoGallery = ({ photos = [] }) => {
               />
             </NavLink>
 
-            {/* Título e estrela sobrepostos */}
-            <Box
-              sx={{
+            {/* Título e estrela sobrepostos com animação de fade-in */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }} // Start slightly below and invisible
+              animate={{ opacity: 1, y: 0 }} // Animate to visible and original position
+              transition={{ delay: 0.3, duration: 0.4 }} // Delay to appear after image, smooth duration
+              style={{
                 position: "absolute",
                 bottom: 0,
                 left: 0,
                 width: "100%",
-                bgcolor: "rgba(0,0,0,0.4)",
-                px: 1,
-                py: 0.5,
+                // Apply the background and border radius here to match the image
+                backgroundColor: "rgba(0,0,0,0.4)",
+                borderBottomLeftRadius: "12px",
+                borderBottomRightRadius: "12px",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                zIndex: 1,
-                borderBottomLeftRadius: "12px",
-                borderBottomRightRadius: "12px"
+                padding: "8px 12px", // Adjust padding for better look
+                boxSizing: "border-box", // Ensure padding is included in width
+                zIndex: 1, // Ensure it's above the image
               }}
             >
               <Typography
@@ -83,10 +97,10 @@ const PhotoGallery = ({ photos = [] }) => {
                   color: "white",
                   textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
                   fontWeight: "bold",
-                  maxWidth: "70%",
+                  maxWidth: "calc(100% - 40px)", // Allocate space for the star
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 {item.title}
@@ -94,7 +108,7 @@ const PhotoGallery = ({ photos = [] }) => {
               <Suspense fallback={<LoadingMessage />}>
                 <StarComponent id={item.id} />
               </Suspense>
-            </Box>
+            </motion.div>
           </motion.div>
         ))}
       </Masonry>

@@ -17,7 +17,7 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import TypographyTitle from "../Components/TypographyTitle";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import LoadingMessage from "../Components/LoadingMessage";
+import LoadingMessage from "../Components/LoadingMessage"; // Consider a more specific skeleton for comments
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -26,16 +26,24 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const PhotoInfo = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
+  const [loadingInitialData, setLoadingInitialData] = useState(true); // New loading state
+  const [error, setError] = useState(null); // New error state
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const instance = useMemo(() => CreateFlickrApp(), []);
 
+  // Fetch initial photo data (title, URL, description)
   const fetchInitialPhotoData = useCallback(async () => {
+    setLoadingInitialData(true);
+    setError(null);
     try {
-      const data = await instance.getPhotoInfo(id);
+      const data = await instance.getPhotoInfo(id); // This is your potentially heavy call
       setGalleryData(data);
-    } catch (error) {
-      console.error("Erro ao buscar informações iniciais da foto:", error);
+    } catch (err) {
+      console.error("Erro ao buscar informações iniciais da foto:", err);
+      setError("Não foi possível carregar as informações da foto. Tente novamente mais tarde.");
+    } finally {
+      setLoadingInitialData(false);
     }
   }, [id, instance]);
 
@@ -43,6 +51,7 @@ const PhotoInfo = () => {
     fetchInitialPhotoData();
   }, [fetchInitialPhotoData]);
 
+  // Memoize meta data for SEO
   const metaData = useMemo(() => {
     if (galleryData) {
       return {
@@ -58,34 +67,51 @@ const PhotoInfo = () => {
     };
   }, [galleryData]);
 
-  const fetchDetailedInfo = useCallback(async () => {
-    if (!showAdditionalInfo) {
-      try {
-        // Caso queira buscar mais dados futuramente, pode usar esse trecho:
-        // const detailedData = await instance.getDetailedPhotoInfo(id);
-        // setGalleryData(prev => ({ ...prev, ...detailedData }));
-        setShowAdditionalInfo(true);
-      } catch (error) {
-        console.error("Erro ao buscar informações adicionais da foto:", error);
-      }
-    }
-  }, [showAdditionalInfo]);
+  // Only fetch additional info when the button is clicked
+  const handleShowAdditionalInfo = useCallback(() => {
+    // This part is effectively just setting a state to render lazy-loaded components
+    // If 'getDetailedPhotoInfo' was a separate *heavy* call, it would be here.
+    // Since it's currently commented out, simply setting the state is enough.
+    setShowAdditionalInfo(true);
+  }, []);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = useCallback(() => {
     setImageLoaded(true);
-  };
+  }, []);
 
-  if (!galleryData) {
+  // --- Loading and Error States ---
+  if (loadingInitialData) {
     return (
-      <Box sx={{ mt: 10, px: 2 }}>
+      <Box sx={{ mt: 10, px: 2, maxWidth: '80%', margin: '0 auto' }}>
         <TypographyTitle src="Informações da Foto" />
-        <Skeleton variant="rectangular" height={400} sx={{ mt: 2 }} />
-        <Skeleton variant="text" sx={{ mt: 1 }} />
-        <Skeleton variant="text" width="60%" />
+        {/* Improved Skeleton for main content */}
+        <Skeleton variant="rectangular" height={400} sx={{ mt: 2, borderRadius: '8px' }} />
+        <Skeleton variant="text" sx={{ mt: 2, fontSize: '2rem' }} /> {/* For title */}
+        <Skeleton variant="text" sx={{ mt: 1, fontSize: '1rem', width: '80%' }} /> {/* For description/author */}
+        <Skeleton variant="rectangular" height={40} width="100%" sx={{ mt: 3, borderRadius: '4px' }} /> {/* For button area */}
       </Box>
     );
   }
 
+  if (error) {
+    return (
+      <Box sx={{ mt: 10, px: 2, textAlign: 'center' }}>
+        <TypographyTitle src="Erro" />
+        <Typography component="div" color="error" variant="h6" sx={{ mt: 2 }}>
+          {error}
+        </Typography>
+        <Typography component="div" variant="body1">
+          Por favor, verifique sua conexão ou tente novamente mais tarde.
+        </Typography>
+        {/* Optionally, a retry button */}
+        <IconButton onClick={fetchInitialPhotoData} color="primary" sx={{ mt: 2 }}>
+          Tentar Novamente
+        </IconButton>
+      </Box>
+    );
+  }
+
+  // --- Main Content Render ---
   return (
     <>
       <Box
@@ -118,7 +144,7 @@ const PhotoInfo = () => {
             <Tooltip title="Mostrar comentários e detalhes da foto">
               <IconButton
                 aria-label="Mostrar informações adicionais"
-                onClick={fetchDetailedInfo}
+                onClick={handleShowAdditionalInfo} // Use the new handler
                 color="primary"
               >
                 <InfoIcon />
@@ -129,13 +155,12 @@ const PhotoInfo = () => {
 
         {showAdditionalInfo && (
           <>
-            {/* Detalhes técnicos da foto (simulados ou futuros) */}
+            {/* Detalhes técnicos da foto */}
             <Box sx={{ mt: 3 }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography component="div" variant="h6" gutterBottom>
                 Detalhes da Foto
               </Typography>
-              <Typography variant="body2">
-                {/* Exemplo: você pode substituir por galleryData.exif?.cameraModel ou outro */}
+              <Typography component="div" variant="body2">
                 Câmera: {galleryData.camera || "Não disponível"} <br />
                 Abertura: {galleryData.aperture || "Não disponível"} <br />
                 Velocidade: {galleryData.shutter || "Não disponível"} <br />
@@ -143,6 +168,7 @@ const PhotoInfo = () => {
               </Typography>
             </Box>
 
+            {/* Comment Box */}
             <Box sx={{ mt: 3 }}>
               <Suspense fallback={<Skeleton height={150} />}>
                 <CommentBox itemID={id} />

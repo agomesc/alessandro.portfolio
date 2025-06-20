@@ -77,7 +77,7 @@ const PhotoGrid = ({ itemData = [] }) => {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.3, duration: 0.4 }} // Added duration for smoother fade
                 >
                   <Box
                     sx={{
@@ -90,7 +90,8 @@ const PhotoGrid = ({ itemData = [] }) => {
                       py: 0.5,
                       borderRadius: 1,
                       fontSize: '0.9rem',
-                      maxWidth: "calc(100% - 80px)",
+                      maxWidth: "calc(100% - 80px)", // Ensures space for the star
+                      zIndex: 2, // Ensure it's above the image but below the star if needed
                     }}
                   >
                     <Typography variant="subtitle2" component="div" noWrap>
@@ -103,7 +104,7 @@ const PhotoGrid = ({ itemData = [] }) => {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.4, duration: 0.4 }} // Added duration for smoother fade
                 >
                   <Box
                     sx={{
