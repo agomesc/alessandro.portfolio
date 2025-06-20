@@ -41,7 +41,7 @@ const Photos = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await instance.getPhotosLarge(id);
+      const data = await instance.getPhotos(id);
       setGalleryData(data);
 
       const albumInfo = await instance.getAlbum(id);

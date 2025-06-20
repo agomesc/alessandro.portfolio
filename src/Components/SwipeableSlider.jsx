@@ -9,7 +9,6 @@ import LazyImage from './LazyImage';
 const App = ({ itemData = [] }) => {
   const navigate = useNavigate();
 
-  // Sem destaque principal
   const photos = itemData;
 
   return (
@@ -30,7 +29,6 @@ const App = ({ itemData = [] }) => {
     >
       <TypographyTitle src="Atualizações" />
 
-      {/* Lista de fotos horizontal */}
       <Box
         sx={{
           display: "flex",
@@ -81,16 +79,8 @@ const App = ({ itemData = [] }) => {
               <LazyImage
                 src={photo.url}
                 alt={`Imagem ${index + 1}`}
-                style={{
-                  width: isHighlighted ? "150px" : "120px",
-                  height: isHighlighted ? "100px" : "80px",
-                  objectFit: "contain",
-                  borderRadius: "8px",
-                  border: isHighlighted ? "3px solid #a4b57c" : "none",
-                  boxShadow: isHighlighted ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none",
-                  transition: "all 0.3s ease-in-out",
-                  display: 'block',
-                }}
+                width={150}
+                height={150}
               />
             </Box>
           );

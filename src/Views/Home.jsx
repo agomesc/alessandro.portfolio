@@ -28,9 +28,12 @@ const Home = () => {
     useEffect(() => {
         setGalleryData(null); // opcional: limpa dados para mostrar Skeleton no loading
         if (tabIndex === 0) {
-            instance.getLatestPhotosThumbnail().then(setGalleryData);
+            instance
+            .getLatestPhotosLargeSquare()
+            .then(setGalleryData);
         } else {
-            instance.getLatestPhotosThumbnailWork().then(setGalleryData);
+            instance.getLatestPhotosLargeSquarelWork()
+            .then(setGalleryData);
         }
     }, [tabIndex, instance]);
 

@@ -6,9 +6,6 @@ const CreateFlickrApp = () => {
 	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
 	const instance = CreateFlickrService();
 
-	// Para teste: usar sempre o tamanho "_n.jpg" (320px)
-	const sizeSuffix = '_o.jpg';
-
 	const getGallery = async () => {
 		const data = await instance.getList(userID);
 		return data.map((album) => ({
@@ -22,7 +19,7 @@ const CreateFlickrApp = () => {
 	const getGallerySmall = async () => {
 		const data = await instance.getList(userID);
 		return data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_n.jpg`,
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,
@@ -36,7 +33,7 @@ const CreateFlickrApp = () => {
 	const getGalleryWork = async () => {
 		const data = await instance.getList(userwORKID);
 		return data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_b.jpg`,
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,
@@ -52,11 +49,11 @@ const CreateFlickrApp = () => {
 		}));
 	};
 
-	const getPhotosLarge = async (id) => {
+	const getPhotosOriginal = async (id) => {
 		const data = await instance.getPhotos(id);
 		return data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_o.jpg`,
 			title: photo.title,
 		}));
 	};
@@ -65,25 +62,25 @@ const CreateFlickrApp = () => {
 		const data = await instance.getLatestPhotos(userID);
 		return data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_c.jpg`,
 			title: photo.title,
 		}));
 	};
 
-	const getLatestPhotosThumbnail = async () => {
+	const getLatestPhotosLargeSquare = async () => {
 		const data = await instance.getLatestPhotos(userID);
 		return data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_n.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`,
 			title: photo.title,
 		}));
 	};
 
-	const getLatestPhotosThumbnailWork = async () => {
+	const getLatestPhotosLargeSquarelWork = async () => {
 		const data = await instance.getLatestPhotos(userwORKID);
 		return data.map((photo) => ({
 			id: photo.id,
-			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_n.jpg`,
+			url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`,
 			title: photo.title,
 		}));
 	};
@@ -127,10 +124,10 @@ const CreateFlickrApp = () => {
 		getAlbum,
 		getGalleryWork,
 		getPhotos,
-		getPhotosLarge,
+		getPhotosOriginal,
 		getLatestPhotos,
-		getLatestPhotosThumbnail,
-		getLatestPhotosThumbnailWork,
+		getLatestPhotosLargeSquare,
+		getLatestPhotosLargeSquarelWork,
 		getLatestPhotosMedium,
 		getPhotoInfo
 	};
