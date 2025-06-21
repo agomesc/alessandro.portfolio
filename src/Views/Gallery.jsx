@@ -31,7 +31,7 @@ const Gallery = () => {
   }, [galleryData, instance]);
 
   if (!galleryData) {
-    return <Skeleton variant="rectangular" height={400} />;
+    return <Skeleton variant="rectangular" height={300} width="100%" />;
   }
 
   return (
@@ -53,7 +53,7 @@ const Gallery = () => {
           mt: 10,
         }}
       >
-        <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+          <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
         <ImageMasonry data={galleryData} />

@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -13,11 +13,22 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import LazyImage from "./LazyImage";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
 
 const PhotoDashboard = ({ photoData, onImageLoad }) => {
+  const [openFullscreen, setOpenFullscreen] = useState(false);
+
+  const handleImageClick = () => {
+    setOpenFullscreen(true);
+  };
+
+  const handleCloseFullscreen = () => {
+    setOpenFullscreen(false);
+  };
+
   return (
     <Card>
       <CardHeader
@@ -28,16 +39,21 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
         }
       />
 
-      <LazyImage
-        src={photoData.url}
-        alt={photoData.title}
-        width="100%"
-        height="auto"
-        onLoad={onImageLoad}
-      />
+      <div
+        onClick={handleImageClick}
+        style={{ cursor: "pointer", overflow: "hidden" }}
+      >
+        <LazyImage
+          src={photoData.url}
+          alt={photoData.title}
+          width="100%"
+          height="auto"
+          onLoad={onImageLoad}
+        />
+      </div>
 
       <CardContent>
-        <TableContainer sx={{ width: '100%' }}>
+        <TableContainer sx={{ width: "100%" }}>
           <Table aria-label="photo specifications" size="small">
             <TableBody>
               {[
@@ -59,15 +75,15 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
                   <TableCell
                     component="th"
                     scope="row"
-                    sx={{ whiteSpace: 'nowrap', verticalAlign: 'top' }} // ❗não quebra texto aqui
+                    sx={{ whiteSpace: "nowrap", verticalAlign: "top" }}
                   >
                     {label}
                   </TableCell>
                   <TableCell
                     sx={{
-                      wordBreak: 'break-word',
-                      whiteSpace: 'normal',
-                    }} // ❗só a segunda coluna quebra
+                      wordBreak: "break-word",
+                      whiteSpace: "normal",
+                    }}
                   >
                     {value}
                   </TableCell>
@@ -78,8 +94,6 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
         </TableContainer>
       </CardContent>
 
-
-
       <CardActions>
         <StarComponent id={photoData.id} />
         <ViewComponent id={photoData.id} />
@@ -89,6 +103,101 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
           </IconButton>
         </Link>
       </CardActions>
+
+      {openFullscreen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            cursor: "zoom-out",
+          }}
+          onClick={handleCloseFullscreen}
+        >
+          {/* Botão de Fechar "X" */}
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              cursor: "pointer",
+              zIndex: 10000,
+            }}
+            onClick={handleCloseFullscreen}
+          >
+            <CloseIcon style={{ color: "white", fontSize: "36px" }} />
+          </div>
+
+          {/* Container para a imagem e seu texto sobreposto */}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              maxWidth: "calc(100% - 40px)",
+              maxHeight: "calc(100% - 40px)",
+              border: "10px solid white",
+              boxSizing: "border-box",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <LazyImage
+              src={photoData.url}
+              alt={photoData.title}
+              style={{
+                display: "block",
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+              }}
+            />
+
+            {/* Sobreposição para Exposure, Aperture e ISO */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "10px", // Ajuste conforme necessário
+                right: "10px", // ALINHADO À DIREITA
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                color: "white",
+                padding: "8px 12px",
+                borderRadius: "4px",
+                fontSize: "1rem",
+                zIndex: 10001,
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px",
+                pointerEvents: "none",
+                textAlign: "right", // ALINHA O TEXTO INTERNO À DIREITA
+              }}
+            >
+              {photoData.exposure && (
+                <Typography variant="body2" sx={{ color: "white" }}>
+                  **Velocidade (Exposure):** {photoData.exposure}
+                </Typography>
+              )}
+              {photoData.aperture && (
+                <Typography variant="body2" sx={{ color: "white" }}>
+                  **Abertura (Aperture):** {photoData.aperture}
+                </Typography>
+              )}
+              {photoData.iso && (
+                <Typography variant="body2" sx={{ color: "white" }}>
+                  **ISO:** {photoData.iso}
+                </Typography>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </Card>
   );
 };
