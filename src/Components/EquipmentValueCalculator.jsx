@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy } from 'react';
 import {
   TextField,
   MenuItem,
@@ -10,6 +10,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+const StarComponent = lazy(() => import("./StarComponent"));
 
 const EquipmentValueCalculator = () => {
   const [newPrice, setNewPrice] = useState('');
@@ -111,6 +112,9 @@ const EquipmentValueCalculator = () => {
         label="Equipamento saiu de linha"
         sx={{ mt: 1 }}
       />
+
+      <StarComponent id="EquipmentValueCalculator" />
+      
 
       <Button
         fullWidth

@@ -81,6 +81,7 @@ const StarComponent = ({ id }) => {
                 borderRadius: "12px",
                 position: "relative",
                 zIndex: 10,
+                width:80
             }}
         >
             <motion.button

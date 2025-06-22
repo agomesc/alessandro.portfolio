@@ -5,7 +5,6 @@ import App from './App';
 import ErrorBoundary from "./Components/ErrorBoundary";
 import 'typeface-roboto';
 import { HelmetProvider } from 'react-helmet-async'; // Importe aqui
-import * as serviceWorker from './serviceWorker';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,5 +21,5 @@ root.render(
   </React.StrictMode>
 );
 
-serviceWorker.register(); // Registra o Service Worker
+
 
