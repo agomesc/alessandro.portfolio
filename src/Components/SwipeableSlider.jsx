@@ -2,103 +2,128 @@ import React from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
-import { useNavigate } from "react-router-dom";
-import TypographyTitle from './TypographyTitle';
-import LazyImage from './LazyImage';
+import { useNavigate } from "react-router-dom"; // Don't forget to import this
+import TypographyTitle from './TypographyTitle'; // Ensure this path is correct
+import LazyImage from './LazyImage'; // Ensure this path is correct
 
-const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => { // Add allUpdatesUrl as a prop
+// Renamed from App to SwipeableSlider to better reflect its purpose,
+// aligning with your previous component structure.
+const SwipeableSlider = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
-  const photos = itemData;
+  // No need to create a new `photos` variable if `itemData` is already descriptive enough.
+  // const photos = itemData;
 
   return (
     <Box
       sx={{
         p: 0,
         width: {
-          xs: "100%",
+          xs: "100%", // Full width on extra small screens
           sm: "90%",
           md: "80%",
           lg: "70%",
           xl: "80%"
         },
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 10
+        margin: "0 auto", // Center the box horizontally
+        padding: "0 20px", // Horizontal padding
+        mt: 10 // Top margin
       }}
     >
+      {/* Title for the section, using a reusable component */}
       <TypographyTitle src="Atualizações" />
 
       <Box
         sx={{
           display: "flex",
-          overflowX: "auto",
-          gap: 2,
-          scrollbarWidth: "thin",
+          overflowX: "auto", // Enable horizontal scrolling
+          gap: 2, // Space between items
+          // Custom scrollbar styling for Webkit browsers (Chrome, Safari, Edge)
           "&::-webkit-scrollbar": {
-            height: "6px",
+            height: "6px", // Height of the horizontal scrollbar
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "#888",
-            borderRadius: "6px",
-          }
+            background: "#888", // Color of the scrollbar thumb
+            borderRadius: "6px", // Rounded corners for the thumb
+          },
+          // Firefox scrollbar styling
+          scrollbarWidth: "thin", // "auto" or "thin"
+          scrollbarColor: "#888 transparent", // thumb color track color
         }}
       >
-        {photos.map((photo, index) => {
-          const isHighlighted = index < 2; // primeiras duas com etiqueta
+        {/* Map through itemData to display each photo */}
+        {itemData.map((photo, index) => {
+          // Determine if the photo should have the "Nova" label
+          const isHighlighted = index < 2;
 
           return (
             <Box
-              key={index}
+              key={photo.id || index} // Use a unique ID from photo data if available, otherwise index
               sx={{
                 position: 'relative',
-                flexShrink: 0,
+                flexShrink: 0, // Prevent items from shrinking
+                // Optionally define a fixed width for items here if LazyImage doesn't handle it consistently,
+                // or ensure LazyImage manages its own size correctly within the flex container.
+                width: 150, // Example fixed width for each photo container
+                height: 150, // Example fixed height for each photo container
+                overflow: 'hidden', // Hide overflow if image is larger than container
+                   margin: "0 auto", // This is the key for horizontal centering
               }}
             >
+              {/* "Nova" label for highlighted photos */}
               {isHighlighted && (
                 <Typography
                   variant="caption"
                   sx={{
                     position: 'absolute',
-                    top: -5,
+                    top: -5, // Slightly above the image
                     left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: 'error.main',
+                    transform: 'translateX(-50%)', // Center horizontally
+                    backgroundColor: 'error.main', // Red background from theme
                     color: 'white',
-                    px: 1,
-                    py: 0.5,
+                    px: 1, // Horizontal padding
+                    py: 0.5, // Vertical padding
                     borderRadius: '4px',
                     fontWeight: 'bold',
-                    zIndex: 1,
-                    whiteSpace: 'nowrap',
+                    zIndex: 1, // Ensure it's above the image
+                    whiteSpace: 'nowrap', // Prevent text from wrapping
                   }}
                 >
                   Nova
                 </Typography>
               )}
+              {/* Lazy-loaded image component */}
               <LazyImage
-                src={photo.url}
-                alt={`Imagem ${index + 1}`}
+                src={photo.url} // Assuming photo object has a 'url' property
+                alt={photo.title || `Imagem ${index + 1}`} // Use photo title or generic alt text
+                // Set explicit dimensions for LazyImage for better layout shifting prevention
                 width={150}
                 height={150}
+                sx={{
+                    display: 'block', // Ensures no extra space below the image
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover', // Ensures the image covers the area without distortion
+                }}
               />
             </Box>
           );
         })}
       </Box>
 
+      {/* "Ver todas as atualizações" link */}
       <Box sx={{ textAlign: 'right', mt: 4, mb: 4 }}>
         <Link
-          component="button"
+          component="button" // Render as a button for accessibility
           variant="body1"
-          onClick={() => navigate(allUpdatesUrl)} // Use the allUpdatesUrl prop here
+          onClick={() => navigate(allUpdatesUrl)} // Navigate to the specified URL
           sx={{
-            color: 'primary.main',
-            textDecoration: 'none',
+            color: 'primary.main', // Uses primary color from your Material-UI theme
+            textDecoration: 'none', // No underline by default
             fontSize: '1.1rem',
             fontWeight: 'bold',
             '&:hover': {
-              textDecoration: 'underline',
+              textDecoration: 'underline', // Underline on hover
             }
           }}
         >
@@ -109,4 +134,5 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => { // Add all
   );
 };
 
-export default React.memo(App);
+// Memoize the component to prevent unnecessary re-renders
+export default React.memo(SwipeableSlider);

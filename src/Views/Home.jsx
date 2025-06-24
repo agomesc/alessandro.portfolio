@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -8,7 +8,10 @@ import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
 import LoadingMessage from "../Components/LoadingMessage";
 
+// Lazy-loaded components
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
+const RandomPhoto = lazy(() => import("../Components/PhotoHighlight.jsx"));
+
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
@@ -16,56 +19,74 @@ const DisplayAds = lazy(() => import("./DisplayAds"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const Home = () => {
+    // State declarations
     const [galleryData, setGalleryData] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [showSnackbarOnce, setShowSnackbarOnce] = useState(true);
-    const instance = useMemo(() => CreateFlickrApp(), []);
 
-    // Busca as imagens quando muda a aba
-    useEffect(() => {
-        setGalleryData(null); // opcional: limpa dados para mostrar Skeleton no loading
-        if (tabIndex === 0) {
-            instance
-            .getLatestPhotosLargeSquare()
-            .then(setGalleryData);
-        } else {
-            instance.getLatestPhotosLargeSquarelWork()
-            .then(setGalleryData);
+    // Use a ref for showSnackbarOnce to avoid re-renders if its value changes and it's only for a side effect
+    // Or, more simply, manage it directly in the effect if it's truly a one-time thing per session.
+    // For this case, keeping it as state is fine if you might re-enable it later based on other logic.
+    // However, the original logic suggests it's a flag for an initial display.
+    // Let's remove it as state and manage directly via sessionStorage check.
+
+    const flickrInstance = useMemo(() => CreateFlickrApp(), []);
+
+    // Function to fetch gallery data based on tab index
+    const fetchGalleryData = useCallback(async () => {
+        setGalleryData(null); 
+        try {
+            const data = tabIndex === 0
+                ? await flickrInstance.getLatestPhotosLargeSquare()
+                : await flickrInstance.getLatestPhotosLargeSquarelWork();
+            setGalleryData(data);
+        } catch (error) {
+            console.error("Error fetching gallery data:", error);
+            setSnackbarMessage("Failed to load photos. Please try again later.");
+            setSnackbarSeverity("error");
+            setSnackbarOpen(true);
         }
-    }, [tabIndex, instance]);
+    }, [tabIndex, flickrInstance]);
 
-    // Controla exibição do snackbar uma vez por dia
+    // Effect to fetch images when tab changes
+    useEffect(() => {
+        fetchGalleryData();
+    }, [fetchGalleryData]); 
+
+    
     useEffect(() => {
         const snackbarKey = "snackbarShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
         const now = Date.now();
 
-        if (showSnackbarOnce && (!lastShown || now - parseInt(lastShown, 10) > oneDay)) {
+        // Only show if it hasn't been shown today
+        if (!lastShown || (now - parseInt(lastShown, 10) > oneDay)) {
             setSnackbarMessage(
                 "Curtiu alguma foto? Se possível, deixe uma estrela ou comentário para apoiar o meu trabalho! 😊"
             );
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
-            setShowSnackbarOnce(false);
             sessionStorage.setItem(snackbarKey, now.toString());
         }
-    }, [showSnackbarOnce]);
+    }, []); // Empty dependency array means this runs only once on mount
 
-    const handleTabChange = (event, newIndex) => {
+    // Handler for tab change
+    const handleTabChange = useCallback((event, newIndex) => {
         setTabIndex(newIndex);
-    };
+    }, []);
 
-    const handleSnackbarClose = () => {
+    // Handler for snackbar close
+    const handleSnackbarClose = useCallback(() => {
         setSnackbarOpen(false);
-    };
+    }, []);
 
-    const title = "Atualizações";
-    const description = "Atualizações";
+    const pageTitle = "Atualizações"; // Changed variable name for clarity
+    const pageDescription = "Atualizações"; // Changed variable name for clarity
 
+    // Show skeleton while galleryData is null
     if (!galleryData) {
         return <Skeleton variant="rectangular" height={640} width="100%" />;
     }
@@ -89,15 +110,17 @@ const Home = () => {
                     mt: 5,
                 }}
             >
+                <RandomPhoto itemData={galleryData} />
+                {/* Tabs for navigation between galleries */}
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
                     centered
                     sx={{
                         marginTop: 3,
-                        marginBottom: -8,
+                        marginBottom: -8, // Adjust as needed for spacing
                         ".MuiTabs-indicator": {
-                            backgroundColor: "#78884c",
+                            backgroundColor: "#78884c", // Custom indicator color
                         },
                     }}
                 >
@@ -109,7 +132,7 @@ const Home = () => {
                             color: tabIndex === 0 ? "#78884c" : "#c0810d",
                             fontWeight: tabIndex === 0 ? "bold" : "normal",
                             "&.Mui-selected": {
-                                color: "#78884c",
+                                color: "#78884c", // Selected tab color
                             },
                         }}
                     />
@@ -121,17 +144,18 @@ const Home = () => {
                             color: tabIndex === 1 ? "#78884c" : "#c0810d",
                             fontWeight: tabIndex === 1 ? "bold" : "normal",
                             "&.Mui-selected": {
-                                color: "#78884c",
+                                color: "#78884c", // Selected tab color
                             },
                         }}
                     />
                 </Tabs>
 
+                {/* Conditional rendering of gallery content based on tabIndex */}
                 {tabIndex === 0 && (
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
                             <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                            <Gallery />
+                            <Gallery /> {/* Consider passing galleryData to Gallery if it needs it */}
                         </Box>
                     </Suspense>
                 )}
@@ -140,20 +164,24 @@ const Home = () => {
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
                             <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
-                            <GalleryWork />
+                            
+                            <GalleryWork /> {/* Consider passing galleryData to GalleryWork if it needs it */}
                         </Box>
                     </Suspense>
                 )}
-
+                
+                {/* Display Ads component */}
                 <Suspense fallback={<LoadingMessage />}>
                     <DisplayAds />
                 </Suspense>
             </Box>
 
+            {/* Social Meta Tags for SEO */}
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags title={title} image="/logo_192.png" description={description} />
+                <SocialMetaTags title={pageTitle} image="/logo_192.png" description={pageDescription} />
             </Suspense>
 
+            {/* Message Snackbar */}
             <Suspense fallback={<></>}>
                 <MessageSnackbar
                     open={snackbarOpen}
