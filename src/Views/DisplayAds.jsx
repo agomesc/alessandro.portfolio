@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+// Attempting to resolve module path by explicitly adding .js extension or assuming standard structure
+import { db } from '../firebaseConfig.jsx'; // Added .js extension
 import { Link } from 'react-router-dom';
 import {
-    Card, CardContent, Typography, Box, Pagination, Skeleton
+    Card, CardContent, Typography, Box, Pagination, Skeleton, Button // Added Button for alternative
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 // Lazy load TypographyTitle component
-const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const LazyImage = lazy(() => import("../Components/LazyImage"));
+// Attempting to resolve module path by explicitly adding .jsx extension or assuming standard structure
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle.jsx")); // Added .jsx extension
+const LazyImage = lazy(() => import("../Components/LazyImage.jsx")); // Added .jsx extension
 
 const App = () => {
     // State to store the fetched galleries
@@ -37,12 +39,9 @@ const App = () => {
                     ...doc.data(),
                 }));
                 setGalleries(fetchedGalleries); // Update state with fetched galleries
-                // --- NOVO LOG PARA DEPURAR ---
-                //console.log('Dados de galerias buscados:', fetchedGalleries);
                 if (fetchedGalleries.length === 0) {
                     console.warn('Nenhuma galeria ativa encontrada ou problema na query/índices.');
                 }
-                // ---------------------------
             } catch (error) {
                 console.error('Erro ao buscar galerias:', error);
                 // In a production app, you might want to display a user-friendly error message here
@@ -53,7 +52,6 @@ const App = () => {
 
     // Sort galleries client-side as an additional safety measure,
     // in case Firestore's orderBy isn't fully reliable or for more complex sorting logic.
-    // (Ainda é válido para ordenação extra ou se o índice não funcionar)
     const sortedGalleries = [...galleries].sort((a, b) => {
         // Access 'seconds' property of Firestore Timestamp or default to 0 for safety
         const aTime = a.createdAt?.seconds || 0;
@@ -74,6 +72,12 @@ const App = () => {
         setCurrentPage(value); // Update current page
         // Scroll to the top of the content area smoothly
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Handler for external link click
+    const handleExternalLinkClick = (e, link) => {
+        e.stopPropagation(); // Prevent the parent Card's Link from triggering
+        window.open(link, '_blank', 'noopener noreferrer'); // Open the external link in a new tab
     };
 
     return (
@@ -112,12 +116,12 @@ const App = () => {
                 {currentItems.map((gallery) => (
                     <Card
                         key={gallery.id}
-                        component={Link} // Make the card a clickable link
+                        component={Link} // Make the card a clickable link to internal detail page
                         to={`/GalleryDetail/${gallery.id}`} // Navigate to detail page
                         sx={{
                             cursor: 'pointer',
                             minWidth: 240, // Minimum width for each card
-                            maxWidth: { xs: 240, sm: 'calc(50% - 12px)', md: 'calc(33.33% - 16px)', lg: 'calc(25% - 18px)' }, 
+                            maxWidth: { xs: 240, sm: 'calc(50% - 12px)', md: 'calc(33.33% - 16px)', lg: 'calc(25% - 18px)' },
                             flexShrink: 0, // Prevent shrinking on small screens for horizontal scroll
                             textDecoration: 'none', // Remove underline from Link component
                             color: 'inherit', // Inherit text color
@@ -149,23 +153,50 @@ const App = () => {
                             {/* Display external link if available */}
                             {gallery.link && (
                                 <Box sx={{ mt: 1 }}>
+                                    {/*
+                                        MODIFICATION START:
+                                        Changed Typography 'component="a"' to 'component="span"'
+                                        and added an 'onClick' handler to open the external link.
+                                        This avoids nesting <a> tags, which is invalid HTML.
+                                    */}
                                     <Typography
                                         variant="body2"
-                                        component="a"
-                                        href={gallery.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        // Prevent card's Link behavior when clicking the external link
-                                        onClick={(e) => e.stopPropagation()}
+                                        component="span" // Render as a span, not an <a> to prevent nesting issue
+                                        onClick={(e) => handleExternalLinkClick(e, gallery.link)} // Use the new handler
                                         sx={{
                                             display: 'flex',
                                             alignItems: 'center',
-                                            textDecoration: 'none',
+                                            textDecoration: 'underline', // Add underline to signify clickability
                                             color: '#78884c',
+                                            cursor: 'pointer', // Indicate it's clickable
+                                            '&:hover': {
+                                                color: '#5a6b38', // Slightly darker color on hover
+                                            }
                                         }}
                                     >
                                         Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                                     </Typography>
+                                    {/*
+                                        Alternative: Use a Material-UI Button for a more distinct clickable element:
+                                        <Button
+                                            variant="text"
+                                            onClick={(e) => handleExternalLinkClick(e, gallery.link)}
+                                            sx={{
+                                                textTransform: 'none',
+                                                color: '#78884c',
+                                                p: 0,
+                                                minWidth: 'auto',
+                                                '&:hover': {
+                                                    backgroundColor: 'transparent',
+                                                    textDecoration: 'underline',
+                                                },
+                                            }}
+                                            startIcon={<OpenInNewIcon fontSize="small" />} // Icon as start
+                                        >
+                                            Abrir Link Externo
+                                        </Button>
+                                    */}
+                                    {/* MODIFICATION END */}
                                 </Box>
                             )}
                         </CardContent>

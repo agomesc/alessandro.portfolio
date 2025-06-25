@@ -65,7 +65,7 @@ const Home = () => {
         // Only show if it hasn't been shown today
         if (!lastShown || (now - parseInt(lastShown, 10) > oneDay)) {
             setSnackbarMessage(
-                "Curtiu alguma foto? Se possível, deixe uma estrela ou comentário para apoiar o meu trabalho! 😊"
+                "Curtiu alguma foto? Se possível, deixe uma ⭐ ou comentário para apoiar o meu trabalho!"
             );
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
