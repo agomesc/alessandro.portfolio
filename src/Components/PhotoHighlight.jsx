@@ -2,13 +2,12 @@ import React, { useMemo, useEffect, useState } from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from '@mui/material/CircularProgress';
-import { auth,  db, } from '../firebaseConfig';
-import {  signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import {  collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-
+import { auth, db } from '../firebaseConfig';
+import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 // Componente LazyImage movido para dentro do mesmo arquivo para resolver o erro de resolução de módulo
-const LazyImage = ({ src, alt, width, height, sx }) => {
+const LazyImage = ({ src, alt, width, height, sx, showLoaderAndError = true }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
@@ -41,7 +40,7 @@ const LazyImage = ({ src, alt, width, height, sx }) => {
   return (
     <>
       {/* Mostra um indicador de carregamento enquanto a imagem não está carregada e não há erro */}
-      {!loaded && !error && (
+      {showLoaderAndError && !loaded && !error && (
         <Box
           sx={{
             display: 'flex',
@@ -71,7 +70,7 @@ const LazyImage = ({ src, alt, width, height, sx }) => {
         }}
       />
       {/* Mostra uma mensagem de erro se o carregamento da imagem falhar */}
-      {error && (
+      {showLoaderAndError && error && (
         <Box
           sx={{
             display: 'flex',
@@ -107,7 +106,6 @@ const App = () => {
                     await signInWithCustomToken(auth, window.__initial_auth_token);
                 } catch (error) {
                     console.error('Erro ao tentar login com token customizado:', error);
-                    // Fallback para login anônimo ou tratamento de erro
                 }
             }
 
@@ -134,19 +132,17 @@ const App = () => {
                 authUnsubscribe();
             }
         };
-    }, []); // Executa apenas uma vez na montagem
+    }, []);
 
     // 2. Escuta por mudanças nas imagens do Firestore
     useEffect(() => {
         if (!isAuthReady || !userId) {
-            return; // Não busca se a autenticação não estiver pronta ou userId não definido
+            return;
         }
 
         const imagesCollectionRef = collection(db, 'images');
         const q = query(
             imagesCollectionRef,
-            // Adicione esta condição para filtrar por userId se as suas regras de segurança exigirem
-            // Por exemplo: where('userId', '==', userId),
             orderBy('timestamp', 'desc')
         );
 
@@ -155,24 +151,21 @@ const App = () => {
             setImages(imageList);
         }, (error) => {
             console.error("Erro ao buscar imagens:", error);
-            // Poderia adicionar um snackbar ou mensagem de erro para o utilizador aqui
         });
 
         return () => {
-            unsubscribe(); // Limpa o listener ao desmontar
+            unsubscribe();
         };
-    }, [isAuthReady, userId]); // Dependências: isAuthReady e userId
+    }, [isAuthReady, userId]);
 
     // Usa useMemo para selecionar uma foto aleatória apenas uma vez por renderização
-    // se 'images' não mudar, garantindo que a foto permaneça a mesma
-    // até que o componente seja remontado ou 'images' mude.
     const randomPhoto = useMemo(() => {
         if (!images || images.length === 0) {
-            return null; // Retorna null se não houver dados
+            return null;
         }
         const randomIndex = Math.floor(Math.random() * images.length);
         return images[randomIndex];
-    }, [images]); // Recalcula apenas se 'images' mudar
+    }, [images]);
 
     // Exibe um carregador enquanto a autenticação e os dados não estão prontos
     if (!isAuthReady) {
@@ -188,33 +181,43 @@ const App = () => {
         <Box
             sx={{
                 width: '100%',
-                maxWidth: '2048px', // Largura máxima de 2048px
-                margin: '0 auto',   // Centraliza o componente horizontalmente
-                height: '600px',    // Altura do banner de destaque
+                maxWidth: '2048px',
+                margin: '0 auto',
+                height: '600px',
                 position: 'relative',
                 overflow: 'hidden',
-                mt: 4,              // Margem superior
-                display: 'flex',    // Para centralizar conteúdo se a imagem não preencher
-                alignItems: 'center', // Centraliza itens filhos verticalmente (flexbox)
-                justifyContent: 'center', // Centraliza itens filhos horizontalmente (flexbox)
-                backgroundColor: '#f0f0f0', // Cor de fundo para quando não houver imagem
+                mt: 4,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#f0f0f0',
+                backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
             }}
         >
             {randomPhoto ? (
                 <>
+                    {/* The LazyImage component is here to help with preloading/error state visibility
+                        if the background image fails. You can set 'showLoaderAndError' to false
+                        if you don't want its spinner/error message to overlay.
+                        The actual <img> it generates will be hidden by default from its internal logic.
+                    */}
                     <LazyImage
-                        src={randomPhoto.imageUrl} // Pega diretamente o imageUrl do Firestore
+                        src={randomPhoto.imageUrl}
                         alt={randomPhoto.title || "Foto em Destaque"}
                         width="100%"
                         height="100%"
                         sx={{
-                            objectFit: 'cover', // Garante que a imagem cubra a área sem distorção
-                            display: 'block',
-                            position: 'absolute', // Permite que o texto fique por cima, preenchendo o contêiner pai
-                            top: 0,
-                            left: 0,
+                            // This image tag is primarily for preloading and error state.
+                            // Its 'display' style is controlled internally by LazyImage based on loaded state.
+                            // You might want to remove it entirely if you rely solely on background-image.
                         }}
+                        showLoaderAndError={false} // Prevents LazyImage from showing its own loader/error directly on top
                     />
+
                     {/* Camada de sobreposição para o título e a descrição */}
                     <Box
                         sx={{
@@ -225,6 +228,7 @@ const App = () => {
                             background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)',
                             color: 'white',
                             p: 2,
+                            zIndex: 1,
                         }}
                     >
                         <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
