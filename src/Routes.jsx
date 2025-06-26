@@ -54,7 +54,7 @@ const AppRoutes = () => {
         <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
         <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
         <Route path="/contactForm" element={<ContactForm />} />
-        <Route path="/UploadComponent" element={<UploadComponent />} />
+         {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
         <Route path="*" element={<NotFound />} />
 
       </Routes>

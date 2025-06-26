@@ -79,7 +79,7 @@ const Home = () => {
 
     // Show skeleton while galleryData is null
     if (!galleryData) {
-        return <Skeleton variant="rectangular" height={640} width="100%" />;
+        return <Skeleton variant="circular" />;
     }
 
     return (
@@ -102,7 +102,7 @@ const Home = () => {
                 }}
             >
                 {/* RandomPhoto can render directly as galleryData is awaited */}
-                <RandomPhoto itemData={galleryData} />
+                <RandomPhoto />
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
