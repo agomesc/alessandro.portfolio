@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useRef } from 'react'; // Import useRef
 import ReactFlagsSelect from 'react-flags-select';
 import {
   collection,
@@ -53,6 +53,20 @@ function CommentBox({ itemID }) {
   const [replyingTo, setReplyingTo] = useState(null);
   const [image, setImage] = useState(null);
 
+  // Create a ref for the Editor component (for focus)
+  const editorRef = useRef(null);
+  // Create a ref for the comment form section (for scrolling)
+  const commentFormRef = useRef(null);
+
+  useEffect(() => {
+    if (replyingTo && commentFormRef.current) {
+      commentFormRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [replyingTo]);
+
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
@@ -73,6 +87,29 @@ function CommentBox({ itemID }) {
       setCountry('BR');
     }
   }, [currentUser]);
+
+  // Effect to focus the editor when replyingTo changes
+  useEffect(() => {
+    if (replyingTo && editorRef.current) {
+      // Assuming your Editor component has a method like focus() or a ref to its underlying input
+      if (editorRef.current.focus) {
+        editorRef.current.focus();
+      } else if (editorRef.current.editor) { // If it's a rich text editor like TinyMCE or Quill
+        editorRef.current.editor.focus();
+      }
+    }
+  }, [replyingTo]);
+
+  // Effect to scroll to the comment form when replyingTo changes
+  useEffect(() => {
+    if (replyingTo && commentFormRef.current) {
+      commentFormRef.current.scrollIntoView({
+        behavior: 'smooth', // Smooth scroll animation
+        block: 'start',      // Align the top of the element with the top of the viewport
+      });
+    }
+  }, [replyingTo]);
+
 
   useEffect(() => {
     const q = query(
@@ -166,7 +203,6 @@ function CommentBox({ itemID }) {
     <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
       <CardHeader
         avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
-        // CORRECTED LINE BELOW:
         title={`${comment.name} (${comment.country})`}
         subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
         action={
@@ -217,7 +253,8 @@ function CommentBox({ itemID }) {
         </Box>
       )}
 
-      <form onSubmit={handleSubmit}>
+      {/* Attach the ref to the form element or its container */}
+      <form onSubmit={handleSubmit} ref={commentFormRef}>
         <TextField label="Nome" value={name} onChange={e => setName(e.target.value)} fullWidth required sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
         <TextField label="E-mail (opcional)" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
 
@@ -236,7 +273,8 @@ function CommentBox({ itemID }) {
         </FormControl>
 
         <Box sx={{ mb: 2 }}>
-          <Editor onContentChange={setComment} defaultValue={comment} height="250px" />
+          {/* Attach the ref to your Editor component */}
+          <Editor onContentChange={setComment} defaultValue={comment} height="250px" editorRef={editorRef} />
         </Box>
 
         <Box sx={{ position: "relative", mb: 2 }}>

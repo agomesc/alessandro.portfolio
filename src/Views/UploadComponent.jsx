@@ -4,24 +4,13 @@ import {
   Card, CardContent, CardMedia, Grid
 } from '@mui/material';
 
-// Firebase imports
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy } from 'firebase/firestore';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+// Import Firebase instances from your firebaseConfig.js
+import { auth, db, storage } from '../firebaseConfig'; // Adjust the path if firebaseConfig.js is not in the same directory
 
-// Definição da configuração do Firebase diretamente no componente
-// Isto substitui o import de '../firebaseConfig' para resolver o erro de "Could not resolve"
-const firebaseAppConfig = {
-  apiKey: "AIzaSyAl75-7cxK0okEbOEnpEABmzmEJr_aQv-I",
-  authDomain: "alessandro-portfolio.firebaseapp.com",
-  databaseURL: "https://alessandro-portfolio-default-rtdb.firebaseio.com",
-  projectId: "alessandro-portfolio",
-  storageBucket: "alessandro-portfolio.firebasestorage.app",
-  messagingSenderId: "1077155633264",
-  appId: "1:1077155633264:web:176463c5c50b9a28427cb5",
-  measurementId: "G-WG3E4CSVFR"
-};
+// Firebase imports specific to methods, not the app config
+import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { collection, addDoc, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 /**
  * Função utilitária para redimensionar uma imagem (File ou Blob) para um Blob redimensionado.
@@ -67,23 +56,17 @@ const resizeImageToBlob = (file, maxWidth = 2048, maxHeight = 2048) => {
           }
         }, 'image/jpeg', 0.9);
       };
-      img.onerror = (error) => reject(error);
+      img.onerror = (error) => reject(new Error(`Erro ao carregar imagem para redimensionamento: ${error.message || error}`));
       img.src = event.target.result;
     };
-    reader.onerror = (error) => reject(error);
+    reader.onerror = (error) => reject(new Error(`Erro ao ler ficheiro para redimensionamento: ${error.message || error}`));
     reader.readAsDataURL(file);
   });
 };
 
 const ImageUploaderGallery = () => {
-  // Inicializa as instâncias do Firebase dentro do componente, usando a configuração definida acima.
-  const app = initializeApp(firebaseAppConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
-
   const [userId, setUserId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false); // Para indicar que a autenticação inicial foi concluída
+  const [isAuthReady, setIsAuthReady] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -95,22 +78,22 @@ const ImageUploaderGallery = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  // Função para exibir mensagens na Snackbar
+  // Novo estado para exibir erros no formulário de upload
+  const [uploadError, setUploadError] = useState(null);
+
   const showSnackbar = useCallback((msg, severity) => {
     setSnackbarMessage(msg);
     setSnackbarSeverity(severity);
     setSnackbarOpen(true);
   }, []);
 
-  // Efeito para inicializar autenticação e escutar mudanças de estado
   useEffect(() => {
     let authUnsubscribe;
 
     const initAuth = async () => {
       console.log('Iniciando autenticação...');
-      
-      // Tenta fazer login com token customizado se disponível e não houver utilizador logado
-      // Acessa __initial_auth_token através de window para clareza (ajuda no linting)
+      setUploadError(null); // Limpa qualquer erro anterior ao iniciar a autenticação
+
       if (!auth.currentUser && typeof window.__initial_auth_token !== 'undefined') {
         try {
           console.log('Tentando signInWithCustomToken...');
@@ -119,20 +102,18 @@ const ImageUploaderGallery = () => {
         } catch (error) {
           console.error('Erro ao tentar login com token customizado:', error);
           showSnackbar(`Erro de autenticação (Token): ${error.message}. Verifique as configurações do seu Firebase.`, 'error');
-          // onAuthStateChanged abaixo tratará o estado nulo do utilizador e tentará o login anónimo
+          setUploadError(`Erro de autenticação: ${error.message}`);
         }
       } else {
         console.log('__initial_auth_token não definido ou utilizador já logado.');
       }
 
-      // Configura o listener onAuthStateChanged
       authUnsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
           console.log('Utilizador logado:', user.uid);
           setUserId(user.uid);
         } else {
           console.log('Nenhum utilizador logado após as verificações iniciais. Tentando login anónimo...');
-          // Se não houver utilizador logado após a tentativa de token personalizado, tenta login anónimo
           try {
             await signInAnonymously(auth);
             const currentUser = auth.currentUser;
@@ -140,7 +121,7 @@ const ImageUploaderGallery = () => {
               console.log('Login anónimo bem-sucedido:', currentUser.uid);
               setUserId(currentUser.uid);
             } else {
-              // Último recurso: gerar um UUID se signInAnonymously não retornar um UID imediatamente
+              // Fallback para um UUID se signInAnonymously não retornar um UID imediatamente (caso de Edge)
               const newUuid = crypto.randomUUID();
               console.warn('signInAnonymously não retornou UID imediatamente. Usando UUID gerado:', newUuid);
               setUserId(newUuid);
@@ -148,13 +129,14 @@ const ImageUploaderGallery = () => {
           } catch (anonError) {
             console.error('Erro ao tentar login anónimo:', anonError);
             showSnackbar(`Erro de autenticação (Anónimo): ${anonError.message}. Certifique-se de que a autenticação anónima está ativada no Firebase.`, 'error');
-            // Se o login anónimo também falhar, gerar um UUID como último recurso
+            setUploadError(`Erro de autenticação anónima: ${anonError.message}`);
+            // Fallback para um UUID mesmo em caso de falha de autenticação total
             const newUuid = crypto.randomUUID();
-            console.error('Falha na autenticação. Usando UUID gerado como fallback:', newUuid);
-            setUserId(newUuid);
+            console.error('Falha na autenticação. Usando UUID gerado como fallback para operações não-autenticadas:', newUuid);
+            setUserId(newUuid); // Permite que o componente continue, mas as operações autenticadas falharão
           }
         }
-        setIsAuthReady(true); // Autenticação inicial concluída
+        setIsAuthReady(true);
         console.log('isAuthReady definido como true.');
       });
     };
@@ -164,27 +146,23 @@ const ImageUploaderGallery = () => {
     return () => {
       if (authUnsubscribe) {
         console.log('Limpando listener onAuthStateChanged.');
-        authUnsubscribe(); // Limpa o listener ao desmontar o componente
+        authUnsubscribe();
       }
     };
-  }, [auth, showSnackbar]);
+  }, [showSnackbar]);
 
-  // Efeito para buscar e escutar imagens do Firestore
   useEffect(() => {
-    // Só tenta buscar imagens se a autenticação estiver pronta e houver um userId
     if (!isAuthReady || !userId) {
       console.log('Não está pronto para buscar imagens:', { isAuthReady, userId });
       return;
     }
 
     console.log('A buscar imagens para o utilizador:', userId);
-    // Define o caminho da coleção. Assumindo 'images' diretamente para um portfólio.
     const imagesCollectionRef = collection(db, 'images');
-    
-    // Cria uma query para buscar imagens do utilizador logado, ordenada por timestamp (decrescente)
+
     const q = query(
       imagesCollectionRef,
-      where('userId', '==', userId), // Filtra as imagens para mostrar apenas as do utilizador logado
+      where('userId', '==', userId),
       orderBy('timestamp', 'desc')
     );
 
@@ -199,37 +177,51 @@ const ImageUploaderGallery = () => {
 
     return () => {
       console.log('Limpando listener onSnapshot.');
-      unsubscribe(); // Limpa o listener ao desmontar o componente
+      unsubscribe();
     };
-  }, [isAuthReady, userId, db, showSnackbar]);
+  }, [isAuthReady, userId, showSnackbar]);
 
-  // Manipulador de seleção de ficheiro
   const handleFileChange = useCallback((e) => {
     if (e.target.files[0]) {
       console.log('Ficheiro selecionado:', e.target.files[0].name);
       setImageFile(e.target.files[0]);
-      setUploadProgress(0); // Reinicia o progresso ao selecionar novo ficheiro
+      setUploadProgress(0);
+      setUploadError(null); // Limpa erro ao selecionar novo arquivo
     } else {
       console.log('Nenhum ficheiro selecionado.');
       setImageFile(null);
+      setUploadError('Nenhum ficheiro selecionado.');
     }
   }, []);
 
-  // Manipulador de upload
   const handleUpload = useCallback(async () => {
-    if (!imageFile || !title || !userId) {
-      showSnackbar('Por favor, selecione uma imagem, adicione um título e certifique-se de estar autenticado.', 'warning');
+    setUploadError(null); // Limpa erros anteriores do upload
+    if (!imageFile) {
+      setUploadError('Por favor, selecione uma imagem.');
+      showSnackbar('Por favor, selecione uma imagem.', 'warning');
+      return;
+    }
+    if (!title.trim()) {
+      setUploadError('Por favor, adicione um título para a imagem.');
+      showSnackbar('Por favor, adicione um título para a imagem.', 'warning');
+      return;
+    }
+    if (!userId) {
+      setUploadError('Utilizador não autenticado. Por favor, aguarde ou recarregue a página.');
+      showSnackbar('Erro: Utilizador não autenticado para upload.', 'error');
       return;
     }
 
     setIsUploading(true);
     console.log('Iniciando upload...');
     try {
-      // Redimensionar a imagem antes de fazer o upload para o Firebase Storage
       const resizedBlob = await resizeImageToBlob(imageFile);
-      console.log('Imagem redimensionada para Blob.');
+      console.log('Imagem redimensionada para Blob. Tamanho:', resizedBlob.size, 'bytes');
 
-      // Cria uma referência única no Firebase Storage dentro da pasta do utilizador
+      if (resizedBlob.size === 0) {
+        throw new Error('O ficheiro redimensionado resultou num Blob vazio. Não é possível fazer upload.');
+      }
+
       const storageRef = ref(storage, `images/${userId}/${imageFile.name}-${Date.now()}`);
       const uploadTask = uploadBytesResumable(storageRef, resizedBlob);
 
@@ -239,50 +231,66 @@ const ImageUploaderGallery = () => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadProgress(progress);
           console.log(`Progresso do upload: ${progress.toFixed(2)}%`);
+          // Limpa erro se o progresso começar a subir
+          if (progress > 0 && uploadError) {
+            setUploadError(null);
+          }
         },
         (error) => {
-          console.error("Erro no upload:", error);
-          showSnackbar(`Erro ao enviar imagem: ${error.message}`, 'error');
+          console.error("Erro no upload Firebase Storage:", error);
+          const errorMessage = `Falha no upload: ${error.message || 'Erro desconhecido'}. Código: ${error.code || 'N/A'}`;
+          setUploadError(errorMessage);
+          showSnackbar(errorMessage, 'error');
           setIsUploading(false);
+          setUploadProgress(0); // Reset progress on error
         },
         async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          console.log('Upload concluído. URL da imagem:', downloadURL);
-          
-          // Salvar metadados no Cloud Firestore
-          await addDoc(collection(db, 'images'), { // Salva na coleção 'images' diretamente
-            userId: userId, // Adiciona o ID do utilizador que fez o upload
-            title: title,
-            description: description,
-            imageUrl: downloadURL,
-            timestamp: new Date(), // Adiciona um timestamp para ordenação
-          });
-          console.log('Metadados guardados no Firestore.');
-          showSnackbar('Imagem enviada com sucesso!', 'success');
-          // Limpa os campos após o upload bem-sucedido
-          setImageFile(null);
-          setTitle('');
-          setDescription('');
-          setUploadProgress(0);
-          setIsUploading(false);
-          // Limpa o input file visualmente para que o utilizador possa selecionar o mesmo ficheiro novamente
-          const fileInput = document.getElementById('image-upload-input');
-          if (fileInput) fileInput.value = '';
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            console.log('Upload concluído. URL da imagem:', downloadURL);
+
+            await addDoc(collection(db, 'images'), {
+              userId: userId,
+              title: title.trim(),
+              description: description.trim(),
+              imageUrl: downloadURL,
+              timestamp: new Date(),
+            });
+            console.log('Metadados guardados no Firestore.');
+            showSnackbar('Imagem enviada com sucesso!', 'success');
+            // Limpar estados após sucesso
+            setImageFile(null);
+            setTitle('');
+            setDescription('');
+            setUploadProgress(0);
+            setIsUploading(false);
+            setUploadError(null); // Limpa erros após sucesso
+            const fileInput = document.getElementById('image-upload-input');
+            if (fileInput) fileInput.value = ''; // Limpa o input de arquivo
+          } catch (firestoreError) {
+            console.error('Erro ao guardar metadados no Firestore:', firestoreError);
+            const errorMessage = `Erro ao guardar metadados: ${firestoreError.message || 'Erro desconhecido'}.`;
+            setUploadError(errorMessage);
+            showSnackbar(errorMessage, 'error');
+            setIsUploading(false);
+          }
         }
       );
     } catch (error) {
-      console.error('Erro ao redimensionar ou fazer upload:', error);
-      showSnackbar(`Erro ao processar imagem: ${error.message}`, 'error');
+      console.error('Erro geral ao redimensionar ou iniciar upload:', error);
+      const errorMessage = `Erro ao processar imagem para upload: ${error.message || 'Erro desconhecido'}.`;
+      setUploadError(errorMessage);
+      showSnackbar(errorMessage, 'error');
       setIsUploading(false);
+      setUploadProgress(0); // Reset progress on error
     }
-  }, [imageFile, title, description, userId, storage, db, showSnackbar]);
+  }, [imageFile, title, description, userId, showSnackbar, uploadError]); // Adicionado uploadError para re-renderizar se houver mudança
 
   const handleCloseSnackbar = useCallback((event, reason) => {
     if (reason === 'clickaway') return;
     setSnackbarOpen(false);
   }, []);
 
-  // Exibe um carregador enquanto a autenticação está a ser preparada
   if (!isAuthReady) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -300,7 +308,7 @@ const ImageUploaderGallery = () => {
       },
       margin: "0 auto",
       padding: "0 20px",
-      mt: 4, // Ajustado para não colidir com o topo
+      mt: 4,
       mb: 4
     }}>
       <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
@@ -330,6 +338,8 @@ const ImageUploaderGallery = () => {
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
           margin="normal"
+          error={!!uploadError && !title.trim()} // Erro se não houver título e houver erro geral
+          helperText={!!uploadError && !title.trim() ? "O título é obrigatório." : ""}
         />
         <TextField
           label="Descrição da Imagem"
@@ -341,11 +351,16 @@ const ImageUploaderGallery = () => {
           multiline
           rows={3}
         />
+        {uploadError && (
+          <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
+            {uploadError}
+          </Alert>
+        )}
         <Button
           variant="contained"
           color="primary"
           onClick={handleUpload}
-          disabled={isUploading || !imageFile || !title}
+          disabled={isUploading || !imageFile || !title.trim()}
           sx={{ mt: 2 }}
         >
           {isUploading ? (
@@ -357,7 +372,7 @@ const ImageUploaderGallery = () => {
             'Enviar Imagem'
           )}
         </Button>
-        {isUploading && (
+        {isUploading && uploadProgress > 0 && ( // Só mostra o progresso detalhado se estiver subindo
           <Box sx={{ width: '100%', mt: 2 }}>
             <Typography variant="body2" color="text.secondary">
               Progresso: {uploadProgress.toFixed(2)}%
@@ -393,7 +408,6 @@ const ImageUploaderGallery = () => {
                   <Typography variant="body2" color="text.secondary">
                     {img.description}
                   </Typography>
-                  {/* Opcional: Mostrar timestamp formatado */}
                   {img.timestamp && (
                     <Typography variant="caption" color="text.disabled" sx={{ mt: 1, display: 'block' }}>
                       Enviado em: {new Date(img.timestamp.toDate()).toLocaleDateString()}
@@ -408,7 +422,7 @@ const ImageUploaderGallery = () => {
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={4000} // Aumentado para dar tempo de ler o erro
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
