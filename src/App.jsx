@@ -41,15 +41,14 @@ const App = () => {
 			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			<RandomAffiliateAd />
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-			<ConsentScreen />
 			<NavigationButtons />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
 			</Box>           
-			{/* <PushNotification /> */}
+			<RandomAffiliateAd />
+			<ConsentScreen />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);

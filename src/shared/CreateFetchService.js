@@ -1,6 +1,8 @@
 const CreateFetchService = () => {
     let lastRequestTime = 0;
     const observers = new Set();
+    // Default cache duration: 5 minutes (in milliseconds)
+    const DEFAULT_CACHE_DURATION = 5 * 60 * 1000; 
 
     function subscribe(observer) {
         observers.add(observer);
@@ -22,9 +24,11 @@ const CreateFetchService = () => {
         try {
             const currentTime = Date.now();
             const timeSinceLastRequest = currentTime - lastRequestTime;
+            // Enforce a minimum delay of 5 seconds between requests
             const delayTime = Math.max(0, 5000 - timeSinceLastRequest);
 
             if (delayTime > 0) {
+                console.log(`Delaying request by ${delayTime}ms to adhere to rate limit.`);
                 await delay(delayTime);
             }
 
@@ -44,11 +48,48 @@ const CreateFetchService = () => {
         }
     }
 
-    async function get(url) {
+    async function get(url, cacheOptions = {}) {
         if (!navigator.onLine) {
-            throw new Error(TryError(521));
+            throw new Error(TryError(521)); // Offline error
         }
+
+        const { useCache = true, cacheDuration = DEFAULT_CACHE_DURATION } = cacheOptions;
+        const cacheKey = `fetch_cache_${url}`;
+        const now = Date.now();
+
+        if (useCache) {
+            try {
+                const cachedData = sessionStorage.getItem(cacheKey);
+                if (cachedData) {
+                    const { data, timestamp } = JSON.parse(cachedData);
+                    if (now - timestamp < cacheDuration) {
+                        console.log(`Returning cached data for: ${url}`);
+                        notify("cache-hit", { url, data });
+                        return data; // Return cached data if fresh
+                    } else {
+                        console.log(`Cached data for ${url} is stale. Fetching new data.`);
+                        sessionStorage.removeItem(cacheKey); // Remove stale data
+                    }
+                }
+            } catch (e) {
+                console.warn("Error parsing cached data, fetching new:", e);
+                sessionStorage.removeItem(cacheKey); // Clear corrupted cache entry
+            }
+        }
+
+        // If no cached data, or cache is stale/disabled, perform actual fetch
         const response = await fetchWithInterceptor(url);
+
+        if (useCache) {
+            try {
+                // Store the response with a timestamp
+                sessionStorage.setItem(cacheKey, JSON.stringify({ data: response, timestamp: now }));
+                console.log(`Data for ${url} cached.`);
+            } catch (e) {
+                console.error("Failed to cache data in session storage:", e);
+            }
+        }
+
         return response;
     }
 
@@ -57,18 +98,20 @@ const CreateFetchService = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Cache-Control": "no-cache",
+                "Cache-Control": "no-cache", // Important for POST requests
                 "Connection": "keep-alive"
             },
             body: JSON.stringify(data)
         };
 
+        // POST requests typically invalidate cache or don't use it,
+        // so we don't apply caching logic here by default.
         const response = await fetchWithInterceptor(url, options);
         return response;
     }
 
     return { get, post, subscribe, unsubscribe };
-}
+};
 
 function TryError(code) {
     const errors = {

@@ -26,17 +26,11 @@ const Home = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    // Use a ref for showSnackbarOnce to avoid re-renders if its value changes and it's only for a side effect
-    // Or, more simply, manage it directly in the effect if it's truly a one-time thing per session.
-    // For this case, keeping it as state is fine if you might re-enable it later based on other logic.
-    // However, the original logic suggests it's a flag for an initial display.
-    // Let's remove it as state and manage directly via sessionStorage check.
-
     const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
     // Function to fetch gallery data based on tab index
     const fetchGalleryData = useCallback(async () => {
-        setGalleryData(null); 
+        setGalleryData(null);
         try {
             const data = tabIndex === 0
                 ? await flickrInstance.getLatestPhotosLargeSquare()
@@ -44,7 +38,7 @@ const Home = () => {
             setGalleryData(data);
         } catch (error) {
             console.error("Error fetching gallery data:", error);
-            setSnackbarMessage("Failed to load photos. Please try again later.");
+            setSnackbarMessage("Falha ao carregar fotos. Por favor, tente novamente mais tarde.");
             setSnackbarSeverity("error");
             setSnackbarOpen(true);
         }
@@ -53,9 +47,9 @@ const Home = () => {
     // Effect to fetch images when tab changes
     useEffect(() => {
         fetchGalleryData();
-    }, [fetchGalleryData]); 
+    }, [fetchGalleryData]);
 
-    
+    // Effect to show snackbar once per day
     useEffect(() => {
         const snackbarKey = "snackbarShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
@@ -71,7 +65,7 @@ const Home = () => {
             setSnackbarOpen(true);
             sessionStorage.setItem(snackbarKey, now.toString());
         }
-    }, []); // Empty dependency array means this runs only once on mount
+    }, []);
 
     // Handler for tab change
     const handleTabChange = useCallback((event, newIndex) => {
@@ -82,9 +76,6 @@ const Home = () => {
     const handleSnackbarClose = useCallback(() => {
         setSnackbarOpen(false);
     }, []);
-
-    const pageTitle = "Atualizações"; // Changed variable name for clarity
-    const pageDescription = "Atualizações"; // Changed variable name for clarity
 
     // Show skeleton while galleryData is null
     if (!galleryData) {
@@ -110,17 +101,17 @@ const Home = () => {
                     mt: 5,
                 }}
             >
+                {/* RandomPhoto can render directly as galleryData is awaited */}
                 <RandomPhoto itemData={galleryData} />
-                {/* Tabs for navigation between galleries */}
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
                     centered
                     sx={{
                         marginTop: 3,
-                        marginBottom: -8, // Adjust as needed for spacing
+                        marginBottom: -8,
                         ".MuiTabs-indicator": {
-                            backgroundColor: "#78884c", // Custom indicator color
+                            backgroundColor: "#78884c",
                         },
                     }}
                 >
@@ -132,7 +123,7 @@ const Home = () => {
                             color: tabIndex === 0 ? "#78884c" : "#c0810d",
                             fontWeight: tabIndex === 0 ? "bold" : "normal",
                             "&.Mui-selected": {
-                                color: "#78884c", // Selected tab color
+                                color: "#78884c",
                             },
                         }}
                     />
@@ -144,18 +135,18 @@ const Home = () => {
                             color: tabIndex === 1 ? "#78884c" : "#c0810d",
                             fontWeight: tabIndex === 1 ? "bold" : "normal",
                             "&.Mui-selected": {
-                                color: "#78884c", // Selected tab color
+                                color: "#78884c",
                             },
                         }}
                     />
                 </Tabs>
 
-                {/* Conditional rendering of gallery content based on tabIndex */}
                 {tabIndex === 0 && (
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
+                            {/* SwipeableSlider uses its own internal loading, can remove skeleton fallback */}
                             <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                            <Gallery /> {/* Consider passing galleryData to Gallery if it needs it */}
+                            <Gallery />
                         </Box>
                     </Suspense>
                 )}
@@ -163,14 +154,13 @@ const Home = () => {
                 {tabIndex === 1 && (
                     <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
                         <Box mt={4}>
+                            {/* SwipeableSlider uses its own internal loading, can remove skeleton fallback */}
                             <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
-                            
-                            <GalleryWork /> {/* Consider passing galleryData to GalleryWork if it needs it */}
+                            <GalleryWork />
                         </Box>
                     </Suspense>
                 )}
-                
-                {/* Display Ads component */}
+
                 <Suspense fallback={<LoadingMessage />}>
                     <DisplayAds />
                 </Suspense>
@@ -178,7 +168,11 @@ const Home = () => {
 
             {/* Social Meta Tags for SEO */}
             <Suspense fallback={<LoadingMessage />}>
-                <SocialMetaTags title={pageTitle} image="/logo_192.png" description={pageDescription} />
+                <SocialMetaTags
+                    title="Atualizações"
+                    image="/logo_192.png"
+                    description="Atualizações"
+                />
             </Suspense>
 
             {/* Message Snackbar */}
