@@ -44,10 +44,10 @@ const App = () => {
 			<ProTip />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
+			<RandomAffiliateAd />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
 			</Box>           
-			<RandomAffiliateAd />
 			<ConsentScreen />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
