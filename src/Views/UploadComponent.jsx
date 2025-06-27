@@ -2,18 +2,22 @@ import React, { useState, useEffect, useCallback, memo } from 'react';
 import {
   TextField, Button, Box, Typography, Snackbar, Alert, CircularProgress,
   Card, CardContent, CardMedia, Grid,
-  Dialog, DialogContent, IconButton
+  Dialog, DialogContent, IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit'; // Importe o ícone de edição
+import DeleteIcon from '@mui/icons-material/Delete'; // Opcional: para exclusão
 
 import { auth, db, storage } from '../firebaseConfig';
 
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import {
+  collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp,
+  doc, updateDoc, deleteDoc // Importe updateDoc e deleteDoc
+} from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'; // Importe deleteObject
 
 /**
- * https://console.cloud.google.com/storage/overview;tab=overview?authuser=0&hl=pt-br&inv=1&invt=Ab1LPQ&project=alessandro-portfolio
  * Função utilitária para redimensionar uma imagem (File ou Blob) para um Blob redimensionado.
  * Mantém a proporção e garante que a maior dimensão não exceda maxWidth/maxHeight.
  * @param {File | Blob} file - O ficheiro de imagem a ser redimensionado.
@@ -32,13 +36,12 @@ const resizeImageToBlob = (file, maxWidth = 2048, maxHeight = 2048, mimeType = '
         let width = img.width;
         let height = img.height;
 
-        // Calcula as novas dimensões para se ajustar ao maxWidth/maxHeight, mantendo a proporção.
         if (width > maxWidth || height > maxHeight) {
           const aspectRatio = width / height;
-          if (width / height > maxWidth / maxHeight) { // Landscape orientation
+          if (width / height > maxWidth / maxHeight) {
             width = maxWidth;
             height = width / aspectRatio;
-          } else { // Portrait or square orientation
+          } else {
             height = maxHeight;
             width = height * aspectRatio;
           }
@@ -50,7 +53,6 @@ const resizeImageToBlob = (file, maxWidth = 2048, maxHeight = 2048, mimeType = '
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Converte o canvas para um Blob com a qualidade especificada.
         canvas.toBlob((blob) => {
           if (blob) {
             resolve(blob);
@@ -85,6 +87,12 @@ const ImageUploaderGallery = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState('');
+
+  // Estados para edição
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentImageId, setCurrentImageId] = useState(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState(''); // Para pré-visualização da imagem sendo editada
+  const [currentThumbnailUrl, setCurrentThumbnailUrl] = useState('');
 
   const showSnackbar = useCallback((msg, severity) => {
     setSnackbarMessage(msg);
@@ -190,11 +198,32 @@ const ImageUploaderGallery = () => {
       setImageFile(e.target.files[0]);
       setUploadProgress(0);
       setUploadError(null);
+      // Limpa as URLs atuais da imagem se um novo arquivo for selecionado para upload/edição
+      setCurrentImageUrl('');
+      setCurrentThumbnailUrl('');
     } else {
       console.log('Nenhum ficheiro selecionado.');
       setImageFile(null);
-      setUploadError('Nenhum ficheiro selecionado.');
+      // Se nenhum arquivo for selecionado, mantenha as URLs atuais se estiver em modo de edição
+      if (!isEditing) {
+        setUploadError('Nenhum ficheiro selecionado.');
+      }
     }
+  }, [isEditing]);
+
+  const resetForm = useCallback(() => {
+    setImageFile(null);
+    setTitle('');
+    setDescription('');
+    setUploadProgress(0);
+    setIsUploading(false);
+    setUploadError(null);
+    setIsEditing(false);
+    setCurrentImageId(null);
+    setCurrentImageUrl('');
+    setCurrentThumbnailUrl('');
+    const fileInput = document.getElementById('image-upload-input');
+    if (fileInput) fileInput.value = '';
   }, []);
 
   const handleUpload = useCallback(async () => {
@@ -275,15 +304,7 @@ const ImageUploaderGallery = () => {
             });
             console.log('Metadados guardados no Firestore.');
             showSnackbar('Imagem e thumbnail enviados com sucesso!', 'success');
-
-            setImageFile(null);
-            setTitle('');
-            setDescription('');
-            setUploadProgress(0);
-            setIsUploading(false);
-            setUploadError(null);
-            const fileInput = document.getElementById('image-upload-input');
-            if (fileInput) fileInput.value = '';
+            resetForm();
           } catch (firestoreError) {
             console.error('Erro ao guardar metadados no Firestore:', firestoreError);
             const errorMessage = `Erro ao guardar metadados: ${firestoreError.message || 'Erro desconhecido'}.`;
@@ -301,7 +322,168 @@ const ImageUploaderGallery = () => {
       setIsUploading(false);
       setUploadProgress(0);
     }
-  }, [imageFile, title, description, userId, showSnackbar, uploadError]);
+  }, [imageFile, title, description, userId, showSnackbar, uploadError, resetForm]);
+
+  const handleEditClick = useCallback((image) => {
+    setIsEditing(true);
+    setCurrentImageId(image.id);
+    setTitle(image.title);
+    setDescription(image.description);
+    setCurrentImageUrl(image.imageUrl); // Define a URL da imagem atual para pré-visualização
+    setCurrentThumbnailUrl(image.thumbnailUrl);
+    setImageFile(null); // Limpa o arquivo selecionado previamente no input file
+    setUploadError(null);
+    setUploadProgress(0);
+    // Limpa o input de arquivo, se houver um arquivo selecionado
+    const fileInput = document.getElementById('image-upload-input');
+    if (fileInput) fileInput.value = '';
+  }, []);
+
+  const handleUpdate = useCallback(async () => {
+    setUploadError(null);
+    if (!title.trim()) {
+      setUploadError('Por favor, adicione um título para a imagem.');
+      showSnackbar('Por favor, adicione um título para a imagem.', 'warning');
+      return;
+    }
+    if (!userId) {
+      setUploadError('Utilizador não autenticado. Por favor, aguarde ou recarregue a página.');
+      showSnackbar('Erro: Utilizador não autenticado para atualização.', 'error');
+      return;
+    }
+    if (!currentImageId) {
+      setUploadError('Nenhuma imagem selecionada para edição.');
+      showSnackbar('Erro: Nenhuma imagem selecionada para edição.', 'error');
+      return;
+    }
+
+    setIsUploading(true);
+    console.log('Iniciando atualização...');
+    let newImageUrl = currentImageUrl;
+    let newThumbnailUrl = currentThumbnailUrl;
+
+    try {
+      if (imageFile) {
+        // Se um novo arquivo foi selecionado, faça o upload da nova imagem
+        const originalBlob = await resizeImageToBlob(imageFile);
+        const thumbnailBlob = await resizeImageToBlob(imageFile, 320, 240);
+
+        if (originalBlob.size === 0 || thumbnailBlob.size === 0) {
+            throw new Error('O ficheiro redimensionado resultou num Blob vazio. Não é possível fazer upload.');
+        }
+
+        const fileName = `${imageFile.name}-${Date.now()}`;
+        const originalStorageRef = ref(storage, `images/${userId}/${fileName}`);
+        const thumbnailStorageRef = ref(storage, `thumbnails/${userId}/${fileName}`);
+
+        const uploadOriginalTask = uploadBytesResumable(originalStorageRef, originalBlob);
+        const uploadThumbnailTask = uploadBytesResumable(thumbnailStorageRef, thumbnailBlob);
+
+        uploadOriginalTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(progress);
+            console.log(`Progresso do upload da nova imagem: ${progress.toFixed(2)}%`);
+          },
+          (error) => {
+            console.error("Erro no upload da nova imagem para o Storage:", error);
+            throw new Error(`Falha no upload da nova imagem: ${error.message}`);
+          }
+        );
+
+        await uploadOriginalTask;
+        await uploadThumbnailTask;
+
+        newImageUrl = await getDownloadURL(uploadOriginalTask.snapshot.ref);
+        newThumbnailUrl = await getDownloadURL(uploadThumbnailTask.snapshot.ref);
+        console.log('Nova imagem e thumbnail enviados. URLs:', newImageUrl, newThumbnailUrl);
+
+        // Opcional: Excluir a imagem antiga do Storage, se houver
+        if (currentImageUrl) {
+          try {
+            const oldOriginalRef = ref(storage, currentImageUrl);
+            await deleteObject(oldOriginalRef);
+            console.log('Imagem original antiga excluída do Storage.');
+          } catch (deleteError) {
+            console.warn('Falha ao excluir imagem original antiga do Storage:', deleteError.message);
+            // Não impede a atualização do Firestore, apenas loga o aviso
+          }
+        }
+        if (currentThumbnailUrl) {
+          try {
+            const oldThumbnailRef = ref(storage, currentThumbnailUrl);
+            await deleteObject(oldThumbnailRef);
+            console.log('Thumbnail antiga excluída do Storage.');
+          } catch (deleteError) {
+            console.warn('Falha ao excluir thumbnail antiga do Storage:', deleteError.message);
+          }
+        }
+
+      } else if (!currentImageUrl) { // Se não tem imageFile e não tem currentImageUrl (caso de falha ou bug)
+          setUploadError('Nenhuma imagem associada à edição. Selecione uma nova imagem.');
+          showSnackbar('Nenhuma imagem associada à edição. Selecione uma nova imagem.', 'error');
+          setIsUploading(false);
+          return;
+      }
+
+
+      const imageDocRef = doc(db, 'images', currentImageId);
+      await updateDoc(imageDocRef, {
+        title: title.trim(),
+        description: description.trim(),
+        imageUrl: newImageUrl,
+        thumbnailUrl: newThumbnailUrl,
+        lastUpdated: serverTimestamp(), // Opcional: campo para indicar última atualização
+      });
+      console.log('Metadados atualizados no Firestore.');
+      showSnackbar('Imagem atualizada com sucesso!', 'success');
+      resetForm();
+    } catch (error) {
+      console.error('Erro ao atualizar imagem:', error);
+      const errorMessage = `Falha ao atualizar imagem: ${error.message || 'Erro desconhecido'}.`;
+      setUploadError(errorMessage);
+      showSnackbar(errorMessage, 'error');
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
+  }, [imageFile, title, description, userId, currentImageId, currentImageUrl, currentThumbnailUrl, showSnackbar, resetForm]);
+
+  const handleDelete = useCallback(async (imageToDelete) => {
+    if (!window.confirm(`Tem certeza que deseja excluir a imagem "${imageToDelete.title}"?`)) {
+      return;
+    }
+
+    try {
+      setIsUploading(true); // Pode usar este estado para indicar que uma operação está em andamento
+
+      // 1. Excluir do Firebase Storage
+      if (imageToDelete.imageUrl) {
+        const originalRef = ref(storage, imageToDelete.imageUrl);
+        await deleteObject(originalRef);
+        console.log('Imagem original excluída do Storage:', imageToDelete.imageUrl);
+      }
+      if (imageToDelete.thumbnailUrl) {
+        const thumbnailRef = ref(storage, imageToDelete.thumbnailUrl);
+        await deleteObject(thumbnailRef);
+        console.log('Thumbnail excluída do Storage:', imageToDelete.thumbnailUrl);
+      }
+
+      // 2. Excluir do Firestore
+      const imageDocRef = doc(db, 'images', imageToDelete.id);
+      await deleteDoc(imageDocRef);
+      console.log('Documento excluído do Firestore:', imageToDelete.id);
+
+      showSnackbar('Imagem excluída com sucesso!', 'success');
+    } catch (error) {
+      console.error('Erro ao excluir imagem:', error);
+      const errorMessage = `Falha ao excluir imagem: ${error.message || 'Erro desconhecido'}.`;
+      showSnackbar(errorMessage, 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  }, [showSnackbar]);
 
   const handleCloseSnackbar = useCallback((event, reason) => {
     if (reason === 'clickaway') return;
@@ -344,13 +526,24 @@ const ImageUploaderGallery = () => {
 
       <Box sx={{ mb: 5, p: 3, border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
         <Typography variant="h5" component="h2" gutterBottom>
-          Fazer Upload de Nova Imagem
+          {isEditing ? 'Editar Imagem Existente' : 'Fazer Upload de Nova Imagem'}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           O seu ID de Utilizador: <strong>{userId || 'N/A'}</strong>
           <br />
           (Este ID identifica as suas imagens no sistema.)
         </Typography>
+
+        {isEditing && currentImageUrl && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="subtitle1" gutterBottom>Imagem Atual:</Typography>
+            <img src={currentThumbnailUrl || currentImageUrl} alt="Preview da Imagem Atual" style={{ maxWidth: '200px', height: 'auto', borderRadius: '4px' }} />
+            <Typography variant="caption" display="block" color="text.secondary">
+                Selecione um novo arquivo para trocar a imagem.
+            </Typography>
+          </Box>
+        )}
+
         <input
           id="image-upload-input"
           accept="image/*"
@@ -383,22 +576,34 @@ const ImageUploaderGallery = () => {
             {uploadError}
           </Alert>
         )}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleUpload}
-          disabled={isUploading || !imageFile || !title.trim()}
-          sx={{ mt: 2 }}
-        >
-          {isUploading ? (
-            <>
-              <CircularProgress size={24} color="inherit" />
-              <Box sx={{ ml: 1 }}>A enviar... {uploadProgress.toFixed(0)}%</Box>
-            </>
-          ) : (
-            'Enviar Imagem'
+        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={isEditing ? handleUpdate : handleUpload}
+            disabled={isUploading || !title.trim() || (!imageFile && !isEditing)}
+          >
+            {isUploading ? (
+              <>
+                <CircularProgress size={24} color="inherit" />
+                <Box sx={{ ml: 1 }}>{isEditing ? 'A atualizar...' : 'A enviar...'} {uploadProgress.toFixed(0)}%</Box>
+              </>
+            ) : (
+              isEditing ? 'Atualizar Imagem' : 'Enviar Imagem'
+            )}
+          </Button>
+          {isEditing && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={resetForm}
+              disabled={isUploading}
+            >
+              Cancelar Edição
+            </Button>
           )}
-        </Button>
+        </Box>
+
         {isUploading && uploadProgress > 0 && (
           <Box sx={{ width: '100%', mt: 2 }}>
             <Typography variant="body2" color="text.secondary">
@@ -442,6 +647,23 @@ const ImageUploaderGallery = () => {
                       Enviado em: {new Date(img.timestamp.toDate()).toLocaleDateString()}
                     </Typography>
                   )}
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+                    <Button
+                      size="small"
+                      startIcon={<EditIcon />}
+                      onClick={() => handleEditClick(img)}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      size="small"
+                      color="error"
+                      startIcon={<DeleteIcon />}
+                      onClick={() => handleDelete(img)}
+                    >
+                      Excluir
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
