@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
+import { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig.jsx';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ const LazyImage = lazy(() => import("../Components/LazyImage.jsx"));
 const App = () => {
     const [galleries, setGalleries] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 4;
     const scrollRef = useRef(null);
 
     useEffect(() => {

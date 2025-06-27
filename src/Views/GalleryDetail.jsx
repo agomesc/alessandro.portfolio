@@ -2,10 +2,11 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Box, Typography, CircularProgress, Alert, Skeleton } from '@mui/material';
+import { Box, Typography, CircularProgress, Alert, Skeleton, Stack } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-const TypographyTitle = React.lazy(() => import("../Components/TypographyTitle"));
+const StarComponent = React.lazy(() => import("../Components/StarComponent"));
+const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
 
 const getImageSrc = (imageData) => {
     if (!imageData) return '';
@@ -107,7 +108,7 @@ const GalleryDetail = () => {
             />
 
             {gallery.link && (
-                <Box sx={{ mt: 3, display: "flex" }}>
+                <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
                     <Typography
                         variant="body1"
                         component="a"
@@ -124,7 +125,13 @@ const GalleryDetail = () => {
                     >
                         Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                     </Typography>
-                </Box>
+                    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                        <StarComponent id={gallery.id} />
+                    </Suspense>
+                    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                        <ViewComponent id={gallery.id} />
+                    </Suspense>
+                </Stack>
             )}
         </Box>
     );
