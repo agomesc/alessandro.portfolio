@@ -8,7 +8,7 @@ import LazyImage from './LazyImage'; // Ensure this path is correct
 
 // Renamed from App to SwipeableSlider to better reflect its purpose,
 // aligning with your previous component structure.
-const SwipeableSlider = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
+const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
   // No need to create a new `photos` variable if `itemData` is already descriptive enough.
@@ -104,6 +104,7 @@ const SwipeableSlider = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => 
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover', // Ensures the image covers the area without distortion
+                     borderRadius: '8px',
                 }}
               />
             </Box>
@@ -135,4 +136,4 @@ const SwipeableSlider = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => 
 };
 
 // Memoize the component to prevent unnecessary re-renders
-export default React.memo(SwipeableSlider);
+export default React.memo(App);

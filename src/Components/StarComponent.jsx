@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-// Helper para calcular a porcentagem de preenchimento de uma estrela individual
+// Cálculo de porcentagem da estrela
 const getStarFillPercentage = (starValue, currentRating, isHovering) => {
   if (isHovering) {
     return starValue <= currentRating ? 100 : 0;
@@ -11,14 +11,35 @@ const getStarFillPercentage = (starValue, currentRating, isHovering) => {
     const floorRating = Math.floor(currentRating);
     const fractionalPart = currentRating - floorRating;
 
-    if (starValue <= floorRating) {
-      return 100;
-    } else if (starValue === floorRating + 1) {
-      return fractionalPart * 100;
-    } else {
-      return 0;
-    }
+    if (starValue <= floorRating) return 100;
+    if (starValue === floorRating + 1) return fractionalPart * 100;
+    return 0;
   }
+};
+
+// SVG de estrela com preenchimento gradiente
+const Star = ({ fill = 100, index }) => {
+  const gradientId = `grad-${index}-${fill}`;
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      style={{ display: "block" }}
+    >
+      <defs>
+        <linearGradient id={gradientId} x1="0" x2="1" y1="0" y2="0">
+          <stop offset={`${fill}%`} stopColor="gold" />
+          <stop offset={`${fill}%`} stopColor="white" />
+        </linearGradient>
+      </defs>
+      <path
+        fill={`url(#${gradientId})`}
+        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 
+           9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+      />
+    </svg>
+  );
 };
 
 const StarAverageRatingComponent = ({ id }) => {
@@ -105,13 +126,8 @@ const StarAverageRatingComponent = ({ id }) => {
       x: [0, -2, 2, -2, 2, 0],
       transition: { duration: 0.3 },
     },
-    still: {
-      x: 0,
-    },
+    still: { x: 0 },
   };
-
-  // Definindo um tamanho de estrela base para consistência
-  const starSize = '1.2em'; // Ajuste este valor se 18px for muito pequeno ou grande
 
   return (
     <div
@@ -139,68 +155,22 @@ const StarAverageRatingComponent = ({ id }) => {
             onMouseEnter={() => setHoverRating(starValue)}
             onMouseLeave={() => setHoverRating(0)}
             disabled={isProcessing}
-            aria-label={`${starValue} estrela${starValue > 1 ? "s" : ""}`}
             animate={shake ? "shake" : "still"}
             variants={shakeAnimation}
+            aria-label={`${starValue} estrela${starValue > 1 ? "s" : ""}`}
             style={{
-              // O botão em si não precisa de fontSize, apenas seus filhos
               background: "none",
               border: "none",
               cursor: "pointer",
               padding: 0,
-              position: 'relative',
-              width: starSize, // Tamanho do botão igual ao da estrela
-              height: starSize, // Tamanho do botão igual ao da estrela
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden', // Importante para o corte da estrela dourada
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "20px",
+              height: "20px",
             }}
           >
-            {/* Contêiner da estrela individual para garantir alinhamento */}
-            <span
-              style={{
-                position: 'relative', // Contêiner para as estrelas absolutas
-                display: 'block', // Garante que o span ocupe o espaço
-                width: '100%',
-                height: '100%',
-                lineHeight: '1', // Centraliza o emoji verticalmente
-                textAlign: 'center', // Centraliza o emoji horizontalmente
-                fontSize: starSize, // Aplica o tamanho da fonte diretamente aqui
-              }}
-            >
-              {/* ESTRELA BASE (CONTORNO / VAZIA) */}
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '50%', 
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)', // Ajusta para o centro exato
-                  color: 'white',
-                }}
-                aria-hidden="true"
-              >
-                ☆ {/* Caractere de estrela com contorno */}
-              </span>
-
-              {/* ESTRELA PREENCHIDA (DOURADA) */}
-              {fillPercentage > 0 && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%', // Move para o centro
-                    left: '50%', // Move para o centro
-                    transform: 'translate(-50%, -50%)', // Ajusta para o centro exato
-                    width: `${fillPercentage}%`, // Controla o preenchimento
-                    overflow: 'hidden',
-                    color: 'gold',
-                    fontWeight:'bold'
-                  }}
-                >
-                  <span aria-hidden="true">☆</span> {/* Caractere de estrela preenchida */}
-                </div>
-              )}
-            </span>
+            <Star fill={fillPercentage} index={index} />
           </motion.button>
         );
       })}
