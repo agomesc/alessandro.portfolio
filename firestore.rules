@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // views: leitura e escrita públicas
+    match /views/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // stars: leitura e escrita públicas
+    match /stars/{docId} {
+      allow read, write: if true;
+    }
+
+    // galleries: leitura pública, escrita só para autenticados
+    match /galleries/{docId} {
+      allow read: if true;
+      allow write: if true; // Era "só para autenticados", mas a sua regra permite 'true'. Mantenha a que você realmente quer.
+    }
+
+    // content: leitura pública, escrita só para autenticados
+    match /content/{docId} {
+      allow read: if true;
+      allow write: if true; // Era "só para autenticados", mas a sua regra permite 'true'. Mantenha a que você realmente quer.
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // Outras coleções (genérica):
+    // Coloque a regra genérica /{document=**} por último,
+    // para que as regras mais específicas acima sejam avaliadas primeiro.
+    match /{document=**} {
+      allow read: if true; // Permite leitura pública para tudo que não foi especificado acima
+      allow create, update, delete: if request.auth != null; // Permite escrita, atualização e exclusão apenas para usuários autenticados
+    }
+
+  }
+}
