@@ -2,11 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+// Removed Dialog, DialogContent, DialogTitle, IconButton, CloseIcon imports as they are no longer needed
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -100,7 +96,7 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [openPopup, setOpenPopup] = useState(false); // State for popup visibility
+  // Removed openPopup state
 
   // 1. Autenticação Firebase e Configuração do Listener
   useEffect(() => {
@@ -173,17 +169,7 @@ const App = () => {
     return images[randomIndex];
   }, [images]);
 
-  // Handler to open the popup
-  const handleOpenPopup = () => {
-    if (randomPhoto) {
-      setOpenPopup(true);
-    }
-  };
-
-  // Handler to close the popup
-  const handleClosePopup = () => {
-    setOpenPopup(false);
-  };
+  // Removed handleOpenPopup and handleClosePopup handlers
 
   // Exibe um carregador enquanto a autenticação e os dados não estão prontos
   if (!isAuthReady) {
@@ -214,9 +200,9 @@ const App = () => {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
-        cursor: randomPhoto ? 'pointer' : 'default', // Add pointer cursor if there's a photo
+        cursor: 'default', // Changed cursor to default as it's no longer clickable
       }}
-      onClick={handleOpenPopup} // Add click handler to the main box
+      // Removed onClick={handleOpenPopup}
     >
       {randomPhoto ? (
         <>
@@ -260,56 +246,7 @@ const App = () => {
         </Typography>
       )}
 
-      {/* Popup Dialog for displaying the image */}
-      {randomPhoto && (
-        <Dialog open={openPopup} onClose={handleClosePopup} maxWidth="lg" fullWidth>
-          <DialogTitle sx={{ m: 0, p: 2 }}>
-            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-              {randomPhoto.title}
-            </Typography>
-            <IconButton
-              aria-label="close"
-              onClick={handleClosePopup}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-                // Z-index mais alto e fundo para garantir que o 'X' seja clicável
-                zIndex: 100,
-                backgroundColor: 'rgba(255,255,255,0.7)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.9)',
-                },
-                borderRadius: '50%',
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent dividers sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <img
-              src={randomPhoto.imageUrl}
-              alt={randomPhoto.title || "Foto em Destaque"}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '80vh', // Limit height to 80% of viewport height
-                height: 'auto',
-                width: 'auto',
-                display: 'block',
-                objectFit: 'contain', // Ensures the entire image is visible within the bounds
-              }}
-            />
-          </DialogContent>
-          {randomPhoto.description && (
-            <Box sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="body1">
-                {randomPhoto.description}
-              </Typography>
-            </Box>
-          )}
-        </Dialog>
-      )}
+      
     </Box>
   );
 };
