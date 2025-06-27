@@ -423,6 +423,7 @@ const ImageUploaderGallery = () => {
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                 <CardMedia
                   component="img"
+                  width={320}
                   height="200"
                   image={img.thumbnailUrl || img.imageUrl}
                   alt={img.title}
