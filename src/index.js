@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import ErrorBoundary from "./Components/ErrorBoundary";
-import 'typeface-roboto';
 import { HelmetProvider } from 'react-helmet-async'; // Importe aqui
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
