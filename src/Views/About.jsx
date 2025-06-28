@@ -42,9 +42,8 @@ const About = () => {
             <TypographyTitle src={title} />
 
             <Suspense fallback={<LoadingMessage />}>
-                <PhotoDescription imageUrl="/logo_512.png" description={minhaDescricao} />
+                <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
             </Suspense>
-
 
             <CommentBox itemID="About" />
         </Box>

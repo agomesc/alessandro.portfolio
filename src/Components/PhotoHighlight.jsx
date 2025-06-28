@@ -6,99 +6,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import LazyImage from "./LazyImage";
 
-// Componente LazyImage movido para dentro do mesmo arquivo para resolver o erro de resolução de módulo
-const LazyImage = ({ src, alt, width, height, sx, showLoaderAndError = true }) => {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
-
-  // Reinicia o estado se o 'src' mudar
-  useEffect(() => {
-    setLoaded(false);
-    setError(false);
-  }, [src]);
-
-  // Exibe um placeholder se o 'src' não for fornecido
-  if (!src) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: width,
-          height: height,
-          backgroundColor: '#e0e0e0',
-          color: 'text.secondary',
-          ...sx,
-        }}
-      >
-        <Typography component="div" variant="caption">Sem Imagem</Typography>
-      </Box>
-    );
-  }
-
-  return (
-    <>
-      {/* Mostra um indicador de carregamento enquanto a imagem não está carregada e não há erro */}
-      {showLoaderAndError && !loaded && !error && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: width,
-            height: height,
-            backgroundColor: '#f0f0f0',
-            ...sx,
-          }}
-        >
-          <CircularProgress size={30} />
-        </Box>
-      )}
-      {/* A imagem em si, visível apenas quando carregada e sem erros */}
-      <img
-        src={src}
-        alt={alt}
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
-        style={{
-          width: width,
-          height: height,
-          objectFit: 'cover', // Garante que a imagem cubra a área sem distorção
-          display: loaded && !error ? 'block' : 'none', // Oculta até carregar ou se houver erro
-          ...sx,
-        }}
-      />
-      {/* Mostra uma mensagem de erro se o carregamento da imagem falhar */}
-      {showLoaderAndError && error && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: width,
-            height: height,
-            backgroundColor: '#ffdddd',
-            color: 'error.main',
-            ...sx,
-          }}
-        >
-          <Typography variant="caption">Erro ao carregar imagem</Typography>
-        </Box>
-      )}
-    </>
-  );
-};
-
-// Componente para exibir uma única foto aleatória em destaque
 const App = () => {
   const [images, setImages] = useState([]);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userId, setUserId] = useState(null);
-  // Removed openPopup state
 
-  // 1. Autenticação Firebase e Configuração do Listener
   useEffect(() => {
     let authUnsubscribe;
 
@@ -120,7 +34,7 @@ const App = () => {
             setUserId(auth.currentUser?.uid || crypto.randomUUID());
           } catch (anonError) {
             console.error('Erro ao tentar login anônimo:', anonError);
-            setUserId(crypto.randomUUID()); // Fallback UUID
+            setUserId(crypto.randomUUID());
           }
         }
         setIsAuthReady(true);
@@ -136,17 +50,11 @@ const App = () => {
     };
   }, []);
 
-  // 2. Escuta por mudanças nas imagens do Firestore
   useEffect(() => {
-    if (!isAuthReady || !userId) {
-      return;
-    }
+    if (!isAuthReady || !userId) return;
 
     const imagesCollectionRef = collection(db, 'images');
-    const q = query(
-      imagesCollectionRef,
-      orderBy('timestamp', 'desc')
-    );
+    const q = query(imagesCollectionRef, orderBy('timestamp', 'desc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const imageList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -155,23 +63,15 @@ const App = () => {
       console.error("Erro ao buscar imagens:", error);
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [isAuthReady, userId]);
 
-  // Usa useMemo para selecionar uma foto aleatória apenas uma vez por renderização
   const randomPhoto = useMemo(() => {
-    if (!images || images.length === 0) {
-      return null;
-    }
+    if (!images || images.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
   }, [images]);
 
-  // Removed handleOpenPopup and handleClosePopup handlers
-
-  // Exibe um carregador enquanto a autenticação e os dados não estão prontos
   if (!isAuthReady) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
@@ -182,72 +82,48 @@ const App = () => {
   }
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        maxWidth: '2048px',
-        margin: '0 auto',
-        height: '600px',
-        position: 'relative',
-        overflow: 'hidden',
-        mt: 4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f0f0f0',
-        backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
-        cursor: 'default', // Changed cursor to default as it's no longer clickable
-      }}
-      // Removed onClick={handleOpenPopup}
-    >
-      {randomPhoto ? (
-        <>
-          <LazyImage
-            src={randomPhoto.imageUrl}
-            alt={randomPhoto.title || "Foto em Destaque"}
-            width="100%"
-            height="100%"
-            sx={{
-              // This image tag is primarily for preloading and error state.
-              // Its 'display' style is controlled internally by LazyImage based on loaded state.
-              // You might want to remove it entirely if you rely solely on background-image.
-            }}
-            showLoaderAndError={false} // Prevents LazyImage from showing its own loader/error directly on top
-          />
-
-          {/* Camada de sobreposição para o título e a descrição */}
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)',
-              color: 'white',
-              p: 2,
-              zIndex: 1,
-            }}
-          >
-            <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-              {randomPhoto.title}
-            </Typography>
-            <Typography variant="body2">
-              {randomPhoto.description}
-            </Typography>
-          </Box>
-        </>
-      ) : (
-        <Typography component="div" variant="h6" color="text.secondary">
-          Nenhuma foto disponível para destaque.
-        </Typography>
-      )}
-
-      
-    </Box>
+    // Example using aspect-ratio (modern CSS)
+<Box
+  sx={{
+    width: '100%',
+    maxWidth: '2048px',
+    aspectRatio: '16 / 9', // For a 16:9 aspect ratio
+    position: 'relative',
+    overflow: 'hidden',
+    mt: 4,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+    backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
+    backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain', 
+    cursor: 'default',
+  }}
+>
+  {randomPhoto ? (
+    <>
+      <LazyImage
+        src={randomPhoto.imageUrl}
+        alt={randomPhoto.title || "Foto em Destaque"}
+        sx={{
+          zIndex: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover', // Ensures the image fills the container without distortion
+          objectPosition: 'center center',
+        }}
+      />
+      {/* ... Overlay for title/description */}
+    </>
+  ) : (
+    <Typography component="div" variant="h6" color="text.secondary">
+      Nenhuma foto disponível para destaque.
+    </Typography>
+  )}
+</Box>
   );
 };
 

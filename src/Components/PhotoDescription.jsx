@@ -9,18 +9,18 @@ const PhotoDescription = ({ imageUrl, description }) => {
 
   return (
     <>
-      {imageUrl && (
-        <>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-            <LazyImage
-              src={imageUrl}
-              alt={autor}
-              width={240}
-              height="auto"
-            />
-          </Box>
-        </>
-      )}
+
+
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <LazyImage
+          src="/eu.jpg"
+          width={267}
+          height={400}
+          style={{ margin: "0 auto" }}
+        />
+      </Box>
+
+
 
       <Suspense fallback={<Skeleton variant="text" height={100} />}>
         <Typography
@@ -31,14 +31,17 @@ const PhotoDescription = ({ imageUrl, description }) => {
           {description}
         </Typography>
       </Suspense>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <LazyImage
-              src="/eu.jpg"
-              width={267}
-              height={400}
-              style={{ margin: "0 auto" }}
-            />
-          </Box>
+      {imageUrl && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <LazyImage
+            src={imageUrl}
+            alt={autor}
+            width={192}
+            height="auto"
+          />
+        </Box>
+      )}
+
     </>
   );
 };
