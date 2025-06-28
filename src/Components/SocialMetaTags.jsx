@@ -1,15 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 
-const SocialMetaTags = ({ title, description, image, url }) => {
+const SocialMetaTags = ({ title, image, description }) => {
   // Define a default image if none is provided.
   // IMPORTANT: Replace with the actual URL of your default image.
   const defaultImage = "https://olhofotografico.com.br/logo_192.png"; 
   const finalImage = image || defaultImage;
-
+  let url = window.location.origin;
   // Use the provided URL or window.location.href as a fallback.
   // window.location.href is only available in the client-side environment.
   // For Server-Side Rendering (SSR) frameworks, ensure 'url' is always provided.
-  const currentUrl = url || (typeof window !== "undefined" ? window.location.href : '');
+  const currentUrl = url || (typeof window !== "undefined" ? window.location.origin : '');
 
   // Define a default site name and Twitter handle
   const siteName = "Olho Fotográfico"; // Replace with your actual site name
