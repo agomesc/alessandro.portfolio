@@ -1,4 +1,4 @@
-import  { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import Box from "@mui/material/Box";
 import LoadingMessage from "../Components/LoadingMessage";
 import SocialMetaTags from "../Components/SocialMetaTags";
@@ -43,11 +43,15 @@ const About = () => {
             <TypographyTitle src={title} />
 
             <Suspense fallback={<LoadingMessage />}>
-                <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
+                
+                    <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
+                    <PhotoDescription imageUrl="/eu.jpg" description="Alessandro" />
+                
             </Suspense>
 
             <Suspense fallback={<LoadingMessage />}>
                 <SocialMetaTags title={title} image="/logo_192.png" description={minhaDescricao} />
+
             </Suspense>
 
             <CommentBox itemID="About" />
