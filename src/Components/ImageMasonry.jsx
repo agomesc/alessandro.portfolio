@@ -6,6 +6,7 @@ import LazyImage from "../Components/LazyImage";
 import LoadingMessage from '../Components/LoadingMessage';
 import Typography from "@mui/material/Typography";
 import { NavLink } from 'react-router-dom';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'; // Import the icon
 
 const StarComponent = lazy(() => import('../Components/StarComponent'));
 
@@ -100,7 +101,6 @@ const ImageMasonry = ({ data = [] }) => {
                   bottom: 10,
                   left: 10,
                   zIndex: 2,
-                  // Added background for better readability on various images
                   background: 'rgba(255, 255, 255, 0.7)',
                   borderRadius: '8px',
                   padding: '4px 8px',
@@ -110,7 +110,6 @@ const ImageMasonry = ({ data = [] }) => {
                   sx={{
                     color: '#333',
                     fontWeight: 'bold',
-                    // Optional: text shadow for better contrast
                     textShadow: '0 0 5px rgba(255,255,255,0.7)'
                   }}
                 >
@@ -138,6 +137,32 @@ const ImageMasonry = ({ data = [] }) => {
                 </Suspense>
               </Box>
             </motion.div>
+
+            {/* Gallery Icon with fade-in */}
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  left: 10, // Position it on the left side
+                  zIndex: 2,
+                  background: 'rgba(0, 0, 0, 0.5)', // Darker background for contrast
+                  borderRadius: '50%', // Make it a circle
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                }}
+              >
+                <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} /> {/* Icon color and size */}
+              </Box>
+            </motion.div>
+
           </motion.div>
         ))}
       </Masonry>
