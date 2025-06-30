@@ -2,7 +2,6 @@ import React, { useMemo, useEffect, useState } from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from '@mui/material/CircularProgress';
-// Removed Dialog, DialogContent, DialogTitle, IconButton, CloseIcon imports as they are no longer needed
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -86,8 +85,7 @@ const App = () => {
 <Box
   sx={{
     width: '100%',
-    maxWidth: '2048px',
-    aspectRatio: '16 / 9', // For a 16:9 aspect ratio
+    height:'auto',
     position: 'relative',
     overflow: 'hidden',
     mt: 4,
