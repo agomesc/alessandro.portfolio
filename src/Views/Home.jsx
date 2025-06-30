@@ -102,7 +102,7 @@ const Home = () => {
                 }}
             >
                 {/* RandomPhoto can render directly as galleryData is awaited */}
-                <RandomPhoto />
+                {/* <RandomPhoto /> */}
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}

@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useCallback, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from '@mui/material/Skeleton';
-import { motion } from "framer-motion"; // 'motion' is imported but not used in the provided JSX. Consider removing if not used.
+// Removed 'motion' import as it's not used in the provided JSX.
 
 import {
     AppBar, Toolbar, IconButton, Typography, Box, Drawer, Divider,
@@ -25,50 +25,54 @@ import {
     Brightness7 as Brightness7Icon,
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
-    Brush as BrushIcon // Changed from BrushIcon as Working to Brush for standard naming
+    Brush as BrushIcon
 } from "@mui/icons-material";
 
-import { signInWithPopup, signOut } from "firebase/auth";
+import { signInWithPopup, signOut, setPersistence, browserLocalPersistence } from "firebase/auth"; // Import setPersistence and browserLocalPersistence
 import firebaseConfig from "../firebaseConfig";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
-const ContactForm = lazy(() => import('./ContactForm')); // This import isn't used in the provided code, so it can likely be removed if not needed elsewhere.
+// Removed ContactForm lazy import as it's not used.
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
-    const [openSub, setOpenSub] = useState(false); // Controls the "Minhas Galerias" collapse
-    const [openEquipamentos, setOpenEquipamentos] = useState(false); // Controls the "Equipamentos" collapse
+    const [openSub, setOpenSub] = useState(false);
+    const [openEquipamentos, setOpenEquipamentos] = useState(false);
     const [galleryData, setGalleryData] = useState([]);
     const instance = useMemo(() => CreateFlickrApp(), []);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [user, setUser] = useState(null);
+    const [loadingGallery, setLoadingGallery] = useState(true); // New state for gallery loading
 
     // Fetch gallery data on component mount
     useEffect(() => {
-        if (galleryData.length === 0) {
-            instance.getGallery()
-                .then(setGalleryData)
-                .catch((error) => {
-                    setSnackbarMessage("Erro ao carregar as galerias: " + error.message);
-                    setSnackbarSeverity("error");
-                    setSnackbarOpen(true);
-                });
+        const fetchGallery = async () => {
+            try {
+                const data = await instance.getGallery();
+                setGalleryData(data);
+            } catch (error) {
+                setSnackbarMessage("Erro ao carregar as galerias: " + error.message);
+                setSnackbarSeverity("error");
+                setSnackbarOpen(true);
+            } finally {
+                setLoadingGallery(false); // Set loading to false after fetch
+            }
+        };
+
+        if (galleryData.length === 0 && loadingGallery) { // Only fetch if not already loaded and still loading
+            fetchGallery();
         }
-    }, [galleryData, instance]);
+    }, [galleryData, instance, loadingGallery]);
 
     // Firebase authentication state listener
     useEffect(() => {
         const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
-            if (usr) {
-                setUser(usr);
-            } else {
-                setUser(null);
-            }
+            setUser(usr);
         });
         return () => unsubscribe();
     }, []);
@@ -84,50 +88,44 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     };
 
     // Handle user login with Firebase
-    const handleLogin = () => {
-        signInWithPopup(firebaseConfig.auth, firebaseConfig.provider)
-            .then((result) => {
-                const usr = result.user;
-                setUser(usr);
-                setSnackbarMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`);
-                setSnackbarSeverity("success");
-                setSnackbarOpen(true);
+    const handleLogin = async () => {
+        try {
+            // Set persistence to local before signing in
+            await setPersistence(firebaseConfig.auth, browserLocalPersistence);
+            const result = await signInWithPopup(firebaseConfig.auth, firebaseConfig.provider);
+            const usr = result.user;
+            setUser(usr);
+            setSnackbarMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`);
+            setSnackbarSeverity("success");
+            setSnackbarOpen(true);
 
-                // Close all drawers/collapses after login for a cleaner UX
-                setOpen(false);
-                setOpenEquipamentos(false);
-                setOpenSub(false);
+            // Close all drawers/collapses after login for a cleaner UX
+            setOpen(false);
+            setOpenEquipamentos(false);
+            setOpenSub(false);
 
-                // Reload window after a short delay to reflect login state, if necessary
-                window.setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
-            })
-            .catch((error) => {
-                setSnackbarMessage("Erro ao fazer login: " + error.message);
-                setSnackbarSeverity("error");
-                setSnackbarOpen(true);
-            });
+            // Removed window.location.reload() - state update should handle UI changes
+        } catch (error) {
+            setSnackbarMessage("Erro ao fazer login: " + error.message);
+            setSnackbarSeverity("error");
+            setSnackbarOpen(true);
+        }
     };
 
     // Handle user logout with Firebase
-    const handleLogout = () => {
-        signOut(firebaseConfig.auth)
-            .then(() => {
-                setUser(null);
-                setSnackbarMessage("Desconectado com sucesso.");
-                setSnackbarSeverity("info");
-                setSnackbarOpen(true);
-                // Reload window after a short delay, if necessary
-                window.setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
-            })
-            .catch((error) => {
-                setSnackbarMessage("Erro ao desconectar: " + error.message);
-                setSnackbarSeverity("error");
-                setSnackbarOpen(true);
-            });
+    const handleLogout = async () => {
+        try {
+            await signOut(firebaseConfig.auth);
+            setUser(null);
+            setSnackbarMessage("Desconectado com sucesso.");
+            setSnackbarSeverity("info");
+            setSnackbarOpen(true);
+            // Removed window.location.reload() - state update should handle UI changes
+        } catch (error) {
+            setSnackbarMessage("Erro ao desconectar: " + error.message);
+            setSnackbarSeverity("error");
+            setSnackbarOpen(true);
+        }
     };
 
     // Memoized list of navigation items
@@ -161,7 +159,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         ];
 
         return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
-    }, [galleryData]);
+    }, [galleryData, user]); // Add 'user' as a dependency for 'items' to re-memoize when user state changes
 
     const DrawerList = (
         <Box sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }} role="presentation">
@@ -170,7 +168,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 <List>
                     {items.map((item, index) => {
                         const isChild = item.isChild;
-                        // Determine if the current item is a parent of the "Minhas Galerias" section
                         const isParentOfGalleries = item.isParentGallery;
                         const isEquipamentosParent = item.isEquipamentos;
 
@@ -182,14 +179,14 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                         to={item.route.startsWith("JavaScript") ? undefined : item.route}
                                         onClick={(event) => {
                                             if (item.route.startsWith("JavaScript")) {
-                                                event.preventDefault(); // Prevent default link behavior for parent items
+                                                event.preventDefault();
                                             }
                                             if (isEquipamentosParent) {
                                                 setOpenEquipamentos(!openEquipamentos);
                                             } else if (isParentOfGalleries) {
                                                 setOpenSub(!openSub);
                                             } else {
-                                                setOpen(false); // Close drawer if it's a regular link
+                                                setOpen(false);
                                             }
                                         }}
                                     >
@@ -258,11 +255,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     );
 
     // Show skeleton loader while gallery data is being fetched
-    if (!galleryData.length) return <Skeleton variant="rectangular" height="auto" width="100%" />;
+    if (loadingGallery) return <Skeleton variant="rectangular" height="100%" width="100%" />;
+
 
     return (
         <div>
-            {/* AppBar is always present and handles drawer toggle and theme toggle */}
             <AppBar position="fixed" sx={{ top: 0, bgcolor: theme.palette.background.paper, color: theme.palette.text.primary, display: 'flex' }}>
                 <Toolbar>
                     <IconButton
@@ -292,12 +289,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 </Toolbar>
             </AppBar>
 
-            {/* Mobile Drawer (now the only navigation method) */}
             <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
                 {DrawerList}
             </Drawer>
 
-            {/* Snackbar for messages */}
             <MessageSnackbar
                 message={snackbarMessage}
                 open={snackbarOpen}
