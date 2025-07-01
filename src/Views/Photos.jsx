@@ -4,13 +4,15 @@ import React, {
   Suspense,
   lazy,
   useMemo,
-  useCallback
+  useCallback,
 } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // Importe o ícone
+import IconButton from "@mui/material/IconButton"; // Importe o botão de ícone
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
@@ -21,6 +23,7 @@ const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
   const [galleryInfoData, setGalleryInfoData] = useState("");
+  const [showAlbumInfo, setShowAlbumInfo] = useState(false); // Novo estado
   const instance = useMemo(() => CreateFlickrApp(), []);
 
   const metaData = useMemo(() => {
@@ -29,31 +32,47 @@ const Photos = () => {
       return {
         title: randomItem.title || "Galeria de Fotos",
         image: randomItem.url || "",
-        description: randomItem.title || "Veja as fotos dessa galeria."
+        description: randomItem.title || "Veja as fotos dessa galeria.",
       };
     }
     return {
       title: "Galeria de Fotos",
       image: "",
-      description: "Veja as fotos dessa galeria."
+      description: "Veja as fotos dessa galeria.",
     };
   }, [galleryData]);
 
+  // Fetches photo data initially
   const fetchData = useCallback(async () => {
     try {
       const data = await instance.getPhotos(id);
       setGalleryData(data);
-
-      const albumInfo = await instance.getAlbum(id);
-      setGalleryInfoData(albumInfo?.description?._content || "");
     } catch (error) {
-      console.error("Erro ao carregar a galeria:", error);
+      console.error("Erro ao carregar a galeria de fotos:", error);
     }
   }, [id, instance]);
+
+  // Fetches album info only when `showAlbumInfo` is true
+  const loadAlbumInfo = useCallback(async () => {
+    if (showAlbumInfo && !galleryInfoData) { // Only fetch if not already fetched
+      try {
+        const albumInfo = await instance.getAlbum(id);
+        setGalleryInfoData(albumInfo?.description?._content || "");
+      } catch (error) {
+        console.error("Erro ao carregar informações do álbum:", error);
+      }
+    }
+  }, [id, instance, showAlbumInfo, galleryInfoData]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (showAlbumInfo) {
+      loadAlbumInfo();
+    }
+  }, [showAlbumInfo, loadAlbumInfo]); // Only run when showAlbumInfo changes or loadAlbumInfo itself changes
 
   if (!galleryData) {
     return <CustomSkeleton height={300} />;
@@ -69,22 +88,35 @@ const Photos = () => {
             sm: "90%",
             md: "80%",
             lg: "70%",
-            xl: "80%"
+            xl: "80%",
           },
           margin: "0 auto",
           padding: "0 20px",
-          mt: 10
+          mt: 10,
         }}
       >
         <Suspense fallback={<CustomSkeleton height={80} />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
 
-        <Suspense fallback={<CustomSkeleton height={80} />}>
-          <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-            {galleryInfoData}
+        {/* Info Icon to trigger album info loading */}
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
+          <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
+            Detalhes da Galeria:
           </Typography>
-        </Suspense>
+          <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Box>
+
+        {/* Conditionally render album info */}
+        {showAlbumInfo && (
+          <Suspense fallback={<CustomSkeleton height={80} />}>
+            <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
+              {galleryInfoData || <CustomSkeleton height={20} width="80%" />} {/* Show skeleton while loading info */}
+            </Typography>
+          </Suspense>
+        )}
 
         <Suspense fallback={<CustomSkeleton height={400} />}>
           <PhotoGallery photos={galleryData} />
