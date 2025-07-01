@@ -6,12 +6,11 @@ import Tab from "@mui/material/Tab";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
-import LoadingMessage from "../Components/LoadingMessage";
+// import LoadingMessage from "../Components/LoadingMessage"; // No longer needed directly if Skeleton is used
 
 // Lazy-loaded components
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const RandomPhoto = lazy(() => import("../Components/PhotoHighlight.jsx"));
-
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
@@ -25,12 +24,14 @@ const Home = () => {
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [loadingGallery, setLoadingGallery] = useState(true); // New state for explicit gallery loading
 
     const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
     // Function to fetch gallery data based on tab index
     const fetchGalleryData = useCallback(async () => {
-        setGalleryData(null);
+        setLoadingGallery(true); // Set loading to true when fetching starts
+        setGalleryData(null); // Clear previous data to show skeleton again
         try {
             const data = tabIndex === 0
                 ? await flickrInstance.getLatestPhotosLargeSquare()
@@ -41,6 +42,8 @@ const Home = () => {
             setSnackbarMessage("Falha ao carregar fotos. Por favor, tente novamente mais tarde.");
             setSnackbarSeverity("error");
             setSnackbarOpen(true);
+        } finally {
+            setLoadingGallery(false); // Set loading to false when fetching ends
         }
     }, [tabIndex, flickrInstance]);
 
@@ -77,11 +80,6 @@ const Home = () => {
         setSnackbarOpen(false);
     }, []);
 
-    // Show skeleton while galleryData is null
-    if (!galleryData) {
-        return <Skeleton variant="circular" />;
-    }
-
     return (
         <>
             <Box
@@ -102,7 +100,10 @@ const Home = () => {
                 }}
             >
                 {/* RandomPhoto can render directly as galleryData is awaited */}
-                {/* <RandomPhoto /> */}
+                <Suspense fallback={<Skeleton variant="rectangular" height={200} width="100%" />}>
+                    <RandomPhoto />
+                </Suspense>
+
                 <Tabs
                     value={tabIndex}
                     onChange={handleTabChange}
@@ -141,33 +142,41 @@ const Home = () => {
                     />
                 </Tabs>
 
-                {tabIndex === 0 && (
-                    <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
-                        <Box mt={4}>
-                            {/* SwipeableSlider uses its own internal loading, can remove skeleton fallback */}
-                            <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                            <Gallery />
-                        </Box>
-                    </Suspense>
+                {loadingGallery ? (
+                    // Show skeletons for the gallery content while data is being fetched
+                    <Box mt={4}>
+                        <Skeleton variant="rectangular" height={300} width="100%" sx={{ mb: 2 }} />
+                        <Skeleton variant="rectangular" height={400} width="100%" />
+                    </Box>
+                ) : (
+                    <>
+                        {tabIndex === 0 && (
+                            <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+                                <Box mt={4}>
+                                    <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                                    <Gallery />
+                                </Box>
+                            </Suspense>
+                        )}
+
+                        {tabIndex === 1 && (
+                            <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+                                <Box mt={4}>
+                                    <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
+                                    <GalleryWork />
+                                </Box>
+                            </Suspense>
+                        )}
+                    </>
                 )}
 
-                {tabIndex === 1 && (
-                    <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
-                        <Box mt={4}>
-                            {/* SwipeableSlider uses its own internal loading, can remove skeleton fallback */}
-                            <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
-                            <GalleryWork />
-                        </Box>
-                    </Suspense>
-                )}
-
-                <Suspense fallback={<LoadingMessage />}>
+                <Suspense fallback={<Skeleton variant="rectangular" height={250} width="100%" sx={{ mt: 4 }} />}>
                     <DisplayAds />
                 </Suspense>
             </Box>
 
             {/* Social Meta Tags for SEO */}
-            <Suspense fallback={<LoadingMessage />}>
+            <Suspense fallback={<></>}> {/* No visual fallback needed for meta tags */}
                 <SocialMetaTags
                     title="Atualizações"
                     image="/logo_192.png"
@@ -176,7 +185,7 @@ const Home = () => {
             </Suspense>
 
             {/* Message Snackbar */}
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<></>}> {/* No visual fallback needed for snackbar */}
                 <MessageSnackbar
                     open={snackbarOpen}
                     message={snackbarMessage}
