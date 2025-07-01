@@ -50,7 +50,7 @@ const ImageMasonry = ({ data = [] }) => {
       initial="hidden"
       animate="show"
     >
-      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4}} spacing={2}>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} spacing={2}>
         {data.map((item, index) => (
           <motion.div
             key={index}
@@ -159,7 +159,9 @@ const ImageMasonry = ({ data = [] }) => {
                   boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
                 }}
               >
-                <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} /> {/* Icon color and size */}
+                <NavLink to={`/Photos/${item.id}`} style={{ textDecoration: 'none' }}>
+                  <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} /> {/* Icon color and size */}
+                </NavLink>
               </Box>
             </motion.div>
 
