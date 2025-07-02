@@ -84,32 +84,42 @@ const App = () => {
     <Box
       sx={{
         width: '100%',
-        height: '370px',
-        backgroundAttachment: 'scroll',
-        backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
-        backgroundAttachment: 'fixed',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
+        height: 'auto',
+        position: 'relative',
+        overflow: 'hidden',
+        mt: 4,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative',
+        backgroundColor: '#f0f0f0',
+        backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
+        backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        cursor: 'default',
       }}
     >
-      <Typography
-        variant="h4"
-        sx={{
-          color: '#fff',
-          backgroundColor: 'rgba(0,0,0,0.4)',
-          padding: 2,
-          borderRadius: 2,
-        }}
-      >
-        {randomPhoto?.title || 'Foto em destaque'}
-      </Typography>
+      {randomPhoto ? (
+        <>
+          <LazyImage
+            src={randomPhoto.imageUrl}
+            alt={randomPhoto.title || "Foto em Destaque"}
+            sx={{
+              zIndex: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover', // Ensures the image fills the container without distortion
+              objectPosition: 'center center',
+            }}
+          />
+        </>
+      ) : (
+        <Typography component="div" variant="h6" color="text.secondary">
+          Nenhuma foto disponível para destaque.
+        </Typography>
+      )}
     </Box>
-
   );
 };
 
