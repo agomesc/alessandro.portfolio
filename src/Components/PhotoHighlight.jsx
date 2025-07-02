@@ -88,6 +88,8 @@ const App = () => {
     height:'auto',
     position: 'relative',
     overflow: 'hidden',
+    aspectratio: '16 / 9', // Use 'aspect-ratio' for modern browsers, or set width/height directly
+    minHeight: '400px',
     mt: 4,
     display: 'flex',
     alignItems: 'center',

@@ -2,20 +2,28 @@ import React, { useState, useEffect, useCallback, memo } from 'react';
 import {
   TextField, Button, Box, Typography, Snackbar, Alert, CircularProgress,
   Card, CardContent, CardMedia, Grid,
-  Dialog, DialogContent, IconButton,
+  Dialog, DialogContent, IconButton, DialogActions
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit'; // Importe o ícone de edição
-import DeleteIcon from '@mui/icons-material/Delete'; // Opcional: para exclusão
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { auth, db, storage } from '../firebaseConfig';
 
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import {
   collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp,
-  doc, updateDoc, deleteDoc // Importe updateDoc e deleteDoc
+  doc, updateDoc, deleteDoc
 } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'; // Importe deleteObject
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+
+// >>> NOVO: Importe o componente Cropper e o slider
+import Cropper from 'react-easy-crop';
+import Slider from '@mui/material/Slider'; // Para controlar o zoom
+
+// >>> NOVO: Importe sua função getCroppedImg
+// Certifique-se de que o caminho para getCroppedImg está correto
+import getCroppedImg from '../shared/cropImage'; // Ajuste o caminho se necessário
 
 /**
  * Função utilitária para redimensionar uma imagem (File ou Blob) para um Blob redimensionado.
@@ -91,8 +99,16 @@ const ImageUploaderGallery = () => {
   // Estados para edição
   const [isEditing, setIsEditing] = useState(false);
   const [currentImageId, setCurrentImageId] = useState(null);
-  const [currentImageUrl, setCurrentImageUrl] = useState(''); // Para pré-visualização da imagem sendo editada
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [currentThumbnailUrl, setCurrentThumbnailUrl] = useState('');
+
+  // >>> NOVO: Estados para o Cropper
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null); // URL da imagem para o cropper
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [aspectRatio, setAspectRatio] = useState(16 / 9); // Pode ser 1 / 1 para quadrado, 16 / 9 para widescreen
 
   const showSnackbar = useCallback((msg, severity) => {
     setSnackbarMessage(msg);
@@ -192,19 +208,26 @@ const ImageUploaderGallery = () => {
     };
   }, [isAuthReady, userId, showSnackbar]);
 
+  // >>> MODIFICADO: handleFileChange para abrir o modal de corte
   const handleFileChange = useCallback((e) => {
-    if (e.target.files[0]) {
-      console.log('Ficheiro selecionado:', e.target.files[0].name);
-      setImageFile(e.target.files[0]);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setImageFile(file); // Guarda o File original, se precisar dele
       setUploadProgress(0);
       setUploadError(null);
-      // Limpa as URLs atuais da imagem se um novo arquivo for selecionado para upload/edição
       setCurrentImageUrl('');
       setCurrentThumbnailUrl('');
+
+      // Cria uma URL para a imagem selecionada para o cropper
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageToCrop(reader.result);
+        setCropModalOpen(true); // Abre o modal do cropper
+      };
+      reader.readAsDataURL(file);
     } else {
       console.log('Nenhum ficheiro selecionado.');
       setImageFile(null);
-      // Se nenhum arquivo for selecionado, mantenha as URLs atuais se estiver em modo de edição
       if (!isEditing) {
         setUploadError('Nenhum ficheiro selecionado.');
       }
@@ -224,13 +247,55 @@ const ImageUploaderGallery = () => {
     setCurrentThumbnailUrl('');
     const fileInput = document.getElementById('image-upload-input');
     if (fileInput) fileInput.value = '';
+    // >>> NOVO: Resetar estados do cropper
+    setImageToCrop(null);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCroppedAreaPixels(null);
   }, []);
 
+  // >>> NOVO: Funções do Cropper
+  const onCropChange = useCallback((crop) => {
+    setCrop(crop);
+  }, []);
+
+  const onZoomChange = useCallback((zoom) => {
+    setZoom(zoom);
+  }, []);
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleCropImage = useCallback(async () => {
+    if (!imageToCrop || !croppedAreaPixels) {
+      showSnackbar('Erro: Imagem ou área de corte não definidas.', 'error');
+      return;
+    }
+
+    try {
+      // Use a função getCroppedImg para obter o Blob da imagem cortada
+      const croppedBlob = await getCroppedImg(imageToCrop, croppedAreaPixels);
+      console.log('Imagem cortada para Blob. Tamanho:', croppedBlob.size, 'bytes');
+
+      // Agora, define o imageFile como o croppedBlob
+      // Isso substituirá o File original pelo Blob cortado para o upload/edição
+      setImageFile(croppedBlob);
+      setCropModalOpen(false); // Fecha o modal de corte
+      showSnackbar('Imagem cortada com sucesso! Prossiga com o upload.', 'success');
+    } catch (e) {
+      console.error('Erro ao cortar imagem:', e);
+      showSnackbar(`Erro ao cortar imagem: ${e.message}`, 'error');
+    }
+  }, [imageToCrop, croppedAreaPixels, showSnackbar]);
+
+  // >>> MODIFICADO: handleUpload para usar o imageFile (que agora pode ser o croppedBlob)
   const handleUpload = useCallback(async () => {
     setUploadError(null);
+    // Agora imageFile pode ser o File original ou o Blob cortado
     if (!imageFile) {
-      setUploadError('Por favor, selecione uma imagem.');
-      showSnackbar('Por favor, selecione uma imagem.', 'warning');
+      setUploadError('Por favor, selecione e corte uma imagem.');
+      showSnackbar('Por favor, selecione e corte uma imagem.', 'warning');
       return;
     }
     if (!title.trim()) {
@@ -247,23 +312,26 @@ const ImageUploaderGallery = () => {
     setIsUploading(true);
     console.log('Iniciando upload...');
     try {
-      const originalBlob = await resizeImageToBlob(imageFile);
-      console.log('Imagem original redimensionada para Blob. Tamanho:', originalBlob.size, 'bytes');
+      // O imageFile já é o BLOB CORTADO, então não precisamos mais do resizeImageToBlob para o original.
+      // Apenas o thumbnail ainda pode precisar de um resize menor se o croppedBlob for muito grande.
+      const originalBlob = imageFile; // O imageFile já é o blob cortado
 
       if (originalBlob.size === 0) {
-        throw new Error('O ficheiro redimensionado resultou num Blob vazio. Não é possível fazer upload.');
+        throw new Error('O ficheiro cortado resultou num Blob vazio. Não é possível fazer upload.');
       }
 
-      const thumbnailBlob = await resizeImageToBlob(imageFile, 320, 240);
+      // Redimensiona para o thumbnail a partir do originalBlob (que é o cortado)
+      const thumbnailBlob = await resizeImageToBlob(originalBlob, 320, 240);
       console.log('Thumbnail gerado. Tamanho:', thumbnailBlob.size, 'bytes');
 
       if (thumbnailBlob.size === 0) {
         throw new Error('O thumbnail gerado resultou num Blob vazio. Não é possível fazer upload.');
       }
 
-      const fileName = `${imageFile.name}-${Date.now()}`;
+      // O nome do arquivo pode ser um UUID para o blob, ou manter parte do nome original se o imageFile for um File
+      const fileName = `${title.replace(/\s/g, '_') || 'image'}-${Date.now()}`;
       const originalStorageRef = ref(storage, `images/${userId}/${fileName}`);
-      const thumbnailStorageRef = ref(storage, `thumbnails/${userId}/${fileName}`);
+      const thumbnailStorageRef = ref(storage, `thumbnails/${userId}/${fileName}-thumb`); // Nome diferente para thumb
 
       const uploadOriginalTask = uploadBytesResumable(originalStorageRef, originalBlob);
       const uploadThumbnailTask = uploadBytesResumable(thumbnailStorageRef, thumbnailBlob);
@@ -329,16 +397,21 @@ const ImageUploaderGallery = () => {
     setCurrentImageId(image.id);
     setTitle(image.title);
     setDescription(image.description);
-    setCurrentImageUrl(image.imageUrl); // Define a URL da imagem atual para pré-visualização
+    setCurrentImageUrl(image.imageUrl);
     setCurrentThumbnailUrl(image.thumbnailUrl);
-    setImageFile(null); // Limpa o arquivo selecionado previamente no input file
+    setImageFile(null);
     setUploadError(null);
     setUploadProgress(0);
-    // Limpa o input de arquivo, se houver um arquivo selecionado
     const fileInput = document.getElementById('image-upload-input');
     if (fileInput) fileInput.value = '';
+    // >>> NOVO: Resetar estados do cropper ao entrar em modo de edição
+    setImageToCrop(null);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCroppedAreaPixels(null);
   }, []);
 
+  // >>> MODIFICADO: handleUpdate para usar o imageFile (croppedBlob)
   const handleUpdate = useCallback(async () => {
     setUploadError(null);
     if (!title.trim()) {
@@ -364,17 +437,17 @@ const ImageUploaderGallery = () => {
 
     try {
       if (imageFile) {
-        // Se um novo arquivo foi selecionado, faça o upload da nova imagem
-        const originalBlob = await resizeImageToBlob(imageFile);
-        const thumbnailBlob = await resizeImageToBlob(imageFile, 320, 240);
+        // Se um novo arquivo (já cortado e em Blob) foi selecionado
+        const originalBlob = imageFile; // Já é o blob cortado
+        const thumbnailBlob = await resizeImageToBlob(originalBlob, 320, 240); // Redimensiona para thumbnail
 
         if (originalBlob.size === 0 || thumbnailBlob.size === 0) {
-            throw new Error('O ficheiro redimensionado resultou num Blob vazio. Não é possível fazer upload.');
+          throw new Error('O ficheiro redimensionado resultou num Blob vazio. Não é possível fazer upload.');
         }
 
-        const fileName = `${imageFile.name}-${Date.now()}`;
+        const fileName = `${title.replace(/\s/g, '_') || 'image'}-${Date.now()}`;
         const originalStorageRef = ref(storage, `images/${userId}/${fileName}`);
-        const thumbnailStorageRef = ref(storage, `thumbnails/${userId}/${fileName}`);
+        const thumbnailStorageRef = ref(storage, `thumbnails/${userId}/${fileName}-thumb`);
 
         const uploadOriginalTask = uploadBytesResumable(originalStorageRef, originalBlob);
         const uploadThumbnailTask = uploadBytesResumable(thumbnailStorageRef, thumbnailBlob);
@@ -399,18 +472,17 @@ const ImageUploaderGallery = () => {
         newThumbnailUrl = await getDownloadURL(uploadThumbnailTask.snapshot.ref);
         console.log('Nova imagem e thumbnail enviados. URLs:', newImageUrl, newThumbnailUrl);
 
-        // Opcional: Excluir a imagem antiga do Storage, se houver
-        if (currentImageUrl) {
+        // Opcional: Excluir a imagem antiga do Storage, se houver e for diferente
+        if (currentImageUrl && currentImageUrl !== newImageUrl) {
           try {
             const oldOriginalRef = ref(storage, currentImageUrl);
             await deleteObject(oldOriginalRef);
             console.log('Imagem original antiga excluída do Storage.');
           } catch (deleteError) {
             console.warn('Falha ao excluir imagem original antiga do Storage:', deleteError.message);
-            // Não impede a atualização do Firestore, apenas loga o aviso
           }
         }
-        if (currentThumbnailUrl) {
+        if (currentThumbnailUrl && currentThumbnailUrl !== newThumbnailUrl) {
           try {
             const oldThumbnailRef = ref(storage, currentThumbnailUrl);
             await deleteObject(oldThumbnailRef);
@@ -419,14 +491,12 @@ const ImageUploaderGallery = () => {
             console.warn('Falha ao excluir thumbnail antiga do Storage:', deleteError.message);
           }
         }
-
-      } else if (!currentImageUrl) { // Se não tem imageFile e não tem currentImageUrl (caso de falha ou bug)
-          setUploadError('Nenhuma imagem associada à edição. Selecione uma nova imagem.');
-          showSnackbar('Nenhuma imagem associada à edição. Selecione uma nova imagem.', 'error');
-          setIsUploading(false);
-          return;
+      } else if (!currentImageUrl) {
+        setUploadError('Nenhuma imagem associada à edição. Selecione uma nova imagem.');
+        showSnackbar('Nenhuma imagem associada à edição. Selecione uma nova imagem.', 'error');
+        setIsUploading(false);
+        return;
       }
-
 
       const imageDocRef = doc(db, 'images', currentImageId);
       await updateDoc(imageDocRef, {
@@ -434,7 +504,7 @@ const ImageUploaderGallery = () => {
         description: description.trim(),
         imageUrl: newImageUrl,
         thumbnailUrl: newThumbnailUrl,
-        lastUpdated: serverTimestamp(), // Opcional: campo para indicar última atualização
+        lastUpdated: serverTimestamp(),
       });
       console.log('Metadados atualizados no Firestore.');
       showSnackbar('Imagem atualizada com sucesso!', 'success');
@@ -456,9 +526,8 @@ const ImageUploaderGallery = () => {
     }
 
     try {
-      setIsUploading(true); // Pode usar este estado para indicar que uma operação está em andamento
+      setIsUploading(true);
 
-      // 1. Excluir do Firebase Storage
       if (imageToDelete.imageUrl) {
         const originalRef = ref(storage, imageToDelete.imageUrl);
         await deleteObject(originalRef);
@@ -470,7 +539,6 @@ const ImageUploaderGallery = () => {
         console.log('Thumbnail excluída do Storage:', imageToDelete.thumbnailUrl);
       }
 
-      // 2. Excluir do Firestore
       const imageDocRef = doc(db, 'images', imageToDelete.id);
       await deleteDoc(imageDocRef);
       console.log('Documento excluído do Firestore:', imageToDelete.id);
@@ -539,7 +607,7 @@ const ImageUploaderGallery = () => {
             <Typography variant="subtitle1" gutterBottom>Imagem Atual:</Typography>
             <img src={currentThumbnailUrl || currentImageUrl} alt="Preview da Imagem Atual" style={{ maxWidth: '200px', height: 'auto', borderRadius: '4px' }} />
             <Typography variant="caption" display="block" color="text.secondary">
-                Selecione um novo arquivo para trocar a imagem.
+              Selecione um novo arquivo para trocar a imagem.
             </Typography>
           </Box>
         )}
@@ -581,7 +649,7 @@ const ImageUploaderGallery = () => {
             variant="contained"
             color="primary"
             onClick={isEditing ? handleUpdate : handleUpload}
-            disabled={isUploading || !title.trim() || (!imageFile && !isEditing)}
+            disabled={isUploading || !title.trim() || (!imageFile && !isEditing)} // Desabilita se não tiver imageFile para upload novo
           >
             {isUploading ? (
               <>
@@ -717,6 +785,79 @@ const ImageUploaderGallery = () => {
             />
           )}
         </DialogContent>
+      </Dialog>
+
+      {/* >>> NOVO: Modal para o Cropper */}
+      <Dialog
+        open={cropModalOpen}
+        onClose={() => setCropModalOpen(false)} // Permite fechar sem cortar, mas o arquivo não será definido
+        maxWidth="lg"
+        fullWidth
+        aria-labelledby="crop-image-dialog-title"
+      >
+        <DialogContent
+          dividers
+          sx={{
+            minHeight: '400px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 2
+          }}
+        >
+          <Typography variant="h6" component="h2" id="crop-image-dialog-title" sx={{ mb: 2 }}>
+            Cortar Imagem
+          </Typography>
+          <Box
+            sx={{
+              position: 'relative',
+              width: '100%',
+              height: 300, // Altura fixa para o cropper
+              background: '#333',
+            }}
+          >
+            {imageToCrop && (
+              <Cropper
+                image={imageToCrop}
+                crop={crop}
+                zoom={zoom}
+                aspect={aspectRatio}
+                onCropChange={onCropChange}
+                onZoomChange={onZoomChange}
+                onCropComplete={onCropComplete}
+                // Adicione estilos para a área do corte (opcional)
+                cropShape="rect" // ou "round"
+                showGrid={true}
+              />
+            )}
+          </Box>
+          <Box sx={{ width: '80%', mt: 3, mb: 2 }}>
+            <Typography gutterBottom>Zoom</Typography>
+            <Slider
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.1}
+              aria-labelledby="zoom-slider"
+              onChange={(e, newZoom) => onZoomChange(newZoom)}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => {
+            setCropModalOpen(false);
+            setImageFile(null); // Limpa o arquivo se o usuário cancelar o corte
+            const fileInput = document.getElementById('image-upload-input');
+            if (fileInput) fileInput.value = '';
+          }} color="error">
+            Cancelar
+          </Button>
+          <Button onClick={handleCropImage} variant="contained" color="primary">
+            Cortar e Usar Imagem
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );
