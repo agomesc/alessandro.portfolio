@@ -82,48 +82,35 @@ const App = () => {
 
   return (
     // Example using aspect-ratio (modern CSS)
-<Box
-  sx={{
-    width: '100%',
-    height:'auto',
-    position: 'relative',
-    overflow: 'hidden',
-    aspectratio: '16 / 9', // Use 'aspect-ratio' for modern browsers, or set width/height directly
-    minHeight: '400px',
-    mt: 4,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f0f0f0',
-    backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
-    backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain', 
-    cursor: 'default',
-  }}
->
-  {randomPhoto ? (
-    <>
-      <LazyImage
-        src={randomPhoto.imageUrl}
-        alt={randomPhoto.title || "Foto em Destaque"}
+    <Box
+      sx={{
+        width: '100%',
+        height: 'auto',
+        backgroundAttachment: 'scroll',
+        backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+      }}
+    >
+      <Typography
+        variant="h4"
         sx={{
-          zIndex: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover', // Ensures the image fills the container without distortion
-          objectPosition: 'center center',
+          color: '#fff',
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          padding: 2,
+          borderRadius: 2,
         }}
-      />
-      {/* ... Overlay for title/description */}
-    </>
-  ) : (
-    <Typography component="div" variant="h6" color="text.secondary">
-      Nenhuma foto disponível para destaque.
-    </Typography>
-  )}
-</Box>
+      >
+        {randomPhoto?.title || 'Foto em destaque'}
+      </Typography>
+    </Box>
+
   );
 };
 
