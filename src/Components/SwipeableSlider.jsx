@@ -54,7 +54,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
         {/* Map through itemData to display each photo */}
         {itemData.map((photo, index) => {
           // Determine if the photo should have the "Nova" label
-          const isHighlighted = index < 2;
+          const isHighlighted = index < 5;
 
           return (
             <Box

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import LoadingMessage from "./LoadingMessage";
+import Skeleton from "@mui/material/Skeleton";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import MessageSnackbar from "./MessageSnackbar";
-import LazyImage from "../Components/LazyImage";
+
+const LazyImage = React.lazy(() => import("../Components/LazyImage"));
 
 const LinkPreview = ({ url }) => {
   const [previewData, setPreviewData] = useState(null);
@@ -35,10 +36,8 @@ const LinkPreview = ({ url }) => {
 
       try {
         const response = await Promise.race([
-          fetch(
-            `${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`
-          ),
-          timeout(10000)
+          fetch(`${process.env.REACT_APP_LINK_PREVIEW}/api/preview?src=${encodeURIComponent(url)}`),
+          timeout(10000),
         ]);
 
         if (!response.ok) {
@@ -64,7 +63,20 @@ const LinkPreview = ({ url }) => {
     fetchData();
   }, [url]);
 
-  if (loading) return <LoadingMessage />;
+  if (loading) {
+    return (
+      <Box sx={{ p: 2, width: "90%", margin: "0 auto" }}>
+        <Card sx={{ boxShadow: 0 }}>
+          <Skeleton variant="rectangular" width="100%" height={140} />
+          <CardContent>
+            <Skeleton variant="text" sx={{ fontSize: "1.2rem" }} />
+            <Skeleton variant="text" width="60%" />
+            <Skeleton variant="text" width="80%" />
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
 
   if (hasError || !previewData) {
     return (
@@ -94,19 +106,27 @@ const LinkPreview = ({ url }) => {
         <Card sx={{ p: 2, margin: "0 auto", boxShadow: 0 }}>
           {previewData.image && (
             <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
-              <LazyImage
-                src={previewData.image}
-                alt={previewData.description || "Imagem da prévia"}
-                width={160}
-                height="auto"
-              />
+              <Suspense fallback={<Skeleton variant="rectangular" width={100} height={100} />}>
+                <LazyImage
+                  src={previewData.image}
+                  alt={previewData.description || "Imagem da prévia"}
+                  width={100}
+                  height="auto"
+                />
+              </Suspense>
             </Box>
           )}
           <CardContent>
-            <Typography component="div"  variant="caption" align="center" sx={{ color: "red" }}>
+            <Typography component="div" variant="caption" align="center" sx={{ color: "red" }}>
               Publicidade / Seleção de Ofertas
             </Typography>
-            <Typography component="div"  variant="body1" align="center" fontWeight="bold" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography
+              component="div"
+              variant="body1"
+              align="center"
+              fontWeight="bold"
+              sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
               {previewData.title}
               <OpenInNewIcon sx={{ ml: 0.5, fontSize: "small" }} aria-hidden="true" />
             </Typography>
