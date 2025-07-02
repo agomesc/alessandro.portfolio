@@ -94,31 +94,12 @@ const App = () => {
         backgroundColor: '#f0f0f0',
         backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
         backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-        backgroundPosition: 'center',
+        backgroundPosition: 'center bottom',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         cursor: 'default',
       }}
     >
-      {randomPhoto ? (
-        <>
-          <LazyImage
-            src={randomPhoto.imageUrl}
-            alt={randomPhoto.title || "Foto em Destaque"}
-            sx={{
-              zIndex: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover', // Ensures the image fills the container without distortion
-              objectPosition: 'center bottom', // Keeps the image centered at the bottom
-            }}
-          />
-        </>
-      ) : (
-        <Typography component="div" variant="h6" color="text.secondary">
-          Nenhuma foto disponível para destaque.
-        </Typography>
-      )}
     </Box>
   );
 };
