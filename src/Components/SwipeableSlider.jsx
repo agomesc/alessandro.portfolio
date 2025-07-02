@@ -96,15 +96,14 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
               <LazyImage
                 src={photo.url} // Assuming photo object has a 'url' property
                 alt={photo.title || `Imagem ${index + 1}`} // Use photo title or generic alt text
-                // Set explicit dimensions for LazyImage for better layout shifting prevention
                 width={150}
                 height={150}
                 sx={{
-                    display: 'block', // Ensures no extra space below the image
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover', // Ensures the image covers the area without distortion
-                     borderRadius: '8px',
+                  width: '100%',
+                    display: 'block',
+                    borderRadius: '16px',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                    transition: 'all 0.3s ease-in-out'
                 }}
               />
             </Box>

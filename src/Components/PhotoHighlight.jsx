@@ -81,11 +81,10 @@ const App = () => {
   }
 
   return (
-    // Example using aspect-ratio (modern CSS)
     <Box
       sx={{
         width: '100%',
-        height: 'auto',
+        height: '370px',
         backgroundAttachment: 'scroll',
         backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
         backgroundAttachment: 'fixed',
