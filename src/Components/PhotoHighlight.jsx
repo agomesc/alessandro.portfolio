@@ -75,7 +75,7 @@ const App = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
         <CircularProgress />
-        <Typography variant="h6" sx={{ ml: 2 }}>A carregar imagens...</Typography>
+        <Typography component="div" variant="h6" sx={{ ml: 2 }}>A carregar imagens...</Typography>
       </Box>
     );
   }
@@ -84,7 +84,7 @@ const App = () => {
     <Box
       sx={{
         width: '100%',
-        height: 'auto',
+        height: { xs: '200px', md: '400px', lg: '600px', xl: '800px' },
         position: 'relative',
         overflow: 'hidden',
         mt: 4,
@@ -110,7 +110,7 @@ const App = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover', // Ensures the image fills the container without distortion
-              objectPosition: 'center center',
+              objectPosition: 'center 20%',
             }}
           />
         </>
