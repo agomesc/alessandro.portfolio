@@ -35,7 +35,7 @@ import getCroppedImg from '../shared/cropImage'; // Ajuste o caminho se necessá
  * @param {number} quality - A qualidade do JPEG/WebP (0 a 1, padrão 0.9).
  * @returns {Promise<Blob>} Um Blob da imagem redimensionada.
  */
-const resizeImageToBlob = (file, maxWidth = 2048, maxHeight = 2048, mimeType = 'image/jpeg', quality = 0.9) => {
+const resizeImageToBlob = (file, maxWidth = 2048, maxHeight = 1363, mimeType = 'image/jpeg', quality = 1.0) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {

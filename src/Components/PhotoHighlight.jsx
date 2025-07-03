@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import LazyImage from "./LazyImage";
+import LazyImage from "./LazyImage"; // Assuming LazyImage handles actual <img> tag rendering and lazy loading
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -92,14 +92,25 @@ const App = () => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#f0f0f0',
-        backgroundImage: randomPhoto ? `url(${randomPhoto.imageUrl})` : 'none',
-        backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-        backgroundPosition: 'center bottom',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
         cursor: 'default',
       }}
     >
+      {randomPhoto ? (
+        <LazyImage
+          src={randomPhoto.imageUrl}
+          alt={randomPhoto.description || 'Imagem aleatória'} // Assuming a description field, or provide a default alt text
+          sx={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover', 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          }}
+        />
+      ) : (
+        <Typography variant="h6">Nenhuma imagem disponível.</Typography>
+      )}
     </Box>
   );
 };
