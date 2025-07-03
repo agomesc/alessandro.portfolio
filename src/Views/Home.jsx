@@ -109,7 +109,7 @@ const Home = () => {
                     onChange={handleTabChange}
                     centered
                     sx={{
-                        marginTop: 3,
+                        marginTop: 5,
                         marginBottom: -8,
                         ".MuiTabs-indicator": {
                             backgroundColor: "#78884c",
@@ -143,15 +143,14 @@ const Home = () => {
                 </Tabs>
 
                 {loadingGallery ? (
-                    // Show skeletons for the gallery content while data is being fetched
-                    <Box mt={4}>
-                        <Skeleton variant="rectangular" height={300} width="100%" sx={{ mb: 2 }} />
-                        <Skeleton variant="rectangular" height={400} width="100%" />
+                    <Box mt={10}>
+                        <Skeleton variant="rectangular" height={200} width="100%" sx={{ mb: 2 }} />
+                        <Skeleton variant="rectangular" height={800} width="100%" sx={{ mb: 2 }} />
                     </Box>
                 ) : (
                     <>
                         {tabIndex === 0 && (
-                            <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+                            <Suspense fallback={<Skeleton variant="rectangular" height={800} width="100%" />}>
                                 <Box mt={4}>
                                     <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
                                     <Gallery />
@@ -160,7 +159,7 @@ const Home = () => {
                         )}
 
                         {tabIndex === 1 && (
-                            <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+                            <Suspense fallback={<Skeleton variant="rectangular" height={800} width="100%" />}>
                                 <Box mt={4}>
                                     <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
                                     <GalleryWork />
@@ -170,13 +169,12 @@ const Home = () => {
                     </>
                 )}
 
-                <Suspense fallback={<Skeleton variant="rectangular" height={250} width="100%" sx={{ mt: 4 }} />}>
+                <Suspense fallback={<Skeleton variant="rectangular" height={200} width="100%" sx={{ mt: 4 }} />}>
                     <DisplayAds />
                 </Suspense>
             </Box>
 
-            {/* Social Meta Tags for SEO */}
-            <Suspense fallback={<></>}> {/* No visual fallback needed for meta tags */}
+            <Suspense fallback={<></>}>
                 <SocialMetaTags
                     title="Atualizações"
                     image="/logo_192.png"
