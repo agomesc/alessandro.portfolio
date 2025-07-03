@@ -5,12 +5,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import LazyImage from "./LazyImage";
 
 const App = () => {
   const [images, setImages] = useState([]);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userId, setUserId] = useState(null);
+
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  const isUltraWide = aspectRatio >= (21 / 9); // true se for 21:9
+
+  const imageHeight = isUltraWide ? (window.innerWidth / (21 / 9)) : (window.innerWidth / (16 / 9));
 
   useEffect(() => {
     let authUnsubscribe;
@@ -94,12 +98,19 @@ const App = () => {
         Imagem Aleatória
       </Typography>
       {randomPhoto ? (
-        <LazyImage
-          src={randomPhoto.imageUrl}
-          alt={randomPhoto.description || 'Imagem aleatória'}
-          width='100%'
-          height={{ xs: '200px', md: '400px', lg: '600px', xl: '800px' }}
+        <Box
+          sx={{
+            height: '400px',
+            backgroundImage: `url(${randomPhoto.imageUrl})`,
+            backgroundPosition: 'center bottom',
+            backgroundSize: 'cover',
+            backgroundAttachment: 'fixed',
+            backgroundRepeat: 'no-repeat',
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            display: 'flex',}}
         />
+
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
           <CircularProgress />
