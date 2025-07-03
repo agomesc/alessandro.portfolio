@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import LazyImage from "./LazyImage"; // Assuming LazyImage handles actual <img> tag rendering and lazy loading
+import LazyImage from "./LazyImage";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -83,33 +83,28 @@ const App = () => {
   return (
     <Box
       sx={{
-        width: '100%',
-        height: { xs: '200px', md: '400px', lg: '600px', xl: '800px' },
-        position: 'relative',
-        overflow: 'hidden',
-        mt: 4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f0f0f0',
-        cursor: 'default',
+        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+        margin: "0 auto",
+        px: 2,
+        mt: 10,
+        pb: 5
       }}
     >
+      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
+        Imagem Aleatória
+      </Typography>
       {randomPhoto ? (
         <LazyImage
           src={randomPhoto.imageUrl}
-          alt={randomPhoto.description || 'Imagem aleatória'} // Assuming a description field, or provide a default alt text
-          sx={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover', 
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
+          alt={randomPhoto.description || 'Imagem aleatória'}
+          width='100%'
+          height={{ xs: '200px', md: '400px', lg: '600px', xl: '800px' }}
         />
       ) : (
-        <Typography variant="h6">Nenhuma imagem disponível.</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
+          <CircularProgress />
+          <Typography variant="h6" sx={{ ml: 2 }}>A carregar imagens...</Typography>
+        </Box>
       )}
     </Box>
   );
