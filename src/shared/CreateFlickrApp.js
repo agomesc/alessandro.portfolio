@@ -103,9 +103,8 @@ const CreateFlickrApp = () => {
 		}));
 	};
 
-	const getPhotoInfo = async (id) => {
+	const getPhotoBasicInfo = async (id) => {
 		const data = await instance.getInfo(id);
-		const exifData = await instance.getExifInfo(id);
 
 		return {
 			id: data.id,
@@ -116,6 +115,13 @@ const CreateFlickrApp = () => {
 			taken: data.dates.taken,
 			photopage: data.urls.url[0]._content,
 			views: data?.views,
+		};
+	};
+
+	const getPhotoExifInfo = async (id) => {
+		const exifData = await instance.getExifInfo(id);
+
+		return {
 			camera: exifData?.camera,
 			lens: exifData.exif.find(exif => exif.tag === 'LensInfo')?.raw._content,
 			range: exifData.exif.find(exif => exif.tag === 'FocalLength')?.raw._content,
@@ -123,9 +129,10 @@ const CreateFlickrApp = () => {
 			iso: exifData.exif.find(exif => exif.tag === 'ISO')?.raw._content,
 			exposure: exifData.exif.find(exif => exif.tag === 'ExposureTime')?.raw._content,
 			focal: exifData.exif.find(exif => exif.tag === 'FocalLength')?.raw._content,
-			aperture: exifData.exif.find(exif => exif.tag === 'FNumber')?.clean._content
+			aperture: exifData.exif.find(exif => exif.tag === 'FNumber')?.clean._content,
 		};
 	};
+
 
 	return {
 		getGallery,
@@ -139,7 +146,8 @@ const CreateFlickrApp = () => {
 		getLatestPhotosLargeSquare,
 		getLatestPhotosLargeSquarelWork,
 		getLatestPhotosMedium,
-		getPhotoInfo
+		getPhotoBasicInfo,
+		getPhotoExifInfo,
 	};
 };
 
