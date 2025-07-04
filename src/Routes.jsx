@@ -21,9 +21,9 @@ const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagi
 const ListAds = lazy(() => import("./Views/ListAds"));
 const EditAds = lazy(() => import("./Views/EditAds"));
 const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalculator"));
-const LoadingMessage = lazy(() => import('../src/Components/LoadingMessage'));
 const ContactForm = lazy(() => import('./Views/ContactForm'));
 const UploadComponent = lazy(() => import('./Views/UploadComponent'));
+const FeaturedPhotos = lazy(() => import('./Views/FeaturedPhotos'));
 
 
 const AppRoutes = () => {
@@ -31,7 +31,7 @@ const AppRoutes = () => {
   const isLocalhost = window.location.hostname === "localhost";
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
+    <Suspense fallback={<></>}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -54,9 +54,9 @@ const AppRoutes = () => {
         <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
         <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
         <Route path="/contactForm" element={<ContactForm />} />
-         {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
+        {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
+        <Route path="/featuredPhotos" element={<FeaturedPhotos />} />
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </Suspense>
   );
