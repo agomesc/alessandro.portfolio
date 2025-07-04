@@ -30,18 +30,21 @@ const PhotoInfo = () => {
   const [error, setError] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-   const instance = useMemo(() => CreateFlickrApp(), []);
+  const instance = useMemo(() => CreateFlickrApp(), []);
 
-  // Busca os dados básicos e EXIF juntos no carregamento inicial
   const fetchInitialPhotoData = useCallback(async () => {
     setLoadingInitialData(true);
     setError(null);
     try {
+      // Primeiro, buscar os dados básicos
       const basicData = await instance.getPhotoBasicInfo(id);
+      setGalleryData(basicData);
+
+      // Agora que os dados básicos foram carregados, buscar os dados EXIF
       const exifData = await instance.getPhotoExifInfo(id);
-      setGalleryData({ ...basicData, ...exifData });
+      setGalleryData(prev => ({ ...prev, ...exifData }));
     } catch (err) {
-      console.error("Erro ao buscar informações iniciais da foto:", err);
+      console.error("Erro ao buscar informações da foto:", err);
       setError("Não foi possível carregar as informações da foto. Tente novamente mais tarde.");
     } finally {
       setLoadingInitialData(false);
