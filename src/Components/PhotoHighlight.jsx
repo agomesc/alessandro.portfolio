@@ -68,7 +68,7 @@ const App = () => {
 
 
    const handleVerMais = () => {
-      navigate('/gallery'); // ou qualquer outra rota que você queira
+      navigate('/gallery'); 
     };
 
   const randomPhoto = useMemo(() => {
@@ -130,7 +130,7 @@ const App = () => {
             sx={{
               position: 'absolute',
               top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
+              backgroundColor: 'rgba(2, 2, 2, 0.20)',
               zIndex: 2
             }}
           />
@@ -151,10 +151,10 @@ const App = () => {
               transition: 'opacity 1s ease-in-out',
             }}
           >
-            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+            <Typography component="div" variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
               Destaque da Galeria
             </Typography>
-            <Typography variant="subtitle1" sx={{ mb: 3 }}>
+            <Typography component="div" variant="subtitle1" sx={{ mb: 3 }}>
               Uma imagem escolhida aleatoriamente para te inspirar
             </Typography>
             <Button
@@ -170,7 +170,7 @@ const App = () => {
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
           <CircularProgress />
-          <Typography variant="h6" sx={{ ml: 2 }}>A carregar imagens...</Typography>
+          <Typography component="div" variant="h6" sx={{ ml: 2 }}>A carregar imagens...</Typography>
         </Box>
       )}
     </Box>
