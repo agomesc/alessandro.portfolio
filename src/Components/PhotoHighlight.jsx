@@ -117,7 +117,7 @@ const App = () => {
               position: 'absolute',
               top: 0, left: 0, right: 0, bottom: 0,
               backgroundImage: `url(${randomPhoto.imageUrl})`,
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center center',
               backgroundRepeat: 'no-repeat',
               backgroundAttachment: { xs: 'scroll', md: 'fixed' },
