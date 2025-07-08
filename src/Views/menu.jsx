@@ -42,7 +42,7 @@ import {
   signInWithPopup,
   signOut,
   setPersistence,
-  browserLocalPersistence,
+  browserSessionPersistence, // <--- Import browserSessionPersistence
 } from "firebase/auth";
 import firebaseConfig from "../firebaseConfig";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
@@ -68,6 +68,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
   const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
   useEffect(() => {
+    
+      setLoadingAuth(false);
+    
     const fetchGallery = async () => {
       try {
         const data = await flickrInstance.getGallery();
@@ -89,49 +92,90 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
   }, [galleryData, flickrInstance, loadingGallery]);
 
   useEffect(() => {
-    const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
-      setUser(usr);
-      setLoadingAuth(false);
-    });
-    return unsubscribe;
+    // Set persistence to browserSessionPersistence
+    setPersistence(firebaseConfig.auth, browserSessionPersistence) // <--- Changed here
+      .then(() => {
+        const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
+          setUser(usr);
+          setLoadingAuth(false);
+        });
+        return unsubscribe;
+      })
+      .catch((error) => {
+        console.error("Error setting persistence:", error);
+        setSnackbar({
+          open: true,
+          message: "Erro ao configurar a persistência da sessão: " + error.message,
+          severity: "error",
+        });
+        setLoadingAuth(false);
+      });
   }, []);
 
   const toggleDrawer = useCallback((isOpen) => () => setDrawerOpen(isOpen), []);
   const showMessage = useCallback((message, severity = "info") => {
     setSnackbar({ open: true, message, severity });
   }, []);
+  
   const handleSnackbarClose = useCallback((_, reason) => {
     if (reason === "clickaway") return;
     setSnackbar((prev) => ({ ...prev, open: false }));
   }, []);
 
   const handleLogin = useCallback(async () => {
+    if (loadingAuth) {
+      showMessage("Aguarde, verificando estado de autenticação...", "info");
+      return;
+    }
+
+    if (user) {
+      showMessage("Você já está logado.", "info");
+      return;
+    }
+
+    if (!firebaseConfig.auth || !firebaseConfig.provider) {
+      showMessage("Configuração do Firebase não está completa.", "error");
+      return;
+    }
+
     try {
-      await setPersistence(firebaseConfig.auth, browserLocalPersistence);
       const result = await signInWithPopup(firebaseConfig.auth, firebaseConfig.provider);
       setUser(result.user);
-      // FIX: Use 'result.user' directly, or the 'user' state variable after it's set
       showMessage(`Bem-vindo, ${result.user.displayName || "usuário"}!`, "success");
       setDrawerOpen(false);
       setOpenEquipamentos(false);
       setOpenSubGallery(false);
+      setLoadingAuth(true);
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
       showMessage("Erro ao fazer login: " + error.message, "error");
+    } finally {
+      setLoadingAuth(false);
     }
-  }, [showMessage]);
+  }, [user, loadingAuth, showMessage]);
 
   const handleLogout = useCallback(async () => {
+    if (loadingAuth) {
+      showMessage("Aguarde, verificando estado de autenticação...", "info");
+      return;
+    }
+
+    if (!user) {
+      showMessage("Você não está logado.", "warning");
+      return;
+    }
+
     try {
       await signOut(firebaseConfig.auth);
       setUser(null);
       showMessage("Desconectado com sucesso.", "info");
       setDrawerOpen(false);
+      setLoadingAuth(true);
     } catch (error) {
-      console.error("Erro ao desconectar:", error);
-      showMessage("Erro ao desconectar: " + error.message, "error");
+      showMessage("Erro ao fazer logout: " + error.message, "error");
+    } finally {
+      setLoadingAuth(false);
     }
-  }, [showMessage]);
+  }, [user, loadingAuth, showMessage]);
 
   const items = useMemo(() => {
     const baseItems = [
@@ -256,8 +300,16 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             </ListItemButton>
           </ListItem>
 
-          {!loadingAuth && (
-            <ListItem disablePadding>
+          {/* Login/Logout Section */}
+          <ListItem disablePadding>
+            {loadingAuth ? (
+              <ListItemButton disabled>
+                <ListItemIcon>
+                  <Skeleton variant="circular" width={28} height={28} />
+                </ListItemIcon>
+                <ListItemText primary={<Skeleton width="60%" />} secondary={<Skeleton width="40%" />} />
+              </ListItemButton>
+            ) : (
               <ListItemButton onClick={user ? handleLogout : handleLogin}>
                 <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                   {user?.photoURL ? (
@@ -275,9 +327,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                   secondary={user?.displayName || ""}
                 />
               </ListItemButton>
-            </ListItem>
-          )}
-
+            )}
+          </ListItem>
         </List>
       </nav>
       <Divider />
