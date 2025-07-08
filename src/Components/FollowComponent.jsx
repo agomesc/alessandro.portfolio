@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { db, auth, provider } from "../firebaseConfig"; // Import auth and googleProvider
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, arrayUnion, arrayRemove } from "firebase/firestore"; // Importe setDoc aqui
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { motion } from "framer-motion"; // Assuming you want similar animation
 
@@ -37,10 +37,16 @@ const FollowComponent = ({ entityId }) => {
           setIsFollowing(userIsFollowing);
         }
       } else {
-        // Initialize the document if it doesn't exist
-        await updateDoc(docRef, { followerUsers: [] }, { merge: true });
-        setFollowers([]);
-        setIsFollowing(false);
+        // Inicializa o documento se ele não existir usando setDoc
+        try {
+          await setDoc(docRef, { followerUsers: [] }, { merge: true });
+          console.log("Documento inicializado com sucesso!");
+          setFollowers([]);
+          setIsFollowing(false);
+        } catch (error) {
+          console.error("Erro ao inicializar o documento:", error);
+          // Adicione aqui qualquer tratamento de erro adicional, como um estado de erro
+        }
       }
     };
 
@@ -50,9 +56,9 @@ const FollowComponent = ({ entityId }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, provider);
-      // User is now logged in, useEffect will handle updating currentUser and fetching data
+      // O usuário agora está logado, o useEffect vai lidar com a atualização do currentUser e a busca de dados
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      console.error("Erro ao fazer login com o Google:", error);
     }
   };
 
@@ -61,7 +67,7 @@ const FollowComponent = ({ entityId }) => {
     setIsProcessing(true);
 
     if (!currentUser) {
-      // Prompt user to log in if not already
+      // Solicita que o usuário faça login se ainda não estiver logado
       handleGoogleSignIn();
       setIsProcessing(false);
       return;
@@ -96,7 +102,7 @@ const FollowComponent = ({ entityId }) => {
         setIsFollowing(true);
       }
     } catch (error) {
-      console.error("Error updating follow status:", error);
+      console.error("Erro ao atualizar o status de seguir:", error);
     } finally {
       setIsProcessing(false);
     }

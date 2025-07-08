@@ -1,4 +1,4 @@
-import React, { lazy, useState, useEffect } from 'react';
+import { lazy, useState, useEffect } from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import "./App.css";
@@ -46,7 +46,9 @@ const App = () => {
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
 			<RandomAffiliateAd />
-			<FollowComponent entityId="1" />
+			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
+				<FollowComponent entityId="1" />
+			</Box>
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
 			</Box>   
