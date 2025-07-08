@@ -45,7 +45,6 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import firebaseConfig from "../firebaseConfig";
-
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
@@ -53,7 +52,6 @@ const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
   const theme = useTheme();
 
-  // --- States ---
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openSubGallery, setOpenSubGallery] = useState(false);
   const [openEquipamentos, setOpenEquipamentos] = useState(false);
@@ -64,13 +62,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     severity: "info",
   });
   const [user, setUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
   const [loadingGallery, setLoadingGallery] = useState(true);
 
   const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
-  // --- Effects ---
-
-  // Fetch gallery data once on mount (only if not loaded)
   useEffect(() => {
     const fetchGallery = async () => {
       try {
@@ -92,42 +88,30 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }
   }, [galleryData, flickrInstance, loadingGallery]);
 
-  // Firebase auth state listener
   useEffect(() => {
     const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
       setUser(usr);
+      setLoadingAuth(false);
     });
     return unsubscribe;
   }, []);
 
-  // --- Callbacks ---
-
-  // Toggle drawer open/close
-  const toggleDrawer = useCallback(
-    (isOpen) => () => {
-      setDrawerOpen(isOpen);
-    },
-    []
-  );
-
-  // Show snackbar message
+  const toggleDrawer = useCallback((isOpen) => () => setDrawerOpen(isOpen), []);
   const showMessage = useCallback((message, severity = "info") => {
     setSnackbar({ open: true, message, severity });
   }, []);
-
   const handleSnackbarClose = useCallback((_, reason) => {
     if (reason === "clickaway") return;
     setSnackbar((prev) => ({ ...prev, open: false }));
   }, []);
 
-  // Login handler
   const handleLogin = useCallback(async () => {
     try {
       await setPersistence(firebaseConfig.auth, browserLocalPersistence);
       const result = await signInWithPopup(firebaseConfig.auth, firebaseConfig.provider);
-      const usr = result.user;
-      setUser(usr);
-      showMessage(`Bem-vindo, ${usr.displayName || "usuário"}!`, "success");
+      setUser(result.user);
+      // FIX: Use 'result.user' directly, or the 'user' state variable after it's set
+      showMessage(`Bem-vindo, ${result.user.displayName || "usuário"}!`, "success");
       setDrawerOpen(false);
       setOpenEquipamentos(false);
       setOpenSubGallery(false);
@@ -137,7 +121,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }
   }, [showMessage]);
 
-  // Logout handler
   const handleLogout = useCallback(async () => {
     try {
       await signOut(firebaseConfig.auth);
@@ -149,8 +132,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
       showMessage("Erro ao desconectar: " + error.message, "error");
     }
   }, [showMessage]);
-
-  // --- Navigation items ---
 
   const items = useMemo(() => {
     const baseItems = [
@@ -202,8 +183,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     return [...baseItems, ...galleryItems, ...equipamentosGroup, ...additionalItems];
   }, [galleryData]);
 
-  // --- Render drawer list items ---
-
   const renderDrawerList = (
     <Box
       sx={{ width: 250, bgcolor: theme.palette.background.default, color: theme.palette.text.primary }}
@@ -224,16 +203,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     component={item.route.startsWith("JavaScript") ? "div" : Link}
                     to={item.route.startsWith("JavaScript") ? undefined : item.route}
                     onClick={(event) => {
-                      if (item.route.startsWith("JavaScript")) {
-                        event.preventDefault();
-                      }
-                      if (isEquipamentosParent) {
-                        setOpenEquipamentos((prev) => !prev);
-                      } else if (isParentOfGalleries) {
-                        setOpenSubGallery((prev) => !prev);
-                      } else {
-                        setDrawerOpen(false);
-                      }
+                      if (item.route.startsWith("JavaScript")) event.preventDefault();
+                      if (isEquipamentosParent) setOpenEquipamentos((prev) => !prev);
+                      else if (isParentOfGalleries) setOpenSubGallery((prev) => !prev);
+                      else setDrawerOpen(false);
                     }}
                   >
                     <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
@@ -241,13 +214,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     {(isEquipamentosParent || isParentOfGalleries) && (
                       <ExpandMoreIcon
                         sx={{
-                          transform: isEquipamentosParent
-                            ? openEquipamentos
+                          transform:
+                            (isEquipamentosParent && openEquipamentos) ||
+                              (isParentOfGalleries && openSubGallery)
                               ? "rotate(180deg)"
-                              : "rotate(0deg)"
-                            : openSubGallery
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
+                              : "rotate(0deg)",
                           transition: "transform 0.3s ease",
                         }}
                       />
@@ -275,7 +246,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             }
           })}
 
-          {/* Theme toggle */}
+          {/* Tema */}
           <ListItem disablePadding>
             <ListItemButton onClick={toggleTheme}>
               <ListItemIcon sx={{ color: theme.palette.primary.main }}>
@@ -285,36 +256,28 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             </ListItemButton>
           </ListItem>
 
-          {/* Login / Logout */}
-          {!user ? (
+          {!loadingAuth && (
             <ListItem disablePadding>
-              <ListItemButton
-                onClick={async (event) => {
-                  event.stopPropagation();
-                  await handleLogin();
-                }}
-              >
+              <ListItemButton onClick={user ? handleLogout : handleLogin}>
                 <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                  <AdminPanelSettingsIcon />
+                  {user?.photoURL ? (
+                    <Avatar
+                      src={user.photoURL}
+                      alt={user.displayName || "Usuário"}
+                      sx={{ width: 28, height: 28 }}
+                    />
+                  ) : (
+                    <AdminPanelSettingsIcon />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Login" />
-              </ListItemButton>
-            </ListItem>
-          ) : (
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={async (event) => {
-                  event.stopPropagation();
-                  await handleLogout();
-                }}
-              >
-                <ListItemIcon>
-                  <Avatar src={user.photoURL} alt={user.displayName || "Usuário"} />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText
+                  primary={user ? "Logout" : "Login"}
+                  secondary={user?.displayName || ""}
+                />
               </ListItemButton>
             </ListItem>
           )}
+
         </List>
       </nav>
       <Divider />
@@ -347,7 +310,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {/* Título ou logo */}
+            {/* Logo ou título */}
           </Typography>
           <IconButton
             size="large"
