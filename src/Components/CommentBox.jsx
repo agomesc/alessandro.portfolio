@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useRef } from 'react'; // Import useRef
+import React, { useState, useEffect, lazy, Suspense, useRef } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import {
   collection,
@@ -38,9 +38,6 @@ const TypographyTitle = lazy(() => import('./TypographyTitle'));
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
 function CommentBox({ itemID }) {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('BR');
@@ -52,12 +49,14 @@ function CommentBox({ itemID }) {
   const [comments, setComments] = useState([]);
   const [replyingTo, setReplyingTo] = useState(null);
   const [image, setImage] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Create a ref for the Editor component (for focus)
   const editorRef = useRef(null);
   // Create a ref for the comment form section (for scrolling)
   const commentFormRef = useRef(null);
 
+  // Scroll to comment form when replying to a comment
   useEffect(() => {
     if (replyingTo && commentFormRef.current) {
       commentFormRef.current.scrollIntoView({
@@ -67,6 +66,20 @@ function CommentBox({ itemID }) {
     }
   }, [replyingTo]);
 
+  // Effect to manage current user and set default name/email if logged in
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+      // Removed automatic population of name/email/country here
+      // as per new requirement for fields to always be editable.
+      // User can now manually fill or it will be empty if not logged in.
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch IP address and (optionally) pre-fill user data if logged in
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
@@ -81,36 +94,27 @@ function CommentBox({ itemID }) {
 
     fetchIpAddress();
 
+    // If currentUser exists, you might want to set initial name/email/country here
+    // for convenience, but they remain editable.
     if (currentUser) {
       setName(currentUser.displayName || '');
       setEmail(currentUser.email || '');
-      setCountry('BR');
+      // setCountry('BR'); // Optionally pre-fill country, but let's keep it manual
     }
   }, [currentUser]);
 
   // Effect to focus the editor when replyingTo changes
   useEffect(() => {
     if (replyingTo && editorRef.current) {
-      // Assuming your Editor component has a method like focus() or a ref to its underlying input
       if (editorRef.current.focus) {
         editorRef.current.focus();
-      } else if (editorRef.current.editor) { // If it's a rich text editor like TinyMCE or Quill
+      } else if (editorRef.current.editor) {
         editorRef.current.editor.focus();
       }
     }
   }, [replyingTo]);
 
-  // Effect to scroll to the comment form when replyingTo changes
-  useEffect(() => {
-    if (replyingTo && commentFormRef.current) {
-      commentFormRef.current.scrollIntoView({
-        behavior: 'smooth', // Smooth scroll animation
-        block: 'start',      // Align the top of the element with the top of the viewport
-      });
-    }
-  }, [replyingTo]);
-
-
+  // Fetch comments from Firestore
   useEffect(() => {
     const q = query(
       collection(db, 'comments'),
@@ -126,6 +130,7 @@ function CommentBox({ itemID }) {
     return unsubscribe;
   }, [itemID]);
 
+  // Function to group comments into a tree structure (for replies)
   const groupComments = (list) => {
     const map = {};
     list.forEach(c => (map[c.id] = { ...c, replies: [] }));
@@ -140,6 +145,7 @@ function CommentBox({ itemID }) {
     return roots;
   };
 
+  // Handle comment submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim() || !country.trim() || !stripHtml(comment)) {
@@ -147,6 +153,7 @@ function CommentBox({ itemID }) {
       return;
     }
 
+    // Check for image upload only if image is present
     if (image && !currentUser) {
       showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
       return;
@@ -175,6 +182,7 @@ function CommentBox({ itemID }) {
     }
   };
 
+  // Handle comment deletion
   const handleDelete = async (id) => {
     if (!currentUser) {
       showMessage('Você precisa estar logado para remover comentários.', 'warning');
@@ -188,17 +196,20 @@ function CommentBox({ itemID }) {
     }
   };
 
+  // Show Snackbar message
   const showMessage = (msg, type) => {
     setMessage(msg);
     setSeverity(type);
     setOpen(true);
   };
 
+  // Close Snackbar
   const handleClose = (_, reason) => {
     if (reason === 'clickaway') return;
     setOpen(false);
   };
 
+  // Recursively renders comments and their replies
   const renderComment = (comment) => (
     <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1 }}>
       <CardHeader
@@ -220,7 +231,7 @@ function CommentBox({ itemID }) {
         {comment.image && (
           <img
             src={comment.image}
-            alt="comentário"
+            alt="Comentário com imagem"
             style={{
               maxWidth: '240px',
               height: 'auto',
@@ -253,10 +264,24 @@ function CommentBox({ itemID }) {
         </Box>
       )}
 
-      {/* Attach the ref to the form element or its container */}
       <form onSubmit={handleSubmit} ref={commentFormRef}>
-        <TextField label="Nome" value={name} onChange={e => setName(e.target.value)} fullWidth required sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
-        <TextField label="E-mail (opcional)" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} disabled={Boolean(currentUser)} />
+        <TextField
+          label="Nome"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          fullWidth
+          required
+          sx={{ mb: 2 }}
+          // Field is now always enabled
+        />
+        <TextField
+          label="E-mail (opcional)"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          fullWidth
+          sx={{ mb: 2 }}
+          // Field is now always enabled
+        />
 
         <FormControl fullWidth sx={{ mb: 2 }}>
           <ReactFlagsSelect
@@ -267,13 +292,12 @@ function CommentBox({ itemID }) {
             showSelectedLabel
             showOptionLabel
             placeholder="Selecione o país"
-            disabled={Boolean(currentUser)}
+            // Field is now always enabled
           />
           <FormHelperText>Selecione o país</FormHelperText>
         </FormControl>
 
         <Box sx={{ mb: 2 }}>
-          {/* Attach the ref to your Editor component */}
           <Editor onContentChange={setComment} defaultValue={comment} height="250px" editorRef={editorRef} />
         </Box>
 

@@ -104,7 +104,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             setOpenEquipamentos(false);
             setOpenSub(false);
 
-            // Removed window.location.reload() - state update should handle UI changes
+            window.location.reload(); // Reload the page to reflect the new user state
         } catch (error) {
             setSnackbarMessage("Erro ao fazer login: " + error.message);
             setSnackbarSeverity("error");
@@ -120,7 +120,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             setSnackbarMessage("Desconectado com sucesso.");
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
-            // Removed window.location.reload() - state update should handle UI changes
+            window.location.reload(); 
         } catch (error) {
             setSnackbarMessage("Erro ao desconectar: " + error.message);
             setSnackbarSeverity("error");
