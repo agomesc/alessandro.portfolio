@@ -35,6 +35,18 @@ service cloud.firestore {
       allow create: if true;
       allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
+
+      match /followedBy/{entityId} {
+      // Anyone can read who is following an entity (follower count, avatars)
+      allow read: if true;
+      // Only authenticated users can update the follower list
+      // You might want more specific rules here, for example:
+      // - Ensure the `followerUsers` array only contains valid user objects
+      // - Ensure a user can only add/remove themselves
+      allow write: if request.auth != null;
+    }
+
+   
     
   }
 }

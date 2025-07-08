@@ -14,6 +14,7 @@ const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
+const FollowComponent = lazy(() => import("./Components/FollowComponent"));
 
 const App = () => {
 	const [urlAtual, setUrlAtual] = useState('');
@@ -45,9 +46,10 @@ const App = () => {
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
 			<RandomAffiliateAd />
+			<FollowComponent entityId="1" />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
-			</Box>           
+			</Box>   
 			<ConsentScreen />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
