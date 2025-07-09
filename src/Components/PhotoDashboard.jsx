@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, Suspense } from "react";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -14,11 +14,14 @@ import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import LazyImage from "./LazyImage";
 import CloseIcon from "@mui/icons-material/Close";
+import InfoIcon from "@mui/icons-material/Info"; // Importar InfoIcon
+import Tooltip from "@mui/material/Tooltip"; // Importar Tooltip
+import Skeleton from "@mui/material/Skeleton"; // Importar Skeleton
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
 
-const PhotoDashboard = ({ photoData, onImageLoad }) => {
+const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAdditionalInfo, loadingExif }) => {
   const [openFullscreen, setOpenFullscreen] = useState(false);
 
   const handleImageClick = () => {
@@ -29,8 +32,31 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
     setOpenFullscreen(false);
   };
 
+  // Lista de dados para a tabela, filtrando para mostrar apenas se a info adicional for solicitada
+  const tableRows = [
+    ["Title", photoData.title],
+    ["Description", photoData.description],
+    ["Location", photoData.location],
+    ["Take", photoData.taken],
+    ["Views", photoData.views],
+  ];
+
+  // Adiciona os dados EXIF à lista da tabela SOMENTE se showAdditionalInfo for true
+  if (showAdditionalInfo && !loadingExif) { // Também só se não estiver carregando
+    tableRows.push(
+      ["Camera", photoData.camera],
+      ["Lens", photoData.lens],
+      ["Range", photoData.range],
+      ["ColorSpace", photoData.colorSpace],
+      ["Iso", photoData.iso],
+      ["Exposure", photoData.exposure],
+      ["Focal", photoData.focal],
+      ["Aperture", photoData.aperture]
+    );
+  }
+
   return (
-    <Card>
+    <Card sx={{ width: "100%" }}>
       <CardHeader
         title={
           <Typography component="div" variant="h6">
@@ -56,21 +82,7 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
         <TableContainer sx={{ width: "100%" }}>
           <Table aria-label="photo specifications" size="small">
             <TableBody>
-              {[
-                ["Title", photoData.title],
-                ["Description", photoData.description],
-                ["Location", photoData.location],
-                ["Take", photoData.taken],
-                ["Views", photoData.views],
-                ["Camera", photoData.camera],
-                ["Lens", photoData.lens],
-                ["Range", photoData.range],
-                ["ColorSpace", photoData.colorSpace],
-                ["Iso", photoData.iso],
-                ["Exposure", photoData.exposure],
-                ["Focal", photoData.focal],
-                ["Aperture", photoData.aperture],
-              ].map(([label, value]) => (
+              {tableRows.map(([label, value]) => (
                 <TableRow key={label}>
                   <TableCell
                     component="th"
@@ -85,23 +97,59 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
                       whiteSpace: "normal",
                     }}
                   >
-                    {value}
+                    {value || "N/A"} {/* Adiciona "N/A" para valores nulos/indefinidos */}
                   </TableCell>
                 </TableRow>
               ))}
+              {loadingExif && showAdditionalInfo && ( // Mostrar skeleton para EXIF enquanto carrega
+                <>
+                  <TableRow key="skeleton-1"> {/* Adicionado key única */}
+                    <TableCell colSpan={2}>
+                      <Skeleton variant="text" width="80%" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key="skeleton-2"> {/* Adicionado key única */}
+                    <TableCell colSpan={2}>
+                      <Skeleton variant="text" width="60%" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key="skeleton-3"> {/* Adicionado key única */}
+                    <TableCell colSpan={2}>
+                      <Skeleton variant="text" width="70%" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
       </CardContent>
 
-      <CardActions>
-        <StarComponent id={photoData.id} />
-        <ViewComponent id={photoData.id} />
-        <Link target="_blank" to={photoData.photopage}>
-          <IconButton>
-            <FaFlickr />
-          </IconButton>
-        </Link>
+      <CardActions sx={{ justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Suspense fallback={<div>Loading Stars...</div>}>
+            <StarComponent id={photoData.id} />
+          </Suspense>
+          <Suspense fallback={<div>Loading Views...</div>}>
+            <ViewComponent id={photoData.id} />
+          </Suspense>
+          <Link target="_blank" to={photoData.photopage}>
+            <IconButton>
+              <FaFlickr />
+            </IconButton>
+          </Link>
+        </div>
+        <div>
+          <Tooltip title={showAdditionalInfo ? "Ocultar detalhes" : "Mostrar detalhes da foto"}>
+            <IconButton
+              aria-label="Mostrar informações adicionais"
+              onClick={onShowAdditionalInfo}
+              color="primary"
+            >
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
       </CardActions>
 
       {openFullscreen && (
@@ -121,7 +169,6 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
           }}
           onClick={handleCloseFullscreen}
         >
-          {/* Botão de Fechar "X" */}
           <div
             style={{
               position: "absolute",
@@ -135,7 +182,6 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
             <CloseIcon style={{ color: "white", fontSize: "36px" }} />
           </div>
 
-          {/* Container para a imagem e seu texto sobreposto */}
           <div
             style={{
               position: "relative",
@@ -160,41 +206,63 @@ const PhotoDashboard = ({ photoData, onImageLoad }) => {
               }}
             />
 
-            {/* Sobreposição para Exposure, Aperture e ISO */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "10px", // Ajuste conforme necessário
-                right: "10px", // ALINHADO À DIREITA
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                color: "white",
-                padding: "8px 12px",
-                borderRadius: "4px",
-                fontSize: "1rem",
-                zIndex: 10001,
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px",
-                pointerEvents: "none",
-                textAlign: "right", // ALINHA O TEXTO INTERNO À DIREITA
-              }}
-            >
-              {photoData.exposure && (
-                <Typography variant="body2" sx={{ color: "white" }}>
-                  **Velocidade (Exposure):** {photoData.exposure}
-                </Typography>
-              )}
-              {photoData.aperture && (
-                <Typography variant="body2" sx={{ color: "white" }}>
-                  **Abertura (Aperture):** {photoData.aperture}
-                </Typography>
-              )}
-              {photoData.iso && (
-                <Typography variant="body2" sx={{ color: "white" }}>
-                  **ISO:** {photoData.iso}
-                </Typography>
-              )}
-            </div>
+            {showAdditionalInfo && !loadingExif && photoData.exposure && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  right: "10px",
+                  backgroundColor: "rgba(0, 0, 0, 0.6)",
+                  color: "white",
+                  padding: "8px 12px",
+                  borderRadius: "4px",
+                  fontSize: "1rem",
+                  zIndex: 10001,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  pointerEvents: "none",
+                  textAlign: "right",
+                }}
+              >
+                {photoData.exposure && (
+                  <Typography variant="body2" sx={{ color: "white" }}>
+                    **Velocidade (Exposure):** {photoData.exposure}
+                  </Typography>
+                )}
+                {photoData.aperture && (
+                  <Typography variant="body2" sx={{ color: "white" }}>
+                    **Abertura (Aperture):** {photoData.aperture}
+                  </Typography>
+                )}
+                {photoData.iso && (
+                  <Typography variant="body2" sx={{ color: "white" }}>
+                    **ISO:** {photoData.iso}
+                  </Typography>
+                )}
+              </div>
+            )}
+            {loadingExif && showAdditionalInfo && (
+                <div
+                    style={{
+                        position: "absolute",
+                        bottom: "10px",
+                        right: "10px",
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        padding: "8px 12px",
+                        borderRadius: "4px",
+                        zIndex: 10001,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px",
+                        pointerEvents: "none",
+                    }}
+                >
+                    <Skeleton variant="text" width={100} sx={{ bgcolor: 'grey.700' }} />
+                    <Skeleton variant="text" width={80} sx={{ bgcolor: 'grey.700' }} />
+                    <Skeleton variant="text" width={70} sx={{ bgcolor: 'grey.700' }} />
+                </div>
+            )}
           </div>
         </div>
       )}

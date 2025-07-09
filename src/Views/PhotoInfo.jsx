@@ -11,13 +11,11 @@ import {
   Box,
   Skeleton,
   IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
 import TypographyTitle from "../Components/TypographyTitle";
 import LoadingMessage from "../Components/LoadingMessage";
-import CreateFlickrApp from "../shared/CreateFlickrApp"; // ajuste o caminho conforme seu projeto
+import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -25,49 +23,61 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const PhotoInfo = () => {
   const { id } = useParams();
-  const [galleryData, setGalleryData] = useState(null);
+  const [basicPhotoData, setBasicPhotoData] = useState(null);
+  const [exifData, setExifData] = useState(null);
   const [loadingInitialData, setLoadingInitialData] = useState(true);
+  const [loadingExifData, setLoadingExifData] = useState(false);
   const [error, setError] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+
   const instance = useMemo(() => CreateFlickrApp(), []);
 
-  const fetchInitialPhotoData = useCallback(async () => {
+  const fetchBasicPhotoData = useCallback(async () => {
     setLoadingInitialData(true);
     setError(null);
     try {
-      // Primeiro, buscar os dados básicos
-      const basicData = await instance.getPhotoBasicInfo(id);
-      setGalleryData(basicData);
-
-      // Agora que os dados básicos foram carregados, buscar os dados EXIF
-      const exifData = await instance.getPhotoExifInfo(id);
-      setGalleryData(prev => ({ ...prev, ...exifData }));
+      const data = await instance.getPhotoBasicInfo(id);
+      setBasicPhotoData(data);
     } catch (err) {
-      console.error("Erro ao buscar informações da foto:", err);
-      setError("Não foi possível carregar as informações da foto. Tente novamente mais tarde.");
+      console.error("Erro ao buscar informações básicas da foto:", err);
+      setError("Não foi possível carregar as informações básicas da foto. Tente novamente mais tarde.");
     } finally {
       setLoadingInitialData(false);
     }
-  }, [id]);
+  }, [id, instance]);
 
-  // Agora o botão "Info" pode carregar dados adicionais ou comentários, se quiser,
-  // aqui vou deixar só controle da exibição, pois já carregamos tudo de EXIF no início
+  const fetchExifInfo = useCallback(async () => {
+    if (exifData || loadingExifData) return;
+
+    setLoadingExifData(true);
+    try {
+      const data = await instance.getPhotoExifInfo(id);
+      setExifData(data);
+    } catch (err) {
+      console.error("Erro ao buscar dados EXIF:", err);
+    } finally {
+      setLoadingExifData(false);
+    }
+  }, [id, exifData, loadingExifData, instance]);
+
   const handleShowAdditionalInfo = useCallback(() => {
-    setShowAdditionalInfo(true);
-  }, []);
+    setShowAdditionalInfo(prev => !prev);
+    if (!showAdditionalInfo) {
+      fetchExifInfo();
+    }
+  }, [showAdditionalInfo, fetchExifInfo]);
 
   const handleImageLoad = useCallback(() => {
     setImageLoaded(true);
   }, []);
 
-  // Memoização para meta tags
   const metaData = useMemo(() => {
-    if (galleryData) {
+    if (basicPhotoData) {
       return {
-        title: galleryData.title || "Informações da Foto",
-        image: galleryData.url || "",
-        description: galleryData.description || "",
+        title: basicPhotoData.title || "Informações da Foto",
+        image: basicPhotoData.url || "",
+        description: basicPhotoData.description || "",
       };
     }
     return {
@@ -75,11 +85,17 @@ const PhotoInfo = () => {
       image: "",
       description: "",
     };
-  }, [galleryData]);
+  }, [basicPhotoData]);
+
+  // MOVIDO PARA CIMA: combinedPhotoData agora é declarado antes dos early returns
+  const combinedPhotoData = useMemo(() => ({
+    ...basicPhotoData,
+    ...(exifData || {}),
+  }), [basicPhotoData, exifData]);
 
   useEffect(() => {
-    fetchInitialPhotoData();
-  }, [fetchInitialPhotoData]);
+    fetchBasicPhotoData();
+  }, [fetchBasicPhotoData]);
 
   if (loadingInitialData) {
     return (
@@ -112,7 +128,7 @@ const PhotoInfo = () => {
         <Typography component="div" variant="body1">
           Por favor, verifique sua conexão ou tente novamente mais tarde.
         </Typography>
-        <IconButton onClick={fetchInitialPhotoData} color="primary" sx={{ mt: 2 }}>
+        <IconButton onClick={fetchBasicPhotoData} color="primary" sx={{ mt: 2 }}>
           Tentar Novamente
         </IconButton>
       </Box>
@@ -136,32 +152,32 @@ const PhotoInfo = () => {
 
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
-            <PhotoDashboard photoData={galleryData} onImageLoad={handleImageLoad} />
+            <PhotoDashboard
+              photoData={combinedPhotoData}
+              onImageLoad={handleImageLoad}
+              showAdditionalInfo={showAdditionalInfo}
+              onShowAdditionalInfo={handleShowAdditionalInfo}
+              loadingExif={loadingExifData}
+            />
           </Suspense>
         </Box>
 
-        {imageLoaded && (
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-            <Tooltip title="Mostrar comentários e detalhes da foto">
-              <IconButton
-                aria-label="Mostrar informações adicionais"
-                onClick={handleShowAdditionalInfo}
-                color="primary"
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-
         {showAdditionalInfo && (
           <>
-            {/* Aqui você pode incluir comentários, ou qualquer info adicional */}
-            <Box sx={{ mt: 3 }}>
-              <Suspense fallback={<Skeleton height={150} />}>
-                <CommentBox itemID={id} />
-              </Suspense>
-            </Box>
+            {loadingExifData ? (
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Typography variant="body1">Carregando detalhes EXIF...</Typography>
+                <Skeleton height={150} sx={{ mt: 1 }} />
+              </Box>
+            ) : (
+              exifData && (
+                <Box sx={{ mt: 3 }}>
+                  <Suspense fallback={<Skeleton height={150} />}>
+                    <CommentBox itemID={id} />
+                  </Suspense>
+                </Box>
+              )
+            )}
           </>
         )}
       </Box>
