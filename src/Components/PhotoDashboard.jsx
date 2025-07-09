@@ -75,6 +75,15 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
           width="100%"
           height="auto"
           onLoad={onImageLoad}
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "auto",
+            objectFit: "cover",
+            transition: "transform 0.3s ease-in-out",
+            maxWidth: "1024px",
+            margin: "0 auto",
+          }}
         />
       </div>
 
@@ -243,25 +252,25 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
               </div>
             )}
             {loadingExif && showAdditionalInfo && (
-                <div
-                    style={{
-                        position: "absolute",
-                        bottom: "10px",
-                        right: "10px",
-                        backgroundColor: "rgba(0, 0, 0, 0.6)",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        zIndex: 10001,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "4px",
-                        pointerEvents: "none",
-                    }}
-                >
-                    <Skeleton variant="text" width={100} sx={{ bgcolor: 'grey.700' }} />
-                    <Skeleton variant="text" width={80} sx={{ bgcolor: 'grey.700' }} />
-                    <Skeleton variant="text" width={70} sx={{ bgcolor: 'grey.700' }} />
-                </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  right: "10px",
+                  backgroundColor: "rgba(0, 0, 0, 0.6)",
+                  padding: "8px 12px",
+                  borderRadius: "4px",
+                  zIndex: 10001,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  pointerEvents: "none",
+                }}
+              >
+                <Skeleton variant="text" width={100} sx={{ bgcolor: 'grey.700' }} />
+                <Skeleton variant="text" width={80} sx={{ bgcolor: 'grey.700' }} />
+                <Skeleton variant="text" width={70} sx={{ bgcolor: 'grey.700' }} />
+              </div>
             )}
           </div>
         </div>
