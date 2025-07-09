@@ -100,9 +100,9 @@ const Home = () => {
                 }}
             >
                 {/* RandomPhoto can render directly as galleryData is awaited */}
-                {/* <Suspense fallback={<Skeleton variant="rectangular" height={200} width="100%" />}>
+                <Suspense fallback={<Skeleton variant="rectangular" height={200} width="100%" />}>
                     <RandomPhoto />
-                </Suspense> */}
+                </Suspense>
 
                 <Tabs
                     value={tabIndex}

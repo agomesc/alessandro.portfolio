@@ -38,15 +38,10 @@ import {
   Brush as BrushIcon,
 } from "@mui/icons-material";
 
-import {
-  signInWithPopup,
-  signOut,
-  setPersistence,
-  browserSessionPersistence, // <--- Import browserSessionPersistence
-} from "firebase/auth";
-import firebaseConfig from "../firebaseConfig";
+
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
+import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
@@ -61,16 +56,24 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     message: "",
     severity: "info",
   });
-  const [user, setUser] = useState(null);
-  const [loadingAuth, setLoadingAuth] = useState(true);
   const [loadingGallery, setLoadingGallery] = useState(true);
 
   const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
+  // Use o hook de autenticação
+  const showMessage = useCallback((message, severity = "info") => {
+    setSnackbar({ open: true, message, severity });
+  }, []);
+
+  const {
+    user,
+    loadingAuth,
+    handleLogin,
+    handleLogout,
+  } = useFirebaseAuth(showMessage); // Passe showMessage para o hook
+
   useEffect(() => {
-    
-      setLoadingAuth(false);
-    
+    // Não precisa mais de setLoadingAuth(false) aqui, o hook cuida disso.
     const fetchGallery = async () => {
       try {
         const data = await flickrInstance.getGallery();
@@ -91,91 +94,31 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     }
   }, [galleryData, flickrInstance, loadingGallery]);
 
-  useEffect(() => {
-    // Set persistence to browserSessionPersistence
-    setPersistence(firebaseConfig.auth, browserSessionPersistence) // <--- Changed here
-      .then(() => {
-        const unsubscribe = firebaseConfig.auth.onAuthStateChanged((usr) => {
-          setUser(usr);
-          setLoadingAuth(false);
-        });
-        return unsubscribe;
-      })
-      .catch((error) => {
-        console.error("Error setting persistence:", error);
-        setSnackbar({
-          open: true,
-          message: "Erro ao configurar a persistência da sessão: " + error.message,
-          severity: "error",
-        });
-        setLoadingAuth(false);
-      });
-  }, []);
+  // Removido useEffect de autenticação, pois agora está no hook useFirebaseAuth
 
   const toggleDrawer = useCallback((isOpen) => () => setDrawerOpen(isOpen), []);
-  const showMessage = useCallback((message, severity = "info") => {
-    setSnackbar({ open: true, message, severity });
-  }, []);
-  
+
   const handleSnackbarClose = useCallback((_, reason) => {
     if (reason === "clickaway") return;
     setSnackbar((prev) => ({ ...prev, open: false }));
   }, []);
 
-  const handleLogin = useCallback(async () => {
-    if (loadingAuth) {
-      showMessage("Aguarde, verificando estado de autenticação...", "info");
-      return;
-    }
-
-    if (user) {
-      showMessage("Você já está logado.", "info");
-      return;
-    }
-
-    if (!firebaseConfig.auth || !firebaseConfig.provider) {
-      showMessage("Configuração do Firebase não está completa.", "error");
-      return;
-    }
-
-    try {
-      const result = await signInWithPopup(firebaseConfig.auth, firebaseConfig.provider);
-      setUser(result.user);
-      showMessage(`Bem-vindo, ${result.user.displayName || "usuário"}!`, "success");
+  // Ajustes nos callbacks de login e logout para fechar o drawer e redefinir estados do componente pai
+  const handleLoginCallback = useCallback(async () => {
+    await handleLogin();
+    // Após o login, você pode fechar o drawer e redefinir estados específicos da UI aqui.
+    if (user) { // Verifica se o login foi bem-sucedido
       setDrawerOpen(false);
       setOpenEquipamentos(false);
       setOpenSubGallery(false);
-      setLoadingAuth(true);
-    } catch (error) {
-      showMessage("Erro ao fazer login: " + error.message, "error");
-    } finally {
-      setLoadingAuth(false);
     }
-  }, [user, loadingAuth, showMessage]);
+  }, [handleLogin, user]); // user como dependência para saber se o login foi feito
 
-  const handleLogout = useCallback(async () => {
-    if (loadingAuth) {
-      showMessage("Aguarde, verificando estado de autenticação...", "info");
-      return;
-    }
-
-    if (!user) {
-      showMessage("Você não está logado.", "warning");
-      return;
-    }
-
-    try {
-      await signOut(firebaseConfig.auth);
-      setUser(null);
-      showMessage("Desconectado com sucesso.", "info");
-      setDrawerOpen(false);
-      setLoadingAuth(true);
-    } catch (error) {
-      showMessage("Erro ao fazer logout: " + error.message, "error");
-    } finally {
-      setLoadingAuth(false);
-    }
-  }, [user, loadingAuth, showMessage]);
+  const handleLogoutCallback = useCallback(async () => {
+    await handleLogout();
+    // Após o logout, você pode fechar o drawer aqui.
+    setDrawerOpen(false);
+  }, [handleLogout]);
 
   const items = useMemo(() => {
     const baseItems = [
@@ -260,7 +203,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         sx={{
                           transform:
                             (isEquipamentosParent && openEquipamentos) ||
-                              (isParentOfGalleries && openSubGallery)
+                            (isParentOfGalleries && openSubGallery)
                               ? "rotate(180deg)"
                               : "rotate(0deg)",
                           transition: "transform 0.3s ease",
@@ -310,7 +253,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                 <ListItemText primary={<Skeleton width="60%" />} secondary={<Skeleton width="40%" />} />
               </ListItemButton>
             ) : (
-              <ListItemButton onClick={user ? handleLogout : handleLogin}>
+              <ListItemButton onClick={user ? handleLogoutCallback : handleLoginCallback}>
                 <ListItemIcon sx={{ color: theme.palette.primary.main }}>
                   {user?.photoURL ? (
                     <Avatar
