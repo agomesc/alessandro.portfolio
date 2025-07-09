@@ -19,7 +19,7 @@ const CreateFlickrApp = () => {
 	const getGallerySmall = async () => {
 		const data = await instance.getList(userID);
 		return data.map((album) => ({
-			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}_n.jpg`,
+			img: `https://farm${album.farm}.staticflickr.com/${album.server}/${album.primary}_${album.secret}.jpg`,
 			title: album.title._content,
 			id: album.id,
 			description: album.description._content,

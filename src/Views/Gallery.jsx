@@ -4,7 +4,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Skeleton from '@mui/material/Skeleton';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
-const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
+const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
@@ -56,7 +56,7 @@ const Gallery = () => {
           <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
-        <ImageMasonry data={galleryData} />
+        <ImageThumbs data={galleryData} />
 
       </Box>
 

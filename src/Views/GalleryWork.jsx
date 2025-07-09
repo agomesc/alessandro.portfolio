@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
 
-const ImageMasonry = lazy(() => import("../Components/ImageMasonry"));
+const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
@@ -45,7 +45,7 @@ const GalleryWork = () => {
 
                 <Suspense fallback={<CustomSkeleton height={400} />}>
                     {galleryData ? (
-                        <ImageMasonry data={galleryData} />
+                        <ImageThumbs data={galleryData} />
                     ) : (
                         <CustomSkeleton height={400} />
                     )}
