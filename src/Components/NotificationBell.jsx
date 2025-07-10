@@ -3,12 +3,13 @@ import { IconButton, Badge, Box, Typography, Avatar, Button, Paper, ClickAwayLis
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MarkAsReadIcon from '@mui/icons-material/DoneAll'; // Icon for marking all as read
 import { db } from '../firebaseConfig';
-import { collection, query, where, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, updateDoc, doc, writeBatch } from 'firebase/firestore'; // Import writeBatch
 import { getAuth } from 'firebase/auth'; // To get the current user's ID
 
 // Helper to format timestamps (you can create a more robust one)
 const formatTimestamp = (timestamp) => {
-  const date = new Date(timestamp);
+  // Ensure timestamp is a valid Firebase Timestamp or Date object
+  const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
   return date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 };
 
@@ -22,9 +23,11 @@ function NotificationBell() {
 
   // Fetch current user on mount
   useEffect(() => {
+    console.log("Auth effect running...");
     const auth = getAuth();
     const unsubscribeAuth = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
+      console.log("Current user changed:", user ? user.uid : "No user");
     });
     return () => unsubscribeAuth();
   }, []);
@@ -32,11 +35,13 @@ function NotificationBell() {
   // Listen for notifications for the current user
   useEffect(() => {
     if (!currentUser) {
+      console.log("No current user, clearing notifications.");
       setNotifications([]);
       setUnreadCount(0);
       return;
     }
 
+    console.log("Listening for notifications for user:", currentUser.uid);
     const q = query(
       collection(db, 'notifications'),
       where('recipientId', '==', currentUser.uid),
@@ -50,6 +55,8 @@ function NotificationBell() {
       }));
       setNotifications(fetchedNotifications);
       setUnreadCount(fetchedNotifications.filter(n => !n.read).length);
+      console.log("Fetched notifications:", fetchedNotifications);
+      console.log("Unread count:", fetchedNotifications.filter(n => !n.read).length);
     }, (error) => {
       console.error("Error fetching notifications:", error);
     });
@@ -57,29 +64,40 @@ function NotificationBell() {
     return () => unsubscribe();
   }, [currentUser]);
 
+
+  // Handler functions and derived state should be defined here, before the return statement
   const handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget); // Toggle open/close
+    const newStateOpen = !Boolean(anchorEl); // Determine the state *before* setting it
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+    console.log("Bell clicked, open state:", newStateOpen);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    console.log("ClickAway, closing dropdown.");
   };
 
   const handleMarkAsRead = async (notificationId) => {
     try {
+      console.log("Attempting to mark notification as read:", notificationId);
       await updateDoc(doc(db, 'notifications', notificationId), {
         read: true
       });
+      console.log("Notification marked as read successfully:", notificationId);
     } catch (error) {
       console.error("Error marking notification as read:", error);
     }
   };
 
   const handleMarkAllAsRead = async () => {
-    if (!currentUser || notifications.length === 0) return;
+    if (!currentUser || notifications.length === 0) {
+      console.log("No user or no notifications to mark all as read.");
+      return;
+    }
 
     try {
-      const batch = db.batch(); // Use a batch write for efficiency
+      console.log("Attempting to mark all notifications as read for user:", currentUser.uid);
+      const batch = writeBatch(db); // Use writeBatch from 'firebase/firestore'
       notifications.forEach(notif => {
         if (!notif.read) {
           const notifRef = doc(db, 'notifications', notif.id);
@@ -87,11 +105,13 @@ function NotificationBell() {
         }
       });
       await batch.commit();
+      console.log("All notifications marked as read successfully.");
     } catch (error) {
       console.error("Error marking all notifications as read:", error);
     }
   };
 
+  // Derived state for rendering
   const open = Boolean(anchorEl);
   const id = open ? 'notifications-popover' : undefined;
 
@@ -99,7 +119,7 @@ function NotificationBell() {
     <ClickAwayListener onClickAway={handleClose}>
       <Box sx={{ position: 'relative' }}>
         <IconButton
-          aria-describedby={id}
+          aria-describedby={id} // `id` is now defined
           onClick={handleClick}
           color="inherit" // Adjust color to match your header/menu
         >
@@ -180,7 +200,8 @@ function NotificationBell() {
                       )}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {formatTimestamp(notification.timestamp)}
+                      {/* Check if timestamp exists and has a toDate method before calling it */}
+                      {notification.timestamp ? formatTimestamp(notification.timestamp) : 'Data indisponível'}
                     </Typography>
                   </Box>
                   {!notification.read && (

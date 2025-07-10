@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from "firebase/firestore";
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth'; // Keep getAuth for logged-in users
 import { getItemCreatorDetails } from '../utils/itemUtils';
 
 // Define a default anonymous avatar URL
@@ -49,11 +49,11 @@ const Star = ({ fill = 100, index }) => {
 
 const StarAverageRatingComponent = ({ id }) => {
   const [averageRating, setAverageRating] = useState(0);
-  const [userRating, setUserRating] = useState(0);
+  const [userRating, setUserRating] = useState(0); // This will now store the rating from localStorage (anonymous or logged-in)
   const [hoverRating, setHoverRating] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [shake, setShake] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // Keep track of current user for notifications and specific display
 
   const getLocalStorageUserRatingKey = (itemId) => `userStarRating_${itemId}`;
 
@@ -67,6 +67,7 @@ const StarAverageRatingComponent = ({ id }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Always try to load user's previous rating from local storage
       const storedUserRating = parseInt(localStorage.getItem(getLocalStorageUserRatingKey(id)) || "0", 10);
       setUserRating(storedUserRating);
 
@@ -79,6 +80,7 @@ const StarAverageRatingComponent = ({ id }) => {
         const numVotes = data.numVotes || 0;
         setAverageRating(numVotes > 0 ? totalScore / numVotes : 0);
       } else {
+        // Initialize the document if it doesn't exist, preventing "no document to update" error
         await setDoc(docRef, { totalScore: 0, numVotes: 0 });
         setAverageRating(0);
       }
@@ -89,86 +91,104 @@ const StarAverageRatingComponent = ({ id }) => {
 
   const handleStarClick = useCallback(async (selectedRating) => {
     if (isProcessing) return;
-    // Keep this check: Ratings usually require login to prevent spam/abuse.
-    if (!currentUser) {
-        // You might want to show a message here, e.g., using Snackbar or a modal.
-        console.warn("User not logged in. Cannot submit rating.");
-        return;
-    }
     setIsProcessing(true);
 
     const docRef = doc(db, "itemRatings", id);
-    const docSnap = await getDoc(docRef);
-
     let currentTotalScore = 0;
     let currentNumVotes = 0;
+    let previousUserRating = parseInt(localStorage.getItem(getLocalStorageUserRatingKey(id)) || "0", 10);
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      currentTotalScore = data.totalScore || 0;
-      currentNumVotes = data.numVotes || 0;
-    }
+    try {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        currentTotalScore = data.totalScore || 0;
+        currentNumVotes = data.numVotes || 0;
+      } else {
+        await setDoc(docRef, { totalScore: 0, numVotes: 0 });
+        const newDocSnap = await getDoc(docRef);
+        if (newDocSnap.exists()) {
+          const data = newDocSnap.data();
+          currentTotalScore = data.totalScore || 0;
+          currentNumVotes = data.numVotes || 0;
+        }
+      }
 
-    setShake(true);
-    setTimeout(() => setShake(false), 300);
+      setShake(true);
+      setTimeout(() => setShake(false), 300);
 
-    const previousUserRating = parseInt(localStorage.getItem(getLocalStorageUserRatingKey(id)) || "0", 10);
+      let newTotalScore = currentTotalScore;
+      let newNumVotes = currentNumVotes;
+      let finalSelectedRating = selectedRating;
+      let shouldSendNotification = false;
 
-    let newTotalScore = currentTotalScore;
-    let newNumVotes = currentNumVotes;
-    let finalSelectedRating = selectedRating;
-    let actionType = 'rated';
+      if (previousUserRating === 0) {
+        // New rating (either anonymous or logged in)
+        newTotalScore += selectedRating;
+        newNumVotes += 1;
+        shouldSendNotification = true;
+      } else if (previousUserRating === selectedRating) {
+        // Unrating: Clicked the same star again, so remove the rating
+        newTotalScore -= selectedRating;
+        newNumVotes -= 1;
+        finalSelectedRating = 0; // User is effectively un-rating
+        shouldSendNotification = false; // Don't send notification for un-rating
+      } else {
+        // Re-rating: Change existing rating
+        newTotalScore = newTotalScore - previousUserRating + selectedRating;
+        shouldSendNotification = true;
+      }
 
-    if (previousUserRating === 0) {
-      newTotalScore += selectedRating;
-      newNumVotes += 1;
-      actionType = 'rated';
-    } else if (previousUserRating === selectedRating) {
-      newTotalScore -= selectedRating;
-      newNumVotes -= 1;
-      finalSelectedRating = 0;
-      actionType = 'unrated';
-    } else {
-      newTotalScore = newTotalScore - previousUserRating + selectedRating;
-      actionType = 're-rated';
-    }
+      // Store the rating in local storage, regardless of login status
+      localStorage.setItem(getLocalStorageUserRatingKey(id), finalSelectedRating.toString());
+      setUserRating(finalSelectedRating);
 
-    localStorage.setItem(getLocalStorageUserRatingKey(id), finalSelectedRating.toString());
-    setUserRating(finalSelectedRating);
+      await updateDoc(docRef, {
+        totalScore: newTotalScore,
+        numVotes: newNumVotes,
+      });
 
-    await updateDoc(docRef, {
-      totalScore: newTotalScore,
-      numVotes: newNumVotes,
-    });
-
-    // --- Notification Logic for Ratings ---
-    // Only send a notification if a new rating was given (not unrated)
-    // and if the sender is not the item's creator.
-    // This part runs AFTER the rating update, and still uses `currentUser` for sender details.
-    if (finalSelectedRating > 0 && actionType === 'rated') {
+      // --- Notification Logic for Ratings ---
+      if (shouldSendNotification) {
         const { creatorId, itemTitle } = await getItemCreatorDetails(id);
 
-        if (creatorId && creatorId !== currentUser.uid) { // Avoid notifying self
-            await addDoc(collection(db, 'notifications'), {
-                recipientId: creatorId, // The user who owns the item being rated
-                senderId: currentUser.uid, // Sender UID (always available here because of initial `currentUser` check)
-                senderName: currentUser.displayName || 'Usuário',
-                senderPhoto: currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR, // Fallback for photo
-                type: 'rating',
-                itemId: id,
-                itemTitle: itemTitle,
-                ratingValue: finalSelectedRating,
-                timestamp: Date.now(),
-                read: false,
-                link: `/item/${id}`, // Example link
-            });
-        }
-    }
-    // --- END Notification ---
+        // Determine sender details for the notification
+        const senderId = currentUser ? currentUser.uid : 'anonymous'; // Use 'anonymous' for non-logged in users
+        const senderName = currentUser ? (currentUser.displayName || 'Usuário') : 'Usuário Anônimo';
+        const senderPhoto = currentUser ? (currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR) : DEFAULT_ANONYMOUS_AVATAR;
 
-    setAverageRating(newNumVotes > 0 ? newTotalScore / newNumVotes : 0);
-    setIsProcessing(false);
-  }, [id, isProcessing, currentUser]);
+        // Ensure creatorId is valid and not the current logged-in user (avoid self-notification for logged-in users)
+        // Anonymous users will always send a notification to the creator
+        if (creatorId && (currentUser ? creatorId !== currentUser.uid : true)) {
+          await addDoc(collection(db, 'notifications'), {
+            recipientId: creatorId, // The user who owns the item being rated
+            senderId: senderId,
+            senderName: senderName,
+            senderPhoto: senderPhoto,
+            type: 'rating',
+            itemId: id,
+            itemTitle: itemTitle,
+            ratingValue: finalSelectedRating,
+            timestamp: Date.now(),
+            read: false,
+            link: `/item/${id}`, // Example link
+          });
+          console.log("Rating notification sent to:", creatorId, "by:", senderName); // Debug log
+        } else {
+          console.log("Rating notification not sent. Conditions:", { creatorId, currentUserUid: currentUser?.uid, shouldSendNotification }); // Debug log
+        }
+      }
+      // --- END Notification ---
+
+      setAverageRating(newNumVotes > 0 ? newTotalScore / newNumVotes : 0);
+
+    } catch (error) {
+      console.error("Error handling star click or sending notification:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [id, isProcessing, currentUser]); // currentUser is still a dependency for notification sender details
 
   const shakeAnimation = {
     shake: {
@@ -194,7 +214,8 @@ const StarAverageRatingComponent = ({ id }) => {
     >
       {[...Array(5)].map((_, index) => {
         const starValue = index + 1;
-        const currentDisplayedRating = hoverRating > 0 ? hoverRating : averageRating;
+        // Display user's own rating if available, otherwise the average
+        const currentDisplayedRating = hoverRating > 0 ? hoverRating : (userRating > 0 ? userRating : averageRating);
         const fillPercentage = getStarFillPercentage(starValue, currentDisplayedRating, hoverRating > 0);
 
         return (
@@ -203,7 +224,7 @@ const StarAverageRatingComponent = ({ id }) => {
             onClick={() => handleStarClick(starValue)}
             onMouseEnter={() => setHoverRating(starValue)}
             onMouseLeave={() => setHoverRating(0)}
-            disabled={isProcessing || !currentUser} // Still disabled if not logged in
+            disabled={isProcessing} // Removed !currentUser from disabled
             animate={shake ? "shake" : "still"}
             variants={shakeAnimation}
             aria-label={`${starValue} estrela${starValue > 1 ? "s" : ""}`}

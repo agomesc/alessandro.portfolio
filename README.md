@@ -113,3 +113,8 @@ npm prune &&
 
 # 3. Verifica arquivos não utilizados
 npx unimported
+
+
+Run the Script: Save this code as a .js file (e.g., generate-sitemap.js) and run it using Node.js:
+
+node generate-sitemap.js

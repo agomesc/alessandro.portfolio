@@ -1,4 +1,4 @@
-// src/utils/itemUtils.js (No changes needed, already good)
+// src/utils/itemUtils.js
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
@@ -14,6 +14,7 @@ export const getItemCreatorDetails = async (itemId) => {
         itemTitle: itemData.title || 'Um item',
       };
     } else {
+      // THIS IS LINE 17
       console.warn(`Item with ID ${itemId} not found. Cannot retrieve creator details.`);
       return { creatorId: null, itemTitle: 'Um item desconhecido' };
     }

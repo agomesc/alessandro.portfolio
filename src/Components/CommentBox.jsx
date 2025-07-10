@@ -41,6 +41,13 @@ const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 // Define a default anonymous avatar URL
 const DEFAULT_ANONYMOUS_AVATAR = '/path/to/your/default-avatar.png'; // <-- ADJUST THIS PATH
 
+// Basic email validation regex
+const validateEmail = (email) => {
+    if (!email) return true; // Email is optional, so empty is valid
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+};
+
 function CommentBox({ itemID }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -54,6 +61,7 @@ function CommentBox({ itemID }) {
     const [replyingTo, setReplyingTo] = useState(null);
     const [image, setImage] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
+    const [emailError, setEmailError] = useState(false); // New state for email validation
 
     const editorRef = useRef(null);
     const commentFormRef = useRef(null);
@@ -85,7 +93,7 @@ function CommentBox({ itemID }) {
         });
 
         return () => unsubscribe();
-    }, [name, email]); // Added name, email to dependencies to avoid re-setting if user types
+    }, []); // Removed name, email from dependencies to avoid re-setting if user types
 
     useEffect(() => {
         const fetchIpAddress = async () => {
@@ -143,6 +151,15 @@ function CommentBox({ itemID }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // **Email Validation Check**
+        if (email && !validateEmail(email)) {
+            setEmailError(true);
+            showMessage('Por favor, insira um endereço de e-mail válido.', 'error');
+            return;
+        } else {
+            setEmailError(false);
+        }
+
         // Ensure comment has text and name/country are filled
         if (!name.trim() || !country.trim() || !stripHtml(comment)) {
             showMessage('Por favor, preencha o nome, selecione o país e digite seu comentário.', 'warning');
@@ -177,8 +194,6 @@ function CommentBox({ itemID }) {
             // 1. We found the item's creator.
             // 2. The sender is not the item's creator (avoids self-notifications).
             // 3. The recipientId is valid (i.e., not null).
-            // Note: `currentUser` check for notification creation is removed here
-            // to allow anonymous comments to trigger notifications.
             if (creatorId && creatorId !== (currentUser?.uid || null)) {
                 await addDoc(collection(db, 'notifications'), {
                     recipientId: creatorId, // The user who owns the item being commented on
@@ -227,9 +242,24 @@ function CommentBox({ itemID }) {
             return;
         }
         try {
-            if (window.confirm("Tem certeza que deseja remover este comentário?")) {
-                await deleteDoc(doc(db, 'comments', id));
-                showMessage('Comentário removido com sucesso!', 'success');
+            // Get the comment data to check if the current user is the author
+            const commentToDelete = comments.find(c => c.id === id);
+            if (!commentToDelete) {
+                showMessage('Comentário não encontrado.', 'error');
+                return;
+            }
+
+            // Check if current user is the comment author or an admin
+            const isAdmin = currentUser.uid === process.env.REACT_APP_ADMIN_UID;
+            const isAuthor = currentUser.uid === commentToDelete.userId;
+
+            if (isAuthor || isAdmin) {
+                if (window.confirm("Tem certeza que deseja remover este comentário?")) {
+                    await deleteDoc(doc(db, 'comments', id));
+                    showMessage('Comentário removido com sucesso!', 'success');
+                }
+            } else {
+                showMessage('Você não tem permissão para remover este comentário.', 'warning');
             }
         } catch (err) {
             console.error("Erro ao remover comentário:", err);
@@ -322,12 +352,18 @@ function CommentBox({ itemID }) {
                 />
                 <TextField
                     label="E-mail (opcional)"
+                    type="email" // Changed type to email for better mobile keyboard
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                        setEmail(e.target.value);
+                        if (emailError) setEmailError(false); // Clear error on change
+                    }}
                     fullWidth
                     sx={{ mb: 2 }}
                     // Disable if logged in to prevent user from changing pre-filled email
                     disabled={!!currentUser}
+                    error={emailError} // Apply error style
+                    helperText={emailError ? "Endereço de e-mail inválido" : ""} // Show error message
                 />
 
                 <FormControl fullWidth sx={{ mb: 2 }}>
