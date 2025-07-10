@@ -50,12 +50,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-   "storage": {
-    "rules": "storage.rules"
-  },
-  "database": {
-    "rules": "database.rules.json"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",

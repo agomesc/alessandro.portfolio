@@ -8,7 +8,7 @@ service cloud.firestore {
     }
 
     // stars: leitura e escrita públicas (public read and write)
-    match /stars/{docId} {
+    match /itemRatings/{docId} {
       allow read, write: if true;
     }
 
