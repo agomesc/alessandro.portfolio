@@ -35,7 +35,7 @@ const App = () => {
             await signInAnonymously(auth);
             setUserId(auth.currentUser?.uid || crypto.randomUUID());
           } catch (anonError) {
-            console.error('Erro ao tentar login anônimo:', anonError);
+            //console.error('Erro ao tentar login anônimo:', anonError);
             setUserId(crypto.randomUUID());
           }
         }
