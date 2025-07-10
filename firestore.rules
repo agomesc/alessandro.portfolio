@@ -3,45 +3,27 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // --- Collection: views ---
-    // Goal: Public read, public write (based on previous discussion for view counter)
-    // Note: Your comment "escrita só para autenticados" (write only for authenticated) contradicts
-    //       the `ViewComponent` which increments views from unauthenticated users.
-    //       I'm adjusting `write` to `if true` to match the component's functionality.
     match /views/{docId} {
       allow read: if true;
       allow write: if true; // Allows anyone to increment views, as per ViewComponent
     }
 
     // --- Collection: itemRatings ---
-    // Goal: Public read and write.
-    // Suggestion: Consider adding data validation to ensure 'ratingValue' is a number
-    // and within an expected range (e.g., 1-5).
     match /itemRatings/{docId} {
       allow read, write: if true;
-      // Example of data validation for 'create' operation:
-      // allow create: if request.resource.data.ratingValue is number &&
-      //               request.resource.data.ratingValue >= 1 &&
-      //               request.resource.data.ratingValue <= 5;
+      // Consider adding data validation here for 'ratingValue' etc.
     }
 
     // --- Collection: galleries ---
-    // Goal: Public read, write only for authenticated users.
     match /galleries/{docId} {
       allow read: if true;
       allow write: if request.auth != null; // Authenticated users can create, update, delete
     }
 
     // --- Collection: comments ---
-    // Goal: Read: public. Create: public with data validation. Update/Delete: owner only.
     match /comments/{commentId} {
       allow read: if true; // Anyone can read comments
 
-      // Allow anyone to create a comment, but validate that essential fields are present and of the correct type.
-      // - 'text' (from `comment` field in component) should be a string.
-      // - 'timestamp' should be a number.
-      // - 'itemID' is crucial for querying and notifications, ensure it's a string.
-      // - 'userId' can be null for anonymous, but should be a string if present.
-      // - 'name' and 'country' should be strings.
       allow create: if request.resource.data.text is string &&
                       request.resource.data.timestamp is number &&
                       request.resource.data.itemID is string &&
@@ -49,38 +31,28 @@ service cloud.firestore {
                       request.resource.data.country is string &&
                       (request.resource.data.userId == null || request.resource.data.userId is string);
 
-      // Only the authenticated user who created the comment can update or delete it.
-      // Also allows an admin user (if `process.env.REACT_APP_ADMIN_UID` is used in client)
-      // to delete comments as well. You'll need to define `ADMIN_UID` directly here.
-      // IMPORTANT: Replace 'YOUR_ADMIN_UID_HERE' with your actual admin UID if applicable.
       allow update, delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == "YOUR_ADMIN_UID_HERE");
     }
 
     // --- Collection: images ---
-    // Goal: Read: owner only. Create: authenticated users. Update/Delete: owner only.
-    // Note: The `resizeImage` function suggests images are stored as data URLs in Firestore.
-    //       If you switch to Cloud Storage for actual image files, you'll need separate Storage rules.
     match /images/{imageId} {
       allow read: if request.auth != null && request.auth.uid == resource.data.userId; // Only owner can read their images
       allow create: if request.auth != null; // Authenticated users can upload images
       allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId; // Only owner can update/delete their images
     }
 
-    // --- Collection: notifications ---
-    // Goal: Read: recipient only. Create: anonymous sender allowed if 'recipientId' is present (spam concern). Update: recipient only.
-    // Rationale for 'create': Your CommentBox allows anonymous comments to trigger notifications.
-    //       This rule lets any client create a notification document as long as 'recipientId' is specified.
-    //       This is permissive but necessary for anonymous comment notifications.
-    //       For enhanced security, you could check `request.auth.uid != null` for `create`,
-    //       but then anonymous comments couldn't trigger notifications.
-    
-     match /notifications/{notificationId} {
+     // --- Collection: notifications ---
+    match /notifications/{notificationId} {
       // Permite ler se o usuário autenticado for o destinatário da notificação
       allow read: if request.auth.uid != null && request.auth.uid == resource.data.recipientId;
 
-      // Permite criar (adicionar) notificações se o usuário estiver autenticado
-      // (ou se for um serviço de backend que você autentique)
-      allow create: if request.auth.uid != null;
+      // AJUSTE CRÍTICO AQUI:
+      // Permite criar (adicionar) notificações SE o campo 'recipientId' for uma string não vazia.
+      // Isso cobre tanto UIDs válidos quanto 'unknown_creator'.
+      // Não exige autenticação (request.auth != null) para criação,
+      // permitindo notificações de usuários anônimos e para destinatários desconhecidos.
+      allow create: if request.resource.data.recipientId is string &&
+                       request.resource.data.recipientId.length > 0;
 
       // Permite atualizar (ex: marcar como lida) se o usuário autenticado for o destinatário
       allow update: if request.auth.uid != null && request.auth.uid == resource.data.recipientId;
@@ -89,13 +61,10 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-
     // --- Catch-all / Other collections (Genérica) ---
-    // Goal: Public read. Create, update, delete only for authenticated users.
-    // This rule applies to any collection not explicitly matched above.
-    match /{document=**} {
-      allow read: if true; // Public read for any other collection
-      allow create, update, delete: if request.auth != null; // Authenticated users can modify other collections
+   match /{document=**} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null; // Criação/Modificação exige autenticação aqui
     }
   }
 }

@@ -42,7 +42,7 @@ const Star = ({ fill = 100, index }) => {
             <path
                 fill={`url(#${gradientId})`}
                 d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-                  9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
             />
         </svg>
     );
@@ -150,27 +150,41 @@ const StarAverageRatingComponent = ({ id }) => {
                 // Cria a mensagem da notificação
                 const notificationMessage = `${senderName} avaliou seu item "${itemTitle}" com ${finalSelectedRating} estrela(s)!`;
 
-                // Condições para enviar a notificação:
-                // 1. 'creatorId' deve ser válido (não nulo)
-                // 2. Se houver um usuário logado ('currentUser'), o 'creatorId' não deve ser o UID do usuário logado (evita auto-notificação)
-                if (creatorId && (currentUser ? creatorId !== currentUser.uid : true)) {
+                // **NOVA LÓGICA DE CONDIÇÃO E ATRIBUIÇÃO DE CAMPOS**
+                // Define o recipientId. Se creatorId for nulo, usa 'unknown_creator' como um ID de placeholder.
+                const finalRecipientId = creatorId || 'unknown_creator'; 
+
+                // Condição para enviar a notificação:
+                // 1. Deve haver um finalRecipientId (que pode ser 'unknown_creator').
+                // 2. Se houver um usuário logado ('currentUser'), o finalRecipientId não deve ser o UID do usuário logado (evita auto-notificação).
+                // Isso garante que mesmo se o creatorId original for nulo, a notificação ainda pode ser logada (para fins de debug/análise).
+                if (finalRecipientId && (currentUser ? finalRecipientId !== currentUser.uid : true)) {
                     await addDoc(collection(db, 'notifications'), {
-                        recipientId: creatorId, // O UID do criador do item que receberá a notificação
+                        recipientId: finalRecipientId, // O UID do criador ou 'unknown_creator'
                         senderId: senderId,
                         senderName: senderName,
                         senderPhoto: senderPhoto,
                         type: 'rating',
-                        itemId: id,
+                        itemId: id, // ID do item avaliado
                         itemTitle: itemTitle,
                         ratingValue: finalSelectedRating,
-                        message: notificationMessage, // Mensagem descritiva para exibir
+                        message: notificationMessage, // Mensagem descritiva
                         timestamp: serverTimestamp(), // Usa timestamp do servidor
                         read: false,
                         link: `/item/${id}`, // Link para o item avaliado
+                        
+                        debug_originalCreatorId: creatorId,     // Armazena o creatorId exato recebido (pode ser null)
+                        debug_currentUserUid: currentUser?.uid || null,
+                        debug_senderPhoto: senderPhoto          // Armazena a URL da foto do remetente
                     });
-                    console.log("Notificação de avaliação enviada para:", creatorId, "por:", senderName);
+                    console.log("Notificação de avaliação enviada para:", finalRecipientId, "por:", senderName);
                 } else {
-                    console.log("Notificação de avaliação não enviada. Condições (para debug):", { creatorId, currentUserUid: currentUser?.uid, shouldSendNotification });
+                    console.log("Notificação de avaliação não enviada. Condições (para debug):", {
+                        creatorId: creatorId,
+                        currentUserUid: currentUser?.uid,
+                        shouldSendNotification: shouldSendNotification,
+                        finalRecipientId: finalRecipientId // O ID que seria usado
+                    });
                 }
             }
             // --- FIM da Lógica de Notificação ---
