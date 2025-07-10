@@ -40,6 +40,8 @@ import {
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import NotificationBell from '../Components/NotificationBell';
+
 
 import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
@@ -203,7 +205,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         sx={{
                           transform:
                             (isEquipamentosParent && openEquipamentos) ||
-                            (isParentOfGalleries && openSubGallery)
+                              (isParentOfGalleries && openSubGallery)
                               ? "rotate(180deg)"
                               : "rotate(0deg)",
                           transition: "transform 0.3s ease",
@@ -306,6 +308,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {/* Logo ou título */}
           </Typography>
+          <Box sx={{ flexGrow: 1 }} /> {/* This pushes items to the right */}
+          <NotificationBell />
+          {/* User profile, logout, etc. */}
           <IconButton
             size="large"
             onClick={toggleTheme}

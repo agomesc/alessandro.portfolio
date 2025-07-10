@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
+import { getItemCreatorDetails } from '../utils/itemUtils';
+
+// Define a default anonymous avatar URL
+const DEFAULT_ANONYMOUS_AVATAR = '/path/to/your/default-avatar.png'; // <-- ADJUST THIS PATH
 
 // Cálculo de porcentagem da estrela
 const getStarFillPercentage = (starValue, currentRating, isHovering) => {
@@ -48,8 +53,17 @@ const StarAverageRatingComponent = ({ id }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [shake, setShake] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const getLocalStorageUserRatingKey = (itemId) => `userStarRating_${itemId}`;
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribeAuth = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribeAuth();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,6 +89,12 @@ const StarAverageRatingComponent = ({ id }) => {
 
   const handleStarClick = useCallback(async (selectedRating) => {
     if (isProcessing) return;
+    // Keep this check: Ratings usually require login to prevent spam/abuse.
+    if (!currentUser) {
+        // You might want to show a message here, e.g., using Snackbar or a modal.
+        console.warn("User not logged in. Cannot submit rating.");
+        return;
+    }
     setIsProcessing(true);
 
     const docRef = doc(db, "itemRatings", id);
@@ -97,16 +117,20 @@ const StarAverageRatingComponent = ({ id }) => {
     let newTotalScore = currentTotalScore;
     let newNumVotes = currentNumVotes;
     let finalSelectedRating = selectedRating;
+    let actionType = 'rated';
 
     if (previousUserRating === 0) {
       newTotalScore += selectedRating;
       newNumVotes += 1;
+      actionType = 'rated';
     } else if (previousUserRating === selectedRating) {
       newTotalScore -= selectedRating;
       newNumVotes -= 1;
       finalSelectedRating = 0;
+      actionType = 'unrated';
     } else {
       newTotalScore = newTotalScore - previousUserRating + selectedRating;
+      actionType = 're-rated';
     }
 
     localStorage.setItem(getLocalStorageUserRatingKey(id), finalSelectedRating.toString());
@@ -117,9 +141,34 @@ const StarAverageRatingComponent = ({ id }) => {
       numVotes: newNumVotes,
     });
 
+    // --- Notification Logic for Ratings ---
+    // Only send a notification if a new rating was given (not unrated)
+    // and if the sender is not the item's creator.
+    // This part runs AFTER the rating update, and still uses `currentUser` for sender details.
+    if (finalSelectedRating > 0 && actionType === 'rated') {
+        const { creatorId, itemTitle } = await getItemCreatorDetails(id);
+
+        if (creatorId && creatorId !== currentUser.uid) { // Avoid notifying self
+            await addDoc(collection(db, 'notifications'), {
+                recipientId: creatorId, // The user who owns the item being rated
+                senderId: currentUser.uid, // Sender UID (always available here because of initial `currentUser` check)
+                senderName: currentUser.displayName || 'Usuário',
+                senderPhoto: currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR, // Fallback for photo
+                type: 'rating',
+                itemId: id,
+                itemTitle: itemTitle,
+                ratingValue: finalSelectedRating,
+                timestamp: Date.now(),
+                read: false,
+                link: `/item/${id}`, // Example link
+            });
+        }
+    }
+    // --- END Notification ---
+
     setAverageRating(newNumVotes > 0 ? newTotalScore / newNumVotes : 0);
     setIsProcessing(false);
-  }, [id, isProcessing]);
+  }, [id, isProcessing, currentUser]);
 
   const shakeAnimation = {
     shake: {
@@ -154,7 +203,7 @@ const StarAverageRatingComponent = ({ id }) => {
             onClick={() => handleStarClick(starValue)}
             onMouseEnter={() => setHoverRating(starValue)}
             onMouseLeave={() => setHoverRating(0)}
-            disabled={isProcessing}
+            disabled={isProcessing || !currentUser} // Still disabled if not logged in
             animate={shake ? "shake" : "still"}
             variants={shakeAnimation}
             aria-label={`${starValue} estrela${starValue > 1 ? "s" : ""}`}

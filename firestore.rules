@@ -51,5 +51,20 @@ service cloud.firestore {
       allow read: if true; // Allows public read for anything not specified above
       allow create, update, delete: if request.auth != null; // Allows write, update, and delete only for authenticated users
     }
+
+    match /notifications/{notificationId} {
+  // ... (read and update rules remain the same)
+
+  // Allow authenticated users to create notifications where they are the sender
+  allow create: if request.auth != null && request.auth.uid == request.resource.data.senderId && request.resource.data.recipientId != null;
+
+  // OR (If you want anonymous users to be able to create notifications):
+  // This rule would allow anyone (even unauthenticated) to create a notification,
+  // as long as a recipientId is specified.
+  // This is generally NOT RECOMMENDED unless you have very strong reasons
+  // and other anti-spam measures.
+  // allow create: if request.resource.data.recipientId != null;
+}
+
   }
 }
