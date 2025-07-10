@@ -1,4 +1,5 @@
-import React, { useState, useEffect, lazy, Suspense, useRef } from 'react';
+// src/components/CommentBox.jsx
+import React, { useState, useEffect, lazy, Suspense, useRef, useCallback } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import {
     collection,
@@ -8,7 +9,8 @@ import {
     orderBy,
     where,
     deleteDoc,
-    doc
+    doc,
+    serverTimestamp // <--- IMPORTANTE: Adicione serverTimestamp aqui!
 } from 'firebase/firestore';
 import {
     Button,
@@ -32,18 +34,18 @@ import { db } from '../firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import Editor from './Editor';
 import { resizeImage } from '../shared/Util';
-import { getItemCreatorDetails } from '../utils/itemUtils'; // Import the new helper
+import { getItemCreatorDetails } from '../utils/itemUtils';
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
-// Define a default anonymous avatar URL
-const DEFAULT_ANONYMOUS_AVATAR = '/path/to/your/default-avatar.png'; // <-- ADJUST THIS PATH
+// Define o URL do avatar padrão para usuários anônimos
+const DEFAULT_ANONYMOUS_AVATAR = '/images/default-avatar.png'; // <--- AJUSTE ESTE CAMINHO PARA O SEU AVATAR PADRÃO REAL
 
-// Basic email validation regex
+// Regex básica de validação de e-mail
 const validateEmail = (email) => {
-    if (!email) return true; // Email is optional, so empty is valid
+    if (!email) return true;
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
 };
@@ -61,11 +63,22 @@ function CommentBox({ itemID }) {
     const [replyingTo, setReplyingTo] = useState(null);
     const [image, setImage] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
-    const [emailError, setEmailError] = useState(false); // New state for email validation
+    const [emailError, setEmailError] = useState(false);
 
     const editorRef = useRef(null);
     const commentFormRef = useRef(null);
     const fileInputRef = useRef(null);
+
+    const showMessage = useCallback((msg, type) => {
+        setMessage(msg);
+        setSeverity(type);
+        setOpen(true);
+    }, []);
+
+    const handleClose = useCallback((_, reason) => {
+        if (reason === 'clickaway') return;
+        setOpen(false);
+    }, []);
 
     useEffect(() => {
         if (replyingTo && commentFormRef.current) {
@@ -81,20 +94,20 @@ function CommentBox({ itemID }) {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user);
             if (user) {
-                // Pre-fill name/email only if they aren't already set by the user
-                if (!name) setName(user.displayName || '');
-                if (!email) setEmail(user.email || '');
+                if (!name && user.displayName) setName(user.displayName);
+                if (!email && user.email) setEmail(user.email);
             } else {
-                // Clear only if the user was previously logged in and now logged out
-                // or if the fields were not explicitly filled before logout
-                setName('');
-                setEmail('');
+                if (currentUser && currentUser.uid) {
+                    setName('');
+                    setEmail('');
+                }
             }
         });
 
         return () => unsubscribe();
-    }, []); // Removed name, email from dependencies to avoid re-setting if user types
+    }, [currentUser, name, email]);
 
+    // Busca o endereço IP na montagem do componente
     useEffect(() => {
         const fetchIpAddress = async () => {
             try {
@@ -134,7 +147,7 @@ function CommentBox({ itemID }) {
         return unsubscribe;
     }, [itemID]);
 
-    const groupComments = (list) => {
+    const groupComments = useCallback((list) => {
         const map = {};
         list.forEach(c => (map[c.id] = { ...c, replies: [] }));
         const roots = [];
@@ -145,13 +158,17 @@ function CommentBox({ itemID }) {
                 roots.push(map[c.id]);
             }
         });
+        Object.values(map).forEach(comment => {
+            if (comment.replies) {
+                comment.replies.sort((a, b) => a.timestamp - b.timestamp);
+            }
+        });
         return roots.sort((a, b) => b.timestamp - a.timestamp);
-    };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // **Email Validation Check**
         if (email && !validateEmail(email)) {
             setEmailError(true);
             showMessage('Por favor, insira um endereço de e-mail válido.', 'error');
@@ -160,13 +177,11 @@ function CommentBox({ itemID }) {
             setEmailError(false);
         }
 
-        // Ensure comment has text and name/country are filled
         if (!name.trim() || !country.trim() || !stripHtml(comment)) {
             showMessage('Por favor, preencha o nome, selecione o país e digite seu comentário.', 'warning');
             return;
         }
 
-        // Only allow image uploads for logged-in users to simplify security/storage logic
         if (image && !currentUser) {
             showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
             return;
@@ -178,41 +193,48 @@ function CommentBox({ itemID }) {
                 email: email.trim() || null,
                 country,
                 text: comment.trim(),
-                timestamp: Date.now(),
+                timestamp: serverTimestamp(), // <--- AJUSTADO: Usando serverTimestamp() para o comentário
                 itemID,
-                userPhoto: currentUser?.photoURL || null, // Storing logged-in user photo or null
+                userPhoto: currentUser?.photoURL || null,
                 ip: ipAddress,
-                userId: currentUser?.uid || null, // Storing logged-in user UID or null for anonymous
+                userId: currentUser?.uid || null,
                 parentId: replyingTo?.id || null,
                 image: image || null,
             });
 
-            // --- Notification Logic for Comments ---
+            // --- Lógica de Notificação para Novos Comentários ---
             const { creatorId, itemTitle } = await getItemCreatorDetails(itemID);
 
-            // Only send notification if:
-            // 1. We found the item's creator.
-            // 2. The sender is not the item's creator (avoids self-notifications).
-            // 3. The recipientId is valid (i.e., not null).
-            if (creatorId && creatorId !== (currentUser?.uid || null)) {
+            const senderId = currentUser ? currentUser.uid : null;
+            const senderName = currentUser ? (currentUser.displayName || 'Usuário') : name.trim() || 'Usuário Anônimo';
+            const senderPhoto = currentUser ? (currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR) : DEFAULT_ANONYMOUS_AVATAR;
+
+            // Cria a mensagem da notificação, com um snippet do comentário
+            const notificationMessage = `${senderName} comentou em seu item "${itemTitle}": "${stripHtml(comment).substring(0, 70)}${stripHtml(comment).length > 70 ? '...' : ''}"`;
+
+            // Envia a notificação se o criador existir e não for o próprio remetente (para evitar auto-notificação)
+            if (creatorId && creatorId !== senderId) {
                 await addDoc(collection(db, 'notifications'), {
-                    recipientId: creatorId, // The user who owns the item being commented on
-                    senderId: currentUser?.uid || null, // Sender UID (null if anonymous)
-                    senderName: currentUser?.displayName || name.trim() || 'Usuário Anônimo', // Fallback for anonymous
-                    senderPhoto: currentUser?.photoURL || DEFAULT_ANONYMOUS_AVATAR, // Fallback for anonymous
+                    recipientId: creatorId, // UID do criador do item
+                    senderId: senderId,
+                    senderName: senderName,
+                    senderPhoto: senderPhoto,
                     type: 'comment',
                     itemId: itemID,
                     itemTitle: itemTitle,
-                    commentText: stripHtml(comment).substring(0, 100), // Max 100 chars for snippet
-                    timestamp: Date.now(),
+                    message: notificationMessage, // Mensagem descritiva da notificação
+                    timestamp: serverTimestamp(), // Usa timestamp do servidor
                     read: false,
-                    link: `/item/${itemID}#${commentDocRef.id}`, // Example link: adjust based on your routing
+                    link: `/item/${itemID}#${commentDocRef.id}`, // Link para o comentário específico (ajuste conforme suas rotas)
                 });
+                console.log("Notificação de comentário enviada para:", creatorId, "por:", senderName);
+            } else {
+                console.log("Notificação de comentário não enviada. Condições:", { creatorId, currentUserUid: currentUser?.uid, isSelfComment: creatorId === senderId });
             }
-            // --- END Notification ---
+            // --- FIM da Lógica de Notificação ---
 
-            // Clear form fields after submission
-            if (!currentUser) { // Only clear name/email if not logged in to preserve pre-filled values
+            // Limpa os campos do formulário após o envio
+            if (!currentUser) {
                 setName('');
                 setEmail('');
             }
@@ -242,14 +264,12 @@ function CommentBox({ itemID }) {
             return;
         }
         try {
-            // Get the comment data to check if the current user is the author
             const commentToDelete = comments.find(c => c.id === id);
             if (!commentToDelete) {
                 showMessage('Comentário não encontrado.', 'error');
                 return;
             }
 
-            // Check if current user is the comment author or an admin
             const isAdmin = currentUser.uid === process.env.REACT_APP_ADMIN_UID;
             const isAuthor = currentUser.uid === commentToDelete.userId;
 
@@ -267,25 +287,13 @@ function CommentBox({ itemID }) {
         }
     };
 
-    const showMessage = (msg, type) => {
-        setMessage(msg);
-        setSeverity(type);
-        setOpen(true);
-    };
-
-    const handleClose = (_, reason) => {
-        if (reason === 'clickaway') return;
-        setOpen(false);
-    };
-
     const renderComment = (comment) => (
-        <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }}>
+        <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }} id={comment.id}>
             <CardHeader
                 avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
-                title={`${comment.name} (${comment.country})`}
-                subheader={new Date(comment.timestamp).toLocaleString('pt-BR')}
+                title={`${comment.name} (${comment.country})${comment.ip ? ` - IP: ${comment.ip}` : ''}`}
+                subheader={new Date(comment.timestamp?.toDate ? comment.timestamp.toDate() : comment.timestamp).toLocaleString('pt-BR')} 
                 action={
-                    // Allow deletion if current user is the owner or an admin
                     currentUser && (comment.userId === currentUser.uid || currentUser.uid === process.env.REACT_APP_ADMIN_UID) && (
                         <IconButton onClick={() => handleDelete(comment.id)} color="error">
                             <DeleteIcon />
@@ -314,7 +322,7 @@ function CommentBox({ itemID }) {
                     <Button size="small" onClick={() => setReplyingTo(comment)}>Responder</Button>
                 </Box>
                 <Box sx={{ ml: 2 }}>
-                    {comment.replies.sort((a, b) => a.timestamp - b.timestamp).map(renderComment)}
+                    {comment.replies.sort((a, b) => a.timestamp?.toDate ? a.timestamp.toDate() - b.timestamp.toDate() : a.timestamp - b.timestamp).map(renderComment)} {/* Ajuste para lidar com Firestore Timestamp ou Date.now() */}
                 </Box>
             </CardContent>
         </Card>
@@ -347,23 +355,21 @@ function CommentBox({ itemID }) {
                     fullWidth
                     required
                     sx={{ mb: 2 }}
-                    // Disable if logged in to prevent user from changing pre-filled name
                     disabled={!!currentUser}
                 />
                 <TextField
                     label="E-mail (opcional)"
-                    type="email" // Changed type to email for better mobile keyboard
+                    type="email"
                     value={email}
                     onChange={e => {
                         setEmail(e.target.value);
-                        if (emailError) setEmailError(false); // Clear error on change
+                        if (emailError) setEmailError(false);
                     }}
                     fullWidth
                     sx={{ mb: 2 }}
-                    // Disable if logged in to prevent user from changing pre-filled email
                     disabled={!!currentUser}
-                    error={emailError} // Apply error style
-                    helperText={emailError ? "Endereço de e-mail inválido" : ""} // Show error message
+                    error={emailError}
+                    helperText={emailError ? "Endereço de e-mail inválido" : ""}
                 />
 
                 <FormControl fullWidth sx={{ mb: 2 }}>
@@ -395,16 +401,21 @@ function CommentBox({ itemID }) {
                         accept="image/*"
                         type="file"
                         onChange={async (e) => {
-                            if (!currentUser) { // Image upload still restricted to logged-in users
+                            if (!currentUser) {
                                 showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
-                                // Clear the selected file if not allowed
                                 e.target.value = null;
                                 return;
                             }
                             const file = e.target.files[0];
                             if (!file) return;
-                            const resized = await resizeImage(file);
-                            setImage(resized);
+                            try {
+                                const resized = await resizeImage(file);
+                                setImage(resized);
+                            } catch (error) {
+                                console.error("Error resizing image:", error);
+                                showMessage("Erro ao processar a imagem.", "error");
+                                e.target.value = null;
+                            }
                         }}
                     />
                     {image && (

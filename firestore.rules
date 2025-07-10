@@ -75,10 +75,20 @@ service cloud.firestore {
     //       but then anonymous comments couldn't trigger notifications.
     
      match /notifications/{notificationId} {
-      allow create: if true; // Allows anyone (logged in or not) to create a notification
-      // Consider a more restrictive rule for reading notifications,
-      // e.g., allow read: if request.auth != null && request.auth.uid == resource.data.recipientId;
+      // Permite ler se o usuário autenticado for o destinatário da notificação
+      allow read: if request.auth.uid != null && request.auth.uid == resource.data.recipientId;
+
+      // Permite criar (adicionar) notificações se o usuário estiver autenticado
+      // (ou se for um serviço de backend que você autentique)
+      allow create: if request.auth.uid != null;
+
+      // Permite atualizar (ex: marcar como lida) se o usuário autenticado for o destinatário
+      allow update: if request.auth.uid != null && request.auth.uid == resource.data.recipientId;
+
+      // Ninguém pode deletar notificações diretamente pelo cliente
+      allow delete: if false;
     }
+
 
     // --- Catch-all / Other collections (Genérica) ---
     // Goal: Public read. Create, update, delete only for authenticated users.
