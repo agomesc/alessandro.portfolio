@@ -85,21 +85,67 @@ const App = ({ data = [] }) => {
                 height: '100%', // Garante que os cartões em uma linha tenham altura semelhante
                 display: 'flex',
                 flexDirection: 'column',
+                position: 'relative' // Added for absolute positioning of children
               }}
             >
-              {/* NavLink envolve todo o cartão para navegação */}
+              {/* Componente Estrela - Moved outside NavLink */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    zIndex: 2,
+                  }}
+                >
+                  <Suspense fallback={<LoadingMessage />}>
+                    <StarComponent id={item.id} />
+                  </Suspense>
+                </Box>
+              </motion.div>
+
+              {/* Ícone da Galeria - Remains outside NavLink */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 10,
+                    left: 10,
+                    zIndex: 2,
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    borderRadius: '50%',
+                    padding: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} />
+                </Box>
+              </motion.div>
+
+              {/* NavLink now wraps only the Card (excluding the Star and Gallery Icon) */}
               <NavLink to={`/Photos/${item.id}`} style={{ textDecoration: 'none', color: 'inherit', flexGrow: 1 }}>
                 <Card
                   sx={{
-                    height: '100%', // Faz o cartão preencher seu contêiner
+                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    borderRadius: '16px', // Aplica o raio da borda ao próprio cartão
-                    boxShadow: 'none', // Remove a sombra padrão do Card, pois motion.div a manipula
+                    borderRadius: '16px',
+                    boxShadow: 'none',
                     transition: 'all 0.3s ease-in-out',
                   }}
                 >
-                  {/* CardMedia para a imagem */}
+                  {/* CardMedia for the image */}
                   <CardMedia
                     component={() => (
                       <LazyImage
@@ -107,8 +153,8 @@ const App = ({ data = [] }) => {
                         alt={item.title}
                         style={{
                           width: '100%',
-                          height: '200px', // Altura fixa para imagens em cartões
-                          objectFit: 'cover', // Cobre a área sem distorcer a proporção
+                          height: '200px',
+                          objectFit: 'cover',
                           borderTopLeftRadius: '16px',
                           borderTopRightRadius: '16px',
                           display: 'block',
@@ -117,55 +163,8 @@ const App = ({ data = [] }) => {
                     )}
                   />
 
-                  {/* Elementos posicionados absolutamente (Estrela e Ícone da Galeria) */}
-                  {/* Componente Estrela */}
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.3 }}
-                  >
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                        zIndex: 2,
-                        // Removidas as propriedades de estilo que criavam o círculo
-                      }}
-                    >
-                      <Suspense fallback={<LoadingMessage />}>
-                        <StarComponent id={item.id} />
-                      </Suspense>
-                    </Box>
-                  </motion.div>
-
-                  {/* Ícone da Galeria */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4, duration: 0.3 }}
-                  >
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 10,
-                        left: 10,
-                        zIndex: 2,
-                        background: 'rgba(0, 0, 0, 0.6)',
-                        borderRadius: '50%',
-                        padding: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                      }}
-                    >
-                      <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} />
-                    </Box>
-                  </motion.div>
-
-                  {/* CardContent para título e descrição */}
-                  <CardContent sx={{ flexGrow: 1, paddingBottom: '16px !important', maxHeight:'400px' }}> {/* Importante para sobrescrever o padding-bottom padrão */}
+                  {/* CardContent for title and description */}
+                  <CardContent sx={{ flexGrow: 1, paddingBottom: '16px !important', maxHeight:'400px' }}>
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
