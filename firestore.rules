@@ -74,9 +74,10 @@ service cloud.firestore {
     //       For enhanced security, you could check `request.auth.uid != null` for `create`,
     //       but then anonymous comments couldn't trigger notifications.
     
-    match /notifications/{notificationId} {
-      allow create: if true; // Allows anyone to create notifications
-      allow read: if request.auth != null && request.auth.uid == resource.data.recipientId; // Only recipient can read their notifications
+     match /notifications/{notificationId} {
+      allow create: if true; // Allows anyone (logged in or not) to create a notification
+      // Consider a more restrictive rule for reading notifications,
+      // e.g., allow read: if request.auth != null && request.auth.uid == resource.data.recipientId;
     }
 
     // --- Catch-all / Other collections (Genérica) ---
