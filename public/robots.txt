@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 Disallow:
-Sitemap: https://olhofotografico.com.br/Sitemap.xml
+Sitemap: https://olhofotografico.com.br/sitemap.xml
