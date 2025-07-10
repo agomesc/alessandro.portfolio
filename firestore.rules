@@ -2,69 +2,65 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // views: leitura e escrita públicas (public read and write)
+    // views: leitura pública, escrita só para autenticados
+    // A regra inicial de 'views' (allow read, write: if true;) foi removida
+    // para evitar duplicação e manter a regra mais restritiva.
     match /views/{docId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null; // Apenas autenticados podem escrever
     }
 
-    // stars: leitura e escrita públicas (public read and write)
+    // itemRatings: leitura e escrita públicas
+    // Considere adicionar validação de dados para 'itemRatings' (ex: ratingValue é um número).
     match /itemRatings/{docId} {
       allow read, write: if true;
     }
 
-    // galleries: leitura pública, escrita só para autenticados (public read, authenticated write)
+    // galleries: leitura pública, escrita só para autenticados
     match /galleries/{docId} {
       allow read: if true;
       allow write: if request.auth != null;
     }
 
-    // content: leitura pública, escrita só para autenticados (public read, authenticated write)
-    match /content/{docId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-
     // comments:
-    // read: public
-    // create: public
-    // update/delete: only by the owner
+    // read: público
+    // create: público com validação de dados
+    // update/delete: apenas pelo proprietário
     match /comments/{commentId} {
       allow read: if true;
-      allow create: if true;
+      allow create: if true &&
+                        request.resource.data.userId is string &&
+                        request.resource.data.commentText is string &&
+                        request.resource.data.timestamp is number; // Ou 'is timestamp' se for um tipo Timestamp do Firestore
       allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
     // images:
-    // read: only by the owner (or adjust if you want public read for images)
-    // create: authenticated users
-    // update/delete: only by the owner
+    // read: apenas pelo proprietário
+    // create: utilizadores autenticados
+    // update/delete: apenas pelo proprietário
     match /images/{imageId} {
-      allow read: if request.auth != null && request.auth.uid == resource.data.userId; // Read only by owner
-      allow create: if request.auth != null; // Any authenticated user can create
-      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId; // Update/Delete only by owner
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // notifications:
+    // read: apenas pelo destinatário
+    // create: remetente anónimo permitido se 'recipientId' estiver presente (ATENÇÃO AO SPAM)
+    // update: apenas pelo destinatário (ex: para marcar como lida)
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.recipientId;
+      allow create: if request.resource.data.recipientId != null;
+      allow update: if request.auth != null && request.auth.uid == resource.data.recipientId;
     }
 
     // Outras coleções (genérica):
-    // Coloque a regra genérica /{document=**} por último,
-    // para que as regras mais específicas acima sejam avaliadas primeiro.
+    // Esta regra é a última e atua como um "catch-all" para coleções não especificadas acima.
+    // Permite leitura pública e escrita/atualização/exclusão apenas para utilizadores autenticados.
     match /{document=**} {
-      allow read: if true; // Allows public read for anything not specified above
-      allow create, update, delete: if request.auth != null; // Allows write, update, and delete only for authenticated users
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
     }
-
-    match /notifications/{notificationId} {
-  // ... (read and update rules remain the same)
-
-  // Allow authenticated users to create notifications where they are the sender
-  allow create: if request.auth != null && request.auth.uid == request.resource.data.senderId && request.resource.data.recipientId != null;
-
-  // OR (If you want anonymous users to be able to create notifications):
-  // This rule would allow anyone (even unauthenticated) to create a notification,
-  // as long as a recipientId is specified.
-  // This is generally NOT RECOMMENDED unless you have very strong reasons
-  // and other anti-spam measures.
-  // allow create: if request.resource.data.recipientId != null;
-}
-
   }
 }
