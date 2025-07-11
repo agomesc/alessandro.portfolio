@@ -1,4 +1,3 @@
-// src/components/CommentBox.jsx
 import React, { useState, useEffect, lazy, Suspense, useRef, useCallback } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import {
@@ -10,7 +9,7 @@ import {
     where,
     deleteDoc,
     doc,
-    serverTimestamp // <--- IMPORTANTE: Adicione serverTimestamp aqui!
+    serverTimestamp
 } from 'firebase/firestore';
 import {
     Button,
@@ -34,7 +33,7 @@ import { db } from '../firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import Editor from './Editor';
 import { resizeImage } from '../shared/Util';
-import { getItemCreatorDetails } from '../utils/itemUtils';
+// A linha abaixo foi removida: import { getItemCreatorDetails } from '../utils/itemUtils';
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
@@ -193,7 +192,7 @@ function CommentBox({ itemID }) {
                 email: email.trim() || null,
                 country,
                 text: comment.trim(),
-                timestamp: serverTimestamp(), // <--- AJUSTADO: Usando serverTimestamp() para o comentário
+                timestamp: serverTimestamp(),
                 itemID,
                 userPhoto: currentUser?.photoURL || null,
                 ip: ipAddress,
@@ -202,36 +201,7 @@ function CommentBox({ itemID }) {
                 image: image || null,
             });
 
-            // --- Lógica de Notificação para Novos Comentários ---
-            const { creatorId, itemTitle } = await getItemCreatorDetails(itemID);
-
-            const senderId = currentUser ? currentUser.uid : null;
-            const senderName = currentUser ? (currentUser.displayName || 'Usuário') : name.trim() || 'Usuário Anônimo';
-            const senderPhoto = currentUser ? (currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR) : DEFAULT_ANONYMOUS_AVATAR;
-
-            // Cria a mensagem da notificação, com um snippet do comentário
-            const notificationMessage = `${senderName} comentou em seu item "${itemTitle}": "${stripHtml(comment).substring(0, 70)}${stripHtml(comment).length > 70 ? '...' : ''}"`;
-
-            // Envia a notificação se o criador existir e não for o próprio remetente (para evitar auto-notificação)
-            if (creatorId && creatorId !== senderId) {
-                await addDoc(collection(db, 'notifications'), {
-                    recipientId: creatorId, // UID do criador do item
-                    senderId: senderId,
-                    senderName: senderName,
-                    senderPhoto: senderPhoto,
-                    type: 'comment',
-                    itemId: itemID,
-                    itemTitle: itemTitle,
-                    message: notificationMessage, // Mensagem descritiva da notificação
-                    timestamp: serverTimestamp(), // Usa timestamp do servidor
-                    read: false,
-                    link: `/item/${itemID}#${commentDocRef.id}`, // Link para o comentário específico (ajuste conforme suas rotas)
-                });
-                console.log("Notificação de comentário enviada para:", creatorId, "por:", senderName);
-            } else {
-                console.log("Notificação de comentário não enviada. Condições:", { creatorId, currentUserUid: currentUser?.uid, isSelfComment: creatorId === senderId });
-            }
-            // --- FIM da Lógica de Notificação ---
+            // O bloco de lógica de notificação foi removido daqui.
 
             // Limpa os campos do formulário após o envio
             if (!currentUser) {
@@ -322,7 +292,7 @@ function CommentBox({ itemID }) {
                     <Button size="small" onClick={() => setReplyingTo(comment)}>Responder</Button>
                 </Box>
                 <Box sx={{ ml: 2 }}>
-                    {comment.replies.sort((a, b) => a.timestamp?.toDate ? a.timestamp.toDate() - b.timestamp.toDate() : a.timestamp - b.timestamp).map(renderComment)} {/* Ajuste para lidar com Firestore Timestamp ou Date.now() */}
+                    {comment.replies.sort((a, b) => a.timestamp?.toDate ? a.timestamp.toDate() - b.timestamp.toDate() : a.timestamp - b.timestamp).map(renderComment)}
                 </Box>
             </CardContent>
         </Card>

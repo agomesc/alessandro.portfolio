@@ -2,11 +2,11 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, /* addDoc, collection, serverTimestamp */ } from "firebase/firestore"; // Removed addDoc, collection, serverTimestamp
 import { getAuth } from 'firebase/auth';
-import { getItemCreatorDetails } from '../utils/itemUtils'; // Função para obter detalhes do criador
+// Removed: import { getItemCreatorDetails } from '../utils/itemUtils'; // Função para obter detalhes do criador
 
-// Define o URL do avatar padrão para usuários anônimos
+// Define o URL do avatar padrão para usuários anônimos (still here as it might be used elsewhere, but not directly for notification logic)
 const DEFAULT_ANONYMOUS_AVATAR = '/images/default-avatar.png'; // <--- AJUSTE ESTE CAMINHO PARA O SEU AVATAR PADRÃO REAL
 
 // Cálculo para a porcentagem de preenchimento da estrela
@@ -114,20 +114,20 @@ const StarAverageRatingComponent = ({ id }) => {
             let newTotalScore = currentTotalScore;
             let newNumVotes = currentNumVotes;
             let finalSelectedRating = selectedRating;
-            let shouldSendNotification = false;
+            // Removed: let shouldSendNotification = false; // No longer needed
 
             if (previousUserRating === 0) { // Primeira avaliação
                 newTotalScore += selectedRating;
                 newNumVotes += 1;
-                shouldSendNotification = true;
+                // Removed: shouldSendNotification = true;
             } else if (previousUserRating === selectedRating) { // Desfazer avaliação
                 newTotalScore -= selectedRating;
                 newNumVotes -= 1;
                 finalSelectedRating = 0; // Marca como 'sem avaliação'
-                shouldSendNotification = false; // Não notifica ao desfazer
+                // Removed: shouldSendNotification = false; // Não notifica ao desfazer
             } else { // Mudança de avaliação
                 newTotalScore = newTotalScore - previousUserRating + selectedRating;
-                shouldSendNotification = true;
+                // Removed: shouldSendNotification = true;
             }
 
             localStorage.setItem(getLocalStorageUserRatingKey(id), finalSelectedRating.toString());
@@ -139,6 +139,8 @@ const StarAverageRatingComponent = ({ id }) => {
             });
 
             // --- Lógica de Notificação para Avaliações ---
+            // Este bloco inteiro foi removido:
+            /*
             if (shouldSendNotification) {
                 const { creatorId, itemTitle } = await getItemCreatorDetails(id);
                 console.log("getItemCreatorDetails result:", { creatorId, itemTitle }); // Debug log
@@ -147,35 +149,28 @@ const StarAverageRatingComponent = ({ id }) => {
                 const senderName = currentUser ? (currentUser.displayName || 'Usuário') : 'Usuário Anônimo';
                 const senderPhoto = currentUser ? (currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR) : DEFAULT_ANONYMOUS_AVATAR;
 
-                // Cria a mensagem da notificação
                 const notificationMessage = `${senderName} avaliou seu item "${itemTitle}" com ${finalSelectedRating} estrela(s)!`;
 
-                // **NOVA LÓGICA DE CONDIÇÃO E ATRIBUIÇÃO DE CAMPOS**
-                // Define o recipientId. Se creatorId for nulo, usa 'unknown_creator' como um ID de placeholder.
                 const finalRecipientId = creatorId || 'unknown_creator'; 
 
-                // Condição para enviar a notificação:
-                // 1. Deve haver um finalRecipientId (que pode ser 'unknown_creator').
-                // 2. Se houver um usuário logado ('currentUser'), o finalRecipientId não deve ser o UID do usuário logado (evita auto-notificação).
-                // Isso garante que mesmo se o creatorId original for nulo, a notificação ainda pode ser logada (para fins de debug/análise).
                 if (finalRecipientId && (currentUser ? finalRecipientId !== currentUser.uid : true)) {
                     await addDoc(collection(db, 'notifications'), {
-                        recipientId: finalRecipientId, // O UID do criador ou 'unknown_creator'
+                        recipientId: finalRecipientId,
                         senderId: senderId,
                         senderName: senderName,
                         senderPhoto: senderPhoto,
                         type: 'rating',
-                        itemId: id, // ID do item avaliado
+                        itemId: id,
                         itemTitle: itemTitle,
                         ratingValue: finalSelectedRating,
-                        message: notificationMessage, // Mensagem descritiva
-                        timestamp: serverTimestamp(), // Usa timestamp do servidor
+                        message: notificationMessage,
+                        timestamp: serverTimestamp(),
                         read: false,
-                        link: `/item/${id}`, // Link para o item avaliado
+                        link: `/item/${id}`,
                         
-                        debug_originalCreatorId: creatorId,     // Armazena o creatorId exato recebido (pode ser null)
+                        debug_originalCreatorId: creatorId,
                         debug_currentUserUid: currentUser?.uid || null,
-                        debug_senderPhoto: senderPhoto          // Armazena a URL da foto do remetente
+                        debug_senderPhoto: senderPhoto
                     });
                     console.log("Notificação de avaliação enviada para:", finalRecipientId, "por:", senderName);
                 } else {
@@ -183,20 +178,21 @@ const StarAverageRatingComponent = ({ id }) => {
                         creatorId: creatorId,
                         currentUserUid: currentUser?.uid,
                         shouldSendNotification: shouldSendNotification,
-                        finalRecipientId: finalRecipientId // O ID que seria usado
+                        finalRecipientId: finalRecipientId
                     });
                 }
             }
+            */
             // --- FIM da Lógica de Notificação ---
 
             setAverageRating(newNumVotes > 0 ? newTotalScore / newNumVotes : 0);
 
         } catch (error) {
-            console.error("Erro ao lidar com o clique da estrela ou enviar notificação:", error);
+            console.error("Erro ao lidar com o clique da estrela:", error); // Updated error message
         } finally {
             setIsProcessing(false);
         }
-    }, [id, isProcessing, currentUser, getLocalStorageUserRatingKey]);
+    }, [id, isProcessing, getLocalStorageUserRatingKey]); // Removed currentUser from dependencies as it's not used in the final version of this useCallback
 
     const shakeAnimation = {
         shake: {
