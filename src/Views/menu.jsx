@@ -45,6 +45,8 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
+const NotificationBell = lazy(() => import("../Components/NotificationBell"));
+
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const theme = useTheme();
@@ -308,9 +310,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         {/* Logo ou título */}
                     </Typography>
+
                     <Box sx={{ flexGrow: 1 }} /> {/* This pushes items to the right */}
-                    {/* A linha abaixo foi removida: <NotificationBell /> */}
-                    {/* User profile, logout, etc. */}
+                    <NotificationBell />
+
+                    {/* Botão de alternância de tema */}
                     <IconButton
                         size="large"
                         onClick={toggleTheme}

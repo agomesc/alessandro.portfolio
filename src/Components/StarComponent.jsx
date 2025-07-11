@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, /* addDoc, collection, serverTimestamp */ } from "firebase/firestore"; // Removed addDoc, collection, serverTimestamp
 import { getAuth } from 'firebase/auth';
-// Removed: import { getItemCreatorDetails } from '../utils/itemUtils'; // Função para obter detalhes do criador
+import { logUserAction } from '../shared/firebase-logger'; // Importa a função de log de ações do usuário
 
 // Define o URL do avatar padrão para usuários anônimos (still here as it might be used elsewhere, but not directly for notification logic)
 const DEFAULT_ANONYMOUS_AVATAR = '/images/default-avatar.png'; // <--- AJUSTE ESTE CAMINHO PARA O SEU AVATAR PADRÃO REAL
@@ -138,52 +138,14 @@ const StarAverageRatingComponent = ({ id }) => {
                 numVotes: newNumVotes,
             });
 
-            // --- Lógica de Notificação para Avaliações ---
-            // Este bloco inteiro foi removido:
-            /*
-            if (shouldSendNotification) {
-                const { creatorId, itemTitle } = await getItemCreatorDetails(id);
-                console.log("getItemCreatorDetails result:", { creatorId, itemTitle }); // Debug log
+            logUserAction('Avaliação', { elementId: id, 
+                details: { 
+                    totalScore: newTotalScore,
+                    numVotes: newNumVotes
 
-                const senderId = currentUser ? currentUser.uid : 'anonymous';
-                const senderName = currentUser ? (currentUser.displayName || 'Usuário') : 'Usuário Anônimo';
-                const senderPhoto = currentUser ? (currentUser.photoURL || DEFAULT_ANONYMOUS_AVATAR) : DEFAULT_ANONYMOUS_AVATAR;
+                 }
+             });
 
-                const notificationMessage = `${senderName} avaliou seu item "${itemTitle}" com ${finalSelectedRating} estrela(s)!`;
-
-                const finalRecipientId = creatorId || 'unknown_creator'; 
-
-                if (finalRecipientId && (currentUser ? finalRecipientId !== currentUser.uid : true)) {
-                    await addDoc(collection(db, 'notifications'), {
-                        recipientId: finalRecipientId,
-                        senderId: senderId,
-                        senderName: senderName,
-                        senderPhoto: senderPhoto,
-                        type: 'rating',
-                        itemId: id,
-                        itemTitle: itemTitle,
-                        ratingValue: finalSelectedRating,
-                        message: notificationMessage,
-                        timestamp: serverTimestamp(),
-                        read: false,
-                        link: `/item/${id}`,
-                        
-                        debug_originalCreatorId: creatorId,
-                        debug_currentUserUid: currentUser?.uid || null,
-                        debug_senderPhoto: senderPhoto
-                    });
-                    console.log("Notificação de avaliação enviada para:", finalRecipientId, "por:", senderName);
-                } else {
-                    console.log("Notificação de avaliação não enviada. Condições (para debug):", {
-                        creatorId: creatorId,
-                        currentUserUid: currentUser?.uid,
-                        shouldSendNotification: shouldSendNotification,
-                        finalRecipientId: finalRecipientId
-                    });
-                }
-            }
-            */
-            // --- FIM da Lógica de Notificação ---
 
             setAverageRating(newNumVotes > 0 ? newTotalScore / newNumVotes : 0);
 

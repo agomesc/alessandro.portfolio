@@ -66,5 +66,11 @@ service cloud.firestore {
       allow read: if true;
       allow create, update, delete: if request.auth != null; // Criação/Modificação exige autenticação aqui
     }
+    
+     match /logs_usuarios/{document=**} {
+          allow read: if true;
+      	  allow write: if true;
+    }
+    
   }
 }

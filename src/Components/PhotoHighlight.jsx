@@ -130,7 +130,7 @@ const App = () => {
             sx={{
               position: 'absolute',
               top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(2, 2, 2, 0.20)',
+              backgroundColor: 'rgba(2, 2, 2, 0.15)',
               zIndex: 2
             }}
           />

@@ -1,6 +1,6 @@
 // shared/Util.js
 
-export const resizeImage = (file, maxWidth = 1024, maxHeight = 768, quality = 0.5) => {
+export const resizeImage = (file, maxWidth = 1024, maxHeight = 768, quality = 1.0) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
