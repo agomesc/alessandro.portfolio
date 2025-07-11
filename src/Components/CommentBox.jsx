@@ -1,4 +1,3 @@
-// src/components/CommentBox.js
 
 import React, { useState, useEffect, lazy, Suspense, useRef, useCallback } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
@@ -37,6 +36,7 @@ import { getAuth } from 'firebase/auth';
 import Editor from './Editor';
 // --- IMPORTAÇÃO DA SUA FUNÇÃO resizeImage (APENAS REDIMENSIONA PARA BASE64) ---
 import { resizeImage } from '../shared/Util'; // Sua função original de redimensionamento
+import { logUserAction } from '../shared/firebase-logger'; // Importa a função de log de ações do usuário
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
@@ -211,6 +211,10 @@ function CommentBox({ itemID }) {
             };
 
             await addDoc(collection(db, 'comments'), commentData);
+
+             logUserAction('Comentários', { elementId: itemID, 
+                            details: commentData
+                         });
 
             // Limpa os campos do formulário após o envio
             if (!currentUser) {

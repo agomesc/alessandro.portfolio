@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IconButton,
   Menu,
   MenuItem,
   Typography,
-  ListItemText,
   Divider,
   Tooltip,
   CircularProgress,
   Badge,
+  Avatar,
+  Box,
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -64,7 +65,7 @@ const NotificationsMenu = () => {
         </IconButton>
       </Tooltip>
 
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} sx={{ maxWidth: 360 }}>
         <Typography sx={{ px: 2, py: 1 }} variant="subtitle1">
           Notificações
         </Typography>
@@ -77,27 +78,39 @@ const NotificationsMenu = () => {
           <MenuItem disabled>Nenhuma notificação</MenuItem>
         ) : (
           logs.slice(0, 10).map((log) => {
-            const isAvaliacao = log.actionType === 'Avaliação';
             const details = log.details || {};
+            const isAvaliacao = log.actionType === 'Avaliação';
+            const isComentario = log.actionType === 'Comentários';
+
             const notaMedia =
               details.totalScore && details.numVotes
                 ? (details.totalScore / details.numVotes).toFixed(1)
                 : null;
 
             return (
-              <MenuItem key={log.id} onClick={handleClose}>
-                <ListItemText
-                  primary={
-                    isAvaliacao && notaMedia
+              <MenuItem key={log.id} onClick={handleClose} sx={{ alignItems: 'center' }}>
+                {log.userPhoto ? (
+                  <Avatar
+                    src={log.userPhoto}
+                    alt="Usuário"
+                    sx={{ width: 36, height: 36, mr: 2 }}
+                  />
+                ) : null}
+
+                <Box>
+                  <Typography variant="body1" component="div">
+                    {isAvaliacao && notaMedia
                       ? `Avaliação recebida: nota ${notaMedia}`
-                      : log.actionType
-                  }
-                  secondary={
-                    log.timestamp?.toDate
+                      : isComentario
+                      ? details.text || 'Comentário'
+                      : log.actionType}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {log.timestamp?.toDate
                       ? format(log.timestamp.toDate(), 'dd/MM/yyyy HH:mm')
-                      : 'Sem data'
-                  }
-                />
+                      : 'Sem data'}
+                  </Typography>
+                </Box>
               </MenuItem>
             );
           })
