@@ -31,7 +31,7 @@ service cloud.firestore {
                       request.resource.data.country is string &&
                       (request.resource.data.userId == null || request.resource.data.userId is string);
 
-      allow update, delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == "YOUR_ADMIN_UID_HERE");
+      allow update, delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == "zzOww3SJFEgoDKqZRsndatOSSNH3");
     }
 
     // --- Collection: images ---
