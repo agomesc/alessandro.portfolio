@@ -36,7 +36,7 @@ import {
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
     Brush as BrushIcon,
-} from "@mui/icons-material";
+    DynamicFeed as DynamicFeed } from "@mui/icons-material";
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
@@ -165,6 +165,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/LatestPhotos", description: "Atualizações", isChild: false, icon: <DynamicFeedIcon /> },
             { route: "/latestPhotosWorks", description: "Atualizações Trabalhos", isChild: false, icon: <BrushIcon /> },
             { route: "/ListContentWithPagination", description: "Seleção de Ofertas", isChild: false, icon: <ShoppingCartIcon /> },
+            { route: "/Feed", description: "Feed", isChild: false, icon: <DynamicFeed /> },
             { route: "/Privacidade", description: "Política de Privacidade", isChild: false, icon: <PolicyIcon /> },
             { route: "/Transparencia", description: "Transparência", isChild: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/About", description: "Sobre", isChild: false, icon: <InfoIcon /> },

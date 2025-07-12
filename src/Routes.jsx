@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 const Gallery = lazy(() => import("./Views/Gallery"));
@@ -24,6 +24,7 @@ const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalcul
 const ContactForm = lazy(() => import('./Views/ContactForm'));
 const UploadComponent = lazy(() => import('./Views/UploadComponent'));
 const FeaturedPhotos = lazy(() => import('./Views/FeaturedPhotos'));
+const Feed = lazy(() => import('./Views/Feed'));
 
 
 const AppRoutes = () => {
@@ -40,6 +41,7 @@ const AppRoutes = () => {
         <Route path="/latestphotos" element={<LatestPhotos />} />
         <Route path="/latestPhotosWorks" element={<LatestPhotosWorks />} />
         <Route path="/photos/:id" element={<Photos />} />
+        <Route path="/Feed" element={<Feed />} />
         <Route path="/photoinfo/:id" element={<PhotoInfo />} />
         <Route path="/privacidade" element={<Privacidade />} />
         <Route path="/transparencia" element={<Transparencia />} />

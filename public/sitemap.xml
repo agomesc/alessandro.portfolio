@@ -12,8 +12,11 @@
   <url>
     <loc>https://olhofotografico.com.br/GalleryDetail</loc>
   </url>
-    <url>
+   <url>
     <loc>https://olhofotografico.com.br/photos</loc>
+  </url>
+  <url>
+    <loc>https://olhofotografico.com.br/Feed</loc>
   </url>
   <url>
     <loc>https://olhofotografico.com.br/EquipmentValueCalculator</loc>
