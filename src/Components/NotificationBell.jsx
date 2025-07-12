@@ -65,7 +65,7 @@ const NotificationsMenu = () => {
         </IconButton>
       </Tooltip>
 
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} sx={{ maxWidth: 360 }}>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} sx={{ maxWidth: 400 }}>
         <Typography sx={{ px: 2, py: 1 }} variant="subtitle1">
           Notificações
         </Typography>
@@ -102,8 +102,7 @@ const NotificationsMenu = () => {
                     {isAvaliacao && notaMedia
                       ? `Avaliação recebida: nota ${notaMedia}`
                       : isComentario
-                        ? details.text || 'Comentário'
-                        : log.actionType}
+                        ? <Box sx={{ mt: 2, fontSize: '10px', color: '#333' }} dangerouslySetInnerHTML={{ __html: details.text.slice(0,30) + '...' }}/> || 'Comentário' : log.actionType}
                   </Typography>
 
                   {log.url && (
