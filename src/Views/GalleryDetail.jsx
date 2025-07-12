@@ -7,6 +7,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const StarComponent = React.lazy(() => import("../Components/StarComponent"));
 const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
+const CommentBox = React.lazy(() => import("../Components/CommentBox"));
+
 
 const getImageSrc = (imageData) => {
     if (!imageData) return '';
@@ -69,71 +71,75 @@ const GalleryDetail = () => {
     }
 
     return (
-        <Box
-            sx={{
-                width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-                margin: "0 auto",
-                px: 2,
-                mt: 10,
-                pb: 5
-            }}
-        >
-            <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
-                {gallery.title}
-            </Typography>
-
-            {gallery.image && (
-                <Box sx={{ mt: 2, mb: 3 }}>
-                    <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
-                        <img
-                            src={getImageSrc(gallery.image)}
-                            alt={`Gallery - ${gallery.title}`}
-                            style={{
-                                width: '640px',
-                                height: 'auto',
-                                maxHeight: '600px',
-                                objectFit: 'contain',
-                                borderRadius: '8px',
-                                display: 'block',
-                                margin: '0 auto'
-                            }}
-                        />
-                    </Suspense>
-                </Box>
-            )}
-
+        <>
             <Box
-                sx={{ mt: 2, fontSize: '16px', color: '#333' }}
-                dangerouslySetInnerHTML={{ __html: gallery.text }}
-            />
+                sx={{
+                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+                    margin: "0 auto",
+                    px: 2,
+                    mt: 10,
+                    pb: 5
+                }}
+            >
+                <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
+                    {gallery.title}
+                </Typography>
 
-            {gallery.link && (
-                <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
-                    <Typography
-                        variant="body1"
-                        component="a"
-                        href={gallery.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            textDecoration: 'none',
-                            color: '#78884c',
-                            fontWeight: 'bold'
-                        }}
-                    >
-                        Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                    </Typography>
-                    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
-                        <StarComponent id={gallery.id} />
-                    </Suspense>
-                    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
-                        <ViewComponent id={gallery.id} />
-                    </Suspense>
-                </Stack>
-            )}
-        </Box>
+                {gallery.image && (
+                    <Box sx={{ mt: 2, mb: 3 }}>
+                        <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
+                            <img
+                                src={getImageSrc(gallery.image)}
+                                alt={`Gallery - ${gallery.title}`}
+                                style={{
+                                    width: '640px',
+                                    height: 'auto',
+                                    maxHeight: '600px',
+                                    objectFit: 'contain',
+                                    borderRadius: '8px',
+                                    display: 'block',
+                                    margin: '0 auto'
+                                }}
+                            />
+                        </Suspense>
+                    </Box>
+                )}
+
+                <Box
+                    sx={{ mt: 2, fontSize: '16px', color: '#333' }}
+                    dangerouslySetInnerHTML={{ __html: gallery.text }}
+                />
+
+
+                {gallery.link && (
+                    <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
+                        <Typography
+                            variant="body1"
+                            component="a"
+                            href={gallery.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                textDecoration: 'none',
+                                color: '#78884c',
+                                fontWeight: 'bold'
+                            }}
+                        >
+                            Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                        </Typography>
+                        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                            <StarComponent id={gallery.id} />
+                        </Suspense>
+                        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                            <ViewComponent id={gallery.id} />
+                        </Suspense>
+                    </Stack>
+                )}
+            </Box>
+            <CommentBox itemID="Contents" />
+        </>
     );
 };
 

@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getToken, onMessage } from "firebase/messaging";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const config = {
@@ -21,10 +21,9 @@ export const provider = new GoogleAuthProvider();
 export const app = initializeApp(config);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const messaging = getMessaging(app);
 export const storage = getStorage(app);
 
-const firebaseConfig = { messaging, auth, db, provider, storage, onMessage, getToken };
+const firebaseConfig = { auth, db, provider, storage, onMessage, getToken };
 
 export default firebaseConfig;
 

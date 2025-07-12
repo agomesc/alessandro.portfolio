@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
+
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle.jsx"));
 const LazyImage = lazy(() => import("../Components/LazyImage.jsx"));
 
@@ -118,28 +119,40 @@ const App = () => {
                         </Suspense>
 
                         <CardContent sx={{ flexGrow: 1, p: 2 }}> {/* Allow content to grow */}
-                            <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
-                                {gallery.title}
-                            </Typography>
+                            <Suspense fallback={<Skeleton variant="text" width={240} height={100} />}>
+                                <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
+                                    {gallery.title}
+                                </Typography>
+                            </Suspense>
+                            <Suspense fallback={<Skeleton variant="text" width={240} height={100} />}>
+                                <Box
+                                    sx={{ mt: 2, fontSize: '16px', color: '#333' }}
+                                    dangerouslySetInnerHTML={{ __html: gallery.text.slice(0, 255) + '...' }}
+                                />
+                            </Suspense>
+
                             {gallery.link && (
                                 <Box sx={{ mt: 1 }}>
-                                    <Typography
-                                        variant="body2"
-                                        component="span"
-                                        onClick={(e) => handleExternalLinkClick(e, gallery.link)}
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            textDecoration: 'underline',
-                                            color: '#78884c',
-                                            cursor: 'pointer',
-                                            '&:hover': {
-                                                color: '#5a6b38',
-                                            }
-                                        }}
-                                    >
-                                        Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                    </Typography>
+                                    <Suspense fallback={<Skeleton variant="text" width={240} height={100} />}>
+
+                                        <Typography
+                                            variant="body2"
+                                            component="span"
+                                            onClick={(e) => handleExternalLinkClick(e, gallery.link)}
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                textDecoration: 'underline',
+                                                color: '#78884c',
+                                                cursor: 'pointer',
+                                                '&:hover': {
+                                                    color: '#5a6b38',
+                                                }
+                                            }}
+                                        >
+                                            Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                        </Typography>
+                                    </Suspense>
                                 </Box>
                             )}
                         </CardContent>
