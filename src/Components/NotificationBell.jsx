@@ -88,23 +88,37 @@ const NotificationsMenu = () => {
                 : null;
 
             return (
-              <MenuItem key={log.id} onClick={handleClose} sx={{ alignItems: 'center' }}>
-                {log.userPhoto ? (
+              <MenuItem key={log.id} onClick={handleClose} sx={{ alignItems: 'flex-start' }}>
+                {log.userPhoto && (
                   <Avatar
                     src={log.userPhoto}
                     alt="Usuário"
-                    sx={{ width: 36, height: 36, mr: 2 }}
+                    sx={{ width: 36, height: 36, mr: 2, mt: 0.5 }}
                   />
-                ) : null}
+                )}
 
                 <Box>
                   <Typography variant="body1" component="div">
                     {isAvaliacao && notaMedia
                       ? `Avaliação recebida: nota ${notaMedia}`
                       : isComentario
-                      ? details.text || 'Comentário'
-                      : log.actionType}
+                        ? details.text || 'Comentário'
+                        : log.actionType}
                   </Typography>
+
+                  {log.url && (
+                    <Typography
+                      component="a"
+                      href={log.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="caption"
+                      sx={{ display: 'block', color: 'primary.main', wordBreak: 'break-all' }}
+                    >
+                      {log.url}
+                    </Typography>
+                  )}
+
                   <Typography variant="caption" color="text.secondary">
                     {log.timestamp?.toDate
                       ? format(log.timestamp.toDate(), 'dd/MM/yyyy HH:mm')
@@ -112,6 +126,7 @@ const NotificationsMenu = () => {
                   </Typography>
                 </Box>
               </MenuItem>
+
             );
           })
         )}
