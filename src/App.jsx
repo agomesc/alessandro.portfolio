@@ -26,6 +26,7 @@ const App = () => {
 	useEffect(() => {
 		setUrlAtual(window.location.href);
 	}, []);
+	
 
 	useEffect(() => {
 		localStorage.setItem('darkMode', JSON.stringify(darkMode));

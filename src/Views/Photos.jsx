@@ -9,7 +9,6 @@ import React, {
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // Importe o ícone
 import IconButton from "@mui/material/IconButton"; // Importe o botão de ícone
@@ -18,6 +17,8 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+
 
 const Photos = () => {
   const { id } = useParams();
@@ -75,7 +76,7 @@ const Photos = () => {
   }, [showAlbumInfo, loadAlbumInfo]); // Only run when showAlbumInfo changes or loadAlbumInfo itself changes
 
   if (!galleryData) {
-    return <CustomSkeleton height={300} />;
+    return <CustomSkeleton />;
   }
 
   return (
@@ -120,9 +121,9 @@ const Photos = () => {
           </Suspense>
         )}
 
-        <Suspense fallback={<CustomSkeleton />}>
-          <PhotoGallery photos={galleryData} />
-        </Suspense>
+
+        <PhotoGallery photos={galleryData} />
+
       </Box>
 
       <Suspense fallback={<CustomSkeleton />}>

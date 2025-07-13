@@ -1,12 +1,11 @@
 import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import Skeleton from '@mui/material/Skeleton';
-
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const Gallery = () => {
   const [galleryData, setGalleryData] = useState(null);
@@ -31,7 +30,7 @@ const Gallery = () => {
   }, [galleryData, instance]);
 
   if (!galleryData) {
-    return <Skeleton variant="rectangular" height={300} width="100%" />;
+    return <CustomSkeleton/>;
   }
 
   return (
@@ -53,7 +52,7 @@ const Gallery = () => {
           mt: 10,
         }}
       >
-          <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
+          <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
         <ImageThumbs data={galleryData} />

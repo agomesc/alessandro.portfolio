@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, lazy } from 'react';
+
+const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
 
 const App = ({
   src,
@@ -8,9 +10,11 @@ const App = ({
   className = '',
   style = {},
   srcSet = '',
-  fallbackColor = '#ccc', // ainda disponível se quiser aplicar cor de fundo no container
-  aspectRatio = '', // opcional: tipo '3 / 2'
+  fallbackColor = '#ccc',
+  aspectRatio = '',
 }) => {
+  const [loaded, setLoaded] = useState(false);
+
   const wrapperStyle = {
     width,
     height,
@@ -19,11 +23,22 @@ const App = ({
     ...(aspectRatio ? { aspectRatio } : {}),
   };
 
+  // Garante que scrollTo(0) seja aplicado ao montar
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <div
       style={wrapperStyle}
-      onContextMenu={(e) => e.preventDefault()} // bloqueia botão direito
+      onContextMenu={(e) => e.preventDefault()}
     >
+      {!loaded && (
+        <React.Suspense fallback={null}>
+          <CustomSkeleton />
+        </React.Suspense>
+      )}
+
       <img
         src={src}
         srcSet={srcSet}
@@ -35,11 +50,12 @@ const App = ({
           objectFit: 'cover',
           width: '100%',
           height: '100%',
-          display: 'block',
+          display: loaded ? 'block' : 'none',
           pointerEvents: 'none',
           borderRadius: style.borderRadius || 0,
           ...style,
         }}
+        onLoad={() => setLoaded(true)}
       />
     </div>
   );
