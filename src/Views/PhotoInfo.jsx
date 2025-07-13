@@ -87,7 +87,6 @@ const PhotoInfo = () => {
     };
   }, [basicPhotoData]);
 
-  // MOVIDO PARA CIMA: combinedPhotoData agora é declarado antes dos early returns
   const combinedPhotoData = useMemo(() => ({
     ...basicPhotoData,
     ...(exifData || {}),
@@ -162,24 +161,20 @@ const PhotoInfo = () => {
           </Suspense>
         </Box>
 
-        {showAdditionalInfo && (
-          <>
-            {loadingExifData ? (
-              <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <Typography variant="body1">Carregando detalhes EXIF...</Typography>
-                <Skeleton height={150} sx={{ mt: 1 }} />
-              </Box>
-            ) : (
-              exifData && (
-                <Box sx={{ mt: 3 }}>
-                  <Suspense fallback={<Skeleton height={150} />}>
-                    <CommentBox itemID={id} />
-                  </Suspense>
-                </Box>
-              )
-            )}
-          </>
+        {/* Mostra mensagem de carregamento EXIF se o botão foi clicado */}
+        {showAdditionalInfo && loadingExifData && (
+          <Box sx={{ mt: 3, textAlign: 'center' }}>
+            <Typography variant="body1">Carregando detalhes EXIF...</Typography>
+            <Skeleton height={150} sx={{ mt: 1 }} />
+          </Box>
         )}
+
+        {/* Comentários SEMPRE aparecem */}
+        <Box sx={{ mt: 3 }}>
+          <Suspense fallback={<Skeleton height={150} />}>
+            <CommentBox itemID={id} />
+          </Suspense>
+        </Box>
       </Box>
 
       <Suspense fallback={null}>
