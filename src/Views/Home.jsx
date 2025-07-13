@@ -52,18 +52,25 @@ const Home = () => {
         fetchGalleryData();
     }, [fetchGalleryData]);
 
-    // Effect to show snackbar once per day
     useEffect(() => {
-        const snackbarKey = "snackbarShownAt";
+        const snackbarKey = "snackbarGreetingShownAt";
         const lastShown = sessionStorage.getItem(snackbarKey);
         const oneDay = 24 * 60 * 60 * 1000;
         const now = Date.now();
 
-        // Only show if it hasn't been shown today
-        if (!lastShown || (now - parseInt(lastShown, 10) > oneDay)) {
-            setSnackbarMessage(
-                "Curtiu alguma foto? Se puder, deixe sua avaliação ⭐ ou um comentário — isso ajuda muito a apoiar e aprimorar meu trabalho!"
-            );
+        const currentHour = new Date().getHours();
+        let greeting = "";
+
+        if (currentHour < 12) {
+            greeting = "Bom dia! 🌞";
+        } else if (currentHour < 18) {
+            greeting = "Boa tarde! ☀️";
+        } else {
+            greeting = "Boa noite! 🌙";
+        }
+
+        if (!lastShown || now - parseInt(lastShown, 10) > oneDay) {
+            setSnackbarMessage(greeting);
             setSnackbarSeverity("info");
             setSnackbarOpen(true);
             sessionStorage.setItem(snackbarKey, now.toString());

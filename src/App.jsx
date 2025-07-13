@@ -42,16 +42,22 @@ const App = () => {
 			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			<ProTip />
-			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<ProTip />
+			</Box>
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
+			</Box>
 			<NavigationButtons />
-			<RandomAffiliateAd />
-			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<RandomAffiliateAd />
+			</Box>
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
-			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
-				<ViewComponent id="Gallery"/> 
-			</Box>   
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<ViewComponent id="Gallery" />
+			</Box>
 			{/* <ConsentScreen /> */}
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>

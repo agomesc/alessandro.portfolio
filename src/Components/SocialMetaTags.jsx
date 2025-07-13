@@ -1,9 +1,10 @@
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const SocialMetaTags = ({ title, image, description }) => {
   // Define a default image if none is provided.
   // IMPORTANT: Replace with the actual URL of your default image.
-  const defaultImage = "https://olhofotografico.com.br/logo_192.png"; 
+  const defaultImage = "https://olhofotografico.com.br/logo_512.png"; 
   const finalImage = image || defaultImage;
   let url = window.location.origin;
   // Use the provided URL or window.location.href as a fallback.
@@ -48,4 +49,4 @@ const SocialMetaTags = ({ title, image, description }) => {
   );
 };
 
-export default SocialMetaTags;
+export default React.memo(SocialMetaTags);
