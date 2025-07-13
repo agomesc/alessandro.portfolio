@@ -1,5 +1,5 @@
-import React, { useState, useEffect, lazy } from 'react';
-import CustomSkeleton from './CustomSkeleton'; // Assuming you have a CustomSkeleton component
+import React, { useState } from 'react';
+import CustomSkeleton from './CustomSkeleton'; // Certifique-se de que não está usando lazy aqui
 
 const App = ({
   src,
@@ -13,6 +13,7 @@ const App = ({
   aspectRatio = '',
 }) => {
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
   const wrapperStyle = {
     width,
@@ -27,10 +28,12 @@ const App = ({
       style={wrapperStyle}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {!loaded && (
-        <React.Suspense fallback={null}>
-          <CustomSkeleton />
-        </React.Suspense>
+      {!loaded && !error && <CustomSkeleton />}
+
+      {error && (
+        <div style={{ color: '#f00', padding: '1rem' }}>
+          Falha ao carregar a imagem.
+        </div>
       )}
 
       <img
@@ -50,6 +53,7 @@ const App = ({
           ...style,
         }}
         onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
       />
     </div>
   );

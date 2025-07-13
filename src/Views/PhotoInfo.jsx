@@ -20,6 +20,7 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const PhotoInfo = () => {
   const { id } = useParams();
@@ -145,7 +146,7 @@ const PhotoInfo = () => {
           mt: 10,
         }}
       >
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Informações da Foto" />
         </Suspense>
 
@@ -173,7 +174,7 @@ const PhotoInfo = () => {
       </Box>
       {/* Comentários SEMPRE aparecem */}
       <Box sx={{ mt: 3 }}>
-        <Suspense fallback={<Skeleton height={150} />}>
+        <Suspense fallback={<CustomSkeleton />}>
           <CommentBox itemID={id} />
         </Suspense>
       </Box>
