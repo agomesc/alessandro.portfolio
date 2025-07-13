@@ -56,3 +56,8 @@
 [debug] [2025-07-13T23:10:43.936Z] Checked if tokens are valid: true, expires at: 1752451838773
 [debug] [2025-07-13T23:10:43.936Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions [none]
 [debug] [2025-07-13T23:10:43.936Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2025-07-13T23:10:45.780Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions 200
+[debug] [2025-07-13T23:10:45.780Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/alessandro-portfolio/versions {"name":"projects/1077155633264/sites/alessandro-portfolio/versions/4ad829b3d951971f","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2025-07-13T23:10:45.781Z] Checked if tokens are valid: true, expires at: 1752451838773
+[debug] [2025-07-13T23:10:45.781Z] Checked if tokens are valid: true, expires at: 1752451838773
+[debug] [2025-07-13T23:10:45.781Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/alessandro-portfolio/releases pageSize=10&pageToken=

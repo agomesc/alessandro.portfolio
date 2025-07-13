@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
 import LazyImage from "./LazyImage"; // Assumindo que este caminho está correto
-import LoadingMessage from './LoadingMessage'; // Assumindo que este caminho está correto
+import CustomSkeleton from './CustomSkeleton'; // Assumindo que este caminho está correto
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
@@ -102,7 +102,7 @@ const App = ({ data = [] }) => {
                     zIndex: 2,
                   }}
                 >
-                  <Suspense fallback={<LoadingMessage />}>
+                  <Suspense fallback={<CustomSkeleton />}>
                     <StarComponent id={item.id} />
                   </Suspense>
                 </Box>
@@ -151,9 +151,12 @@ const App = ({ data = [] }) => {
                       <LazyImage
                         src={item.img}
                         alt={item.title}
+                        width="100%"
+                        height="200px"
+                        className="card-image"
+                        fallbackColor="#f0f0f0"
+                        aspectRatio="16 / 9" 
                         style={{
-                          width: '100%',
-                          height: '200px',
                           objectFit: 'cover',
                           borderTopLeftRadius: '16px',
                           borderTopRightRadius: '16px',
