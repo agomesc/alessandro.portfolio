@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import CustomSkeleton from './CustomSkeleton'; // Certifique-se de que não está usando lazy aqui
+import React from 'react';
 
 const App = ({
   src,
@@ -9,12 +8,9 @@ const App = ({
   className = '',
   style = {},
   srcSet = '',
-  fallbackColor = '#ccc',
-  aspectRatio = '',
+  fallbackColor = '#ccc', 
+  aspectRatio = '', 
 }) => {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
-
   const wrapperStyle = {
     width,
     height,
@@ -26,16 +22,8 @@ const App = ({
   return (
     <div
       style={wrapperStyle}
-      onContextMenu={(e) => e.preventDefault()}
+      onContextMenu={(e) => e.preventDefault()} // bloqueia botão direito
     >
-      {!loaded && !error && <CustomSkeleton />}
-
-      {error && (
-        <div style={{ color: '#f00', padding: '1rem' }}>
-          Falha ao carregar a imagem.
-        </div>
-      )}
-
       <img
         src={src}
         srcSet={srcSet}
@@ -47,13 +35,11 @@ const App = ({
           objectFit: 'cover',
           width: '100%',
           height: '100%',
-          display: loaded ? 'block' : 'none',
+          display: 'block',
           pointerEvents: 'none',
           borderRadius: style.borderRadius || 0,
           ...style,
         }}
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
       />
     </div>
   );

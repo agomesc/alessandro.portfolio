@@ -81,7 +81,7 @@ const App = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
         <CircularProgress />
-        <Typography variant="h6" sx={{ ml: 2 }}>Carregar imagens...</Typography>
+        <Typography variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
       </Box>
     );
   }
@@ -121,7 +121,11 @@ const App = () => {
               backgroundPosition: 'center center',
               backgroundRepeat: 'no-repeat',
               backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-              zIndex: 1
+              zIndex: 1,
+              transition: 'filter 1s ease-in-out',
+              '&:hover': {
+                filter: 'blur(0px)',
+              }, aspectRatio: '16 / 9',
             }}
           />
 
@@ -170,7 +174,7 @@ const App = () => {
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
           <CircularProgress />
-          <Typography component="div" variant="h6" sx={{ ml: 2 }}>Carregar fotos...</Typography>
+          <Typography component="div" variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
         </Box>
       )}
     </Box>
