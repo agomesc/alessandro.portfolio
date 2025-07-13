@@ -9,18 +9,6 @@ import LazyImage from './LazyImage';
 const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
-  debugger
-
-  // Add a check to ensure itemData is an array and not null/undefined
-  // If itemData is null, undefined, or not an array, render nothing or a loading/empty state.
-  if (!Array.isArray(itemData)) {
-    // You could also return a loading spinner, an error message,
-    // or an empty state here depending on your UX requirements.
-    // For now, let's just return null or an empty Box to prevent the crash.
-    console.warn("itemData is not an array, or is null/undefined:", itemData);
-    return null; // Or <Box>Loading data...</Box> or <Box>No items to display.</Box>
-  }
-
   return (
     <Box
       sx={{
