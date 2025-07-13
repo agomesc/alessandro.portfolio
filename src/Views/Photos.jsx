@@ -95,15 +95,17 @@ const Photos = () => {
           mt: 10,
         }}
       >
-        <Suspense fallback={<CustomSkeleton height={80} />}>
+        <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
 
         {/* Info Icon to trigger album info loading */}
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
-          <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
-            Detalhes da Galeria:
-          </Typography>
+          <Suspense fallback={<CustomSkeleton />}>
+            <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
+              Detalhes da Galeria:
+            </Typography>
+          </Suspense>
           <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
             <InfoOutlinedIcon />
           </IconButton>
@@ -111,19 +113,19 @@ const Photos = () => {
 
         {/* Conditionally render album info */}
         {showAlbumInfo && (
-          <Suspense fallback={<CustomSkeleton height={80} />}>
+          <Suspense fallback={<CustomSkeleton />}>
             <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-              {galleryInfoData || <CustomSkeleton height={20} width="80%" />} {/* Show skeleton while loading info */}
+              {galleryInfoData || <CustomSkeleton />}
             </Typography>
           </Suspense>
         )}
 
-        <Suspense fallback={<CustomSkeleton height={400} />}>
+        <Suspense fallback={<CustomSkeleton />}>
           <PhotoGallery photos={galleryData} />
         </Suspense>
       </Box>
 
-      <Suspense fallback={<CustomSkeleton height={150} />}>
+      <Suspense fallback={<CustomSkeleton />}>
         <CommentBox itemID={id} />
       </Suspense>
 
