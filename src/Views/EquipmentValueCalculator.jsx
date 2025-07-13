@@ -31,9 +31,9 @@ const App = () => {
     <CommentBox itemID="EquipmentValueCalculator" />
 
     <SocialMetaTags
-      title="Calcular valor de equipamentos usados"
-      image=""
-      description="Calcular valor de equipamentos usados"
+      title="Calcular valor de equipamentos fotográficos usados"
+      image="/logo-512.png"
+      description="Calcular valor de equipamentos fotográficos usados usando regras de mercado e dados de venda."
     />
 
   </>
