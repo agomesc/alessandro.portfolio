@@ -6,8 +6,9 @@ import Tab from "@mui/material/Tab";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
+// import LoadingMessage from "../Components/LoadingMessage"; // No longer needed directly if Skeleton is used
 
-
+// Lazy-loaded components
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const RandomPhoto = lazy(() => import("../Components/PhotoHighlight.jsx"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -17,13 +18,13 @@ const DisplayAds = lazy(() => import("./DisplayAds"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const Home = () => {
-
+    // State declarations
     const [galleryData, setGalleryData] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [loadingGallery, setLoadingGallery] = useState(true); // State for explicit gallery loading
+    const [loadingGallery, setLoadingGallery] = useState(true); // New state for explicit gallery loading
 
     const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
@@ -34,7 +35,7 @@ const Home = () => {
         try {
             const data = tabIndex === 0
                 ? await flickrInstance.getLatestPhotosLargeSquare()
-                : await flickrInstance.getLatestPhotosLargeSquareWork(); // Fixed typo here
+                : await flickrInstance.getLatestPhotosLargeSquarelWork();
             setGalleryData(data);
         } catch (error) {
             console.error("Error fetching gallery data:", error);
@@ -50,7 +51,25 @@ const Home = () => {
     useEffect(() => {
         fetchGalleryData();
     }, [fetchGalleryData]);
-    
+
+    // Effect to show snackbar once per day
+    useEffect(() => {
+        const snackbarKey = "snackbarShownAt";
+        const lastShown = sessionStorage.getItem(snackbarKey);
+        const oneDay = 24 * 60 * 60 * 1000;
+        const now = Date.now();
+
+        // Only show if it hasn't been shown today
+        if (!lastShown || (now - parseInt(lastShown, 10) > oneDay)) {
+            setSnackbarMessage(
+                "Curtiu alguma foto? Se puder, deixe sua avaliação ⭐ ou um comentário — isso ajuda muito a apoiar e aprimorar meu trabalho!"
+            );
+            setSnackbarSeverity("info");
+            setSnackbarOpen(true);
+            sessionStorage.setItem(snackbarKey, now.toString());
+        }
+    }, []);
+
     // Handler for tab change
     const handleTabChange = useCallback((event, newIndex) => {
         setTabIndex(newIndex);
@@ -123,28 +142,31 @@ const Home = () => {
                     />
                 </Tabs>
 
-                {/* Consolidated Suspense boundary for tab-specific content */}
                 {loadingGallery ? (
                     <Box mt={10}>
                         <Skeleton variant="rectangular" height={200} width="100%" sx={{ mb: 2 }} />
                         <Skeleton variant="rectangular" height={800} width="100%" sx={{ mb: 2 }} />
                     </Box>
                 ) : (
-                    <Suspense fallback={<Skeleton variant="rectangular" height={800} width="100%" />}>
+                    <>
                         {tabIndex === 0 && (
-                            <Box mt={4}>
-                                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                                <Gallery />
-                            </Box>
+                            <Suspense fallback={<Skeleton variant="rectangular" height={800} width="100%" />}>
+                                <Box mt={4}>
+                                    <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                                    <Gallery />
+                                </Box>
+                            </Suspense>
                         )}
 
                         {tabIndex === 1 && (
-                            <Box mt={4}>
-                                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
-                                <GalleryWork />
-                            </Box>
+                            <Suspense fallback={<Skeleton variant="rectangular" height={800} width="100%" />}>
+                                <Box mt={4}>
+                                    <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
+                                    <GalleryWork />
+                                </Box>
+                            </Suspense>
                         )}
-                    </Suspense>
+                    </>
                 )}
 
                 <Suspense fallback={<Skeleton variant="rectangular" height={200} width="100%" sx={{ mt: 4 }} />}>

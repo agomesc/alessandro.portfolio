@@ -169,14 +169,14 @@ const PhotoInfo = () => {
           </Box>
         )}
 
-        {/* Comentários SEMPRE aparecem */}
-        <Box sx={{ mt: 3 }}>
-          <Suspense fallback={<Skeleton height={150} />}>
-            <CommentBox itemID={id} />
-          </Suspense>
-        </Box>
-      </Box>
 
+      </Box>
+      {/* Comentários SEMPRE aparecem */}
+      <Box sx={{ mt: 3 }}>
+        <Suspense fallback={<Skeleton height={150} />}>
+          <CommentBox itemID={id} />
+        </Suspense>
+      </Box>
       <Suspense fallback={null}>
         <SocialMetaTags
           title={metaData.title}

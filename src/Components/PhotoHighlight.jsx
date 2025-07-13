@@ -106,7 +106,7 @@ const App = () => {
             position: 'relative',
             width: '100%',
             paddingTop: { xs: '56.25%', md: '42.85%' }, // 16:9 e 21:9
-            borderRadius: '8px',
+            borderRadius: 0,
             overflow: 'hidden',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
           }}
@@ -155,7 +155,7 @@ const App = () => {
               Destaque da Galeria
             </Typography>
             <Typography component="div" variant="subtitle1" sx={{ mb: 3 }}>
-              Uma foto escolhida aleatoriamente para te inspirar
+              Uma foto escolhida aleatoriamente para te inspirar.
             </Typography>
             <Button
               variant="contained"

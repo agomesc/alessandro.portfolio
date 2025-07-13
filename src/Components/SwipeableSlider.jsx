@@ -9,6 +9,8 @@ import LazyImage from './LazyImage';
 const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
+  debugger
+
   // Add a check to ensure itemData is an array and not null/undefined
   // If itemData is null, undefined, or not an array, render nothing or a loading/empty state.
   if (!Array.isArray(itemData)) {
