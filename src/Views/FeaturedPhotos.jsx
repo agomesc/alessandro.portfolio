@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { db } from '../firebaseConfig'; // Make sure this path is correct
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import Box from "@mui/material/Box";
@@ -9,6 +9,10 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+
+const CommentBox = lazy(() => import("../Components/CommentBox"));
+const StarComponent = lazy(() => import("../Components/StarComponent"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -32,7 +36,6 @@ const App = () => {
       setLoading(false);
     });
 
-    // Clean up the subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -62,74 +65,88 @@ const App = () => {
   }
 
   return (
-    <Box
-      sx={{
-        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-        margin: "0 auto",
-        px: 2,
-        mt: 10,
-        pb: 5
-      }}
-    >
-      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c', mb: 4 }}>
-        Nossa Galeria de Fotos
-      </Typography>
+    <>
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+          margin: "0 auto",
+          px: 2,
+          mt: 10,
+          pb: 5
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c', mb: 4 }}>
+          Nossa Galeria de Fotos
+        </Typography>
 
-      <ImageList variant="masonry" cols={{ xs: 1, sm: 2, md: 3 }} gap={16}>
-        {images.map((item) => (
-          <ImageListItem key={item.id} sx={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
-            {/* Overlay div to block right-clicks and pointer events */}
-            <Box
+        <ImageList variant="masonry" cols={{ xs: 1, sm: 2, md: 3 }} gap={16}>
+          {images.map((item) => (
+            <ImageListItem
+              key={item.id}
               sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 10, // Ensure it's on top of the image
-                pointerEvents: 'none', // Allow clicks to pass through to the underlying ImageListItem if needed for future functionality
-                // To completely disable right-click *on the image area*:
-                // onContextMenu: (e) => e.preventDefault(),
-                // However, putting it on the img tag is usually better for specific image protection.
+                position: 'relative',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
               }}
-              // This onContextMenu handler needs to be on the img element itself
-              // or on a div wrapping *only* the img to be most effective.
-              // We'll put it directly on the img below.
-            />
-            <img
-              srcSet={`${item.imageUrl}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              src={`${item.imageUrl}?w=248&fit=crop&auto=format`}
-              alt={item.caption || 'Gallery Image'}
-              loading="lazy"
-              // Disable right-click on the image
-              onContextMenu={(e) => e.preventDefault()}
-              // Prevent dragging the image
-              draggable="false"
-              style={{
-                objectFit: 'cover',
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                // Disable pointer events on the image itself
-                pointerEvents: 'none'
-              }}
-            />
-            <ImageListItemBar
-              title={item.caption || item.title}
-              subtitle={item.timestamp ? new Date(item.timestamp.toDate()).toLocaleDateString() : ''}
-              actionIcon={
-                <IconButton
-                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                  aria-label={`info about ${item.caption || 'image'}`}
-                >
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </Box>
+            >
+              {/* Avaliação (estrelas) sobre a imagem */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  zIndex: 2,
+                  borderRadius: '8px',
+                  px: 1,
+                  py: 0.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <React.Suspense fallback={null}>
+                  <StarComponent id={item.id} />
+                </React.Suspense>
+              </Box>
+
+              {/* Imagem protegida */}
+              <LazyImage
+                src={`${item.imageUrl}?w=248&fit=crop&auto=format`}
+                alt={item.caption || 'Gallery Image'}
+                loading="lazy"
+                onContextMenu={(e) => e.preventDefault()}
+                draggable="false"
+                style={{
+                  objectFit: 'cover',
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  pointerEvents: 'none'
+                }}
+              />
+
+              {/* Barra inferior com título e data */}
+              <ImageListItemBar
+                title={item.caption || item.title}
+                subtitle={item.timestamp ? new Date(item.timestamp.toDate()).toLocaleDateString() : ''}
+                actionIcon={
+                  <IconButton
+                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                    aria-label={`info about ${item.caption || 'image'}`}
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                }
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Box>
+      <Suspense fallback={<></>}>
+        <CommentBox itemID="FeaturedPhotos" />
+      </Suspense>
+    </>
   );
 };
 

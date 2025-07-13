@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LazyImage = ({
+const App = ({
   src,
   alt = 'Imagem',
   width = '100%',
@@ -45,4 +45,4 @@ const LazyImage = ({
   );
 };
 
-export default React.memo(LazyImage);
+export default React.memo(App);
