@@ -1,0 +1,21 @@
+[debug] [2025-07-13T00:32:13.480Z] ----------------------------------------------------------------------
+[debug] [2025-07-13T00:32:13.482Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\agome\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-07-13T00:32:13.483Z] CLI Version:   14.10.1
+[debug] [2025-07-13T00:32:13.483Z] Platform:      win32
+[debug] [2025-07-13T00:32:13.483Z] Node Version:  v22.17.0
+[debug] [2025-07-13T00:32:13.483Z] Time:          Sat Jul 12 2025 21:32:13 GMT-0300 (Horário Padrão de Brasília)
+[debug] [2025-07-13T00:32:13.483Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-13T00:32:13.709Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-13T00:32:13.710Z] > authorizing via signed-in user (alessandrogomescunha@gmail.com)
+[debug] [2025-07-13T00:32:13.710Z] [iam] checking project alessandro-portfolio for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2025-07-13T00:32:13.711Z] Checked if tokens are valid: false, expires at: 1752361204628
+[debug] [2025-07-13T00:32:13.711Z] Checked if tokens are valid: false, expires at: 1752361204628
+[debug] [2025-07-13T00:32:13.711Z] > refreshing access token with scopes: []
+[debug] [2025-07-13T00:32:13.713Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-07-13T00:32:13.713Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-07-13T00:32:15.031Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-07-13T00:32:15.031Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-07-13T00:32:15.038Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions [none]
+[debug] [2025-07-13T00:32:15.038Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions x-goog-quota-user=projects/alessandro-portfolio
+[debug] [2025-07-13T00:32:15.038Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}

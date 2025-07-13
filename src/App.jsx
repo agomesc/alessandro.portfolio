@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
-const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
+// const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
 const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
@@ -52,7 +52,7 @@ const App = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center', p:10 }}>
 				<ViewComponent id="Gallery"/> 
 			</Box>   
-			<ConsentScreen />
+			{/* <ConsentScreen /> */}
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);
