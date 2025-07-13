@@ -2,108 +2,100 @@ import React from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
-import { useNavigate } from "react-router-dom"; // Don't forget to import this
-import TypographyTitle from './TypographyTitle'; // Ensure this path is correct
-import LazyImage from './LazyImage'; // Ensure this path is correct
+import { useNavigate } from "react-router-dom";
+import TypographyTitle from './TypographyTitle';
+import LazyImage from './LazyImage';
 
-// Renamed from App to SwipeableSlider to better reflect its purpose,
-// aligning with your previous component structure.
 const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
-  // No need to create a new `photos` variable if `itemData` is already descriptive enough.
-  // const photos = itemData;
+  // Add a check to ensure itemData is an array and not null/undefined
+  // If itemData is null, undefined, or not an array, render nothing or a loading/empty state.
+  if (!Array.isArray(itemData)) {
+    // You could also return a loading spinner, an error message,
+    // or an empty state here depending on your UX requirements.
+    // For now, let's just return null or an empty Box to prevent the crash.
+    console.warn("itemData is not an array, or is null/undefined:", itemData);
+    return null; // Or <Box>Loading data...</Box> or <Box>No items to display.</Box>
+  }
 
   return (
     <Box
       sx={{
         p: 0,
         width: {
-          xs: "100%", // Full width on extra small screens
+          xs: "100%",
           sm: "90%",
           md: "80%",
           lg: "70%",
           xl: "80%"
         },
-        margin: "0 auto", // Center the box horizontally
-        padding: "0 20px", // Horizontal padding
-        mt: 10 // Top margin
+        margin: "0 auto",
+        padding: "0 20px",
+        mt: 10
       }}
     >
-      {/* Title for the section, using a reusable component */}
       <TypographyTitle src="Atualizações" />
 
       <Box
         sx={{
           display: "flex",
-          overflowX: "auto", // Enable horizontal scrolling
-          gap: 2, // Space between items
-          // Custom scrollbar styling for Webkit browsers (Chrome, Safari, Edge)
-          "&::-webkit-scrollbar": {
-            height: "6px", // Height of the horizontal scrollbar
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#888", // Color of the scrollbar thumb
-            borderRadius: "6px", // Rounded corners for the thumb
-          },
-          // Firefox scrollbar styling
-          scrollbarWidth: "thin", // "auto" or "thin"
-          scrollbarColor: "#888 transparent", // thumb color track color
+          overflowX: "auto",
+          gap: 2,
+          "&::-webkit-scrollbar": { height: "6px" },
+          "&::-webkit-scrollbar-thumb": { background: "#888", borderRadius: "6px" },
+          scrollbarWidth: "thin",
+          scrollbarColor: "#888 transparent",
         }}
       >
-        {/* Map through itemData to display each photo */}
+        {/* Now it's safe to map over itemData because we've checked it */}
         {itemData.map((photo, index) => {
-          // Determine if the photo should have the "Nova" label
           const isHighlighted = index < 5;
 
           return (
             <Box
-              key={photo.id || index} // Use a unique ID from photo data if available, otherwise index
+              key={photo.id || index}
               sx={{
                 position: 'relative',
-                flexShrink: 0, // Prevent items from shrinking
-                // Optionally define a fixed width for items here if LazyImage doesn't handle it consistently,
-                // or ensure LazyImage manages its own size correctly within the flex container.
-                width: 150, // Example fixed width for each photo container
-                height: 150, // Example fixed height for each photo container
-                overflow: 'hidden', // Hide overflow if image is larger than container
-                   margin: "0 auto", // This is the key for horizontal centering
+                flexShrink: 0,
+                width: 150,
+                height: 150,
+                overflow: 'hidden',
+                margin: "0 auto",
               }}
             >
-              {/* "Nova" label for highlighted photos */}
               {isHighlighted && (
                 <Typography
                   variant="caption"
                   sx={{
                     position: 'absolute',
-                    top: -5, // Slightly above the image
+                    top: -5,
                     left: '50%',
-                    transform: 'translateX(-50%)', // Center horizontally
-                    backgroundColor: 'error.main', // Red background from theme
+                    transform: 'translateX(-50%)',
+                    backgroundColor: 'error.main',
                     color: 'white',
-                    px: 1, // Horizontal padding
-                    py: 0.5, // Vertical padding
+                    px: 1,
+                    py: 0.5,
                     borderRadius: '4px',
                     fontWeight: 'bold',
-                    zIndex: 1, // Ensure it's above the image
-                    whiteSpace: 'nowrap', // Prevent text from wrapping
+                    zIndex: 1,
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   Nova
                 </Typography>
               )}
-              {/* Lazy-loaded image component */}
               <LazyImage
-                src={photo.url} // Assuming photo object has a 'url' property
-                alt={photo.title || `Imagem ${index + 1}`} // Use photo title or generic alt text
+                src={photo.url}
+                alt={photo.title || `Imagem ${index + 1}`}
                 width={150}
                 height={150}
                 sx={{
                   width: '100%',
-                    display: 'block',
-                    borderRadius: '16px',
-                    boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease-in-out'
+                  display: 'block',
+                  borderRadius: '16px',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                  transition: 'all 0.3s ease-in-out'
                 }}
               />
             </Box>
@@ -111,20 +103,17 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
         })}
       </Box>
 
-      {/* "Ver todas as atualizações" link */}
       <Box sx={{ textAlign: 'right', mt: 4, mb: 4 }}>
         <Link
-          component="button" // Render as a button for accessibility
+          component="button"
           variant="body1"
-          onClick={() => navigate(allUpdatesUrl)} // Navigate to the specified URL
+          onClick={() => navigate(allUpdatesUrl)}
           sx={{
-            color: 'primary.main', // Uses primary color from your Material-UI theme
-            textDecoration: 'none', // No underline by default
+            color: 'primary.main',
+            textDecoration: 'none',
             fontSize: '1.1rem',
             fontWeight: 'bold',
-            '&:hover': {
-              textDecoration: 'underline', // Underline on hover
-            }
+            '&:hover': { textDecoration: 'underline' }
           }}
         >
           Ver todas as atualizações
@@ -134,5 +123,4 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   );
 };
 
-// Memoize the component to prevent unnecessary re-renders
 export default React.memo(App);

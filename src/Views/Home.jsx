@@ -7,7 +7,7 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 import Skeleton from '@mui/material/Skeleton';
 
-// Lazy-loaded components
+
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const RandomPhoto = lazy(() => import("../Components/PhotoHighlight.jsx"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -17,7 +17,7 @@ const DisplayAds = lazy(() => import("./DisplayAds"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 
 const Home = () => {
-    // State declarations
+
     const [galleryData, setGalleryData] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
     const [snackbarMessage, setSnackbarMessage] = useState("");
