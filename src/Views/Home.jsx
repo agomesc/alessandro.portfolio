@@ -1,4 +1,11 @@
-import { useEffect, useState, Suspense, lazy, useMemo, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  Suspense,
+  lazy,
+  useMemo,
+  useCallback,
+} from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -26,9 +33,10 @@ const Home = () => {
   const fetchGalleryData = useCallback(async () => {
     setGalleryData(null);
     try {
-      const data = tabIndex === 0
-        ? await flickrInstance.getLatestPhotosLargeSquare()
-        : await flickrInstance.getLatestPhotosLargeSquarelWork();
+      const data =
+        tabIndex === 0
+          ? await flickrInstance.getLatestPhotosLargeSquare()
+          : await flickrInstance.getLatestPhotosLargeSquarelWork();
       setGalleryData(data);
     } catch (error) {
       console.error("Erro ao carregar imagens:", error);
@@ -64,13 +72,15 @@ const Home = () => {
 
   return (
     <>
-      <Box sx={{
-        p: 0,
-        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 5,
-      }}>
+      <Box
+        sx={{
+          p: 0,
+          width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+          margin: "0 auto",
+          padding: "0 20px",
+          mt: 5,
+        }}
+      >
         <Suspense fallback={null}>
           <RandomPhoto />
         </Suspense>
@@ -108,17 +118,31 @@ const Home = () => {
         </Tabs>
 
         <Box mt={4}>
-          {tabIndex === 0 ? (
-            <Suspense fallback={null}>
-              <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-              <Gallery itemData={galleryData} />
-            </Suspense>
-          ) : (
-            <Suspense fallback={null}>
-              <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotosWorks" />
-              <GalleryWork itemData={galleryData} />
-            </Suspense>
-          )}
+          <Suspense fallback={null}>
+            {tabIndex === 0 ? (
+              galleryData && galleryData.length > 0 ? (
+                <>
+                  <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                  <Gallery itemData={galleryData} />
+                </>
+              ) : (
+                <Box sx={{ textAlign: "center", padding: 2 }}>
+                  Nenhuma imagem disponível.
+                </Box>
+              )
+            ) : (
+              galleryData && galleryData.length > 0 ? (
+                <>
+                  <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                  <GalleryWork itemData={galleryData} />
+                </>
+              ) : (
+                <Box sx={{ textAlign: "center", padding: 2 }}>
+                  Nenhuma imagem disponível.
+                </Box>
+              )
+            )}
+          </Suspense>
         </Box>
 
         <Suspense fallback={null}>

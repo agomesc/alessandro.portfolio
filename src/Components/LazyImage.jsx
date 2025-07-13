@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy } from 'react';
-
-const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
+import CustomSkeleton from './CustomSkeleton'; // Assuming you have a CustomSkeleton component
 
 const App = ({
   src,
@@ -22,11 +21,6 @@ const App = ({
     overflow: 'hidden',
     ...(aspectRatio ? { aspectRatio } : {}),
   };
-
-  // Garante que scrollTo(0) seja aplicado ao montar
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
 
   return (
     <div

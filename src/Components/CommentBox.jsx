@@ -247,7 +247,7 @@ function CommentBox({ itemID }) {
         }
     };
 
-    const handleDelete = async (id) => {
+   const handleDelete = async (id) => {
         if (!currentUser) {
             showMessage('Você precisa estar logado para remover comentários.', 'warning');
             return;
@@ -262,7 +262,7 @@ function CommentBox({ itemID }) {
             const isAdmin = currentUser.uid === process.env.REACT_APP_ADMIN_UID;
             const isAuthor = currentUser.uid === commentToDelete.userId;
 
-            if (isAuthor || isAdmin) {
+            if (isAuthor || isAdmin) { // This is where the rule is applied
                 if (window.confirm("Tem certeza que deseja remover este comentário?")) {
                     await deleteDoc(doc(db, 'comments', id));
                     showMessage('Comentário removido com sucesso!', 'success');
@@ -275,7 +275,7 @@ function CommentBox({ itemID }) {
             showMessage('Erro ao remover comentário: ' + err.message, 'error');
         }
     };
-
+    
     const renderComment = (comment) => (
         <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }} id={comment.id}>
             <CardHeader

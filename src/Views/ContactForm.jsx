@@ -1,10 +1,10 @@
-import  { useState, lazy,  Suspense } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import LoadingMessage from "../Components/LoadingMessage";
 import {
   Box,
   TextField,
   Button,
-    Snackbar,
+  Snackbar,
   Alert,
   CircularProgress,
 } from '@mui/material';
@@ -52,8 +52,8 @@ function ContactForm() {
         name: name.trim(),
         email: email.trim(),
         message: message.trim(),
-        timestamp: serverTimestamp(), // Adiciona um timestamp do servidor
-        read: false, // Campo para indicar se a mensagem foi lida
+        timestamp: serverTimestamp(), 
+        read: false, 
       });
 
       setSnackbarMessage('Mensagem enviada com sucesso!');
@@ -82,25 +82,25 @@ function ContactForm() {
   };
 
   return (
-       <Box
-            sx={{
-              p: 0,
-              width: {
-                xs: "100%",
-                sm: "90%",
-                md: "80%",
-                lg: "70%",
-                xl: "80%"
-              },
-              margin: "0 auto",
-              padding: "0 20px",
-              mt: 10
-            }}
-          >
-             <Suspense fallback={<LoadingMessage />}>
-                      <TypographyTitle src="Contatos" />
-                    </Suspense>
-      
+    <Box
+      sx={{
+        p: 0,
+        width: {
+          xs: "100%",
+          sm: "90%",
+          md: "80%",
+          lg: "70%",
+          xl: "80%"
+        },
+        margin: "0 auto",
+        padding: "0 20px",
+        mt: 10
+      }}
+    >
+      <Suspense fallback={<LoadingMessage />}>
+        <TypographyTitle src="Contatos" />
+      </Suspense>
+
       <form onSubmit={handleSubmit}>
         <TextField
           label="Seu Nome"

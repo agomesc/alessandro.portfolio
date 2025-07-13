@@ -3,21 +3,26 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // --- Collection: views ---
-    match /views/{docId} {
+    match/views/{docId} {
       allow read: if true;
       allow write: if true; // Allows anyone to increment views, as per ViewComponent
     }
 
     // --- Collection: itemRatings ---
-    match /itemRatings/{docId} {
+    match/itemRatings/{docId} {
       allow read, write: if true;
       // Consider adding data validation here for 'ratingValue' etc.
     }
 
     // --- Collection: galleries ---
-    match /galleries/{docId} {
+    match/galleries/{docId} {
       allow read: if true;
       allow write: if request.auth != null; // Authenticated users can create, update, delete
+    }
+
+    match/contacts {
+      allow read: if true;
+      allow write: if true;
     }
 
     // --- Collection: comments ---
