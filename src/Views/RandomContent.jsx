@@ -76,21 +76,21 @@ const RandomAffiliateAd = () => {
   return (
     <Suspense fallback={<Skeleton variant="rectangular" width={300} height={100} />}>
       <Box
-        sx={{
+        sx={(theme) => ({
           p: 0,
           width: {
-            xs: "90%", // Para telas extra pequenas (mobile)
-            sm: "80%",  // Para telas pequenas
-            md: "70%",  // Para telas médias
-            lg: "60%",  // Para telas grandes
-            xl: "50%"   // Para telas extra grandes
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
           },
           alignContent: "center",
           alignItems: "center",
           margin: "0 auto",
-          padding: "0 20px",
-          mt: 10
-        }}
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
       >
         <TypographyTitle src="Anúncio" />
 

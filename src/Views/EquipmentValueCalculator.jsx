@@ -8,7 +8,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const App = () => {
   return (<>
     <Box
-      sx={{
+      sx={(theme) => ({
         p: 0,
         width: {
           xs: "100%",
@@ -20,9 +20,9 @@ const App = () => {
         alignContent: "center",
         alignItems: "center",
         margin: "0 auto",
-        padding: "0 20px",
-        mt: 10,
-      }}
+        padding: theme.customSpacing.pagePadding,
+        mt: theme.customSpacing.sectionMarginTop,
+      })}
     >
       <TypographyTitle src="Calcular Valor Estimado" />
       <EquipmentValueCalculator />

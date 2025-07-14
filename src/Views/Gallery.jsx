@@ -30,13 +30,13 @@ const Gallery = () => {
   }, [galleryData, instance]);
 
   if (!galleryData) {
-    return <CustomSkeleton/>;
+    return <CustomSkeleton />;
   }
 
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
           p: 0,
           width: {
             xs: "100%",
@@ -48,11 +48,12 @@ const Gallery = () => {
           alignContent: "center",
           alignItems: "center",
           margin: "0 auto",
-          padding: "0 20px",
-          mt: 10,
-        }}
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
       >
-          <Suspense fallback={<CustomSkeleton />}>
+
+        <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
         <ImageThumbs data={galleryData} />
@@ -64,13 +65,13 @@ const Gallery = () => {
 
 
       {metaData && (
-        
-          <SocialMetaTags
-            title={metaData.title}
-            image={metaData.img}
-            description={metaData.description}
-          />
-        
+
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.img}
+          description={metaData.description}
+        />
+
       )}
     </>
   );

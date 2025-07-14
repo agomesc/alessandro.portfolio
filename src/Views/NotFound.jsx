@@ -6,23 +6,23 @@ const NotFound = () => {
 
     return (
 
-        <Box
-            sx={{
-                p: 0,
-                width: {
-                    xs: "100%",
-                    sm: "90%",
-                    md: "80%",
-                    lg: "70%",
-                    xl: "80%",
-                },
-                alignContent: "center",
-                alignItems: "center",
-                margin: "0 auto",
-                padding: "0 20px",
-                mt: 10,
-            }}
-        >
+       <Box
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
             <Container sx={{ textAlign: "center", marginTop: "50px" }}>
                 <Typography component="div" variant="h3" color="primary">
                     404

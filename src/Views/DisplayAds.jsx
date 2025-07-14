@@ -60,14 +60,23 @@ const App = () => {
     };
 
     return (
-        <Box
-            sx={{
-                width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-                margin: "0 auto",
-                px: 2,
-                mt: 10
-            }}
-        >
+       <Box
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
             <Suspense fallback={<Skeleton variant="text" height={60} width="30%" sx={{ mb: 3 }} />}>
                 <TypographyTitle src="Conteúdos" />
             </Suspense>

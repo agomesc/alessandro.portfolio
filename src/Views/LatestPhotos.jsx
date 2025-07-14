@@ -40,7 +40,7 @@ const LatestPhotos = () => {
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
           p: 0,
           width: {
             xs: "100%",
@@ -49,10 +49,12 @@ const LatestPhotos = () => {
             lg: "70%",
             xl: "80%",
           },
+          alignContent: "center",
+          alignItems: "center",
           margin: "0 auto",
-          padding: "0 20px",
-          mt: 10,
-        }}
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
       >
         <Suspense fallback={<LoadingMessage />}>
           <TypographyTitle src="Atualizações" />

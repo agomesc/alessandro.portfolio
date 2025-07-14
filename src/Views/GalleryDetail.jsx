@@ -73,13 +73,21 @@ const GalleryDetail = () => {
     return (
         <>
             <Box
-                sx={{
-                    width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
+                sx={(theme) => ({
+                    p: 0,
+                    width: {
+                        xs: "100%",
+                        sm: "90%",
+                        md: "80%",
+                        lg: "70%",
+                        xl: "80%",
+                    },
+                    alignContent: "center",
+                    alignItems: "center",
                     margin: "0 auto",
-                    px: 2,
-                    mt: 10,
-                    pb: 5
-                }}
+                    padding: theme.customSpacing.pagePadding,
+                    mt: theme.customSpacing.sectionMarginTop,
+                })}
             >
                 <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
                     {gallery.title}

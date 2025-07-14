@@ -146,7 +146,7 @@ const App = () => {
             if (error.message && error.message.includes('Function Document.prototype.update() called with invalid data.')) {
                 userMessage = 'Erro: A imagem pode ser muito grande ou os dados são inválidos. Tente uma imagem menor.';
             } else if (error.message) {
-                 userMessage = `Erro ao atualizar dados: ${error.message}`;
+                userMessage = `Erro ao atualizar dados: ${error.message}`;
             }
             showSnackbar(userMessage, 'error');
         }
@@ -158,15 +158,23 @@ const App = () => {
     };
 
     return (
-        <Box sx={{
-            p: 0,
-            width: {
-                xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%"
-            },
-            margin: "0 auto",
-            padding: "0 20px",
-            mt: 10
-        }}>
+        <Box
+            sx={(theme) => ({
+                p: 0,
+                width: {
+                    xs: "100%",
+                    sm: "90%",
+                    md: "80%",
+                    lg: "70%",
+                    xl: "80%",
+                },
+                alignContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                padding: theme.customSpacing.pagePadding,
+                mt: theme.customSpacing.sectionMarginTop,
+            })}
+        >
             <Typography component="div" variant="h5" sx={{ mb: 3 }}>Editar Galeria</Typography>
 
             <form onSubmit={handleUpdate}>

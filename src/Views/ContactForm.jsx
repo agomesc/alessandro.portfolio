@@ -83,20 +83,22 @@ function ContactForm() {
 
   return (
     <Box
-      sx={{
-        p: 0,
-        width: {
-          xs: "100%",
-          sm: "90%",
-          md: "80%",
-          lg: "70%",
-          xl: "80%"
-        },
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 10
-      }}
-    >
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
       <Suspense fallback={<LoadingMessage />}>
         <TypographyTitle src="Contatos" />
       </Suspense>

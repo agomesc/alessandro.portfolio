@@ -6,23 +6,23 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Transparencia = () => {
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: {
-          xs: "100%", // Para telas extra pequenas (mobile)
-          sm: "90%",  // Para telas pequenas
-          md: "80%",  // Para telas médias
-          lg: "70%",  // Para telas grandes
-          xl: "80%"   // Para telas extra grandes
-        },
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 10
-      }}
-    >
+   <Box
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
       <TypographyTitle src="Página de Transparência" />
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, border: 0, boxShadow: 0 }}>
         <Typography component="div" variant="subtitle1">Quem Somos?</Typography>
