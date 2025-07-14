@@ -130,6 +130,7 @@ const FollowComponent = ({ entityId }) => {
         zIndex: 10,
         width: "fit-content",
         color: "white",
+        justifyContent: "center"
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

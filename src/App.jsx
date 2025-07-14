@@ -26,7 +26,7 @@ const App = () => {
 	useEffect(() => {
 		setUrlAtual(window.location.href);
 	}, []);
-	
+
 
 	useEffect(() => {
 		localStorage.setItem('darkMode', JSON.stringify(darkMode));
@@ -43,19 +43,13 @@ const App = () => {
 			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<ProTip />
-			</Box>
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
-			</Box>
+			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<RandomAffiliateAd />
-			</Box>
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
+			<RandomAffiliateAd />
+			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
