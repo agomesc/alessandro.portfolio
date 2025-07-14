@@ -52,6 +52,10 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
                 height: 150,
                 overflow: 'hidden',
                 margin: "0 auto",
+                borderRadius: '16px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                transition: 'transform 0.3s ease-in-out',
+                
               }}
             >
               {isHighlighted && (

@@ -94,6 +94,7 @@ const Home = () => {
           sx={{
             color: tabIndex === 0 ? "#78884c" : "#c0810d",
             fontWeight: tabIndex === 0 ? "bold" : "normal",
+            fontSize: 18,
             "&.Mui-selected": { color: "#78884c" },
           }}
         />
@@ -103,6 +104,7 @@ const Home = () => {
           label="Meus Trabalhos"
           sx={{
             color: tabIndex === 1 ? "#78884c" : "#c0810d",
+            fontSize: 18,
             fontWeight: tabIndex === 1 ? "bold" : "normal",
             "&.Mui-selected": { color: "#78884c" },
           }}
