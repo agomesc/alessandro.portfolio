@@ -13,6 +13,8 @@ import InfoIcon from '@mui/icons-material/Info';
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const StarComponent = lazy(() => import("../Components/StarComponent"));
 const LazyImage = lazy(() => import("../Components/LazyImage"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -83,9 +85,9 @@ const App = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c', mb: 4 }}>
-          Nossa Galeria de Fotos
-        </Typography>
+        <Suspense fallback={<CustomSkeleton />}>
+          <TypographyTitle src="Galeria de Fotos" />
+        </Suspense>
 
         <ImageList variant="masonry" cols={{ xs: 1, sm: 2, md: 3 }} gap={16}>
           {images.map((item) => (
@@ -102,7 +104,6 @@ const App = () => {
               <Box
                 sx={{
                   position: 'absolute',
-                  top: 8,
                   right: 8,
                   zIndex: 2,
                   borderRadius: '8px',
@@ -113,7 +114,7 @@ const App = () => {
                   justifyContent: 'center',
                 }}
               >
-                <React.Suspense fallback={null}>
+                <React.Suspense fallback={<CustomSkeleton />}>
                   <StarComponent id={item.id} />
                 </React.Suspense>
               </Box>
