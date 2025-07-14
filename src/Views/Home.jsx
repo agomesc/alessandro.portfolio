@@ -72,83 +72,74 @@ const Home = () => {
 
   return (
     <>
-      <Box
+
+      <Suspense fallback={null}>
+        <RandomPhoto />
+      </Suspense>
+
+      <Tabs
+        value={tabIndex}
+        onChange={handleTabChange}
+        centered
         sx={{
-          p: 0,
-          width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-          margin: "0 auto",
-          padding: "0 20px",
-          mt: 5,
+          marginTop: 5,
+          marginBottom: -8,
+          ".MuiTabs-indicator": { backgroundColor: "#78884c" },
         }}
       >
-        <Suspense fallback={null}>
-          <RandomPhoto />
-        </Suspense>
-
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          centered
+        <Tab
+          icon={<PhotoLibraryIcon />}
+          iconPosition="start"
+          label="Galeria"
           sx={{
-            marginTop: 5,
-            marginBottom: -8,
-            ".MuiTabs-indicator": { backgroundColor: "#78884c" },
+            color: tabIndex === 0 ? "#78884c" : "#c0810d",
+            fontWeight: tabIndex === 0 ? "bold" : "normal",
+            "&.Mui-selected": { color: "#78884c" },
           }}
-        >
-          <Tab
-            icon={<PhotoLibraryIcon />}
-            iconPosition="start"
-            label="Galeria"
-            sx={{
-              color: tabIndex === 0 ? "#78884c" : "#c0810d",
-              fontWeight: tabIndex === 0 ? "bold" : "normal",
-              "&.Mui-selected": { color: "#78884c" },
-            }}
-          />
-          <Tab
-            icon={<BrushIcon />}
-            iconPosition="start"
-            label="Meus Trabalhos"
-            sx={{
-              color: tabIndex === 1 ? "#78884c" : "#c0810d",
-              fontWeight: tabIndex === 1 ? "bold" : "normal",
-              "&.Mui-selected": { color: "#78884c" },
-            }}
-          />
-        </Tabs>
+        />
+        <Tab
+          icon={<BrushIcon />}
+          iconPosition="start"
+          label="Meus Trabalhos"
+          sx={{
+            color: tabIndex === 1 ? "#78884c" : "#c0810d",
+            fontWeight: tabIndex === 1 ? "bold" : "normal",
+            "&.Mui-selected": { color: "#78884c" },
+          }}
+        />
+      </Tabs>
 
-        <Box mt={4}>
-          <Suspense fallback={null}>
-            {tabIndex === 0 ? (
-              galleryData && galleryData.length > 0 ? (
-                <>
-                  <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                  <Gallery itemData={galleryData} />
-                </>
-              ) : (
-                <Box sx={{ textAlign: "center", padding: 2 }}>
-                  Nenhuma imagem disponível.
-                </Box>
-              )
-            ) : (
-              galleryData && galleryData.length > 0 ? (
-                <>
-                  <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                  <GalleryWork itemData={galleryData} />
-                </>
-              ) : (
-                <Box sx={{ textAlign: "center", padding: 2 }}>
-                  Nenhuma imagem disponível.
-                </Box>
-              )
-            )}
-          </Suspense>
-        </Box>
-
+      <Box mt={4}>
         <Suspense fallback={null}>
-          <DisplayAds />
+          {tabIndex === 0 ? (
+            galleryData && galleryData.length > 0 ? (
+              <>
+                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                <Gallery itemData={galleryData} />
+              </>
+            ) : (
+              <Box sx={{ textAlign: "center", padding: 2 }}>
+                Nenhuma imagem disponível.
+              </Box>
+            )
+          ) : (
+            galleryData && galleryData.length > 0 ? (
+              <>
+                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+                <GalleryWork itemData={galleryData} />
+              </>
+            ) : (
+              <Box sx={{ textAlign: "center", padding: 2 }}>
+                Nenhuma imagem disponível.
+              </Box>
+            )
+          )}
         </Suspense>
       </Box>
+
+      <Suspense fallback={null}>
+        <DisplayAds />
+      </Suspense>
 
       <Suspense fallback={null}>
         <SocialMetaTags
