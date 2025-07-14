@@ -3,10 +3,10 @@ import { Typography, Box } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage";
-import LazyImage from "../Components/LazyImage";
+import LoadingMessage from "./LoadingMessage"; // Assuming this is a simple loading indicator
+import LazyImage from "../Components/LazyImage"; // Assuming this handles lazy loading for images
 
-const StarComponent = lazy(() => import("../Components/StarComponent"));
+const StarComponent = lazy(() => import("../Components/StarComponent")); // Lazy load for performance
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,10 +24,10 @@ const itemVariants = {
 };
 
 const PhotoGallery = ({ photos = [] }) => {
-  // If there are no photos, display a message.
+
   if (photos.length === 0) {
     return (
-      <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 4 }}>
+      <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 5 }}>
         Nenhuma imagem disponível para exibir.
       </Typography>
     );
@@ -39,7 +39,7 @@ const PhotoGallery = ({ photos = [] }) => {
       initial="hidden"
       animate="show"
     >
-      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} spacing={2}>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5}} spacing={2}>
         {photos.map((item) => (
           <motion.div
             key={item.id}
@@ -50,7 +50,7 @@ const PhotoGallery = ({ photos = [] }) => {
               position: "relative",
               overflow: "hidden",
               borderRadius: "12px",
-              cursor: "pointer", // Ensure cursor indicates it's clickable
+              cursor: "pointer",
             }}
           >
             {/* Link para detalhes da imagem */}
@@ -70,44 +70,52 @@ const PhotoGallery = ({ photos = [] }) => {
 
             {/* Título e estrela sobrepostos com animação de fade-in */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }} // Start slightly below and invisible
-              animate={{ opacity: 1, y: 0 }} // Animate to visible and original position
-              transition={{ delay: 0.3, duration: 0.4 }} // Delay to appear after image, smooth duration
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
               style={{
                 position: "absolute",
                 bottom: 0,
                 left: 0,
                 width: "100%",
-                // Apply the background and border radius here to match the image
                 backgroundColor: "rgba(0,0,0,0.4)",
                 borderBottomLeftRadius: "12px",
                 borderBottomRightRadius: "12px",
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "space-between", // Distributes space between title and star
                 alignItems: "center",
-                padding: "8px 12px", // Adjust padding for better look
-                boxSizing: "border-box", // Ensure padding is included in width
-                zIndex: 1, // Ensure it's above the image
+                padding: "8px 12px",
+                boxSizing: "border-box",
+                zIndex: 1,
               }}
             >
-              <Typography
-                variant="caption"
-                component="div"
-                sx={{
-                  color: "white",
-                  textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
-                  fontWeight: "bold",
-                  maxWidth: "calc(100% - 40px)", // Allocate space for the star
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {item.title}
-              </Typography>
-              <Suspense fallback={<LoadingMessage />}>
-                <StarComponent id={item.id} />
-              </Suspense>
+              {/* Box for the title to control its space and overflow */}
+              <Box sx={{ flexGrow: 1, minWidth: 0 }}> {/* flexGrow allows it to take available space, minWidth prevents shrinking below content */}
+                <Typography
+                  variant="caption"
+                  component="div"
+                  sx={{
+                    color: "white",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                    fontWeight: "bold",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    // If you want the text itself to be centered within its available space
+                    // for extremely short titles, you could add:
+                    // textAlign: 'center',
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </Box>
+
+              {/* Box for the StarComponent to control its spacing */}
+              <Box sx={{ ml: 1 }}> {/* Add some left margin for separation from the title */}
+                <Suspense fallback={<LoadingMessage />}>
+                  <StarComponent id={item.id} />
+                </Suspense>
+              </Box>
             </motion.div>
           </motion.div>
         ))}
