@@ -87,28 +87,25 @@ const App = () => {
   }
 
   return (
-    <Box
-      sx={{
-        width: { xs: "100%", sm: "90%", md: "80%", lg: "70%", xl: "80%" },
-        margin: "0 auto",
-        px: 2,
-        mt: 10,
-        pb: 5
-      }}
-    >
-      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
-        Foto Aleatória
-      </Typography>
-
+   <Box
+        sx={(theme) => ({
+          p: 0,
+          width: "100%",
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
       {randomPhoto ? (
         <Box
           sx={{
             position: 'relative',
-            width: '100%',
+            width: 'auto',
             paddingTop: { xs: '56.25%', md: '42.85%' }, // 16:9 e 21:9
             borderRadius: 0,
             overflow: 'hidden',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
           }}
         >
           {/* Background da imagem */}
