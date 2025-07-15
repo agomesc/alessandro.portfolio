@@ -1,26 +1,26 @@
 import React, { lazy, Suspense } from "react";
 import { Typography, Box } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
-import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage"; // Assuming this is a simple loading indicator
-import LazyImage from "../Components/LazyImage"; // Assuming this handles lazy loading for images
+import LoadingMessage from "./LoadingMessage";
+import LazyImage from "../Components/LazyImage";
 
-const StarComponent = lazy(() => import("../Components/StarComponent")); // Lazy load for performance
+const StarComponent = lazy(() => import("../Components/StarComponent"));
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
+const overlayStyle = {
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  backgroundColor: "rgba(0,0,0,0.4)",
+  borderBottomLeftRadius: "12px",
+  borderBottomRightRadius: "12px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "8px 12px",
+  boxSizing: "border-box",
+  zIndex: 1,
 };
 
 const PhotoGallery = ({ photos = [] }) => {
@@ -33,33 +33,34 @@ const PhotoGallery = ({ photos = [] }) => {
   }
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="show">
-      {/* NOVO: Adicionando uma Box para centralizar o Masonry */}
+    <Suspense fallback={<LoadingMessage />}>
       <Box
         sx={{
-          display: 'flex',          // Habilita Flexbox
-          justifyContent: 'center', // Centraliza o conteúdo horizontalmente
-          // Se o Masonry não ocupar 100% da largura do container pai, ele será centralizado.
-          // Isso é especialmente útil em telas grandes onde Masonry pode ser menor que a largura total.
-          padding: { xs: 1, sm: 2, md: 3 }, // Adiciona preenchimento responsivo ao redor da galeria
+          display: "flex",
+          justifyContent: "center",
+          padding: { xs: 1, sm: 2, md: 3 },
         }}
       >
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
           {photos.map((item) => (
-            <motion.div
+            <Box
               key={item.id}
-              variants={itemVariants}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3 }}
-              style={{
+              sx={{
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: "12px",
                 cursor: "pointer",
+                "&:hover": {
+                  transform: "scale(1.03)",
+                  transition: "transform 0.3s ease",
+                },
               }}
             >
-              {/* Link para detalhes da imagem */}
-              <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
+              <NavLink
+                to={`/PhotoInfo/${item.id}`}
+                style={{ textDecoration: "none", display: "block" }}
+                aria-label={`Detalhes da foto: ${item.title}`}
+              >
                 <LazyImage
                   dataSrc={item.url}
                   alt={item.title}
@@ -73,28 +74,14 @@ const PhotoGallery = ({ photos = [] }) => {
                 />
               </NavLink>
 
-              {/* Título e estrela sobrepostos com animação de fade-in */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  width: "100%",
-                  backgroundColor: "rgba(0,0,0,0.4)",
-                  borderBottomLeftRadius: "12px",
-                  borderBottomRightRadius: "12px",
-                  display: "flex",
-                  justifyContent: "space-between", // Distributes space between title and star
-                  alignItems: "center",
-                  padding: "8px 12px",
-                  boxSizing: "border-box",
-                  zIndex: 1,
+              <Box
+                sx={{
+                  ...overlayStyle,
+                  opacity: 1,
+                  transform: "translateY(0)",
+                  transition: "opacity 0.4s ease, transform 0.4s ease",
                 }}
               >
-                {/* Box for the title to control its space and overflow */}
                 <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                   <Typography
                     variant="caption"
@@ -111,19 +98,15 @@ const PhotoGallery = ({ photos = [] }) => {
                     {item.title}
                   </Typography>
                 </Box>
-
-                {/* Box for the StarComponent to control its spacing */}
                 <Box sx={{ ml: 1 }}>
-                  <Suspense fallback={<LoadingMessage />}>
-                    <StarComponent id={item.id} />
-                  </Suspense>
+                  <StarComponent id={item.id} />
                 </Box>
-              </motion.div>
-            </motion.div>
+              </Box>
+            </Box>
           ))}
         </Masonry>
       </Box>
-    </motion.div>
+    </Suspense>
   );
 };
 

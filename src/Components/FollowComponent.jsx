@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { db, auth, provider } from "../firebaseConfig"; // Import auth and googleProvider
-import { doc, getDoc, updateDoc, setDoc, arrayUnion, arrayRemove } from "firebase/firestore"; // Importe setDoc aqui
+import { db, auth, provider } from "../firebaseConfig";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { motion } from "framer-motion"; // Assuming you want similar animation
 
 const FollowComponent = ({ entityId }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -11,7 +17,6 @@ const FollowComponent = ({ entityId }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [shake, setShake] = useState(false);
 
-  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -19,7 +24,6 @@ const FollowComponent = ({ entityId }) => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch follower data
   useEffect(() => {
     const fetchFollowers = async () => {
       const docRef = doc(db, "followedBy", entityId);
@@ -37,7 +41,6 @@ const FollowComponent = ({ entityId }) => {
           setIsFollowing(userIsFollowing);
         }
       } else {
-        // Inicializa o documento se ele não existir usando setDoc
         try {
           await setDoc(docRef, { followerUsers: [] }, { merge: true });
           console.log("Documento inicializado com sucesso!");
@@ -45,18 +48,16 @@ const FollowComponent = ({ entityId }) => {
           setIsFollowing(false);
         } catch (error) {
           console.error("Erro ao inicializar o documento:", error);
-          // Adicione aqui qualquer tratamento de erro adicional, como um estado de erro
         }
       }
     };
 
     fetchFollowers();
-  }, [entityId, currentUser]); // Re-fetch when entityId or currentUser changes
+  }, [entityId, currentUser]);
 
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, provider);
-      // O usuário agora está logado, o useEffect vai lidar com a atualização do currentUser e a busca de dados
     } catch (error) {
       console.error("Erro ao fazer login com o Google:", error);
     }
@@ -67,7 +68,6 @@ const FollowComponent = ({ entityId }) => {
     setIsProcessing(true);
 
     if (!currentUser) {
-      // Solicita que o usuário faça login se ainda não estiver logado
       handleGoogleSignIn();
       setIsProcessing(false);
       return;
@@ -85,7 +85,6 @@ const FollowComponent = ({ entityId }) => {
 
     try {
       if (isFollowing) {
-        // Unfollow
         await updateDoc(docRef, {
           followerUsers: arrayRemove(userToToggle),
         });
@@ -94,7 +93,6 @@ const FollowComponent = ({ entityId }) => {
         );
         setIsFollowing(false);
       } else {
-        // Follow
         await updateDoc(docRef, {
           followerUsers: arrayUnion(userToToggle),
         });
@@ -107,14 +105,6 @@ const FollowComponent = ({ entityId }) => {
       setIsProcessing(false);
     }
   }, [entityId, currentUser, isFollowing, isProcessing]);
-
-  const shakeAnimation = {
-    shake: {
-      x: [0, -2, 2, -2, 2, 0],
-      transition: { duration: 0.3 },
-    },
-    still: { x: 0 },
-  };
 
   return (
     <div
@@ -130,15 +120,14 @@ const FollowComponent = ({ entityId }) => {
         zIndex: 10,
         width: "fit-content",
         color: "white",
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        {/* Follower Avatars */}
         {followers.slice(0, 3).map((follower) => (
           <img
             key={follower.uid}
-            src={follower.photoURL || "https://via.placeholder.com/30"} // Placeholder if no photoURL
+            src={follower.photoURL || "https://via.placeholder.com/30"}
             alt={follower.displayName || "Follower"}
             title={follower.displayName || "Follower"}
             style={{
@@ -156,20 +145,17 @@ const FollowComponent = ({ entityId }) => {
         )}
       </div>
 
-      {/* Follower Count */}
       <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>
         {followers.length} Follower{followers.length !== 1 ? "s" : ""}
       </span>
 
-      {/* Follow/Login Button */}
       {!currentUser ? (
-        <motion.button
+        <button
           onClick={handleGoogleSignIn}
           disabled={isProcessing}
-          animate={shake ? "shake" : "still"}
-          variants={shakeAnimation}
+          className={shake ? "shake" : ""}
           style={{
-            background: "linear-gradient(45deg, #4285F4, #34A853)", // Google colors
+            background: "linear-gradient(45deg, #4285F4, #34A853)",
             color: "white",
             border: "none",
             padding: "10px 20px",
@@ -183,22 +169,21 @@ const FollowComponent = ({ entityId }) => {
           }}
         >
           <img
-            src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_64dp.png" // Google icon
+            src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_64dp.png"
             alt="Google"
             style={{ width: "20px", height: "20px" }}
           />
           Login to Follow
-        </motion.button>
+        </button>
       ) : (
-        <motion.button
+        <button
           onClick={handleFollowToggle}
           disabled={isProcessing}
-          animate={shake ? "shake" : "still"}
-          variants={shakeAnimation}
+          className={shake ? "shake" : ""}
           style={{
             background: isFollowing
-              ? "linear-gradient(45deg, #FF6B6B, #FFB86B)" // Unfollow color
-              : "linear-gradient(45deg, #4CAF50, #8BC34A)", // Follow color
+              ? "linear-gradient(45deg, #FF6B6B, #FFB86B)"
+              : "linear-gradient(45deg, #4CAF50, #8BC34A)",
             color: "white",
             border: "none",
             padding: "10px 20px",
@@ -209,8 +194,9 @@ const FollowComponent = ({ entityId }) => {
           }}
         >
           {isFollowing ? "Unfollow" : "Follow"}
-        </motion.button>
+        </button>
       )}
+
       {isProcessing && (
         <p style={{ fontSize: "0.8em", color: "#ccc" }}>Processing...</p>
       )}

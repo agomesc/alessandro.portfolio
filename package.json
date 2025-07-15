@@ -17,7 +17,6 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "firebase": "^11.6.1",
-    "framer-motion": "^12.16.0",
     "gatsby-plugin-react-helmet": "^6.14.0",
     "i18n-iso-countries": "^7.14.0",
     "ignore-styles": "^5.0.1",
@@ -40,6 +39,7 @@
     "react-swipeable": "^7.0.2",
     "sitemap": "^8.0.0",
     "slick-carousel": "^1.8.1",
+    "source-map-explorer": "^2.5.3",
     "typeface-roboto": "^1.1.13",
     "web-vitals": "^2.1.4"
   },
