@@ -2,86 +2,113 @@ import React, { lazy, Suspense } from 'react';
 import { Box, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
-import Skeleton from '@mui/material/Skeleton';
+import LoadingMessage from "./LoadingMessage";
 import LazyImage from "../Components/LazyImage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
 
+const overlayStyle = {
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  backgroundColor: "rgba(0,0,0,0.4)",
+  borderBottomLeftRadius: "12px",
+  borderBottomRightRadius: "12px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "8px 12px",
+  boxSizing: "border-box",
+  zIndex: 1,
+};
+
 const PhotoGrid = ({ itemData = [] }) => {
   return (
-    <>
-      {itemData.length > 0 ? (
-        <div className="fade-container">
-          <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} spacing={2}>
-            {itemData.map((item) => (
-              <div
+    <Suspense fallback={<LoadingMessage />}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          padding: { xs: 1, sm: 2, md: 3 },
+        }}
+      >
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
+          {itemData.length > 0 ? (
+            itemData.map((item) => (
+              <Box
                 key={item.id}
-                className="card-anim"
+                sx={{
+                  position: "relative",
+                  overflow: "hidden",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  "&:hover": {
+                    transform: "scale(1.03)",
+                    transition: "transform 0.3s ease",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+                  },
+                }}
               >
-                <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
+                <NavLink
+                  to={`/PhotoInfo/${item.id}`}
+                  style={{ textDecoration: "none", display: "block" }}
+                  aria-label={`Detalhes da foto: ${item.title}`}
+                >
                   <LazyImage
                     dataSrc={item.url}
                     alt={item.title}
                     style={{
                       width: "100%",
                       display: "block",
-                      borderRadius: "16px",
-                      boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
-                      transition: "all 0.3s ease-in-out",
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      transition: "transform 0.3s ease",
                     }}
                   />
                 </NavLink>
 
-                {/* Título sobreposto */}
-                <div className="slide-up fade-delay-1">
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      bottom: 8,
-                      left: 8,
-                      bgcolor: "rgba(0, 0, 0, 0.6)",
-                      color: "#fff",
-                      px: 1.5,
-                      py: 0.5,
-                      borderRadius: 1,
-                      fontSize: '0.9rem',
-                      maxWidth: "calc(100% - 80px)",
-                      zIndex: 2,
-                    }}
-                  >
-                    <Typography variant="subtitle2" component="div" noWrap>
+                <Box
+                  sx={{
+                    ...overlayStyle,
+                    opacity: 1,
+                    transform: "translateY(0)",
+                  }}
+                >
+                  <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      sx={{
+                        color: "white",
+                        textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                        fontWeight: "bold",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
                       {item.title}
                     </Typography>
                   </Box>
-                </div>
-
-                {/* Estrela sobreposta */}
-                <div className="slide-down fade-delay-2">
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 10,
-                      right: 10,
-                      zIndex: 2,
-                    }}
-                  >
-                    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                  <Box sx={{ ml: 1 }}>
+                    <Suspense fallback={null}>
                       <StarComponent id={item.id} />
                     </Suspense>
                   </Box>
-                </div>
-              </div>
-            ))}
-          </Masonry>
-        </div>
-      ) : (
-        <Suspense fallback={<Skeleton variant="text" />}>
-          <Typography component="div" variant="caption" align="center" sx={{ mt: 10 }}>
-            Nenhuma imagem disponível
-          </Typography>
-        </Suspense>
-      )}
-    </>
+                </Box>
+              </Box>
+            ))
+          ) : (
+            // Render a placeholder or message directly inside Masonry if itemData is empty
+            // Ensure this doesn't break Masonry's internal layout expectations
+            <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 5, width: '100%' }}>
+              Nenhuma imagem disponível para exibir.
+            </Typography>
+          )}
+        </Masonry>
+      </Box>
+    </Suspense>
   );
 };
 
