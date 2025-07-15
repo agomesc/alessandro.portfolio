@@ -41,8 +41,6 @@ import {
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-// A linha abaixo foi removida: import NotificationBell from '../Components/NotificationBell';
-
 
 import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
