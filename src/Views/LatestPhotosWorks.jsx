@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy, useMemo, useRef } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo, useRef } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Box from "@mui/material/Box";
 
@@ -39,6 +39,8 @@ const LatestPhotos = () => {
     };
   }, [galleryData]);
 
+  if (!galleryData) return <CustomSkeleton />;
+
   return (
     <Suspense fallback={<CustomSkeleton />}>
       <Box
@@ -60,14 +62,15 @@ const LatestPhotos = () => {
       >
         <TypographyTitle src="Atualizações" />
         <PhotoGrid itemData={galleryData} />
-        <CommentBox itemID="LatestPhotosWorks" />
+        <CommentBox itemID="LatestPhotos" />
       </Box>
       <SocialMetaTags
         title={metaData.title}
         image={metaData.image}
         description={metaData.description}
       />
-    </Suspense>);
+    </Suspense>
+  );
 };
 
 export default LatestPhotos;
