@@ -3,9 +3,11 @@ import {
   useState,
   Suspense,
   lazy,
-  useMemo,
   useCallback,
+  useDeferredValue,
+  useRef
 } from "react";
+
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -24,20 +26,24 @@ const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const Home = () => {
   const [galleryData, setGalleryData] = useState(null);
+  const flickrInstance = useRef(null);
+  const deferredGalleryData = useDeferredValue(galleryData);
   const [tabIndex, setTabIndex] = useState(0);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const flickrInstance = useMemo(() => CreateFlickrApp(), []);
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
 
   const fetchGalleryData = useCallback(async () => {
     setGalleryData(null);
     try {
       const data =
         tabIndex === 0
-          ? await flickrInstance.getLatestPhotosLargeSquare()
-          : await flickrInstance.getLatestPhotosLargeSquarelWork();
+          ? await flickrInstance.current.getLatestPhotosLargeSquare() ?? {}
+          : await flickrInstance.current.getLatestPhotosLargeSquarelWork() ?? {};
       setGalleryData(data);
     } catch (error) {
       console.error("Erro ao carregar imagens:", error);
@@ -74,48 +80,44 @@ const Home = () => {
   return (
     <>
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<CustomSkeleton variant="rectangular" />}>
         <RandomPhoto />
-      </Suspense>
-
-      <Tabs
-        value={tabIndex}
-        onChange={handleTabChange}
-        centered
-        sx={{
-          marginTop: 5,
-          marginBottom: -8,
-          ".MuiTabs-indicator": { backgroundColor: "#78884c" },
-        }}
-      >
-        <Tab
-          icon={<PhotoLibraryIcon />}
-          iconPosition="start"
-          label="Galeria"
+        <Tabs
+          value={tabIndex}
+          onChange={handleTabChange}
+          centered
           sx={{
-            color: tabIndex === 0 ? "#78884c" : "#c0810d",
-            fontWeight: tabIndex === 0 ? "bold" : "normal",
-            fontSize: 18,
-            "&.Mui-selected": { color: "#78884c" },
+            marginTop: 5,
+            marginBottom: -8,
+            ".MuiTabs-indicator": { backgroundColor: "#78884c" },
           }}
-        />
-        <Tab
-          icon={<BrushIcon />}
-          iconPosition="start"
-          label="Meus Trabalhos"
-          sx={{
-            color: tabIndex === 1 ? "#78884c" : "#c0810d",
-            fontSize: 18,
-            fontWeight: tabIndex === 1 ? "bold" : "normal",
-            "&.Mui-selected": { color: "#78884c" },
-          }}
-        />
-      </Tabs>
+        >
+          <Tab
+            icon={<PhotoLibraryIcon />}
+            iconPosition="start"
+            label="Galeria"
+            sx={{
+              color: tabIndex === 0 ? "#78884c" : "#c0810d",
+              fontWeight: tabIndex === 0 ? "bold" : "normal",
+              "&.Mui-selected": { color: "#78884c" },
+            }}
+          />
+          <Tab
+            icon={<BrushIcon />}
+            iconPosition="start"
+            label="Meus Trabalhos"
+            sx={{
+              color: tabIndex === 1 ? "#78884c" : "#c0810d",
+              fontWeight: tabIndex === 1 ? "bold" : "normal",
+              "&.Mui-selected": { color: "#78884c" },
+            }}
+          />
+        </Tabs>
 
-      <Box mt={4}>
-        <Suspense fallback={null}>
+        <Box mt={5}>
+
           {tabIndex === 0 ? (
-            galleryData && galleryData.length > 0 ? (
+            deferredGalleryData && deferredGalleryData.length > 0 ? (
               <>
                 <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
                 <Gallery itemData={galleryData} />
@@ -126,7 +128,7 @@ const Home = () => {
               </Box>
             )
           ) : (
-            galleryData && galleryData.length > 0 ? (
+            deferredGalleryData && deferredGalleryData.length > 0 ? (
               <>
                 <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
                 <GalleryWork itemData={galleryData} />
@@ -137,28 +139,21 @@ const Home = () => {
               </Box>
             )
           )}
-        </Suspense>
-      </Box>
 
-      <Suspense fallback={null}>
+        </Box>
         <DisplayAds />
-      </Suspense>
-
-      <Suspense fallback={null}>
         <SocialMetaTags
           title="Atualizações"
           image="/logo_192.png"
           description="Atualizações"
         />
-      </Suspense>
 
-      <Suspense fallback={null}>
         <MessageSnackbar
           open={snackbarOpen}
           message={snackbarMessage}
           severity={snackbarSeverity}
-          onClose={handleSnackbarClose}
-        />
+          onClose={handleSnackbarClose} />
+
       </Suspense>
     </>
   );
