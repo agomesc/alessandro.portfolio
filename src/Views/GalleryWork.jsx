@@ -1,22 +1,27 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import React, { useEffect, useState, Suspense, lazy, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import CustomSkeleton from "../Components/CustomSkeleton"; // Novo componente
 
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const GalleryWork = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const instance = useMemo(() => CreateFlickrApp(), []);
+    const flickrInstance = useRef(null);
+
+    if (!flickrInstance.current) {
+        flickrInstance.current = CreateFlickrApp();
+    }
+
 
     useEffect(() => {
         if (!galleryData) {
-            instance.getGalleryWork().then(setGalleryData);
+            flickrInstance.current.getGalleryWork().then(setGalleryData);
         }
-    }, [galleryData, instance]);
+    }, [galleryData]);
 
     const metaData = useMemo(() => {
         if (!galleryData?.length) return null;
@@ -29,7 +34,7 @@ const GalleryWork = () => {
     }, [galleryData]);
 
     return (
-        <>
+        <Suspense fallback={<CustomSkeleton />}>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -47,33 +52,22 @@ const GalleryWork = () => {
                     mt: theme.customSpacing.sectionMarginTop,
                 })}
             >
-                <Suspense fallback={<CustomSkeleton height={100} />}>
-                    <TypographyTitle src="Meus Trabalhos" />
-                </Suspense>
-
-                <Suspense fallback={<CustomSkeleton height={400} />}>
-                    {galleryData ? (
-                        <ImageThumbs data={galleryData} />
-                    ) : (
-                        <CustomSkeleton height={400} />
-                    )}
-                </Suspense>
+                <TypographyTitle src="Meus Trabalhos" />
+                {galleryData ? (
+                    <ImageThumbs data={galleryData} />
+                ) : (
+                    <CustomSkeleton height={400} />
+                )}
             </Box>
-
-            <Suspense fallback={<CustomSkeleton height={150} />}>
-                <CommentBox itemID="GalleryWork" />
-            </Suspense>
-
+            <CommentBox itemID="GalleryWork" />
             {metaData && (
-                <Suspense fallback={null}>
-                    <SocialMetaTags
-                        title={metaData.title}
-                        image={metaData.url}
-                        description={metaData.description}
-                    />
-                </Suspense>
+                <SocialMetaTags
+                    title={metaData.title}
+                    image={metaData.url}
+                    description={metaData.description}
+                />
             )}
-        </>
+        </Suspense>
     );
 };
 

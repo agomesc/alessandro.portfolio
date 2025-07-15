@@ -5,6 +5,7 @@ import React, {
   lazy,
   useMemo,
   useCallback,
+  useRef
 } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -13,10 +14,10 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import TypographyTitle from "../Components/TypographyTitle";
-import LoadingMessage from "../Components/LoadingMessage";
+
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
+const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -26,19 +27,22 @@ const PhotoInfo = () => {
   const { id } = useParams();
   const [basicPhotoData, setBasicPhotoData] = useState(null);
   const [exifData, setExifData] = useState(null);
+  const flickrInstance = useRef(null);
   const [loadingInitialData, setLoadingInitialData] = useState(true);
   const [loadingExifData, setLoadingExifData] = useState(false);
   const [error, setError] = useState(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [setImageLoaded] = useState(false);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
 
-  const instance = useMemo(() => CreateFlickrApp(), []);
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
 
   const fetchBasicPhotoData = useCallback(async () => {
     setLoadingInitialData(true);
     setError(null);
     try {
-      const data = await instance.getPhotoBasicInfo(id);
+      const data = await flickrInstance.current.getPhotoBasicInfo(id);
       setBasicPhotoData(data);
     } catch (err) {
       console.error("Erro ao buscar informações básicas da foto:", err);
@@ -46,21 +50,21 @@ const PhotoInfo = () => {
     } finally {
       setLoadingInitialData(false);
     }
-  }, [id, instance]);
+  }, [id]);
 
   const fetchExifInfo = useCallback(async () => {
     if (exifData || loadingExifData) return;
 
     setLoadingExifData(true);
     try {
-      const data = await instance.getPhotoExifInfo(id);
+      const data = await flickrInstance.current.getPhotoExifInfo(id);
       setExifData(data);
     } catch (err) {
       console.error("Erro ao buscar dados EXIF:", err);
     } finally {
       setLoadingExifData(false);
     }
-  }, [id, exifData, loadingExifData, instance]);
+  }, [id, exifData, loadingExifData]);
 
   const handleShowAdditionalInfo = useCallback(() => {
     setShowAdditionalInfo(prev => !prev);

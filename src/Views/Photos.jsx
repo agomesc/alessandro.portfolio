@@ -3,8 +3,8 @@ import React, {
   useState,
   Suspense,
   lazy,
-  useMemo,
   useCallback,
+  useRef
 } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -23,47 +23,34 @@ const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
+  const flickrInstance = useRef(null);
   const [galleryInfoData, setGalleryInfoData] = useState("");
   const [showAlbumInfo, setShowAlbumInfo] = useState(false); // Novo estado
-  const instance = useMemo(() => CreateFlickrApp(), []);
-
-  const metaData = useMemo(() => {
-    if (galleryData?.length > 0) {
-      const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
-      return {
-        title: randomItem.title || "Galeria de Fotos",
-        image: randomItem.url || "",
-        description: randomItem.title || "Veja as fotos dessa galeria.",
-      };
-    }
-    return {
-      title: "Galeria de Fotos",
-      image: "",
-      description: "Veja as fotos dessa galeria.",
-    };
-  }, [galleryData]);
+   
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
 
   // Fetches photo data initially
   const fetchData = useCallback(async () => {
     try {
-      const data = await instance.getPhotos(id);
+      const data = await flickrInstance.current.getPhotos(id);
       setGalleryData(data);
     } catch (error) {
       console.error("Erro ao carregar a galeria de fotos:", error);
     }
-  }, [id, instance]);
+  }, [id]);
 
-  // Fetches album info only when `showAlbumInfo` is true
   const loadAlbumInfo = useCallback(async () => {
-    if (showAlbumInfo && !galleryInfoData) { // Only fetch if not already fetched
+    if (showAlbumInfo && !galleryInfoData) { 
       try {
-        const albumInfo = await instance.getAlbum(id);
+        const albumInfo = await flickrInstance.current.getAlbum(id);
         setGalleryInfoData(albumInfo?.description?._content || "");
       } catch (error) {
         console.error("Erro ao carregar informações do álbum:", error);
       }
     }
-  }, [id, instance, showAlbumInfo, galleryInfoData]);
+  }, [id, showAlbumInfo, galleryInfoData]);
 
   useEffect(() => {
     fetchData();
@@ -73,73 +60,59 @@ const Photos = () => {
     if (showAlbumInfo) {
       loadAlbumInfo();
     }
-  }, [showAlbumInfo, loadAlbumInfo]); // Only run when showAlbumInfo changes or loadAlbumInfo itself changes
+  }, [showAlbumInfo, loadAlbumInfo]); 
 
   if (!galleryData) {
     return <CustomSkeleton />;
   }
 
   return (
-    <>
-    <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
-        <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={<CustomSkeleton />}>
+        <Box
+          sx={(theme) => ({
+            p: 0,
+            width: {
+              xs: "100%",
+              sm: "90%",
+              md: "80%",
+              lg: "70%",
+              xl: "80%",
+            },
+            alignContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+            padding: theme.customSpacing.pagePadding,
+            mt: theme.customSpacing.sectionMarginTop,
+          })}
+        >
           <TypographyTitle src="Minhas Fotos" />
-        </Suspense>
+          {/* Info Icon to trigger album info loading */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
 
-        {/* Info Icon to trigger album info loading */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
-          <Suspense fallback={<CustomSkeleton />}>
             <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
               Detalhes da Galeria:
             </Typography>
-          </Suspense>
-          <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
-            <InfoOutlinedIcon />
-          </IconButton>
-        </Box>
 
-        {/* Conditionally render album info */}
-        {showAlbumInfo && (
-          <Suspense fallback={<CustomSkeleton />}>
+            <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
+              <InfoOutlinedIcon />
+            </IconButton>
+          </Box>
+          {showAlbumInfo && (
             <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
               {galleryInfoData || <CustomSkeleton />}
             </Typography>
-          </Suspense>
-        )}
 
-
-        <PhotoGallery photos={galleryData} />
-
-      </Box>
-
-      <Suspense fallback={<CustomSkeleton />}>
+          )}
+          <PhotoGallery src={galleryData} />
+        </Box>
         <CommentBox itemID={id} />
-      </Suspense>
-
-      <Suspense fallback={null}>
         <SocialMetaTags
-          title={metaData.title}
-          image={metaData.image}
-          description={metaData.description}
+          title={galleryInfoData}
+          image="/logo_192.png"
+          description={galleryInfoData}
         />
+
       </Suspense>
-    </>
   );
 };
 

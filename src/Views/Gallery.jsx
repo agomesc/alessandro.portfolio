@@ -1,33 +1,24 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import React, { useEffect, useState, Suspense, lazy, useRef } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
-const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const Gallery = () => {
   const [galleryData, setGalleryData] = useState(null);
-  const instance = useMemo(() => CreateFlickrApp(), []);
+  const flickrInstance = useRef(null);
 
-  const metaData = useMemo(() => {
-    if (galleryData?.length) {
-      const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
-      return {
-        title: randomItem.title,
-        description: randomItem.description,
-        img: randomItem.img,
-      };
-    }
-    return null;
-  }, [galleryData]);
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
 
   useEffect(() => {
     if (!galleryData) {
-      instance.getGallerySmall().then(setGalleryData).catch(console.error);
+      flickrInstance.current.getGallerySmall().then(setGalleryData).catch(console.error);
     }
-  }, [galleryData, instance]);
+  }, [galleryData]);
 
   if (!galleryData) {
     return <CustomSkeleton />;
@@ -60,19 +51,8 @@ const Gallery = () => {
 
       </Box>
 
-
       <CommentBox itemID="Gallery" />
 
-
-      {metaData && (
-
-        <SocialMetaTags
-          title={metaData.title}
-          image={metaData.img}
-          description={metaData.description}
-        />
-
-      )}
     </>
   );
 };

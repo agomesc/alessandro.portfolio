@@ -97,7 +97,7 @@ const GalleryDetail = () => {
                     <Box sx={{ mt: 2, mb: 3 }}>
                         <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
                             <img
-                                LazyImage={getImageSrc(gallery.image)}
+                                dataSrc={getImageSrc(gallery.image)}
                                 alt={`Gallery - ${gallery.title}`}
                                 style={{
                                     width: '640px',

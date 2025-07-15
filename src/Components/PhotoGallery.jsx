@@ -23,8 +23,8 @@ const overlayStyle = {
   zIndex: 1,
 };
 
-const PhotoGallery = ({ photos = [] }) => {
-  if (photos.length === 0) {
+const PhotoGallery = ({ src = [] }) => {
+  if (src.length === 0) {
     return (
       <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 5 }}>
         Nenhuma imagem disponível para exibir.
@@ -42,7 +42,7 @@ const PhotoGallery = ({ photos = [] }) => {
         }}
       >
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
-          {photos.map((item) => (
+          {src.map((item) => (
             <Box
               key={item.id}
               sx={{
