@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import ErrorBoundary from "./Components/ErrorBoundary";
-import { HelmetProvider } from 'react-helmet-async'; 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,9 +12,7 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <HelmetProvider>
           <App />
-        </HelmetProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>

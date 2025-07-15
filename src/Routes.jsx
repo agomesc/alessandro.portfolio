@@ -1,6 +1,10 @@
 import { Suspense, lazy } from "react";
-import { Routes, Route } from "react-router-dom";
+// Remova BrowserRouter daqui, pois ele deve estar em um nível superior.
+// Mantenha apenas Routes e Route.
+import { Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
+// Lazy imports dos seus componentes de View
 const Gallery = lazy(() => import("./Views/Gallery"));
 const Home = lazy(() => import("./Views/Home"));
 const GalleryWork = lazy(() => import("./Views/GalleryWork"));
@@ -33,33 +37,37 @@ const AppRoutes = () => {
 
   return (
     <Suspense fallback={<></>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/galleryWork" element={<GalleryWork />} />
-        <Route path="/latestphotos" element={<LatestPhotos />} />
-        <Route path="/latestPhotosWorks" element={<LatestPhotosWorks />} />
-        <Route path="/photos/:id" element={<Photos />} />
-        <Route path="/Feed" element={<Feed />} />
-        <Route path="/photoinfo/:id" element={<PhotoInfo />} />
-        <Route path="/privacidade" element={<Privacidade />} />
-        <Route path="/transparencia" element={<Transparencia />} />
-        <Route path="/about" element={<About />} />
-        {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
-        {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
-        {isLocalhost && <Route path="/createAds" element={<CreateAds />} />}
-        {isLocalhost && <Route path="/listAds" element={<ListAds />} />}
-        {isLocalhost && <Route path="/editAds/:id" element={<EditAds />} />}
-        <Route path="/testWrapper" element={<TestWrapper />} />
-        <Route path="/listContentWithPagination" element={<ListContentWithPagination />} />
-        <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
-        <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
-        <Route path="/contactForm" element={<ContactForm />} />
-        {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
-        <Route path="/featuredPhotos" element={<FeaturedPhotos />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      {/* O HelmetProvider permanece aqui para garantir que todas as rotas tenham acesso ao Helmet */}
+      <HelmetProvider>
+        {/* A tag <Router> FOI REMOVIDA daqui. Ela deve envolver AppRoutes em src/index.js ou src/App.js */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/galleryWork" element={<GalleryWork />} />
+          <Route path="/latestphotos" element={<LatestPhotos />} />
+          <Route path="/latestPhotosWorks" element={<LatestPhotosWorks />} />
+          <Route path="/photos/:id" element={<Photos />} />
+          <Route path="/Feed" element={<Feed />} />
+          <Route path="/photoinfo/:id" element={<PhotoInfo />} />
+          <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="/transparencia" element={<Transparencia />} />
+          <Route path="/about" element={<About />} />
+          {isLocalhost && <Route path="/listContent" element={<ListContent />} />}
+          {isLocalhost && <Route path="/formContent" element={<FormContent />} />}
+          {isLocalhost && <Route path="/createAds" element={<CreateAds />} />}
+          {isLocalhost && <Route path="/listAds" element={<ListAds />} />}
+          {isLocalhost && <Route path="/editAds/:id" element={<EditAds />} />}
+          <Route path="/testWrapper" element={<TestWrapper />} />
+          <Route path="/listContentWithPagination" element={<ListContentWithPagination />} />
+          <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
+          <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
+          <Route path="/contactForm" element={<ContactForm />} />
+          {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
+          <Route path="/featuredPhotos" element={<FeaturedPhotos />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </HelmetProvider>
     </Suspense>
   );
 };
