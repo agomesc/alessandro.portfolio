@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo } from 'react';
 import Box from "@mui/material/Box";
-import LoadingMessage from "../Components/LoadingMessage";
+import CustomSkeleton from "../Components/CustomSkeleton";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -22,31 +22,29 @@ const About = () => {
     `, []);
 
     return (
-        <Box
-            sx={(theme) => ({
-                p: 0,
-                width: {
-                    xs: "100%",
-                    sm: "90%",
-                    md: "80%",
-                    lg: "70%",
-                    xl: "80%",
-                },
-                alignContent: "center",
-                alignItems: "center",
-                margin: "0 auto",
-                padding: theme.customSpacing.pagePadding,
-                mt: theme.customSpacing.sectionMarginTop,
-            })}
-        >
-            <TypographyTitle src={title} />
-
-            <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={<CustomSkeleton />}>
+            <Box
+                sx={(theme) => ({
+                    p: 0,
+                    width: {
+                        xs: "100%",
+                        sm: "90%",
+                        md: "80%",
+                        lg: "70%",
+                        xl: "80%",
+                    },
+                    alignContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                    padding: theme.customSpacing.pagePadding,
+                    mt: theme.customSpacing.sectionMarginTop,
+                })}
+            >
+                <TypographyTitle src={title} />
                 <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
-            </Suspense>
-
-            <CommentBox itemID="About" />
-        </Box>
+                <CommentBox itemID="About" />
+            </Box>
+        </Suspense>
     );
 };
 

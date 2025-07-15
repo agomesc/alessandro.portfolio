@@ -8,6 +8,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const StarComponent = React.lazy(() => import("../Components/StarComponent"));
 const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
 const CommentBox = React.lazy(() => import("../Components/CommentBox"));
+const LazyImage = React.lazy(() => import("../Components/LazyImage"));
 
 
 const getImageSrc = (imageData) => {
@@ -53,7 +54,6 @@ const GalleryDetail = () => {
             </Box>
         );
     }
-
     if (error) {
         return (
             <Box sx={{ mt: 10, px: 2 }}>
@@ -71,7 +71,7 @@ const GalleryDetail = () => {
     }
 
     return (
-        <>
+       <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -96,8 +96,8 @@ const GalleryDetail = () => {
                 {gallery.image && (
                     <Box sx={{ mt: 2, mb: 3 }}>
                         <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
-                            <img
-                                dataSrc={getImageSrc(gallery.image)}
+                            <LazyImage
+                                srcSet={getImageSrc(gallery.image)}
                                 alt={`Gallery - ${gallery.title}`}
                                 style={{
                                     width: '640px',
@@ -118,7 +118,6 @@ const GalleryDetail = () => {
                     dangerouslySetInnerHTML={{ __html: gallery.text }}
                 />
 
-
                 {gallery.link && (
                     <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
                         <Typography
@@ -137,17 +136,16 @@ const GalleryDetail = () => {
                         >
                             Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                         </Typography>
-                        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                        
                             <StarComponent id={gallery.id} />
-                        </Suspense>
-                        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+                        
+                        
                             <ViewComponent id={gallery.id} />
-                        </Suspense>
                     </Stack>
                 )}
             </Box>
             <CommentBox itemID="Contents" />
-        </>
+        </Suspense>
     );
 };
 
