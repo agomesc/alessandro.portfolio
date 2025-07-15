@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback, lazy } from "react";
+import { useEffect, useState, useMemo, useCallback, lazy, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
@@ -36,7 +36,8 @@ import {
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
     Brush as BrushIcon,
-    DynamicFeed as DynamicFeed } from "@mui/icons-material";
+    DynamicFeed as DynamicFeed
+} from "@mui/icons-material";
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
@@ -55,6 +56,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     const [openSubGallery, setOpenSubGallery] = useState(false);
     const [openEquipamentos, setOpenEquipamentos] = useState(false);
     const [galleryData, setGalleryData] = useState([]);
+    const flickrInstance = useRef(null);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -62,9 +64,11 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     });
     const [loadingGallery, setLoadingGallery] = useState(true);
 
-    const flickrInstance = useMemo(() => CreateFlickrApp(), []);
 
-    // Use o hook de autenticação
+    if (!flickrInstance.current) {
+        flickrInstance.current = CreateFlickrApp();
+    }
+
     const showMessage = useCallback((message, severity = "info") => {
         setSnackbar({ open: true, message, severity });
     }, []);
@@ -74,13 +78,13 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         loadingAuth,
         handleLogin,
         handleLogout,
-    } = useFirebaseAuth(showMessage); // Passe showMessage para o hook
+    } = useFirebaseAuth(showMessage); 
 
     useEffect(() => {
-        // Não precisa mais de setLoadingAuth(false) aqui, o hook cuida disso.
+        
         const fetchGallery = async () => {
             try {
-                const data = await flickrInstance.getGallery();
+                const data = await flickrInstance.current.getGallery();
                 setGalleryData(data);
             } catch (error) {
                 setSnackbar({
@@ -208,7 +212,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                                                 sx={{
                                                     transform:
                                                         (isEquipamentosParent && openEquipamentos) ||
-                                                        (isParentOfGalleries && openSubGallery)
+                                                            (isParentOfGalleries && openSubGallery)
                                                             ? "rotate(180deg)"
                                                             : "rotate(0deg)",
                                                     transition: "transform 0.3s ease",

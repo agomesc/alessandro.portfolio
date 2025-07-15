@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo } from "react";
+import { useEffect, useState, Suspense, lazy, useMemo, useRef } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import Box from "@mui/material/Box";
 
@@ -6,17 +6,21 @@ const PhotoGrid = lazy(() => import("../Components/PhotoGrid"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
-const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const LatestPhotos = () => {
   const [galleryData, setGalleryData] = useState(null);
-  const instance = useMemo(() => CreateFlickrApp(), []);
+  const flickrInstance = useRef(null);
+
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
 
   useEffect(() => {
     if (!galleryData) {
-      instance.getLatestPhotosWork().then(setGalleryData);
+      flickrInstance.current.getLatestPhotosWork().then(setGalleryData);
     }
-  }, [galleryData, instance]);
+  }, [galleryData]);
 
   const metaData = useMemo(() => {
     if (galleryData?.length > 0) {
@@ -35,11 +39,9 @@ const LatestPhotos = () => {
     };
   }, [galleryData]);
 
-  if (!galleryData) return <LoadingMessage />;
-
   return (
-    <>
-    <Box
+    <Suspense fallback={<CustomSkeleton />}>
+      <Box
         sx={(theme) => ({
           p: 0,
           width: {
@@ -56,28 +58,16 @@ const LatestPhotos = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <Suspense fallback={<LoadingMessage />}>
-          <TypographyTitle src="Atualizações" />
-        </Suspense>
-
-        <Suspense fallback={<LoadingMessage />}>
-          <PhotoGrid itemData={galleryData} />
-        </Suspense>
-
-        <Suspense fallback={<LoadingMessage />}>
-          <CommentBox itemID="LatestPhotosWorks" />
-        </Suspense>
+        <TypographyTitle src="Atualizações" />
+        <PhotoGrid itemData={galleryData} />
+        <CommentBox itemID="LatestPhotosWorks" />
       </Box>
-
-      <Suspense fallback={null}>
-        <SocialMetaTags
-          title={metaData.title}
-          image={metaData.image}
-          description={metaData.description}
-        />
-      </Suspense>
-    </>
-  );
+      <SocialMetaTags
+        title={metaData.title}
+        image={metaData.image}
+        description={metaData.description}
+      />
+    </Suspense>);
 };
 
-export default React.memo(LatestPhotos);
+export default LatestPhotos;

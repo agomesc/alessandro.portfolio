@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // Importe o ícone
-import IconButton from "@mui/material/IconButton"; // Importe o botão de ícone
+import IconButton from "@mui/material/IconButton"; 
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
@@ -31,7 +31,6 @@ const Photos = () => {
     flickrInstance.current = CreateFlickrApp();
   }
 
-  // Fetches photo data initially
   const fetchData = useCallback(async () => {
     try {
       const data = await flickrInstance.current.getPhotos(id);

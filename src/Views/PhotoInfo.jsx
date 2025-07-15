@@ -140,8 +140,8 @@ const PhotoInfo = () => {
   }
 
   return (
-    <>
-     <Box
+    <Suspense fallback={<CustomSkeleton />}>
+      <Box
         sx={(theme) => ({
           p: 0,
           width: {
@@ -158,46 +158,30 @@ const PhotoInfo = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <Suspense fallback={<CustomSkeleton />}>
-          <TypographyTitle src="Informações da Foto" />
-        </Suspense>
-
+        <TypographyTitle src="Informações da Foto" />
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <Suspense fallback={<Skeleton variant="rectangular" height={300} width="100%" />}>
-            <PhotoDashboard
-              photoData={combinedPhotoData}
-              onImageLoad={handleImageLoad}
-              showAdditionalInfo={showAdditionalInfo}
-              onShowAdditionalInfo={handleShowAdditionalInfo}
-              loadingExif={loadingExifData}
-            />
-          </Suspense>
+          <PhotoDashboard
+            photoData={combinedPhotoData}
+            onImageLoad={handleImageLoad}
+            showAdditionalInfo={showAdditionalInfo}
+            onShowAdditionalInfo={handleShowAdditionalInfo}
+            loadingExif={loadingExifData}
+          />
         </Box>
-
-        {/* Mostra mensagem de carregamento EXIF se o botão foi clicado */}
         {showAdditionalInfo && loadingExifData && (
           <Box sx={{ mt: 3, textAlign: 'center' }}>
             <Typography variant="body1">Carregando detalhes EXIF...</Typography>
             <Skeleton height={150} sx={{ mt: 1 }} />
           </Box>
         )}
-
-
       </Box>
-      {/* Comentários SEMPRE aparecem */}
-      <Box sx={{ mt: 3 }}>
-        <Suspense fallback={<CustomSkeleton />}>
-          <CommentBox itemID={id} />
-        </Suspense>
-      </Box>
-      <Suspense fallback={null}>
-        <SocialMetaTags
-          title={metaData.title}
-          image={metaData.image}
-          description={metaData.description}
-        />
-      </Suspense>
-    </>
+      <CommentBox itemID={id} />
+      <SocialMetaTags
+        title={metaData.title}
+        image={metaData.image}
+        description={metaData.description}
+      />
+    </Suspense>
   );
 };
 
