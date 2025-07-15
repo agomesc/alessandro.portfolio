@@ -71,7 +71,7 @@ const GalleryDetail = () => {
     }
 
     return (
-       <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -95,21 +95,20 @@ const GalleryDetail = () => {
 
                 {gallery.image && (
                     <Box sx={{ mt: 2, mb: 3 }}>
-                        <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={400} />}>
-                            <LazyImage
-                                srcSet={getImageSrc(gallery.image)}
-                                alt={`Gallery - ${gallery.title}`}
-                                style={{
-                                    width: '640px',
-                                    height: 'auto',
-                                    maxHeight: '600px',
-                                    objectFit: 'contain',
-                                    borderRadius: '8px',
-                                    display: 'block',
-                                    margin: '0 auto'
-                                }}
-                            />
-                        </Suspense>
+
+                        <LazyImage
+                            srcSet={getImageSrc(gallery.image)}
+                            alt={`Gallery - ${gallery.title}`}
+                            style={{
+                                width: '640px',
+                                height: 'auto',
+                                maxHeight: '600px',
+                                objectFit: 'contain',
+                                borderRadius: '8px',
+                                display: 'block',
+                                margin: '0 auto'
+                            }}
+                        />
                     </Box>
                 )}
 
@@ -136,11 +135,8 @@ const GalleryDetail = () => {
                         >
                             Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                         </Typography>
-                        
-                            <StarComponent id={gallery.id} />
-                        
-                        
-                            <ViewComponent id={gallery.id} />
+                        <StarComponent id={gallery.id} />
+                        <ViewComponent id={gallery.id} />
                     </Stack>
                 )}
             </Box>
