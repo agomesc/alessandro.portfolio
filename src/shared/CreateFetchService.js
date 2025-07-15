@@ -1,8 +1,8 @@
+// src/services/fetchService.js
 const CreateFetchService = () => {
     let lastRequestTime = 0;
     const observers = new Set();
-    // Default cache duration: 5 minutes (in milliseconds)
-    const DEFAULT_CACHE_DURATION = 20 * 60 * 1000; 
+    const DEFAULT_CACHE_DURATION = 20 * 60 * 1000; // 20 minutos
 
     function subscribe(observer) {
         observers.add(observer);
@@ -24,9 +24,10 @@ const CreateFetchService = () => {
         try {
             const currentTime = Date.now();
             const timeSinceLastRequest = currentTime - lastRequestTime;
-            const delayTime = Math.max(0, 5000 - timeSinceLastRequest);
+            const delayTime = Math.max(0, 5000 - timeSinceLastRequest); // 5 segundos de delay
 
             if (delayTime > 0) {
+                console.log(`Aguardando ${delayTime / 1000}s antes da requisição para ${url}...`);
                 await delay(delayTime);
             }
 
@@ -42,12 +43,14 @@ const CreateFetchService = () => {
             return data;
         } catch (error) {
             notify("error", { url, options, error: error.message });
+            console.error(`Erro na requisição ${url}:`, error); // Adicione um console.error aqui
             throw new Error(`Erro na requisição: ${error.message}`);
         }
     }
 
     async function get(url, cacheOptions = {}) {
         if (!navigator.onLine) {
+            notify("error", { url, error: TryError(521) });
             throw new Error(TryError(521)); // Offline error
         }
 
@@ -62,25 +65,30 @@ const CreateFetchService = () => {
                     const { data, timestamp } = JSON.parse(cachedData);
                     if (now - timestamp < cacheDuration) {
                         notify("cache-hit", { url, data });
-                        return data; // Return cached data if fresh
+                        console.log(`[CACHE HIT] Retornando do cache para: ${url}`);
+                        return data; // Retorna dados do cache se estiverem frescos
                     } else {
-                        sessionStorage.removeItem(cacheKey); // Remove stale data
+                        console.log(`[CACHE EXPIRADO] Removendo cache para: ${url}`);
+                        sessionStorage.removeItem(cacheKey); // Remove dados expirados
                     }
                 }
             } catch (e) {
-                sessionStorage.removeItem(cacheKey); // Clear corrupted cache entry
+                console.error(`[ERRO CACHE] Falha ao ler ou parsear cache para ${url}:`, e);
+                sessionStorage.removeItem(cacheKey); // Limpa entrada de cache corrompida
             }
         }
 
-        // If no cached data, or cache is stale/disabled, perform actual fetch
+        // Se não houver cache, ou cache estiver expirado/desativado, faz a requisição real
         const response = await fetchWithInterceptor(url);
 
         if (useCache) {
             try {
-                // Store the response with a timestamp
+                // Armazena a resposta com um timestamp
                 sessionStorage.setItem(cacheKey, JSON.stringify({ data: response, timestamp: now }));
+                console.log(`[CACHE SET] Armazenando no cache para: ${url}`);
             } catch (e) {
-                  throw new Error(TryError(e.status)); 
+                console.error(`[ERRO CACHE] Falha ao armazenar cache para ${url}:`, e);
+                throw new Error(TryError(500)); // Usar um erro genérico de servidor ou um específico para storage
             }
         }
 
@@ -88,11 +96,16 @@ const CreateFetchService = () => {
     }
 
     async function post(url, data) {
+        if (!navigator.onLine) {
+            notify("error", { url, error: TryError(521) });
+            throw new Error(TryError(521)); // Offline error
+        }
+
         const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Cache-Control": "no-cache", // Important for POST requests
+                "Cache-Control": "no-cache", // Importante para requisições POST
                 "Connection": "keep-alive"
             },
             body: JSON.stringify(data)
@@ -113,18 +126,18 @@ function TryError(code) {
         204: "O servidor processou a solicitação com sucesso, mas não está retornando conteúdo.",
         205: "O servidor processou a solicitação com sucesso, mas o conteúdo foi redefinido.",
         206: "O servidor processou uma solicitação parcial.",
-        400: "O servidor não entendeu a solicitação.",
-        401: "Não autorizado.",
-        403: "O servidor recusou a solicitação.",
+        400: "O servidor não entendeu a solicitação. Verifique os dados enviados.",
+        401: "Não autorizado. Credenciais inválidas ou ausentes.",
+        403: "O servidor recusou a solicitação. Você não tem permissão.",
         404: "O servidor não encontrou a página solicitada.",
-        405: "Método não permitido.",
+        405: "Método não permitido para esta URL.",
         408: "O servidor expirou ao esperar pela solicitação.",
-        500: "Erro interno do servidor.",
+        500: "Erro interno do servidor. Tente novamente mais tarde.",
         501: "O servidor não tem a funcionalidade necessária para completar a solicitação.",
-        503: "O servidor está indisponível.",
-        521: "Offline."
+        503: "O servidor está indisponível. Tente novamente mais tarde.",
+        521: "Você está offline. Verifique sua conexão com a internet."
     };
-    return errors[code] || "Erro desconhecido.";
+    return errors[code] || `Erro desconhecido. Código: ${code}`;
 }
 
 export default CreateFetchService;

@@ -1,4 +1,4 @@
-import CreateFlickrService from "../shared/CreateFlickrService";
+import CreateFlickrService from "./CreateFlickrService";
 
 // https://www.flickr.com/services/api/flickr.photos.getSizes.html
 const CreateFlickrApp = () => {
