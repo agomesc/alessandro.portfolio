@@ -20,6 +20,7 @@ const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const DisplayAds = lazy(() => import("./DisplayAds"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const Home = () => {
   const [galleryData, setGalleryData] = useState(null);
@@ -121,7 +122,7 @@ const Home = () => {
               </>
             ) : (
               <Box sx={{ textAlign: "center", padding: 2 }}>
-                Nenhuma imagem disponível.
+                <CustomSkeleton variant="circular" />
               </Box>
             )
           ) : (
@@ -132,7 +133,7 @@ const Home = () => {
               </>
             ) : (
               <Box sx={{ textAlign: "center", padding: 2 }}>
-                Nenhuma imagem disponível.
+                <CustomSkeleton variant="circular" />
               </Box>
             )
           )}

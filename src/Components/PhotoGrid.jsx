@@ -125,7 +125,7 @@ const PhotoGrid = ({ itemData = [] }) => {
         </motion.div>
       ) : (
         <Suspense fallback={<Skeleton variant="text" />}>
-          <Typography component="div" variant="caption" align="center" sx={{ mt: 4 }}>
+          <Typography component="div" variant="caption" align="center" sx={{ mt: 10 }}>
             Nenhuma imagem disponível
           </Typography>
         </Suspense>
