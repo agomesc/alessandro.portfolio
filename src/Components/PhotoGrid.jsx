@@ -61,7 +61,7 @@ const PhotoGrid = ({ itemData = [] }) => {
               >
                 <NavLink to={`/PhotoInfo/${item.id}`} style={{ textDecoration: "none" }}>
                   <LazyImage
-                    src={item.url}
+                    dataSrc={item.url}
                     alt={item.title}
                     style={{
                       width: "100%",

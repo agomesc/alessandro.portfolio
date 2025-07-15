@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const App = ({
-  src,
+const DelayedImage = ({
+  dataSrc,
   alt = 'Imagem',
   width = '100%',
   height = 'auto',
   className = '',
   style = {},
   srcSet = '',
-  fallbackColor = '#ccc', 
-  aspectRatio = '', 
+  fallbackColor = '#ccc',
+  aspectRatio = '',
 }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // carrega uma vez só
+        }
+      },
+      {
+        rootMargin: '100px', // pré-carregamento antes da imagem entrar na tela
+        threshold: 0.1, // porcentagem visível do elemento para disparar
+      }
+    );
+
+    if (wrapperRef.current) {
+      observer.observe(wrapperRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const wrapperStyle = {
     width,
     height,
@@ -21,12 +45,13 @@ const App = ({
 
   return (
     <div
+      ref={wrapperRef}
       style={wrapperStyle}
-      onContextMenu={(e) => e.preventDefault()} // bloqueia botão direito
+      onContextMenu={(e) => e.preventDefault()}
     >
       <img
-        src={src}
-        srcSet={srcSet}
+        src={isVisible ? dataSrc : undefined}
+        srcSet={isVisible ? srcSet : undefined}
         alt={alt}
         loading="lazy"
         draggable="false"
@@ -45,4 +70,4 @@ const App = ({
   );
 };
 
-export default React.memo(App);
+export default React.memo(DelayedImage);

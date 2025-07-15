@@ -163,7 +163,7 @@ const App = ({ data = [] }) => {
                       <CardMedia
                         component={() => (
                           <LazyImage
-                            src={item.img}
+                            dataSrc={item.img}
                             alt={item.title}
                             width="100%"
                             height="200px"

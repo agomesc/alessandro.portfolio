@@ -70,7 +70,7 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
         style={{ cursor: "pointer", overflow: "hidden" }}
       >
         <LazyImage
-          src={photoData.url}
+          dataSrc={photoData.url}
           alt={photoData.title}
           width="100%"
           height="auto"
@@ -205,7 +205,7 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
             onClick={(e) => e.stopPropagation()}
           >
             <LazyImage
-              src={photoData.url}
+              dataSrc={photoData.url}
               alt={photoData.title}
               style={{
                 display: "block",

@@ -13,7 +13,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <LazyImage
-          src="/eu.jpg"
+          dataSrc="/eu.jpg"
           width={267}
           height={400}
           style={{ margin: "0 auto" }}
@@ -34,7 +34,7 @@ const PhotoDescription = ({ imageUrl, description }) => {
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <LazyImage
-            src={imageUrl}
+            dataSrc={imageUrl}
             alt={autor}
             width={192}
             height="auto"

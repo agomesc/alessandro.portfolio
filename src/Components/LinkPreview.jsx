@@ -108,7 +108,7 @@ const LinkPreview = ({ url }) => {
             <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
               <Suspense fallback={<Skeleton variant="rectangular" width={100} height={100} />}>
                 <LazyImage
-                  src={previewData.image}
+                  dataSrc={previewData.image}
                   alt={previewData.description || "Imagem da prévia"}
                   width={100}
                   height="auto"

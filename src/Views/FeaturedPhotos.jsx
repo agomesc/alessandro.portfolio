@@ -119,9 +119,8 @@ const App = () => {
                 </React.Suspense>
               </Box>
 
-              {/* Imagem protegida */}
               <LazyImage
-                src={`${item.imageUrl}?w=248&fit=crop&auto=format`}
+                dataSrc={`${item.imageUrl}?w=248&fit=crop&auto=format`}
                 alt={item.caption || 'Gallery Image'}
                 loading="lazy"
                 onContextMenu={(e) => e.preventDefault()}

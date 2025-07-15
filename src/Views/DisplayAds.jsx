@@ -114,7 +114,7 @@ const App = () => {
                             {gallery.image && (
                                 <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: { xs: 240, sm: 'auto' }, overflow: 'hidden' }}>
                                     <LazyImage
-                                        src={gallery.image}
+                                        dataSrc={gallery.image}
                                         alt={`Gallery - ${gallery.title}`}
                                         sx={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ensure image covers its container
                                     />

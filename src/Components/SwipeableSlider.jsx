@@ -80,7 +80,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
                 </Typography>
               )}
               <LazyImage
-                src={photo.url}
+                dataSrc={photo.url}
                 alt={photo.title || `Imagem ${index + 1}`}
                 width={150}
                 height={150}
