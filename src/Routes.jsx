@@ -1,10 +1,7 @@
 import { Suspense, lazy } from "react";
-// Remova BrowserRouter daqui, pois ele deve estar em um nível superior.
-// Mantenha apenas Routes e Route.
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-// Lazy imports dos seus componentes de View
 const Gallery = lazy(() => import("./Views/Gallery"));
 const Home = lazy(() => import("./Views/Home"));
 const GalleryWork = lazy(() => import("./Views/GalleryWork"));

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import "./App.css";
 import { lightTheme, darkTheme } from "./Views/Theme";
 import Box from "@mui/material/Box";
+import useScrollToTop from './hooks/useScrollToTop'; 
 
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
@@ -22,6 +23,8 @@ const App = () => {
 		const savedTheme = localStorage.getItem('darkMode');
 		return savedTheme ? JSON.parse(savedTheme) : false;
 	});
+
+	useScrollToTop();
 
 	useEffect(() => {
 		setUrlAtual(window.location.href);

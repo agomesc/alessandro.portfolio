@@ -13,7 +13,7 @@ root.render(
     <ErrorBoundary>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <App />
-      </BrowserRouter>
+     </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>
 );
