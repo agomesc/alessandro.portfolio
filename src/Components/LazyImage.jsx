@@ -12,6 +12,7 @@ const App = ({
   aspectRatio = '',
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
@@ -19,12 +20,12 @@ const App = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // carrega uma vez só
+          observer.disconnect();
         }
       },
       {
-        rootMargin: '100px', // pré-carregamento antes da imagem entrar na tela
-        threshold: 0.1, // porcentagem visível do elemento para disparar
+        rootMargin: '100px',
+        threshold: 0.1,
       }
     );
 
@@ -39,6 +40,7 @@ const App = ({
     width,
     height,
     backgroundColor: fallbackColor,
+    position: 'relative',
     overflow: 'hidden',
     ...(aspectRatio ? { aspectRatio } : {}),
   };
@@ -49,23 +51,57 @@ const App = ({
       style={wrapperStyle}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <img
-        src={isVisible ? dataSrc : undefined}
-        srcSet={isVisible ? srcSet : undefined}
-        alt={alt}
-        loading="lazy"
-        draggable="false"
-        className={className}
-        style={{
-          objectFit: 'cover',
-          width: '100%',
-          height: 'auto',
-          display: 'block',
-          pointerEvents: 'none',
-          borderRadius: style.borderRadius || 0,
-          ...style,
-        }}
-      />
+      {isVisible && !isLoaded && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255,255,255,0.5)',
+            zIndex: 1,
+          }}
+        >
+          <div className="loader" style={{
+            width: 24,
+            height: 24,
+            border: '3px solid #ccc',
+            borderTop: '3px solid #333',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }} />
+        </div>
+      )}
+
+      {isVisible && (
+        <img
+          src={dataSrc}
+          srcSet={srcSet}
+          alt={alt}
+          loading="lazy"
+          draggable="false"
+          className={className}
+          onLoad={() => setIsLoaded(true)}
+          style={{
+            objectFit: 'cover',
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            pointerEvents: 'none',
+            borderRadius: style.borderRadius || 0,
+            ...style,
+          }}
+        />
+      )}
+
+      {/* Inline keyframes */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
