@@ -26,7 +26,7 @@ const Gallery = () => {
   }
 
   return (
-    <>
+    <Suspense fallback={<CustomSkeleton />}>
       <Box
         sx={(theme) => ({
           p: 0,
@@ -44,23 +44,19 @@ const Gallery = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-
-        <Suspense fallback={<CustomSkeleton />}>
-          <TypographyTitle src="Galeria de Fotos" />
-        </Suspense>
+        <TypographyTitle src="Galeria de Fotos" />
         <ImageThumbs data={galleryData} />
 
       </Box>
-
       <CommentBox itemID="Gallery" />
-       <SocialMetaTags
-          title={galleryData[0]?.title || "Galeria de Fotos"}
-          image={galleryData[0]?.img || "/logo_192.png"}
-          description={galleryData[0]?.description || "Galeria de Fotos"}
-          url={`${window.location.origin}/gallery`}
-          type="website"/>
+      <SocialMetaTags
+        title={galleryData[0]?.title || "Galeria de Fotos"}
+        image={galleryData[0]?.img || "/logo_192.png"}
+        description={galleryData[0]?.description || "Galeria de Fotos"}
+        url={`${window.location.origin}/gallery`}
+        type="website" />
 
-    </>
+    </Suspense>
   );
 };
 
