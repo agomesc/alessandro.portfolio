@@ -80,7 +80,7 @@ const Home = () => {
   return (
     <>
 
-      <Suspense fallback={<CustomSkeleton variant="rectangular" />}>
+      <Suspense fallback={<CustomSkeleton />}>
         <RandomPhoto />
         <Tabs
           value={tabIndex}
@@ -146,6 +146,8 @@ const Home = () => {
           title="Atualizações"
           image="/logo_192.png"
           description="Atualizações"
+          url={`${window.location.origin}/Home`}
+          type="website"
         />
 
         <MessageSnackbar

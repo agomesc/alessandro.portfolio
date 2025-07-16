@@ -8,7 +8,6 @@ import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
-
 const App = () => {
   const [images, setImages] = useState([]);
   const [isAuthReady, setIsAuthReady] = useState(false);
@@ -35,7 +34,7 @@ const App = () => {
             await signInAnonymously(auth);
             setUserId(auth.currentUser?.uid || crypto.randomUUID());
           } catch (anonError) {
-            //console.error('Erro ao tentar login anônimo:', anonError);
+            console.error('Erro ao tentar login anônimo:', anonError);
             setUserId(crypto.randomUUID());
           }
         }
@@ -66,10 +65,9 @@ const App = () => {
     return () => unsubscribe();
   }, [isAuthReady, userId]);
 
-
-   const handleVerMais = () => {
-      navigate('/featuredPhotos'); 
-    };
+  const handleVerMais = () => {
+    navigate('/featuredPhotos');
+  };
 
   const randomPhoto = useMemo(() => {
     if (!images || images.length === 0) return null;
@@ -87,25 +85,31 @@ const App = () => {
   }
 
   return (
-   <Box
-        sx={(theme) => ({
-          p: 0,
-          width: "100%",
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+    <Box
+      sx={(theme) => ({
+        // Adjust width for a wider look, remove horizontal padding from theme
+        width: "100%",
+        maxWidth: "none", // Remove max-width constraint
+        p: 0, // Remove padding to allow content to span wider
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto", // Keep auto margins for centering if maxWidth is applied elsewhere
+        // You might want to adjust mt or pt if this section is at the very top
+        mt: theme.customSpacing.sectionMarginTop,
+      })}
+    >
       {randomPhoto ? (
         <Box
           sx={{
             position: 'relative',
-            width: 'auto',
-            paddingTop: { xs: '56.25%', md: '42.85%' }, // 16:9 e 21:9
+            width: '100%', // Ensure it takes full width of its parent
+            paddingTop: { xs: '56.25%', md: '42.85%', lg:'30.85%', xl:'20.85%' }, // 16:9 e 21:9 aspect ratios
             borderRadius: 0,
             overflow: 'hidden',
+            // --- Highlight effect: subtle box-shadow and a border-top ---
+            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)', // Soft shadow for depth
+            borderTop: '5px solid', // A subtle top border for a "highlight"
+            borderColor: 'secondary.main', // Using your theme's secondary color
           }}
         >
           {/* Background da imagem */}
@@ -122,7 +126,8 @@ const App = () => {
               transition: 'filter 1s ease-in-out',
               '&:hover': {
                 filter: 'blur(0px)',
-              }, aspectRatio: '16 / 9',
+              },
+              aspectRatio: '16 / 9',
             }}
           />
 
