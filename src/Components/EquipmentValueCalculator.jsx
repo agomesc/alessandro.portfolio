@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import {
+  Alert, 
   TextField,
   MenuItem,
   Button,
@@ -78,6 +79,18 @@ const EquipmentValueCalculator = () => {
         <Typography component="div" variant="h6" gutterBottom>
           Calculadora de Valor Usado
         </Typography>
+
+         <Alert severity="info" sx={{ mb: 2 }}>
+          Esta calculadora estima o valor de revenda de um equipamento fotográfico usado com base em:
+          <ul style={{ margin: 0, paddingLeft: 16 }}>
+            <li>Valor de compra como novo</li>
+            <li>Condição atual de uso</li>
+            <li>Tempo de uso (com depreciação anual)</li>
+            <li>Se foi descontinuado</li>
+            <li>Oferta e procura no mercado</li>
+          </ul>
+        </Alert>
+
 
         <Typography component="div" variant="body2" color="textSecondary" gutterBottom>
           Informe o valor de um equipamento novo, a condição atual, tempo de uso, se o modelo foi descontinuado e a oferta e procura no mercado.
