@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { logUserAction } from '../shared/firebase-logger';
+import { getAuth } from 'firebase/auth';
 
 const getStarFillPercentage = (starValue, currentRating, isHovering) => {
   if (isHovering) {
@@ -14,6 +14,16 @@ const getStarFillPercentage = (starValue, currentRating, isHovering) => {
     if (starValue <= floorRating) return 100;
     if (starValue === floorRating + 1) return fractionalPart * 100;
     return 0;
+  }
+};
+
+const getUserIP = async () => {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip || 'unknown';
+  } catch {
+    return 'unknown';
   }
 };
 
@@ -94,7 +104,6 @@ const StarAverageRatingComponent = ({ id }) => {
         await setDoc(docRef, { totalScore: 0, numVotes: 0 });
       }
 
-      // Ativa a classe 'shake' por 300ms
       setShake(true);
       setTimeout(() => setShake(false), 300);
 
@@ -121,11 +130,19 @@ const StarAverageRatingComponent = ({ id }) => {
         numVotes: newNumVotes,
       });
 
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      const ipAddress = await getUserIP();
+      const timestamp = new Date().toISOString();
+
       logUserAction('Avaliação', {
         elementId: id,
         details: {
           totalScore: newTotalScore,
           numVotes: newNumVotes,
+          user: currentUser ? currentUser.uid : null,
+          ip: ipAddress,
+          ratedAt: timestamp,
         },
       });
 
@@ -137,6 +154,7 @@ const StarAverageRatingComponent = ({ id }) => {
       setIsProcessing(false);
     }
   }, [id, isProcessing, getLocalStorageUserRatingKey]);
+
 
   return (
     <>
