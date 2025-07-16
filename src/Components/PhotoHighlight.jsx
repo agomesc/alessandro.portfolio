@@ -87,7 +87,7 @@ const App = () => {
   return (
     <Box
       sx={(theme) => ({
-        // Adjust width for a wider look, remove horizontal padding from theme
+
         width: "100%",
         maxWidth: "none", // Remove max-width constraint
         p: 0, // Remove padding to allow content to span wider
@@ -95,7 +95,7 @@ const App = () => {
         alignItems: "center",
         margin: "0 auto", // Keep auto margins for centering if maxWidth is applied elsewhere
         // You might want to adjust mt or pt if this section is at the very top
-        mt: theme.customSpacing.sectionMarginTop,
+        mt: 8,
       })}
     >
       {randomPhoto ? (
@@ -106,10 +106,6 @@ const App = () => {
             paddingTop: { xs: '56.25%', md: '42.85%', lg:'30.85%', xl:'20.85%' }, // 16:9 e 21:9 aspect ratios
             borderRadius: 0,
             overflow: 'hidden',
-            // --- Highlight effect: subtle box-shadow and a border-top ---
-            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)', // Soft shadow for depth
-            borderTop: '5px solid', // A subtle top border for a "highlight"
-            borderColor: 'secondary.main', // Using your theme's secondary color
           }}
         >
           {/* Background da imagem */}
