@@ -20,6 +20,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 
+
 const Photos = () => {
   const { id } = useParams();
   const [galleryData, setGalleryData] = useState(null);
@@ -109,6 +110,8 @@ const Photos = () => {
           title={galleryInfoData}
           image="/logo_192.png"
           description={galleryInfoData}
+          url={`${window.location.origin}/photo/${id}`}
+          type="website"
         />
 
       </Suspense>

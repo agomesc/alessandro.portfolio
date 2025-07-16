@@ -68,6 +68,8 @@ const LatestPhotos = () => {
         title={metaData.title}
         image={metaData.image}
         description={metaData.description}
+        url={`${window.location.origin}/latestPhotosWorks`}
+        type="website"
       />
     </Suspense>
   );

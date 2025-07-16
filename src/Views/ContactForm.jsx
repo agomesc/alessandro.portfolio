@@ -60,7 +60,6 @@ function ContactForm() {
       setSnackbarSeverity('success');
       setOpenSnackbar(true);
 
-      // Limpar o formulário após o envio
       setName('');
       setEmail('');
       setMessage('');

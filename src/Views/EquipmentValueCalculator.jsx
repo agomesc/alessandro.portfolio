@@ -34,6 +34,8 @@ const App = () => {
       title="Calcular valor de equipamentos fotográficos usados"
       image="/logo-512.png"
       description="Calcular valor de equipamentos fotográficos usados usando regras de mercado e dados de venda."
+      url={`${window.location.origin}/equipmentValueCalculator`}
+      type="website"
     />
 
   </>

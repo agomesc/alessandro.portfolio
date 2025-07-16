@@ -132,6 +132,8 @@ const ListContentWithPagination = () => {
           title={title}
           image="/logo-512.png"
           description={descricao}
+          url={`${window.location.origin}/listContentWithPagination`}
+          type="website"
         />
       </Suspense>
     </Box>

@@ -180,6 +180,8 @@ const PhotoInfo = () => {
         title={metaData.title}
         image={metaData.image}
         description={metaData.description}
+        url={`${window.location.origin}/photo/${id}`}
+        type="website"
       />
     </Suspense>
   );

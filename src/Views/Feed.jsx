@@ -32,6 +32,8 @@ const App = () => {
           title="Feeds"
           image="/logo_192.png"
           description="Feeds"
+          url={`${window.location.origin}/feeds`}
+          type="website"
         />
       </Box>
     </Suspense>)

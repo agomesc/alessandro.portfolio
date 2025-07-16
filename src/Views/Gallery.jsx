@@ -5,6 +5,7 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const Gallery = () => {
   const [galleryData, setGalleryData] = useState(null);
@@ -52,6 +53,12 @@ const Gallery = () => {
       </Box>
 
       <CommentBox itemID="Gallery" />
+       <SocialMetaTags
+          title={galleryData[0]?.title || "Galeria de Fotos"}
+          image={galleryData[0]?.img || "/logo_192.png"}
+          description={galleryData[0]?.description || "Galeria de Fotos"}
+          url={`${window.location.origin}/gallery`}
+          type="website"/>
 
     </>
   );

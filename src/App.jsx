@@ -1,14 +1,13 @@
 import { lazy, useState, useEffect } from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import "./App.css";
 import { lightTheme, darkTheme } from "./Views/Theme";
 import Box from "@mui/material/Box";
-import useScrollToTop from './hooks/useScrollToTop'; 
+import "./App.css";
 
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
-// const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
+const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
 const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
@@ -24,9 +23,9 @@ const App = () => {
 		return savedTheme ? JSON.parse(savedTheme) : false;
 	});
 
-	useScrollToTop();
-
 	useEffect(() => {
+		console.log('location.href', window.location.href);
+		window.scrollTo(0, 0);
 		setUrlAtual(window.location.href);
 	}, []);
 
@@ -56,7 +55,7 @@ const App = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
-			{/* <ConsentScreen /> */}
+			<ConsentScreen />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);

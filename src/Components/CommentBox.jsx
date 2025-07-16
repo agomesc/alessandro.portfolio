@@ -34,9 +34,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import Editor from './Editor';
-// --- IMPORTAÇÃO DA SUA FUNÇÃO resizeImage (APENAS REDIMENSIONA PARA BASE64) ---
-import { resizeImage } from '../shared/Util'; // Sua função original de redimensionamento
-import { logUserAction } from '../shared/firebase-logger'; // Importa a função de log de ações do usuário
+import { resizeImage } from '../shared/Util'; 
+import { logUserAction } from '../shared/firebase-logger'; 
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
@@ -131,21 +130,6 @@ function CommentBox({ itemID }) {
         }
     }, [replyingTo]);
 
-    useEffect(() => {
-        const q = query(
-            collection(db, 'comments'),
-            where('itemID', '==', itemID),
-            orderBy('timestamp', 'desc')
-        );
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setComments(groupComments(fetched));
-        });
-
-        return unsubscribe;
-    }, [itemID]);
-
     const groupComments = useCallback((list) => {
         const map = {};
         list.forEach(c => (map[c.id] = { ...c, replies: [] }));
@@ -164,6 +148,21 @@ function CommentBox({ itemID }) {
         });
         return roots.sort((a, b) => b.timestamp - a.timestamp);
     }, []);
+
+    useEffect(() => {
+        const q = query(
+            collection(db, 'comments'),
+            where('itemID', '==', itemID),
+            orderBy('timestamp', 'desc')
+        );
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setComments(groupComments(fetched));
+        });
+
+        return unsubscribe;
+    }, [itemID, groupComments]);
 
     const clearEditor = useCallback(() => {
         if (editorRef.current && editorRef.current.editor) {
@@ -207,7 +206,7 @@ function CommentBox({ itemID }) {
                 userPhoto: currentUser?.photoURL || DEFAULT_ANONYMOUS_AVATAR,
                 ip: ipAddress,
                 userId: currentUser?.uid || null,
-                image: image || null, // A Base64 URL da imagem, ou null
+                image: image || null, 
             };
 
             await addDoc(collection(db, 'comments'), commentData);

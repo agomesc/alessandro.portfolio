@@ -3,13 +3,14 @@ import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig.jsx';
 import { Link } from 'react-router-dom';
 import {
-    Card, CardContent, Typography, Box, Pagination, Skeleton, Button
+    Card, CardContent, Typography, Box, Pagination
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle.jsx"));
 const LazyImage = lazy(() => import("../Components/LazyImage.jsx"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton.jsx"));
 
 const App = () => {
     const [galleries, setGalleries] = useState([]);
@@ -60,7 +61,7 @@ const App = () => {
     };
 
     return (
-        <Suspense fallback={<Skeleton variant="text" height={60} width="30%" sx={{ mb: 3 }} />}>
+        <Suspense fallback={<CustomSkeleton />}>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -111,8 +112,7 @@ const App = () => {
                                 width: '100%', // Ensure card takes full available width
                             }}
                         >
-                            <Suspense fallback={<Skeleton variant="rectangular" width={240} height={240} />}>
-                                {gallery.image && (
+                                                         {gallery.image && (
                                     <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: { xs: 240, sm: 'auto' }, overflow: 'hidden' }}>
                                         <LazyImage
                                             dataSrc={gallery.image}
@@ -157,7 +157,6 @@ const App = () => {
                                         </Box>
                                     )}
                                 </CardContent>
-                            </Suspense>
                         </Card>
 
                     ))}

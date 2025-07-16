@@ -65,6 +65,8 @@ const GalleryWork = () => {
                     title={metaData.title}
                     image={metaData.url}
                     description={metaData.description}
+                    url={`${window.location.origin}/galleryWork`}
+                    type="website"
                 />
             )}
         </Suspense>
