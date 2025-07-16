@@ -14,6 +14,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 const StarComponent = lazy(() => import("./StarComponent"));
 const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
+const ViewComponent = lazy(() => import("./ViewComponent"));
 
 const EquipmentValueCalculator = () => {
   const [newPrice, setNewPrice] = useState('');
@@ -162,6 +163,9 @@ const EquipmentValueCalculator = () => {
             💰 Valor estimado: <strong>R$ {estimatedValue}</strong>
           </Typography>
         )}
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+          <ViewComponent id="EquipmentValueCalculator" /> {/* ViewComponent to track views */}
+        </Box>
       </Paper>
       <SocialMetaTags
         title="Calculadora de Valor de Equipamento Usado"
