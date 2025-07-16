@@ -23,7 +23,7 @@ export default function getCroppedImg(imageSrc, crop) {
       canvas.toBlob((blob) => {
         if (!blob) return reject(new Error('Erro ao criar blob'));
         resolve(blob);
-      }, 'image/jpeg', 0.9);
+      }, 'image/jpeg', 1.0);
     };
     image.onerror = () => reject(new Error('Erro ao carregar imagem'));
   });

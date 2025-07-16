@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const DelayedImage = ({
+const App = ({
   dataSrc,
   alt = 'Imagem',
   width = '100%',
@@ -59,7 +59,7 @@ const DelayedImage = ({
         style={{
           objectFit: 'cover',
           width: '100%',
-          height: '100%',
+          height: 'auto',
           display: 'block',
           pointerEvents: 'none',
           borderRadius: style.borderRadius || 0,
@@ -70,4 +70,4 @@ const DelayedImage = ({
   );
 };
 
-export default React.memo(DelayedImage);
+export default React.memo(App);
