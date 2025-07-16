@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const ListContentWithPagination = () => {
   const [ads, setAds] = useState([]);
@@ -68,91 +69,91 @@ const ListContentWithPagination = () => {
   );
 
   return (
-    <Box
-      sx={(theme) => ({
-        p: 0,
-        width: {
-          xs: "100%",
-          sm: "90%",
-          md: "80%",
-          lg: "70%",
-          xl: "80%",
-        },
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        padding: theme.customSpacing.pagePadding,
-        mt: theme.customSpacing.sectionMarginTop,
-      })}
-    >
-      <Suspense fallback={<Skeleton variant="text" height={40} />}>
-        <TypographyTitle src={title} />
-      </Suspense>
-
-      <Typography
-        variant="body1"
-        component="div"
-        sx={{
-          p: 10,
+    <Suspense fallback={<CustomSkeleton />}>
+      <Box
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
           alignContent: "center",
+          alignItems: "center",
           margin: "0 auto",
-          padding: "0 20px",
-          mb: 5,
-          textAlign: "justify",
-        }}
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
       >
-        {descricao}
-      </Typography>
 
-      {/* Search Input Field */}
-      <Box sx={{ mb: 4, px: 2 }}>
-        <TextField
-          label="Buscar por título"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </Box>
+        <TypographyTitle src={title} />
 
-      <Grid container spacing={3}>
-        {paginatedAds.map(ad => (
-          <Grid item xs={12} sm={6} md={3} key={ad.id}>
-            <Card>
-              <CardContent>
-                {ad.isLink ? (
-                  <Link
-                    target="_blank"
-                    to={ad.text}
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <Suspense fallback={<Skeleton variant="rectangular" height={140} />}>
-                      <LinkPreview url={ad.text} />
-                    </Suspense>
-                  </Link>
-                ) : (
-                  <Typography
-                    dangerouslySetInnerHTML={{ __html: ad.text }}
-                    variant="body2"
-                    component="div"
-                  />
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        <Typography
+          variant="body1"
+          component="div"
+          sx={{
+            p: 10,
+            alignContent: "center",
+            margin: "0 auto",
+            padding: "0 20px",
+            mb: 5,
+            textAlign: "justify",
+          }}
+        >
+          {descricao}
+        </Typography>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Pagination
-          count={Math.ceil(filteredAds.length / itemsPerPage)} 
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </Box>
+        {/* Search Input Field */}
+        <Box sx={{ mb: 4, px: 2 }}>
+          <TextField
+            label="Buscar por título"
+            variant="outlined"
+            fullWidth
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </Box>
 
-      <Suspense fallback={null}>
+        <Grid container spacing={3}>
+          {paginatedAds.map(ad => (
+            <Grid item xs={12} sm={6} md={3} key={ad.id}>
+              <Card>
+                <CardContent>
+                  {ad.isLink ? (
+                    <Link
+                      target="_blank"
+                      to={ad.text}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Suspense fallback={<Skeleton variant="rectangular" height={140} />}>
+                        <LinkPreview url={ad.text} />
+                      </Suspense>
+                    </Link>
+                  ) : (
+                    <Typography
+                      dangerouslySetInnerHTML={{ __html: ad.text }}
+                      variant="body2"
+                      component="div"
+                    />
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Pagination
+            count={Math.ceil(filteredAds.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
+
+
         <SocialMetaTags
           title={title}
           image="/logo-512.png"
@@ -160,8 +161,9 @@ const ListContentWithPagination = () => {
           url={`${window.location.origin}/listContentWithPagination`}
           type="website"
         />
-      </Suspense>
-    </Box>
+
+      </Box>
+    </Suspense>
   );
 };
 
