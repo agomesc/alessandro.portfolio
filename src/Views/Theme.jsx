@@ -22,7 +22,7 @@ export const lightTheme = createTheme({
   },
   customSpacing: {
     pagePadding: "0 10px",
-    sectionMarginTop: 5,
+    sectionMarginTop: 10,
   },
 });
 
@@ -46,6 +46,6 @@ export const darkTheme = createTheme({
   },
   customSpacing: {
     pagePadding: "0 10px",
-    sectionMarginTop: 5,
+    sectionMarginTop: 10,
   },
 });

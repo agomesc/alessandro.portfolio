@@ -77,7 +77,15 @@ const StarAverageRatingComponent = ({ id }) => {
         const numVotes = data.numVotes || 0;
         setAverageRating(numVotes > 0 ? totalScore / numVotes : 0);
       } else {
-        await setDoc(docRef, { totalScore: 0, numVotes: 0 });
+        await setDoc(docRef, {
+          totalScore: 0, numVotes: 0, details: {
+            totalScore: 0,
+            numVotes: 0,
+            user: null,
+            ip: null,
+            ratedAt: null,
+          }
+        });
         setAverageRating(0);
       }
     };
@@ -101,7 +109,7 @@ const StarAverageRatingComponent = ({ id }) => {
         currentTotalScore = data.totalScore || 0;
         currentNumVotes = data.numVotes || 0;
       } else {
-        await setDoc(docRef, { totalScore: 0, numVotes: 0 });
+        await setDoc(docRef, { totalScore: 0, numVotes: 0, details: {} });
       }
 
       setShake(true);
