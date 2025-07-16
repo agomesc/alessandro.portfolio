@@ -125,15 +125,22 @@ const StarAverageRatingComponent = ({ id }) => {
       localStorage.setItem(getLocalStorageUserRatingKey(id), finalSelectedRating.toString());
       setUserRating(finalSelectedRating);
 
-      await updateDoc(docRef, {
-        totalScore: newTotalScore,
-        numVotes: newNumVotes,
-      });
-
       const auth = getAuth();
       const currentUser = auth.currentUser;
       const ipAddress = await getUserIP();
       const timestamp = new Date().toISOString();
+
+      await updateDoc(docRef, {
+        totalScore: newTotalScore,
+        numVotes: newNumVotes,
+        details: {
+          totalScore: newTotalScore,
+          numVotes: newNumVotes,
+          user: currentUser ? currentUser.uid : null,
+          ip: ipAddress,
+          ratedAt: timestamp,
+        },
+      });
 
       logUserAction('Avaliação', {
         elementId: id,
