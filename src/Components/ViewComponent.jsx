@@ -12,7 +12,6 @@ const ViewComponent = ({ id }) => {
       const viewedThisSession = JSON.parse(sessionStorage.getItem("viewedImages") || "{}");
 
       if (viewedThisSession[id]) {
-        // Já foi visualizado nesta sessão
         const snap = await getDoc(doc(db, "views", id));
         if (snap.exists()) {
           setCount(snap.data().count || 0);

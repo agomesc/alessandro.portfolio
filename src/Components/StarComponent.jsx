@@ -4,8 +4,6 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { logUserAction } from '../shared/firebase-logger';
 
-const DEFAULT_ANONYMOUS_AVATAR = '/images/default-avatar.png'; // Ajuste conforme necessário
-
 const getStarFillPercentage = (starValue, currentRating, isHovering) => {
   if (isHovering) {
     return starValue <= currentRating ? 100 : 0;
@@ -49,17 +47,11 @@ const StarAverageRatingComponent = ({ id }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [shake, setShake] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  // Removed setCurrentUser since it is not used
 
   const getLocalStorageUserRatingKey = useCallback((itemId) => `userStarRating_${itemId}`, []);
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribeAuth = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribeAuth();
-  }, []);
+  // Removed useEffect for setCurrentUser as it was unused
 
   useEffect(() => {
     const fetchData = async () => {

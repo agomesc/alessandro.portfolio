@@ -78,7 +78,6 @@ const Home = () => {
   const handleSnackbarClose = useCallback(() => setSnackbarOpen(false), []);
 
   return (
-    <>
 
       <Suspense fallback={<CustomSkeleton />}>
         <RandomPhoto />
@@ -157,7 +156,7 @@ const Home = () => {
           onClose={handleSnackbarClose} />
 
       </Suspense>
-    </>
+    
   );
 };
 
