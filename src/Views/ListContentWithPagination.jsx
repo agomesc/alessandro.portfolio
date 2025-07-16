@@ -8,7 +8,8 @@ import {
   Typography,
   Pagination,
   Box,
-  Skeleton
+  Skeleton,
+  TextField // Import TextField for the search input
 } from '@mui/material';
 import { Link } from "react-router-dom";
 
@@ -18,6 +19,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
 const ListContentWithPagination = () => {
   const [ads, setAds] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // New state for search term
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -48,29 +50,41 @@ const ListContentWithPagination = () => {
     setCurrentPage(value);
   };
 
-  const paginatedAds = ads.slice(
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset to the first page when the search term changes
+  };
+
+  // Filter ads based on the search term
+  const filteredAds = useMemo(() => {
+    return ads.filter(ad =>
+      ad.title && ad.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [ads, searchTerm]);
+
+  const paginatedAds = filteredAds.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   return (
-   <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+    <Box
+      sx={(theme) => ({
+        p: 0,
+        width: {
+          xs: "100%",
+          sm: "90%",
+          md: "80%",
+          lg: "70%",
+          xl: "80%",
+        },
+        alignContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+        padding: theme.customSpacing.pagePadding,
+        mt: theme.customSpacing.sectionMarginTop,
+      })}
+    >
       <Suspense fallback={<Skeleton variant="text" height={40} />}>
         <TypographyTitle src={title} />
       </Suspense>
@@ -89,6 +103,17 @@ const ListContentWithPagination = () => {
       >
         {descricao}
       </Typography>
+
+      {/* Search Input Field */}
+      <Box sx={{ mb: 4, px: 2 }}>
+        <TextField
+          label="Buscar por título"
+          variant="outlined"
+          fullWidth
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </Box>
 
       <Grid container spacing={3}>
         {paginatedAds.map(ad => (
@@ -120,7 +145,7 @@ const ListContentWithPagination = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
         <Pagination
-          count={Math.ceil(ads.length / itemsPerPage)}
+          count={Math.ceil(filteredAds.length / itemsPerPage)} 
           page={currentPage}
           onChange={handlePageChange}
           color="primary"
