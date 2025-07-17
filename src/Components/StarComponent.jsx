@@ -57,11 +57,8 @@ const StarAverageRatingComponent = ({ id }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [shake, setShake] = useState(false);
-  // Removed setCurrentUser since it is not used
-
+  
   const getLocalStorageUserRatingKey = useCallback((itemId) => `userStarRating_${itemId}`, []);
-
-  // Removed useEffect for setCurrentUser as it was unused
 
   useEffect(() => {
     const fetchData = async () => {

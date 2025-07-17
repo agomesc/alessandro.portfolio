@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useMemo } from 'react';
+import React, { useState, lazy, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -9,7 +9,6 @@ import {
   TextField,
 } from '@mui/material';
 import LazyImage from "./LazyImage";
-import CustomSkeleton from './CustomSkeleton';
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
@@ -57,9 +56,7 @@ const App = ({ data = [] }) => {
               <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                 <div className="card-anim">
                   <div className="icon-top-right">
-                    <Suspense fallback={<CustomSkeleton />}>
                       <StarComponent id={item.id} />
-                    </Suspense>
                   </div>
 
                   <div className="icon-top-left">

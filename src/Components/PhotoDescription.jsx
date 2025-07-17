@@ -1,7 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import LazyImage from "./LazyImage";
 
 const PhotoDescription = ({ imageUrl, description }) => {
@@ -9,8 +8,6 @@ const PhotoDescription = ({ imageUrl, description }) => {
 
   return (
     <>
-
-
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <LazyImage
           dataSrc="/eu.jpg"
@@ -19,18 +16,13 @@ const PhotoDescription = ({ imageUrl, description }) => {
           style={{ margin: "0 auto" }}
         />
       </Box>
-
-
-
-      <Suspense fallback={<Skeleton variant="text" height={100} />}>
-        <Typography
-          variant="body1"
-          component="div"
-          sx={{ mt: 2, textAlign: "left" }}
-        >
-          {description}
-        </Typography>
-      </Suspense>
+      <Typography
+        variant="body1"
+        component="div"
+        sx={{ mt: 2, textAlign: "left" }}
+      >
+        {description}
+      </Typography>
       {imageUrl && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <LazyImage

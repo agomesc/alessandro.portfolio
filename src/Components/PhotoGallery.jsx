@@ -1,8 +1,7 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import { Typography, Box } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import { NavLink } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage";
 import LazyImage from "../Components/LazyImage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
@@ -26,14 +25,14 @@ const overlayStyle = {
 const PhotoGallery = ({ src = [] }) => {
   if (src.length === 0) {
     return (
-      <Typography variant="h6" align="center" color="textSecondary" sx={{ mt: 5 }}>
+      <Typography variant="h6" component="div" align="center" color="textSecondary" sx={{ mt: 5 }}>
         Nenhuma imagem disponível para exibir.
       </Typography>
     );
   }
 
   return (
-    <Suspense fallback={<LoadingMessage />}>
+    
       <Box
         sx={{
           display: "flex",
@@ -106,7 +105,7 @@ const PhotoGallery = ({ src = [] }) => {
           ))}
         </Masonry>
       </Box>
-    </Suspense>
+    
   );
 };
 

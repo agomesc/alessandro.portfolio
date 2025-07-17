@@ -1,8 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import { Box, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
-import LoadingMessage from "./LoadingMessage";
 import LazyImage from "../Components/LazyImage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
@@ -25,7 +24,7 @@ const overlayStyle = {
 
 const PhotoGrid = ({ itemData = [] }) => {
   return (
-    <Suspense fallback={<LoadingMessage />}>
+    
       <Box
         sx={{
           display: "flex",
@@ -92,9 +91,7 @@ const PhotoGrid = ({ itemData = [] }) => {
                     </Typography>
                   </Box>
                   <Box sx={{ ml: 1 }}>
-                    <Suspense fallback={null}>
                       <StarComponent id={item.id} />
-                    </Suspense>
                   </Box>
                 </Box>
               </Box>
@@ -108,7 +105,6 @@ const PhotoGrid = ({ itemData = [] }) => {
           )}
         </Masonry>
       </Box>
-    </Suspense>
   );
 };
 

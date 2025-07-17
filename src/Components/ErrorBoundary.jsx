@@ -54,7 +54,7 @@ class ErrorBoundary extends Component {
             <AlertTitle>Erro inesperado</AlertTitle>
             {error?.message || 'Algo deu errado ao carregar a aplicação.'}
           </Alert>
-          <Typography variant="body1" sx={{ mt: 2 }}>
+          <Typography component="div" variant="body1" sx={{ mt: 2 }}>
             Tente recarregar a página. Se o problema persistir, tente novamente mais tarde.
           </Typography>
           <Button variant="contained" color="error" onClick={this.handleRetry} sx={{ mt: 2 }}>
@@ -89,4 +89,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default ErrorBoundary;
+export default React.memo(ErrorBoundary);
