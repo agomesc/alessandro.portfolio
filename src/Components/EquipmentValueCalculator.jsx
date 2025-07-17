@@ -73,7 +73,7 @@ const EquipmentValueCalculator = () => {
       <Paper elevation={3} sx={{ maxWidth: 400, mx: 'auto', p: 3 }}>
         
         <Box display="flex" justifyContent="center" mb={1}>
-          <img src="/images/app.png" alt="Camera Icon" style={{ maxWidth: '200px', height: 'auto', marginBottom: '16px' }} />
+          <img src="/images/app.png" alt="Camera Icon" style={{ maxWidth: '150px', height: 'auto', marginBottom: '16px' }} />
         </Box>
 
         <Typography component="div" variant="h6" gutterBottom>
