@@ -87,9 +87,7 @@ const ListContentWithPagination = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-
         <TypographyTitle src={title} />
-
         <Typography
           variant="body1"
           component="div"
@@ -152,8 +150,6 @@ const ListContentWithPagination = () => {
             color="primary"
           />
         </Box>
-
-
         <SocialMetaTags
           title={title}
           image="/logo-512.png"

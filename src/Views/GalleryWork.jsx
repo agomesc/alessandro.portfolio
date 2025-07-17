@@ -16,7 +16,6 @@ const GalleryWork = () => {
         flickrInstance.current = CreateFlickrApp();
     }
 
-
     useEffect(() => {
         if (!galleryData) {
             flickrInstance.current.getGalleryWork().then(setGalleryData);

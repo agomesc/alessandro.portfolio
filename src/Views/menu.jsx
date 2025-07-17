@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo, useCallback, lazy, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import Skeleton from "@mui/material/Skeleton";
 
 import {
     AppBar,
@@ -41,10 +40,10 @@ import {
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-
 import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const NotificationBell = lazy(() => import("../Components/NotificationBell"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 
 const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
@@ -255,9 +254,9 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                         {loadingAuth ? (
                             <ListItemButton disabled>
                                 <ListItemIcon>
-                                    <Skeleton variant="circular" width={28} height={28} />
+                                    <CustomSkeleton />
                                 </ListItemIcon>
-                                <ListItemText primary={<Skeleton width="60%" />} secondary={<Skeleton width="40%" />} />
+                                <ListItemText primary={<CustomSkeleton />} secondary={<CustomSkeleton />} />
                             </ListItemButton>
                         ) : (
                             <ListItemButton onClick={user ? handleLogoutCallback : handleLoginCallback}>
@@ -286,7 +285,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
     );
 
     if (loadingGallery) {
-        return <Skeleton variant="rectangular" height="100%" width="100%" />;
+        return <CustomSkeleton />;
     }
 
     return (

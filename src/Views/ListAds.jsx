@@ -77,4 +77,4 @@ const GalleryList = () => {
     );
 };
 
-export default React.memo(GalleryList);
+export default GalleryList;

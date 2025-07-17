@@ -45,7 +45,7 @@ const App = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
         <CircularProgress />
-        <Typography variant="h6" sx={{ mt: 2 }}>Carregando galeria...</Typography>
+        <Typography component="div" variant="h6" sx={{ mt: 2 }}>Carregando galeria...</Typography>
       </Box>
     );
   }
@@ -53,7 +53,7 @@ const App = () => {
   if (error) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', color: 'error.main' }}>
-        <Typography variant="h6">{error}</Typography>
+        <Typography component="div" variant="h6">{error}</Typography>
       </Box>
     );
   }
@@ -61,13 +61,13 @@ const App = () => {
   if (images.length === 0) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-        <Typography variant="h6">Nenhuma imagem para exibir na galeria ainda.</Typography>
+        <Typography component="div" variant="h6">Nenhuma imagem para exibir na galeria ainda.</Typography>
       </Box>
     );
   }
 
   return (
-    <>
+   <Suspense fallback={<CustomSkeleton />}>
       <Box
         sx={(theme) => ({
           p: 0,
@@ -85,9 +85,9 @@ const App = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <Suspense fallback={<CustomSkeleton />}>
+        
           <TypographyTitle src="Galeria de Fotos" />
-        </Suspense>
+        
 
         <ImageList variant="masonry" cols={{ xs: 1, sm: 2, md: 3 }} gap={16}>
           {images.map((item) => (
@@ -151,10 +151,8 @@ const App = () => {
           ))}
         </ImageList>
       </Box>
-      <Suspense fallback={<></>}>
-        <CommentBox itemID="FeaturedPhotos" />
-      </Suspense>
-    </>
+      <CommentBox itemID="FeaturedPhotos" />
+    </Suspense>
   );
 };
 

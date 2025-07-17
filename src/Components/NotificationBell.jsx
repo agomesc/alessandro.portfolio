@@ -12,6 +12,7 @@ import {
   Box,
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person'; // Ícone adicionado
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import format from 'date-fns/format';
@@ -59,7 +60,7 @@ const NotificationsMenu = () => {
     <>
       <Tooltip title="Notificações">
         <IconButton color="inherit" onClick={handleOpen}>
-          <Badge badgeContent={logs.length} color="error" max={99}>
+          <Badge badgeContent={Math.min(logs.length, 10)} color="error" max={99}>
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -97,26 +98,14 @@ const NotificationsMenu = () => {
                   />
                 )}
 
-                <Box>
+                <Box sx={{ flex: 1 }}>
                   <Typography variant="body1" component="div">
                     {isAvaliacao && notaMedia
                       ? `Avaliação recebida: nota ${notaMedia}`
                       : isComentario
-                        ? <Box sx={{ mt: 2, fontSize: '10px', color: '#333' }} dangerouslySetInnerHTML={{ __html: details.text.slice(0,30) + '...' }}/> || 'Comentário' : log.actionType}
+                        ? <Box sx={{ mt: 2, fontSize: '10px', color: '#333' }} dangerouslySetInnerHTML={{ __html: details.text?.slice(0, 30) + '...' }} />
+                        : log.actionType}
                   </Typography>
-
-                  {log.url && (
-                    <Typography
-                      component="a"
-                      href={log.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="caption"
-                      sx={{ display: 'block', color: 'primary.main', wordBreak: 'break-all' }}
-                    >
-                      {log.url}
-                    </Typography>
-                  )}
 
                   <Typography variant="caption" color="text.secondary">
                     {log.timestamp?.toDate
@@ -124,8 +113,20 @@ const NotificationsMenu = () => {
                       : 'Sem data'}
                   </Typography>
                 </Box>
-              </MenuItem>
 
+                {log.url && (
+                  <IconButton
+                    component="a"
+                    href={log.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    sx={{ ml: 1, mt: 1 }}
+                  >
+                    <PersonIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </MenuItem>
             );
           })
         )}
