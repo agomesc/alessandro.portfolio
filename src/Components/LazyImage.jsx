@@ -38,7 +38,7 @@ const App = ({
 
   const wrapperStyle = {
     width,
-    height,
+    height: aspectRatio ? 'auto' : height,
     backgroundColor: fallbackColor,
     position: 'relative',
     overflow: 'hidden',
@@ -59,18 +59,20 @@ const App = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(255,255,255,0.5)',
             zIndex: 1,
           }}
         >
-          <div className="loader" style={{
-            width: 24,
-            height: 24,
-            border: '3px solid #ccc',
-            borderTop: '3px solid #333',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }} />
+          <div
+            className="loader"
+            style={{
+              width: 24,
+              height: 24,
+              border: '3px solid #ccc',
+              borderTop: '3px solid #333',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
         </div>
       )}
 
@@ -86,7 +88,7 @@ const App = ({
           style={{
             objectFit: 'cover',
             width: '100%',
-            height: 'auto',
+            height: aspectRatio ? '100%' : 'auto',
             display: 'block',
             pointerEvents: 'none',
             borderRadius: style.borderRadius || 0,
@@ -95,7 +97,6 @@ const App = ({
         />
       )}
 
-      {/* Inline keyframes */}
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
