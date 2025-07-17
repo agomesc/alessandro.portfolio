@@ -23,16 +23,10 @@ const App = ({
           observer.disconnect();
         }
       },
-      {
-        rootMargin: '100px',
-        threshold: 0.1,
-      }
+      { rootMargin: '100px', threshold: 0.1 }
     );
 
-    if (wrapperRef.current) {
-      observer.observe(wrapperRef.current);
-    }
-
+    if (wrapperRef.current) observer.observe(wrapperRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -44,6 +38,9 @@ const App = ({
     overflow: 'hidden',
     ...(aspectRatio ? { aspectRatio } : {}),
   };
+
+  const webpSrc = typeof dataSrc === 'object' ? dataSrc.webp : null;
+  const fallbackSrc = typeof dataSrc === 'object' ? dataSrc.fallback : dataSrc;
 
   return (
     <div
@@ -77,25 +74,28 @@ const App = ({
       )}
 
       {isVisible && (
-        <img
-          src={dataSrc}
-          srcSet={srcSet}
-          alt={alt}
-          loading="lazy"
-          draggable="false"
-          fetchpriority="high"
-          className={className}
-          onLoad={() => setIsLoaded(true)}
-          style={{
-            objectFit: 'cover',
-            width: '100%',
-            height: aspectRatio ? '100%' : 'auto',
-            display: 'block',
-            pointerEvents: 'none',
-            borderRadius: style.borderRadius || 0,
-            ...style,
-          }}
-        />
+        <picture>
+          {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
+          <img
+            src={fallbackSrc}
+            srcSet={srcSet}
+            alt={alt}
+            loading="lazy"
+            draggable="false"
+            fetchpriority="high"
+            className={className}
+            onLoad={() => setIsLoaded(true)}
+            style={{
+              objectFit: 'cover',
+              width: '100%',
+              height: aspectRatio ? '100%' : 'auto',
+              display: 'block',
+              pointerEvents: 'none',
+              borderRadius: style.borderRadius || 0,
+              ...style,
+            }}
+          />
+        </picture>
       )}
 
       <style>{`
@@ -107,5 +107,6 @@ const App = ({
     </div>
   );
 };
+
 
 export default React.memo(App);
