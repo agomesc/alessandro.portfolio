@@ -83,6 +83,7 @@ const App = ({
           alt={alt}
           loading="lazy"
           draggable="false"
+          fetchpriority="high"
           className={className}
           onLoad={() => setIsLoaded(true)}
           style={{
