@@ -10,7 +10,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from '@mui/material';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
@@ -72,8 +71,9 @@ const EquipmentValueCalculator = () => {
   return (
     <Suspense fallback={<CustomSkeleton />}>
       <Paper elevation={3} sx={{ maxWidth: 400, mx: 'auto', p: 3 }}>
+        
         <Box display="flex" justifyContent="center" mb={1}>
-          <PhotoCameraIcon fontSize="large" color="action" />
+          <img src="/images/app.png" alt="Camera Icon" style={{ maxWidth: '200px', height: 'auto', marginBottom: '16px' }} />
         </Box>
 
         <Typography component="div" variant="h6" gutterBottom>
