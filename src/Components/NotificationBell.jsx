@@ -12,7 +12,7 @@ import {
   Box,
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import PersonIcon from '@mui/icons-material/Person'; // Ícone adicionado
+import PersonIcon from '@mui/icons-material/Person';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import format from 'date-fns/format';
@@ -103,7 +103,14 @@ const NotificationsMenu = () => {
                     {isAvaliacao && notaMedia
                       ? `Avaliação recebida: nota ${notaMedia}`
                       : isComentario
-                        ? <Box sx={{ mt: 2, fontSize: '10px', color: '#333' }} dangerouslySetInnerHTML={{ __html: details.text?.slice(0, 30) + '...' }} />
+                        ? (
+                          <Box
+                            sx={{ mt: 2, fontSize: '10px', color: '#333' }}
+                            dangerouslySetInnerHTML={{
+                              __html: (details.text?.slice(0, 30) || '') + '...'
+                            }}
+                          />
+                        )
                         : log.actionType}
                   </Typography>
 
@@ -115,16 +122,19 @@ const NotificationsMenu = () => {
                 </Box>
 
                 {log.url && (
-                  <IconButton
-                    component="a"
-                    href={log.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    size="small"
-                    sx={{ ml: 1, mt: 1 }}
-                  >
-                    <PersonIcon fontSize="small" />
-                  </IconButton>
+                  <Tooltip title="Abrir link do usuário">
+                    <IconButton
+                      component="a"
+                      href={log.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      size="small"
+                      sx={{ ml: 1, mt: 1 }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <PersonIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </MenuItem>
             );
