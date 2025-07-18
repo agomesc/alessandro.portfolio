@@ -9,6 +9,7 @@ const StarComponent = React.lazy(() => import("../Components/StarComponent"));
 const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
 const CommentBox = React.lazy(() => import("../Components/CommentBox"));
 const LazyImage = React.lazy(() => import("../Components/LazyImage"));
+const SocialMetaTags = React.lazy(() => import("../Components/SocialMetaTags"));
 
 
 const getImageSrc = (imageData) => {
@@ -141,6 +142,13 @@ const GalleryDetail = () => {
                 )}
             </Box>
             <CommentBox itemID="Contents" />
+             <SocialMetaTags
+                title={gallery.title}
+                image={gallery.image}
+                description={gallery.description}
+                url={`${window.location.origin}/GalleryDetail/${gallery.id}`}
+                type="article"
+      />
         </Suspense>
     );
 };
