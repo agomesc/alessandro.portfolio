@@ -1,10 +1,12 @@
 import { lazy, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./Views/Theme";
 import Box from "@mui/material/Box";
 import "./App.css";
 
+// Lazy imports
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const ConsentScreen  = lazy(() => import("./Views/ConsentScreen"));
@@ -17,6 +19,7 @@ const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 const FollowComponent = lazy(() => import("./Components/FollowComponent"));
 
 const App = () => {
+	const location = useLocation();
 	const [urlAtual, setUrlAtual] = useState('');
 	const [darkMode, setDarkMode] = useState(() => {
 		const savedTheme = localStorage.getItem('darkMode');
@@ -24,11 +27,9 @@ const App = () => {
 	});
 
 	useEffect(() => {
-		console.log('location.href', window.location.href);
 		window.scrollTo(0, 0);
 		setUrlAtual(window.location.href);
-	}, []);
-
+	}, [location]);
 
 	useEffect(() => {
 		localStorage.setItem('darkMode', JSON.stringify(darkMode));
