@@ -35,7 +35,7 @@ import {
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
     Brush as BrushIcon,
-    DynamicFeed as DynamicFeed, 
+    DynamicFeed, 
     MenuBook as MenuBookIcon,
 } from "@mui/icons-material";
 
