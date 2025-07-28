@@ -21,6 +21,7 @@ const CreateAds = lazy(() => import("./Views/CreateAds"));
 const ListContentWithPagination = lazy(() => import("./Views/ListContentWithPagination"));
 const ListAds = lazy(() => import("./Views/ListAds"));
 const EditAds = lazy(() => import("./Views/EditAds"));
+const DisplayAds = lazy(() => import("./Views/DisplayAds"));
 const EquipmentValueCalculator = lazy(() => import("./Views/EquipmentValueCalculator"));
 const ContactForm = lazy(() => import('./Views/ContactForm'));
 const UploadComponent = lazy(() => import('./Views/UploadComponent'));
@@ -45,7 +46,8 @@ const AppRoutes = () => {
           <Route path="/latestphotos" element={<LatestPhotos />} />
           <Route path="/latestPhotosWorks" element={<LatestPhotosWorks />} />
           <Route path="/photos/:id" element={<Photos />} />
-          <Route path="/Feed" element={<Feed />} />
+          <Route path="/displayAds" element={<DisplayAds />} />
+          <Route path="/feed" element={<Feed />} />
           <Route path="/photoinfo/:id" element={<PhotoInfo />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/transparencia" element={<Transparencia />} />

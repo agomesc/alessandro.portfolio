@@ -35,12 +35,13 @@ import {
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
     Brush as BrushIcon,
-    DynamicFeed as DynamicFeed
+    DynamicFeed as DynamicFeed, 
+    MenuBook as MenuBookIcon,
 } from "@mui/icons-material";
 
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import useFirebaseAuth from "../hooks/useFirebaseAuth"; // <--- Importe o novo hook
+import useFirebaseAuth from "../hooks/useFirebaseAuth";
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const NotificationBell = lazy(() => import("../Components/NotificationBell"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
@@ -163,13 +164,14 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         ];
 
         const additionalItems = [
-            { route: "/LatestPhotos", description: "Atualizações", isChild: false, icon: <DynamicFeedIcon /> },
+            { route: "/latestPhotos", description: "Atualizações", isChild: false, icon: <DynamicFeedIcon /> },
             { route: "/latestPhotosWorks", description: "Atualizações Trabalhos", isChild: false, icon: <BrushIcon /> },
-            { route: "/ListContentWithPagination", description: "Seleção de Ofertas", isChild: false, icon: <ShoppingCartIcon /> },
-            { route: "/Feed", description: "Feed", isChild: false, icon: <DynamicFeed /> },
-            { route: "/Privacidade", description: "Política de Privacidade", isChild: false, icon: <PolicyIcon /> },
-            { route: "/Transparencia", description: "Transparência", isChild: false, icon: <AdminPanelSettingsIcon /> },
-            { route: "/About", description: "Sobre", isChild: false, icon: <InfoIcon /> },
+            { route: "/displayAds", description: "Conteúdos", isChild: false, icon: <MenuBookIcon /> },
+            { route: "/listContentWithPagination", description: "Seleção de Ofertas", isChild: false, icon: <ShoppingCartIcon /> },
+            { route: "/feed", description: "Feed", isChild: false, icon: <DynamicFeed /> },
+            { route: "/privacidade", description: "Política de Privacidade", isChild: false, icon: <PolicyIcon /> },
+            { route: "/transparencia", description: "Transparência", isChild: false, icon: <AdminPanelSettingsIcon /> },
+            { route: "/about", description: "Sobre", isChild: false, icon: <InfoIcon /> },
             { route: "/contactForm", description: "Contato", isChild: false, icon: <ContactMailIcon /> },
         ];
 

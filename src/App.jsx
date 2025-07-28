@@ -14,7 +14,6 @@ const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
-const RandomAffiliateAd = lazy(() => import("./Views/RandomContent"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 const FollowComponent = lazy(() => import("./Components/FollowComponent"));
 
@@ -51,7 +50,6 @@ const App = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
-			<RandomAffiliateAd />
 			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
