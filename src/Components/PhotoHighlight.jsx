@@ -103,7 +103,7 @@ const App = () => {
           sx={{
             position: 'relative',
             width: '100%', // Ensure it takes full width of its parent
-            paddingTop: { xs: '56.25%', md: '42.85%', lg:'30.85%', xl:'20.85%' }, // 16:9 e 21:9 aspect ratios
+            paddingTop: { xs: '56.25%', md: '42.85%', lg:'35.85%', xl:'25.85%' }, // 16:9 e 21:9 aspect ratios
             borderRadius: 0,
             overflow: 'hidden',
           }}
