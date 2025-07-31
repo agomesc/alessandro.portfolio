@@ -37,6 +37,7 @@ import {
     Brush as BrushIcon,
     DynamicFeed, 
     MenuBook as MenuBookIcon,
+    Timeline as TimelineIcon,
 } from "@mui/icons-material";
 
 
@@ -169,6 +170,7 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             { route: "/displayAds", description: "Conteúdos", isChild: false, icon: <MenuBookIcon /> },
             { route: "/listContentWithPagination", description: "Seleção de Ofertas", isChild: false, icon: <ShoppingCartIcon /> },
             { route: "/feed", description: "Feed", isChild: false, icon: <DynamicFeed /> },
+            { route: "/groupedFlickrPhotos", description: "Linha do Tempo", isChild: false, icon: <TimelineIcon /> },
             { route: "/privacidade", description: "Política de Privacidade", isChild: false, icon: <PolicyIcon /> },
             { route: "/transparencia", description: "Transparência", isChild: false, icon: <AdminPanelSettingsIcon /> },
             { route: "/about", description: "Sobre", isChild: false, icon: <InfoIcon /> },

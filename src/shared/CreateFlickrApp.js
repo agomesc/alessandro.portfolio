@@ -133,6 +133,24 @@ const CreateFlickrApp = () => {
 		};
 	};
 
+	const getPhotosGroupedByYear = async () => {
+		const data = await instance.getPhotosGroupedByYear(userID);
+
+		// Aqui mantemos a estrutura original do backend, mas se quiser
+		// pode transformar os dados (ex: ordenar os anos, etc)
+		return Object.entries(data)
+			.sort(([a], [b]) => b - a) // ordena anos decrescentes
+			.map(([year, photos]) => ({
+				year,
+				photos: photos.map(photo => ({
+					id: photo.id,
+					title: photo.title,
+					date: photo.date,
+					url: photo.url,
+				}))
+			}));
+	};
+
 
 	return {
 		getGallery,
@@ -148,6 +166,7 @@ const CreateFlickrApp = () => {
 		getLatestPhotosMedium,
 		getPhotoBasicInfo,
 		getPhotoExifInfo,
+		getPhotosGroupedByYear 
 	};
 };
 

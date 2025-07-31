@@ -27,6 +27,7 @@ const ContactForm = lazy(() => import('./Views/ContactForm'));
 const UploadComponent = lazy(() => import('./Views/UploadComponent'));
 const FeaturedPhotos = lazy(() => import('./Views/FeaturedPhotos'));
 const Feed = lazy(() => import('./Views/Feed'));
+const GroupedFlickrPhotos = lazy(() => import('./Views/GroupedFlickrPhotos'));
 
 
 const AppRoutes = () => {
@@ -62,6 +63,7 @@ const AppRoutes = () => {
           <Route path="/equipmentValueCalculator" element={<EquipmentValueCalculator />} />
           <Route path="/galleryDetail/:id" element={<GalleryDetail />} />
           <Route path="/contactForm" element={<ContactForm />} />
+          <Route path="/groupedFlickrPhotos" element={<GroupedFlickrPhotos />} />
           {isLocalhost && <Route path="/UploadComponent" element={<UploadComponent />} />}
           <Route path="/featuredPhotos" element={<FeaturedPhotos />} />
           <Route path="*" element={<NotFound />} />

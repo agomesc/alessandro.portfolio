@@ -77,6 +77,16 @@ const CreateFlickrService = () => {
         return data;
     };
 
+    const getPhotosGroupedByYear = async (userId) => {
+        if (!userId) {
+            throw new Error("userId é obrigatório para getPhotosGroupedByYear.");
+        }
+        const url = `${urlApi}/flickr/by-year/${userId}`;
+        const data = await instance.get(url);
+        return data;
+    };
+
+
     return {
         getList,
         getAlbum,
@@ -84,7 +94,8 @@ const CreateFlickrService = () => {
         getListcomments,
         getLatestPhotos,
         getInfo,
-        getExifInfo
+        getExifInfo,
+        getPhotosGroupedByYear 
     };
 };
 
