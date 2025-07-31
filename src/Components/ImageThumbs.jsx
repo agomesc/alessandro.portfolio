@@ -1,18 +1,31 @@
 import React, { useState, lazy, useMemo } from 'react';
 import {
   Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Grid,
   TextField,
+  Typography,
 } from '@mui/material';
+import Masonry from '@mui/lab/Masonry';
 import LazyImage from "./LazyImage";
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 const StarComponent = lazy(() => import('./StarComponent'));
+
+const overlayStyle = {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  width: '100%',
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  borderBottomLeftRadius: '12px',
+  borderBottomRightRadius: '12px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '8px 12px',
+  boxSizing: 'border-box',
+  zIndex: 1,
+};
 
 const App = ({ data = [] }) => {
   const [search, setSearch] = useState('');
@@ -50,73 +63,69 @@ const App = ({ data = [] }) => {
           Nenhuma imagem encontrada
         </Typography>
       ) : (
-        <div className="fade-container">
-          <Grid container spacing={3} justifyContent="center">
-            {filteredData.map((item, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                <div className="card-anim">
-                  <div className="icon-top-right">
-                      <StarComponent id={item.id} />
-                  </div>
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
+          {filteredData.map(({ id, title, img }) => (
+            <Box
+              key={id}
+              sx={{
+                position: 'relative',
+                borderRadius: 2,
+                overflow: 'hidden',
+                cursor: 'pointer',
+                '&:hover': {
+                  transform: 'scale(1.03)',
+                  transition: 'transform 0.3s ease',
+                },
+              }}
+            >
+              <NavLink
+                to={`/Photos/${id}`}
+                style={{ textDecoration: 'none', display: 'block' }}
+                aria-label={`Detalhes da foto: ${title}`}
+              >
+                <LazyImage
+                  dataSrc={img}
+                  alt={title}
+                  style={{
+                    width: '100%',
+                    display: 'block',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    transition: 'transform 0.3s ease',
+                  }}
+                />
+              </NavLink>
 
-                  <div className="icon-top-left">
-                    <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20 }} />
-                  </div>
+              {/* Ícone Biblioteca */}
+              <Box sx={{ position: 'absolute', top: 8, left: 8, zIndex: 2 }}>
+                <PhotoLibraryIcon sx={{ color: 'white', fontSize: 20, textShadow: '1px 1px 3px black' }} />
+              </Box>
 
-                  <NavLink to={`/Photos/${item.id}`} style={{ textDecoration: 'none', color: 'inherit', flexGrow: 1 }}>
-                    <Card
-                      sx={{
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        borderRadius: '16px',
-                        boxShadow: 'none',
-                        transition: 'all 0.3s ease-in-out',
-                      }}
-                    >
-                      <CardMedia
-                        component={() => (
-                          <LazyImage
-                            dataSrc={item.img}
-                            alt={item.title}
-                            width="100%"
-                            height="200px"
-                            fallbackColor="#f0f0f0"
-                            aspectRatio="16 / 9"
-                            style={{
-                              objectFit: 'cover',
-                              borderTopLeftRadius: '16px',
-                              borderTopRightRadius: '16px',
-                              display: 'block',
-                            }}
-                          />
-                        )}
-                      />
-                      <CardContent sx={{ flexGrow: 1, paddingBottom: '16px !important', maxHeight: '400px' }}>
-                        <div className="slide-up fade-delay-1">
-                          <Typography gutterBottom variant="h6" component="div"
-                            sx={{
-                              fontWeight: 'bold',
-                              color: '#333',
-                              lineHeight: 1.3,
-                            }}
-                          >
-                            {item.title}
-                          </Typography>
-                        </div>
-                        <div className="slide-up fade-delay-2">
-                          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                            {item.description || 'Uma bela imagem capturada, perfeita para sua coleção de fotos.'}
-                          </Typography>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </NavLink>
-                </div>
-              </Grid>
-            ))}
-          </Grid>
-        </div>
+              {/* Overlay com título e estrela */}
+              <Box sx={overlayStyle}>
+                <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                  <Typography
+                    variant="caption"
+                    component="div"
+                    sx={{
+                      color: 'white',
+                      textShadow: '1px 1px 3px rgba(0,0,0,0.8)',
+                      fontWeight: 'bold',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                </Box>
+                <Box sx={{ ml: 1 }}>
+                  <StarComponent id={id} />
+                </Box>
+              </Box>
+            </Box>
+          ))}
+        </Masonry>
       )}
     </Box>
   );
