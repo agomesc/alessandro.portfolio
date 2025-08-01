@@ -82,7 +82,7 @@ const App = ({
             alt={alt}
             loading="lazy"
             draggable="false"
-            fetchpriority="high"
+            sizes="(max-width: 600px) 400px, (max-width: 900px) 800px, 1200px"
             className={className}
             onLoad={() => setIsLoaded(true)}
             style={{
