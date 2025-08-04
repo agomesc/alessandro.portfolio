@@ -129,7 +129,7 @@ const FollowComponent = ({ entityId }) => {
         }}
       >
         <img
-          src="/logo_wide.png"
+          src="/logo_512.png"
           alt="Olho Fotográfico"
           style={{ height: "120px", objectFit: "contain" }}
         />
