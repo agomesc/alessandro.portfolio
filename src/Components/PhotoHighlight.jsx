@@ -147,7 +147,7 @@ const App = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            color: 'var(--text-color)',
+            color: 'var(--secondary-color)',
             textAlign: 'center',
             px: 2,
             transition: 'opacity 1s ease-in-out',
@@ -163,10 +163,10 @@ const App = () => {
               sx={{
                 borderRadius: '20px',
                 px: 4,
-                backgroundColor: 'var(--secondary-color)',
+                backgroundColor: 'var(--primary-color)',
                 color: '#fff',
                 '&:hover': {
-                  backgroundColor: 'var(--primary-color)',
+                  backgroundColor: 'var(--secondary-color)',
                 }
               }}
               onClick={handleVerMais}

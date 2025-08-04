@@ -60,9 +60,11 @@ a {
   color: var(--secondary-color);
   text-decoration: none;
 }
+
 a:hover {
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
+
 a:focus {
   outline: 2px dashed var(--primary-color);
   outline-offset: 4px;
