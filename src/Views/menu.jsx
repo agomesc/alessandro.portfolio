@@ -35,7 +35,7 @@ import {
     Calculate as CalculateIcon,
     ContactMail as ContactMailIcon,
     Brush as BrushIcon,
-    DynamicFeed, 
+    DynamicFeed,
     MenuBook as MenuBookIcon,
     Timeline as TimelineIcon,
 } from "@mui/icons-material";
@@ -77,10 +77,10 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
         loadingAuth,
         handleLogin,
         handleLogout,
-    } = useFirebaseAuth(showMessage); 
+    } = useFirebaseAuth(showMessage);
 
     useEffect(() => {
-        
+
         const fetchGallery = async () => {
             try {
                 const data = await flickrInstance.current.getGallery();
@@ -313,13 +313,8 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        {/* Logo ou título */}
-                    </Typography>
-
                     <Box sx={{ flexGrow: 1 }} /> {/* This pushes items to the right */}
                     <NotificationBell />
-
                     {/* Botão de alternância de tema */}
                     <IconButton
                         size="large"

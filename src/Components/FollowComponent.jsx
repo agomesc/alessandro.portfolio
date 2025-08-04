@@ -43,7 +43,6 @@ const FollowComponent = ({ entityId }) => {
       } else {
         try {
           await setDoc(docRef, { followerUsers: [] }, { merge: true });
-          console.log("Documento inicializado com sucesso!");
           setFollowers([]);
           setIsFollowing(false);
         } catch (error) {
@@ -112,18 +111,29 @@ const FollowComponent = ({ entityId }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "10px",
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
-        padding: "15px",
-        borderRadius: "15px",
-        position: "relative",
-        zIndex: 10,
+        gap: "12px",
+        padding: "20px",
+        borderRadius: "12px",
+        color: "#fff",
         width: "fit-content",
-        color: "white",
-        justifyContent: "center",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src="/logo_wide.png"
+          alt="Olho Fotográfico"
+          style={{ height: "120px", objectFit: "contain" }}
+        />
+
         {followers.slice(0, 3).map((follower) => (
           <img
             key={follower.uid}
@@ -131,22 +141,22 @@ const FollowComponent = ({ entityId }) => {
             alt={follower.displayName || "Follower"}
             title={follower.displayName || "Follower"}
             style={{
-              width: "30px",
-              height: "30px",
+              width: "32px",
+              height: "32px",
               borderRadius: "50%",
               border: "2px solid gold",
             }}
           />
         ))}
         {followers.length > 3 && (
-          <span style={{ fontSize: "0.8em" }}>
-            + {followers.length - 3} others
+          <span style={{ fontSize: "0.9em" }}>
+            + {followers.length - 3} outros
           </span>
         )}
       </div>
 
-      <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>
-        {followers.length} Follower{followers.length !== 1 ? "s" : ""}
+      <span style={{ fontSize: "1.1em", fontWeight: 500, color: "#222" }}>
+        {followers.length} Seguidor{followers.length !== 1 ? "es" : ""}
       </span>
 
       {!currentUser ? (
@@ -156,24 +166,24 @@ const FollowComponent = ({ entityId }) => {
           className={shake ? "shake" : ""}
           style={{
             background: "linear-gradient(45deg, #4285F4, #34A853)",
-            color: "white",
+            color: "#fff",
             border: "none",
-            padding: "10px 20px",
-            borderRadius: "8px",
+            padding: "10px 16px",
+            borderRadius: "6px",
             cursor: "pointer",
             fontSize: "1em",
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
-            gap: "5px",
+            gap: "8px",
           }}
         >
           <img
             src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_64dp.png"
             alt="Google"
-            style={{ width: "20px", height: "20px" }}
+            style={{ width: "18px", height: "18px" }}
           />
-          Login to Follow
+          Entrar com Google
         </button>
       ) : (
         <button
@@ -187,18 +197,18 @@ const FollowComponent = ({ entityId }) => {
             color: "white",
             border: "none",
             padding: "10px 20px",
-            borderRadius: "8px",
+            borderRadius: "6px",
             cursor: "pointer",
             fontSize: "1em",
             fontWeight: "bold",
           }}
         >
-          {isFollowing ? "Unfollow" : "Follow"}
+          {isFollowing ? "Deixar de seguir" : "Seguir"}
         </button>
       )}
 
       {isProcessing && (
-        <p style={{ fontSize: "0.8em", color: "#ccc" }}>Processing...</p>
+        <p style={{ fontSize: "0.85em", color: "#ccc" }}>Processando...</p>
       )}
     </div>
   );
