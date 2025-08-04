@@ -12,6 +12,7 @@ const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
+const LojaDeFotos = lazy(() => import("./Views/LojaDeFotos"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 const FollowComponent = lazy(() => import("./Components/FollowComponent"));
 
@@ -47,6 +48,7 @@ const App = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
+			  <LojaDeFotos />
 			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
