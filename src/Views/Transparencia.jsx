@@ -47,7 +47,7 @@ const Transparencia = () => {
 
         <Typography component="div" variant="subtitle1">Monetização</Typography>
         <Typography paragraph>
-          Nosso site é monetizado através de anúncios "Adsense" parcerias publicitárias. (Os anúncios são integrados ao conteúdo.)
+          Nosso site é monetizado através de anúncios com parcerias publicitárias. (Os anúncios são integrados ao conteúdo.)
         </Typography>
 
         <Typography component="div" variant="subtitle1">Direitos Autorais</Typography>

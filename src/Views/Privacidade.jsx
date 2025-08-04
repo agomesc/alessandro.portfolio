@@ -8,7 +8,7 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Privacidade = () => {
     const description = useMemo(() => `Política Privacidade
-    A sua privacidade é importante para nós. É política do OlhoFotográfico respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site www.OlhoFotografico.com.br, e outros sites que possuímos e operamos.
+    A sua privacidade é importante para nós. É política do OlhoFotográfico respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site www.olhofotografico.com.br, e outros sites que possuímos e operamos.
 
     Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e como será usado.
 
