@@ -43,7 +43,7 @@ const GroupedFlickrPhotos = () => {
     }
 
     return (
-        <Suspense fallback={<CustomSkeleton />}>
+        <>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -61,7 +61,10 @@ const GroupedFlickrPhotos = () => {
                     mt: theme.customSpacing.sectionMarginTop,
                 })}
             >
-                <TypographyTitle src="Linha do Tempo" />
+                <Suspense fallback={<CustomSkeleton />}>
+                    <TypographyTitle src="Linha do Tempo" />
+                </Suspense>
+
                 {photosByYear.map(({ year, photos }) => (
                     <Box key={year} mb={8}>
                         <Box textAlign="center" mb={2}>
@@ -78,30 +81,34 @@ const GroupedFlickrPhotos = () => {
                             <Divider sx={{ maxWidth: 200, mx: 'auto', mt: 1, mb: 3 }} />
                         </Box>
 
-                        <Masonry
-                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                            spacing={2}
-                        >
-                            {photos.map(photo => (
-                                <Box
-                                    key={photo.id}
-                                    component="img"
-                                    src={photo.url}
-                                    alt={photo.title}
-                                    loading="lazy"
-                                    sx={{
-                                        borderRadius: 2,
-                                        width: '100%',
-                                        display: 'block',
-                                        boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
-                                    }}
-                                />
-                            ))}
-                        </Masonry>
+                        <Suspense fallback={<CustomSkeleton />}>
+                            <Masonry
+                                columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                                spacing={2}
+                            >
+                                {photos.map(photo => (
+                                    <Box
+                                        key={photo.id}
+                                        component="img"
+                                        src={photo.url}
+                                        alt={photo.title}
+                                        loading="lazy"
+                                        sx={{
+                                            borderRadius: 2,
+                                            width: '100%',
+                                            display: 'block',
+                                            boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+                                        }}
+                                    />
+                                ))}
+                            </Masonry>
+                        </Suspense>
                     </Box>
+
                 ))}
             </Box>
-        </Suspense>
+        </>
+
     );
 };
 

@@ -3,6 +3,7 @@ import React, {
   useState,
   lazy,
   useCallback,
+  Suspense,
   useRef
 } from "react";
 import { useParams } from "react-router-dom";
@@ -10,7 +11,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // Importe o ícone
-import IconButton from "@mui/material/IconButton"; 
+import IconButton from "@mui/material/IconButton";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
@@ -26,7 +27,7 @@ const Photos = () => {
   const flickrInstance = useRef(null);
   const [galleryInfoData, setGalleryInfoData] = useState("");
   const [showAlbumInfo, setShowAlbumInfo] = useState(false); // Novo estado
-   
+
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
   }
@@ -41,7 +42,7 @@ const Photos = () => {
   }, [id]);
 
   const loadAlbumInfo = useCallback(async () => {
-    if (showAlbumInfo && !galleryInfoData) { 
+    if (showAlbumInfo && !galleryInfoData) {
       try {
         const albumInfo = await flickrInstance.current.getAlbum(id);
         setGalleryInfoData(albumInfo?.description?._content || "");
@@ -59,53 +60,64 @@ const Photos = () => {
     if (showAlbumInfo) {
       loadAlbumInfo();
     }
-  }, [showAlbumInfo, loadAlbumInfo]); 
+  }, [showAlbumInfo, loadAlbumInfo]);
 
   if (!galleryData) {
     return <CustomSkeleton />;
   }
 
   return (
-      <>
-        <Box
-          sx={(theme) => ({
-            p: 0,
-            width: {
-              xs: "100%",
-              sm: "90%",
-              md: "80%",
-              lg: "70%",
-              xl: "80%",
-            },
-            alignContent: "center",
-            alignItems: "center",
-            margin: "0 auto",
-            padding: theme.customSpacing.pagePadding,
-            mt: theme.customSpacing.sectionMarginTop,
-          })}
-        >
+    <>
+      <Box
+        sx={(theme) => ({
+          p: 0,
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+            xl: "80%",
+          },
+          alignContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          padding: theme.customSpacing.pagePadding,
+          mt: theme.customSpacing.sectionMarginTop,
+        })}
+      >
+        <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Minhas Fotos" />
-          {/* Info Icon to trigger album info loading */}
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
+        </Suspense>
 
+        {/* Info Icon to trigger album info loading */}
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
 
+          <Suspense fallback={<CustomSkeleton />}>
             <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
               Detalhes da Galeria:
             </Typography>
+          </Suspense>
 
-            <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
-              <InfoOutlinedIcon />
-            </IconButton>
-          </Box>
-          {showAlbumInfo && (
+          <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Box>
+        {showAlbumInfo && (
+          <Suspense fallback={<CustomSkeleton />}>
             <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
               {galleryInfoData || <CustomSkeleton />}
             </Typography>
+          </Suspense>
 
-          )}
+        )}
+        <Suspense fallback={<CustomSkeleton />}>
           <PhotoGallery src={galleryData} />
-        </Box>
+        </Suspense>
+      </Box>
+      <Suspense fallback={<CustomSkeleton />}>
         <CommentBox itemID={id} />
+      </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
         <SocialMetaTags
           title={galleryInfoData}
           image="/logo_192.png"
@@ -113,8 +125,8 @@ const Photos = () => {
           url={`${window.location.origin}/photo/${id}`}
           type="website"
         />
-
-      </>
+      </Suspense>
+    </>
   );
 };
 

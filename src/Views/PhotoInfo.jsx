@@ -140,7 +140,7 @@ const PhotoInfo = () => {
   }
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
+    <>
       <Box
         sx={(theme) => ({
           p: 0,
@@ -158,32 +158,42 @@ const PhotoInfo = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <TypographyTitle src="Informações da Foto" />
+        <Suspense fallback={<CustomSkeleton />}>
+          <TypographyTitle src="Informações da Foto" />
+        </Suspense>
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <PhotoDashboard
-            photoData={combinedPhotoData}
-            onImageLoad={handleImageLoad}
-            showAdditionalInfo={showAdditionalInfo}
-            onShowAdditionalInfo={handleShowAdditionalInfo}
-            loadingExif={loadingExifData}
-          />
+          <Suspense fallback={<CustomSkeleton />}>
+            <PhotoDashboard
+              photoData={combinedPhotoData}
+              onImageLoad={handleImageLoad}
+              showAdditionalInfo={showAdditionalInfo}
+              onShowAdditionalInfo={handleShowAdditionalInfo}
+              loadingExif={loadingExifData}
+            />
+          </Suspense>
         </Box>
         {showAdditionalInfo && loadingExifData && (
           <Box sx={{ mt: 3, textAlign: 'center' }}>
-            <Typography variant="body1">Carregando detalhes EXIF...</Typography>
+            <Suspense fallback={<CustomSkeleton />}>
+              <Typography variant="body1">Carregando detalhes EXIF...</Typography>
+            </Suspense>
             <Skeleton height={150} sx={{ mt: 1 }} />
           </Box>
         )}
       </Box>
-      <CommentBox itemID={id} />
-      <SocialMetaTags
-        title={metaData.title}
-        image={metaData.image}
-        description={metaData.description}
-        url={`${window.location.origin}/photo/${id}`}
-        type="website"
-      />
-    </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
+        <CommentBox itemID={id} />
+      </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.image}
+          description={metaData.description}
+          url={`${window.location.origin}/photo/${id}`}
+          type="website"
+        />
+      </Suspense>
+    </>
   );
 };
 

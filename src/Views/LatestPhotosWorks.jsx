@@ -42,7 +42,7 @@ const LatestPhotos = () => {
   if (!galleryData) return <CustomSkeleton />;
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
+    <>
       <Box
         sx={(theme) => ({
           p: 0,
@@ -60,18 +60,26 @@ const LatestPhotos = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <TypographyTitle src="Atualizações" />
-        <PhotoGrid itemData={galleryData} />
-        <CommentBox itemID="LatestPhotos" />
+        <Suspense fallback={<CustomSkeleton />}>
+          <TypographyTitle src="Atualizações" />
+        </Suspense>
+        <Suspense fallback={<CustomSkeleton />}>
+          <PhotoGrid itemData={galleryData} />
+        </Suspense>
+        <Suspense fallback={<CustomSkeleton />}>
+          <CommentBox itemID="LatestPhotos" />
+        </Suspense>
       </Box>
-      <SocialMetaTags
-        title={metaData.title}
-        image={metaData.image}
-        description={metaData.description}
-        url={`${window.location.origin}/latestPhotosWorks`}
-        type="website"
-      />
-    </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
+        <SocialMetaTags
+          title={metaData.title}
+          image={metaData.image}
+          description={metaData.description}
+          url={`${window.location.origin}/latestPhotosWorks`}
+          type="website"
+        />
+      </Suspense>
+    </>
   );
 };
 
