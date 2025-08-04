@@ -1,33 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const App = ({
+const loaderStyle = {
+  width: 24,
+  height: 24,
+  border: '3px solid #ccc',
+  borderTop: '3px solid #333',
+  borderRadius: '50%',
+  animation: 'spin 1s linear infinite',
+};
+
+const LazyImage = ({
   dataSrc,
-  alt = 'Imagem',
+  alt = '',
   width = '100%',
   height = 'auto',
   className = '',
   style = {},
   srcSet = '',
+  sizes = '(max-width: 600px) 400px, (max-width: 900px) 800px, 1200px',
   fallbackColor = 'transparent',
   aspectRatio = '',
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const wrapperRef = useRef(null);
+  const observer = useRef(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    observer.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          observer.current.disconnect();
         }
       },
       { rootMargin: '100px', threshold: 0.1 }
     );
 
-    if (wrapperRef.current) observer.observe(wrapperRef.current);
-    return () => observer.disconnect();
+    if (wrapperRef.current) observer.current.observe(wrapperRef.current);
+
+    return () => observer.current?.disconnect();
   }, []);
 
   const wrapperStyle = {
@@ -59,30 +71,20 @@ const App = ({
             zIndex: 1,
           }}
         >
-          <div
-            className="loader"
-            style={{
-              width: 24,
-              height: 24,
-              border: '3px solid #ccc',
-              borderTop: '3px solid #333',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-            }}
-          />
+          <div className="loader" style={loaderStyle} />
         </div>
       )}
 
       {isVisible && (
-        <picture>
+        <picture role="img">
           {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
           <img
             src={fallbackSrc}
             srcSet={srcSet}
-            alt={alt}
+            alt={alt || 'Imagem sem descrição'}
             loading="lazy"
             draggable="false"
-            sizes="(max-width: 600px) 400px, (max-width: 900px) 800px, 1200px"
+            sizes={sizes}
             className={className}
             onLoad={() => setIsLoaded(true)}
             style={{
@@ -91,8 +93,10 @@ const App = ({
               height: aspectRatio ? '100%' : 'auto',
               display: 'block',
               pointerEvents: 'none',
-              borderRadius: style.borderRadius || 0,
               ...style,
+              borderRadius: style?.borderRadius ?? 0,
+              opacity: isLoaded ? 1 : 0,
+              transition: 'opacity 0.3s ease-in-out',
             }}
           />
         </picture>
@@ -108,5 +112,4 @@ const App = ({
   );
 };
 
-
-export default React.memo(App);
+export default React.memo(LazyImage);
