@@ -15,6 +15,10 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.body.classList.add("light-mode"); // ou "dark-mode"
+  }, []);
+
+  useEffect(() => {
     let authUnsubscribe;
 
     const initAuth = async () => {
@@ -77,7 +81,14 @@ const App = () => {
 
   if (!isAuthReady) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '400px',
+        backgroundColor: 'var(--background-color)',
+        color: 'var(--text-color)'
+      }}>
         <CircularProgress />
         <Typography variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
       </Box>
@@ -85,74 +96,62 @@ const App = () => {
   }
 
   return (
-    <Box
-      sx={(theme) => ({
-
-        width: "100%",
-        maxWidth: "none", // Remove max-width constraint
-        p: 0, // Remove padding to allow content to span wider
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto", // Keep auto margins for centering if maxWidth is applied elsewhere
-        // You might want to adjust mt or pt if this section is at the very top
-        mt: 8,
-      })}
-    >
+    <Box sx={{
+      width: "100%",
+      maxWidth: "none",
+      p: 0,
+      alignContent: "center",
+      alignItems: "center",
+      margin: "0 auto",
+      mt: 8,
+    }}>
       {randomPhoto ? (
-        <Box
-          sx={{
-            position: 'relative',
-            width: '100%', // Ensure it takes full width of its parent
-            paddingTop: { xs: '56.25%', md: '42.85%', lg:'35.85%', xl:'25.85%' }, // 16:9 e 21:9 aspect ratios
-            borderRadius: 0,
-            overflow: 'hidden',
-          }}
-        >
+        <Box sx={{
+          position: 'relative',
+          width: '100%',
+          paddingTop: { xs: '56.25%', md: '42.85%', lg: '35.85%', xl: '25.85%' },
+          borderRadius: 0,
+          overflow: 'hidden',
+        }}>
           {/* Background da imagem */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0, left: 0, right: 0, bottom: 0,
-              backgroundImage: `url(${randomPhoto.imageUrl})`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat',
-              backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-              zIndex: 1,
-              transition: 'filter 1s ease-in-out',
-              '&:hover': {
-                filter: 'blur(0px)',
-              },
-              aspectRatio: '16 / 9',
-            }}
-          />
+          <Box sx={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundImage: `url(${randomPhoto.imageUrl})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+            zIndex: 1,
+            transition: 'filter 1s ease-in-out',
+            '&:hover': {
+              filter: 'blur(0px)',
+            },
+            aspectRatio: '16 / 9',
+          }} />
 
           {/* Overlay escuro */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(2, 2, 2, 0.15)',
-              zIndex: 2
-            }}
-          />
+          <Box sx={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(2, 2, 2, 0.15)',
+            zIndex: 2
+          }} />
 
           {/* Legenda e botão */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0, left: 0, right: 0, bottom: 0,
-              zIndex: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: '#fff',
-              textAlign: 'center',
-              px: 2,
-              transition: 'opacity 1s ease-in-out',
-            }}
-          >
+          <Box sx={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            zIndex: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'var(--text-color)',
+            textAlign: 'center',
+            px: 2,
+            transition: 'opacity 1s ease-in-out',
+          }}>
             <Typography component="div" variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
               Destaque da Galeria
             </Typography>
@@ -161,8 +160,15 @@ const App = () => {
             </Typography>
             <Button
               variant="contained"
-              color="secondary"
-              sx={{ borderRadius: '20px', px: 4 }}
+              sx={{
+                borderRadius: '20px',
+                px: 4,
+                backgroundColor: 'var(--secondary-color)',
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: 'var(--primary-color)',
+                }
+              }}
               onClick={handleVerMais}
             >
               Ver mais
@@ -170,7 +176,14 @@ const App = () => {
           </Box>
         </Box>
       ) : (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', backgroundColor: '#f0f0f0' }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '400px',
+          backgroundColor: 'var(--background-color)',
+          color: 'var(--text-color)'
+        }}>
           <CircularProgress />
           <Typography component="div" variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
         </Box>

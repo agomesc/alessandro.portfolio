@@ -6,8 +6,8 @@ import '@fontsource/roboto/300.css';
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
-    primary: { main: "#c0810d" },
-    secondary: { main: "#78884c" },
+    primary: { main: "#F57C00" },
+    secondary: { main: "#005B9F" },
     background: {
       default: "#f5f5f5",
       paper: "#ffffff",
@@ -30,8 +30,8 @@ export const lightTheme = createTheme({
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
-    primary: { main: "#c0810d" },
-    secondary: { main: "#78884c" },
+    primary: { main: "#F57C00" },
+    secondary: { main: "#005B9F" },
     background: {
       default: "#121212",
       paper: "#1e1e1e",

@@ -1,37 +1,27 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); */
-
+/* styles.css */
 body.light-mode {
-  --primary-color: #c0810d;
-  --secondary-color: #78884c;
+  --primary-color: #F57C00;
+  --secondary-color: #005B9F;
   --background-color: #f5f5f5;
   --text-color: #222;
 }
 
 body.dark-mode {
-  --primary-color: #ffc107;
-  --secondary-color: #a4b57c;
+  --primary-color: #F57C00;
+  --secondary-color: #005B9F;
   --background-color: #121212;
   --text-color: #f0f0f0;
 }
 
+/* O restante do seu CSS vai aqui */
 body,
 html {
   font-family: 'Roboto', sans-serif;
-  font-size: 14px;
+  /* Aplica as variáveis de cor para elementos fora do Material-UI */
   background: var(--background-color);
   color: var(--text-color);
   transition: background 0.3s, color 0.3s;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  touch-action: manipulation;
-  word-wrap: break-word;
-  text-size-adjust: none;
 }
 
 /* Títulos */
@@ -96,11 +86,10 @@ a img:hover {
   opacity: 0.8;
 }
 
-.Container > * {
-  flex-grow: 1;
-  flex-shrink: 0;
+.Container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px; /* Add some space between items */
 }
 
 .ql-editor img.quill-custom-image {

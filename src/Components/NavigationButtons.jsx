@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // No need for useLocation if we are always navigating back
+import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
@@ -9,33 +9,21 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 const NavigationButtons = () => {
   const navigate = useNavigate();
 
-  const goBack = () => {
-    // navigate(-1) is designed to go to the previous entry in the history stack,
-    // which effectively takes the user back to the previous page/component
-    navigate(-1);
-  };
-
-  const goHome = () => {
-    navigate("/");
-  };
-
+  const goBack = () => navigate(-1);
+  const goHome = () => navigate("/");
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-      // You can't directly control the "speed" with a duration property here.
-      // The "smooth" behavior is an animation provided by the browser.
-      // For more granular control over scroll speed, you'd need a custom
-      // scroll animation implementation or a library.
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const buttonStyle = {
     position: "fixed",
     zIndex: 1000,
-    bgcolor: "#78884c",
+    bgcolor: "var(--primary-color)",
     color: "#ffffff",
-    "&:hover": { bgcolor: "#6a7a42" },
+    "&:hover": {
+      bgcolor: "var(--secondary-color)",
+    },
+    boxShadow: "0px 2px 6px rgba(0,0,0,0.3)",
   };
 
   return (

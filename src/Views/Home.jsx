@@ -32,6 +32,11 @@ const Home = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  // Aplica tema claro por padrão
+  useEffect(() => {
+    document.body.classList.add("light-mode");
+  }, []);
+
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
   }
@@ -77,85 +82,87 @@ const Home = () => {
   const handleSnackbarClose = useCallback(() => setSnackbarOpen(false), []);
 
   return (
-
-      <Suspense fallback={<CustomSkeleton />}>
-        <RandomPhoto />
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          centered
+    <Suspense fallback={<CustomSkeleton />}>
+      <RandomPhoto />
+      <Tabs
+        value={tabIndex}
+        onChange={handleTabChange}
+        centered
+        sx={{
+          marginTop: 5,
+          marginBottom: -8,
+          ".MuiTabs-indicator": {
+            backgroundColor: "var(--primary-color)",
+          },
+        }}
+      >
+        <Tab
+          icon={<PhotoLibraryIcon />}
+          iconPosition="start"
+          label="Galeria"
           sx={{
-            marginTop: 5,
-            marginBottom: -8,
-            ".MuiTabs-indicator": { backgroundColor: "#78884c" },
+            color: tabIndex === 0 ? "var(--primary-color)" : "var(--secondary-color)",
+            fontWeight: tabIndex === 0 ? "bold" : "normal",
+            "&.Mui-selected": {
+              color: "var(--primary-color)",
+            },
           }}
-        >
-          <Tab
-            icon={<PhotoLibraryIcon />}
-            iconPosition="start"
-            label="Galeria"
-            sx={{
-              color: tabIndex === 0 ? "#78884c" : "#c0810d",
-              fontWeight: tabIndex === 0 ? "bold" : "normal",
-              "&.Mui-selected": { color: "#78884c" },
-            }}
-          />
-          <Tab
-            icon={<BrushIcon />}
-            iconPosition="start"
-            label="Meus Trabalhos"
-            sx={{
-              color: tabIndex === 1 ? "#78884c" : "#c0810d",
-              fontWeight: tabIndex === 1 ? "bold" : "normal",
-              "&.Mui-selected": { color: "#78884c" },
-            }}
-          />
-        </Tabs>
-
-        <Box mt={5}>
-
-          {tabIndex === 0 ? (
-            deferredGalleryData && deferredGalleryData.length > 0 ? (
-              <>
-                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                <Gallery itemData={galleryData} />
-              </>
-            ) : (
-              <Box sx={{ textAlign: "center", padding: 2 }}>
-                <CustomSkeleton variant="circular" />
-              </Box>
-            )
-          ) : (
-            deferredGalleryData && deferredGalleryData.length > 0 ? (
-              <>
-                <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
-                <GalleryWork itemData={galleryData} />
-              </>
-            ) : (
-              <Box sx={{ textAlign: "center", padding: 2 }}>
-                <CustomSkeleton variant="circular" />
-              </Box>
-            )
-          )}
-
-        </Box>
-        
-        <SocialMetaTags
-          title="Atualizações"
-          image="/logo_192.png"
-          description="Atualizações"
-          url={`${window.location.origin}/Home`}
-          type="website"
         />
+        <Tab
+          icon={<BrushIcon />}
+          iconPosition="start"
+          label="Meus Trabalhos"
+          sx={{
+            color: tabIndex === 1 ? "var(--primary-color)" : "var(--secondary-color)",
+            fontWeight: tabIndex === 1 ? "bold" : "normal",
+            "&.Mui-selected": {
+              color: "var(--primary-color)",
+            },
+          }}
+        />
+      </Tabs>
 
-        <MessageSnackbar
-          open={snackbarOpen}
-          message={snackbarMessage}
-          severity={snackbarSeverity}
-          onClose={handleSnackbarClose} />
+      <Box mt={5}>
+        {tabIndex === 0 ? (
+          deferredGalleryData && deferredGalleryData.length > 0 ? (
+            <>
+              <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+              <Gallery itemData={galleryData} />
+            </>
+          ) : (
+            <Box sx={{ textAlign: "center", padding: 2 }}>
+              <CustomSkeleton variant="circular" />
+            </Box>
+          )
+        ) : (
+          deferredGalleryData && deferredGalleryData.length > 0 ? (
+            <>
+              <SwipeableSlider itemData={galleryData} allUpdatesUrl="/latestphotos" />
+              <GalleryWork itemData={galleryData} />
+            </>
+          ) : (
+            <Box sx={{ textAlign: "center", padding: 2 }}>
+              <CustomSkeleton variant="circular" />
+            </Box>
+          )
+        )}
+      </Box>
 
-      </Suspense>
-    
+      <SocialMetaTags
+        title="Atualizações"
+        image="/logo_192.png"
+        description="Atualizações"
+        url={`${window.location.origin}/Home`}
+        type="website"
+      />
+
+      <MessageSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        onClose={handleSnackbarClose}
+      />
+    </Suspense>
   );
 };
 

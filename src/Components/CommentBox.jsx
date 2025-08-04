@@ -442,7 +442,7 @@ function CommentBox({ itemID }) {
                     <Button
                         type="submit"
                         variant="contained"
-                        sx={{ backgroundColor: '#78884c' }}
+                        sx={{ backgroundColor: "var(--primary-color)", color: "var(--text-color)", '&:hover': { backgroundColor: 'var(--secondary-color)' } }}
                         // O botão é desabilitado durante o processamento/submissão, ou se campos obrigatórios estão vazios/inválidos
                         disabled={isProcessingImage || !name.trim() || !country.trim() || !stripHtml(comment) || emailError}
                     >
