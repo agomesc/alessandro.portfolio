@@ -1,12 +1,11 @@
 import { lazy, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./Views/Theme";
 import Box from "@mui/material/Box";
 import "./App.css";
 
-// Lazy imports
+
 const Routes = lazy(() => import("./Routes"));
 const ProTip = lazy(() => import("./Views/ProTip"));
 const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
@@ -41,7 +40,6 @@ const App = () => {
 
 	return (
 		<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-			<CssBaseline />
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />

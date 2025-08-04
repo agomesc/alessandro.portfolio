@@ -183,7 +183,7 @@ const FollowComponent = ({ entityId }) => {
             alt="Google"
             style={{ width: "18px", height: "18px" }}
           />
-          Entrar com Google
+          Siga-me
         </button>
       ) : (
         <button

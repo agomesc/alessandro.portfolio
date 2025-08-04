@@ -1,6 +1,7 @@
-import React, { useEffect, useState, Suspense, lazy, useRef } from "react";
+import React, { useEffect, useState, lazy, useRef } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
@@ -26,7 +27,7 @@ const Gallery = () => {
   }
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
+    <>
       <Box
         sx={(theme) => ({
           p: 0,
@@ -56,7 +57,7 @@ const Gallery = () => {
         url={`${window.location.origin}/gallery`}
         type="website" />
 
-    </Suspense>
+    </>
   );
 };
 

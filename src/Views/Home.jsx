@@ -82,7 +82,7 @@ const Home = () => {
   const handleSnackbarClose = useCallback(() => setSnackbarOpen(false), []);
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
+    <>
       <RandomPhoto />
       <Tabs
         value={tabIndex}
@@ -162,7 +162,7 @@ const Home = () => {
         severity={snackbarSeverity}
         onClose={handleSnackbarClose}
       />
-    </Suspense>
+    </>
   );
 };
 

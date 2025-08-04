@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy, useMemo, useRef } from "react";
+import React, { useEffect, useState, lazy, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
@@ -33,7 +33,7 @@ const GalleryWork = () => {
     }, [galleryData]);
 
     return (
-        <Suspense fallback={<CustomSkeleton />}>
+        <>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -68,7 +68,7 @@ const GalleryWork = () => {
                     type="website"
                 />
             )}
-        </Suspense>
+        </>
     );
 };
 

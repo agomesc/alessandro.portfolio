@@ -1,7 +1,6 @@
 import React, {
   useEffect,
   useState,
-  Suspense,
   lazy,
   useCallback,
   useRef
@@ -67,7 +66,7 @@ const Photos = () => {
   }
 
   return (
-      <Suspense fallback={<CustomSkeleton />}>
+      <>
         <Box
           sx={(theme) => ({
             p: 0,
@@ -114,7 +113,7 @@ const Photos = () => {
           type="website"
         />
 
-      </Suspense>
+      </>
   );
 };
 
