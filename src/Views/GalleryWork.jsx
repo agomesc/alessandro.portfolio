@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, useMemo, useRef } from "react";
+import React, { useEffect, useState, lazy, useMemo, useRef, Suspense } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
@@ -10,27 +10,36 @@ const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const GalleryWork = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const flickrInstance = useRef(null);
-
-    if (!flickrInstance.current) {
-        flickrInstance.current = CreateFlickrApp();
-    }
+    const flickrInstance = useRef(CreateFlickrApp());
 
     useEffect(() => {
-        if (!galleryData) {
-            flickrInstance.current.getGalleryWork().then(setGalleryData);
-        }
-    }, [galleryData]);
+        flickrInstance.current
+            .getGalleryWork()
+            .then(setGalleryData)
+            .catch(console.error);
+    }, []);
 
     const metaData = useMemo(() => {
-        if (!galleryData?.length) return null;
+        if (!galleryData || galleryData.length === 0) {
+            return {
+                title: "Meus Trabalhos",
+                description: "Galeria de Trabalhos de Fotografia",
+                image: "/logo_192.png",
+                url: `${window.location.origin}/galleryWork`,
+            };
+        }
         const randomItem = galleryData[Math.floor(Math.random() * galleryData.length)];
         return {
             title: randomItem.title,
             description: randomItem.description,
-            url: randomItem.img,
+            image: randomItem.img, // 'image' é o nome da prop
+            url: `${window.location.origin}/galleryWork`,
         };
     }, [galleryData]);
+
+    if (!galleryData) {
+        return <CustomSkeleton />;
+    }
 
     return (
         <>
@@ -51,23 +60,25 @@ const GalleryWork = () => {
                     mt: theme.customSpacing.sectionMarginTop,
                 })}
             >
-                <TypographyTitle src="Meus Trabalhos" />
-                {galleryData ? (
+                <Suspense fallback={<CustomSkeleton />}>
+                    <TypographyTitle src="Meus Trabalhos" />
+                </Suspense>
+                <Suspense fallback={<CustomSkeleton />}>
                     <ImageThumbs data={galleryData} />
-                ) : (
-                    <CustomSkeleton height={400} />
-                )}
+                </Suspense>
             </Box>
-            <CommentBox itemID="GalleryWork" />
-            {metaData && (
+            <Suspense fallback={<CustomSkeleton />}>
+                <CommentBox itemID="GalleryWork" />
+            </Suspense>
+            <Suspense fallback={<CustomSkeleton />}>
                 <SocialMetaTags
                     title={metaData.title}
-                    image={metaData.url}
+                    image={metaData.image}
                     description={metaData.description}
-                    url={`${window.location.origin}/galleryWork`}
+                    url={metaData.url}
                     type="website"
                 />
-            )}
+            </Suspense>
         </>
     );
 };

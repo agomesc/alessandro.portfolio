@@ -76,7 +76,7 @@ const LazyImage = ({
       )}
 
       {isVisible && (
-        <picture role="img">
+        <picture>
           {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
           <img
             src={fallbackSrc}

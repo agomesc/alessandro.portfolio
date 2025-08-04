@@ -27,7 +27,10 @@ const Editor = ({ onContentChange, defaultValue = '', height = '300px' }) => {
 
   return (
     <ReactQuill
-      ref={quillRef}
+      ref={(el) => {
+        // Atribui a referência sem acionar findDOMNode
+        quillRef.current = el;
+      }}
       theme="snow"
       value={content}
       onChange={setContent}

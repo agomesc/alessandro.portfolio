@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, useRef } from "react";
+import React, { useEffect, useState, lazy, useRef, Suspense } from "react";
 import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
@@ -45,18 +45,24 @@ const Gallery = () => {
           mt: theme.customSpacing.sectionMarginTop,
         })}
       >
-        <TypographyTitle src="Galeria de Fotos" />
-        <ImageThumbs data={galleryData} />
-
+        <Suspense fallback={<CustomSkeleton />}>
+          <TypographyTitle src="Galeria de Fotos" />
+        </Suspense>
+        <Suspense fallback={<CustomSkeleton />}>
+          <ImageThumbs data={galleryData} />
+        </Suspense>
       </Box>
-      <CommentBox itemID="Gallery" />
+      <Suspense fallback={<CustomSkeleton />}>
+        <CommentBox itemID="Gallery" />
+      </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
       <SocialMetaTags
         title={galleryData[0]?.title || "Galeria de Fotos"}
         image={galleryData[0]?.img || "/logo_192.png"}
         description={galleryData[0]?.description || "Galeria de Fotos"}
         url={`${window.location.origin}/gallery`}
         type="website" />
-
+      </Suspense>
     </>
   );
 };

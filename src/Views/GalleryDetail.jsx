@@ -10,6 +10,7 @@ const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
 const CommentBox = React.lazy(() => import("../Components/CommentBox"));
 const LazyImage = React.lazy(() => import("../Components/LazyImage"));
 const SocialMetaTags = React.lazy(() => import("../Components/SocialMetaTags"));
+const CustomSkeleton = React.lazy(() => import("../Components/CustomSkeleton"));
 
 
 const getImageSrc = (imageData) => {
@@ -72,7 +73,7 @@ const GalleryDetail = () => {
     }
 
     return (
-        <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+        <>
             <Box
                 sx={(theme) => ({
                     p: 0,
@@ -90,9 +91,11 @@ const GalleryDetail = () => {
                     mt: theme.customSpacing.sectionMarginTop,
                 })}
             >
-                <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
-                    {gallery.title}
-                </Typography>
+                <Suspense fallback={<CustomSkeleton />}>
+                    <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
+                        {gallery.title}
+                    </Typography>
+                </Suspense>
 
                 {gallery.image && (
                     <Box sx={{ mt: 2, mb: 3 }}>
@@ -120,36 +123,46 @@ const GalleryDetail = () => {
 
                 {gallery.link && (
                     <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
-                        <Typography
-                            variant="body1"
-                            component="a"
-                            href={gallery.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                textDecoration: 'none',
-                                color: '#78884c',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                        </Typography>
-                        <StarComponent id={gallery.id} />
-                        <ViewComponent id={gallery.id} />
+                        <Suspense fallback={<CustomSkeleton />}>
+                            <Typography
+                                variant="body1"
+                                component="a"
+                                href={gallery.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    textDecoration: 'none',
+                                    color: '#78884c',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                            </Typography>
+                        </Suspense>
+                        <Suspense fallback={<CustomSkeleton />}>
+                            <StarComponent id={gallery.id} />
+                        </Suspense>
+                        <Suspense fallback={<CustomSkeleton />}>
+                            <ViewComponent id={gallery.id} />
+                        </Suspense>
                     </Stack>
                 )}
             </Box>
-            <CommentBox itemID="Contents" />
-             <SocialMetaTags
-                title={gallery.title}
-                image={gallery.image}
-                description={gallery.description}
-                url={`${window.location.origin}/GalleryDetail/${gallery.id}`}
-                type="article"
-      />
-        </Suspense>
+            <Suspense fallback={<CustomSkeleton />}>
+                <CommentBox itemID="Contents" />
+            </Suspense>
+            <Suspense fallback={<CustomSkeleton />}>
+                <SocialMetaTags
+                    title={gallery.title}
+                    image={gallery.image}
+                    description={gallery.description}
+                    url={`${window.location.origin}/GalleryDetail/${gallery.id}`}
+                    type="article"
+                />
+            </Suspense>
+        </>
     );
 };
 

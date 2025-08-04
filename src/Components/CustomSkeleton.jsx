@@ -16,7 +16,7 @@ const CustomSkeleton = ({
     sx={{
       borderRadius: radius,
       backgroundColor: '#e0e0e0',
-      ...sx, // permite sobrepor estilos se necessário
+      ...sx,
     }}
   />
 );

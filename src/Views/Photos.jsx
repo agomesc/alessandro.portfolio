@@ -88,6 +88,7 @@ const Photos = () => {
           {/* Info Icon to trigger album info loading */}
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
 
+
             <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
               Detalhes da Galeria:
             </Typography>
