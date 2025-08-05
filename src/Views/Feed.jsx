@@ -1,31 +1,15 @@
-import { Suspense, lazy } from "react";
-import Box from "@mui/material/Box";
+import React, { Suspense, lazy } from "react";
 
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
 
 const App = () => {
 
   return (
-    <Box
-      sx={(theme) => ({
-        p: 0,
-        width: {
-          xs: "100%",
-          sm: "90%",
-          md: "80%",
-          lg: "70%",
-          xl: "80%",
-        },
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        padding: theme.customSpacing.pagePadding,
-        mt: theme.customSpacing.sectionMarginTop,
-      })}
-    >
+    <ContentContainer sx={{ mt: 20 }}>
       <Suspense fallback={<CustomSkeleton />}>
         <TypographyTitle src="Feeds" />
       </Suspense>
@@ -41,7 +25,7 @@ const App = () => {
           type="website"
         />
       </Suspense>
-    </Box>
+    </ContentContainer>
   )
 };
 

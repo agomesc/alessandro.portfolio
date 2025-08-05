@@ -15,6 +15,7 @@ const StarComponent = lazy(() => import("../Components/StarComponent"));
 const LazyImage = lazy(() => import("../Components/LazyImage"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -67,27 +68,11 @@ const App = () => {
   }
 
   return (
-   <Suspense fallback={<CustomSkeleton />}>
-      <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
-        
-          <TypographyTitle src="Galeria de Fotos" />
-        
+    <Suspense fallback={<CustomSkeleton />}>
+      <ContentContainer sx={{ mt: 20 }}>
+
+        <TypographyTitle src="Galeria de Fotos" />
+
 
         <ImageList variant="masonry" cols={{ xs: 1, sm: 2, md: 3 }} gap={16}>
           {images.map((item) => (
@@ -150,8 +135,8 @@ const App = () => {
             </ImageListItem>
           ))}
         </ImageList>
-      </Box>
-      <CommentBox itemID="FeaturedPhotos" />
+        <CommentBox itemID="FeaturedPhotos" />
+      </ContentContainer>
     </Suspense>
   );
 };

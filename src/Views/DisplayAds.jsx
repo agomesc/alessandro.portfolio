@@ -11,6 +11,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle.jsx"));
 const LazyImage = lazy(() => import("../Components/LazyImage.jsx"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton.jsx"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const App = () => {
     const [galleries, setGalleries] = useState([]);
@@ -62,23 +63,7 @@ const App = () => {
 
     return (
         <Suspense fallback={<CustomSkeleton />}>
-            <Box
-                sx={(theme) => ({
-                    p: 0,
-                    width: {
-                        xs: "100%",
-                        sm: "90%",
-                        md: "80%",
-                        lg: "70%",
-                        xl: "80%",
-                    },
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                    padding: theme.customSpacing.pagePadding,
-                    mt: theme.customSpacing.sectionMarginTop,
-                })}
-            >
+            <ContentContainer sx={{ mt: 20 }}>
 
                 <TypographyTitle src="Conteúdos" />
 
@@ -112,51 +97,51 @@ const App = () => {
                                 width: '100%', // Ensure card takes full available width
                             }}
                         >
-                                                         {gallery.image && (
-                                    <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: { xs: 240, sm: 'auto' }, overflow: 'hidden' }}>
-                                        <LazyImage
-                                            dataSrc={gallery.image}
-                                            alt={`Gallery - ${gallery.title}`}
-                                            sx={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ensure image covers its container
-                                        />
-                                    </Box>
-                                )}
-                                {!gallery.image && (
-                                    <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: 240, backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Typography component="div" variant="caption" color="text.secondary">Sem Imagem</Typography>
-                                    </Box>
-                                )}
-
-                                <CardContent sx={{ flexGrow: 1, p: 2 }}> {/* Allow content to grow */}
-                                    <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
-                                        {gallery.title}
-                                    </Typography>
-                                    <Box
-                                        sx={{ mt: 2, fontSize: '16px', color: '#333' }}
-                                        dangerouslySetInnerHTML={{ __html: gallery.text.slice(0, 255) + '...' }}
+                            {gallery.image && (
+                                <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: { xs: 240, sm: 'auto' }, overflow: 'hidden' }}>
+                                    <LazyImage
+                                        dataSrc={gallery.image}
+                                        alt={`Gallery - ${gallery.title}`}
+                                        sx={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ensure image covers its container
                                     />
-                                    {gallery.link && (
-                                        <Box sx={{ mt: 1 }}>
-                                            <Typography
-                                                variant="body2"
-                                                component="span"
-                                                onClick={(e) => handleExternalLinkClick(e, gallery.link)}
-                                                sx={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    textDecoration: 'underline',
-                                                    color: '#78884c',
-                                                    cursor: 'pointer',
-                                                    '&:hover': {
-                                                        color: '#5a6b38',
-                                                    }
-                                                }}
-                                            >
-                                                Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
-                                            </Typography>
-                                        </Box>
-                                    )}
-                                </CardContent>
+                                </Box>
+                            )}
+                            {!gallery.image && (
+                                <Box sx={{ flexShrink: 0, width: { xs: '100%', sm: 240 }, height: 240, backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Typography component="div" variant="caption" color="text.secondary">Sem Imagem</Typography>
+                                </Box>
+                            )}
+
+                            <CardContent sx={{ flexGrow: 1, p: 2 }}> {/* Allow content to grow */}
+                                <Typography variant="h6" component="div" sx={{ color: '#78884c' }}>
+                                    {gallery.title}
+                                </Typography>
+                                <Box
+                                    sx={{ mt: 2, fontSize: '16px', color: '#333' }}
+                                    dangerouslySetInnerHTML={{ __html: gallery.text.slice(0, 255) + '...' }}
+                                />
+                                {gallery.link && (
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography
+                                            variant="body2"
+                                            component="span"
+                                            onClick={(e) => handleExternalLinkClick(e, gallery.link)}
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                textDecoration: 'underline',
+                                                color: '#78884c',
+                                                cursor: 'pointer',
+                                                '&:hover': {
+                                                    color: '#5a6b38',
+                                                }
+                                            }}
+                                        >
+                                            Abrir Link Externo <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
+                                        </Typography>
+                                    </Box>
+                                )}
+                            </CardContent>
                         </Card>
 
                     ))}
@@ -176,7 +161,7 @@ const App = () => {
                         />
                     </Box>
                 )}
-            </Box>
+            </ContentContainer>
         </Suspense>
     );
 };

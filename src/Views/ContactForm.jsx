@@ -1,7 +1,7 @@
-import { useState, lazy, Suspense } from 'react';
+import React,{ useState, lazy, Suspense } from 'react';
 import LoadingMessage from "../Components/LoadingMessage";
 import {
-  Box,
+  
   TextField,
   Button,
   Snackbar,
@@ -11,6 +11,7 @@ import {
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Certifique-se de que este caminho está correto
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
 
 
 function ContactForm() {
@@ -52,8 +53,8 @@ function ContactForm() {
         name: name.trim(),
         email: email.trim(),
         message: message.trim(),
-        timestamp: serverTimestamp(), 
-        read: false, 
+        timestamp: serverTimestamp(),
+        read: false,
       });
 
       setSnackbarMessage('Mensagem enviada com sucesso!');
@@ -81,23 +82,7 @@ function ContactForm() {
   };
 
   return (
-    <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+    <ContentContainer sx={{ mt: 20 }}>
       <Suspense fallback={<LoadingMessage />}>
         <TypographyTitle src="Contatos" />
       </Suspense>
@@ -157,7 +142,7 @@ function ContactForm() {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    </Box>
+    </ContentContainer>
   );
 }
 
