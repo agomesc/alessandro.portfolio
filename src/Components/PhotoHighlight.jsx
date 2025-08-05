@@ -1,12 +1,13 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import CircularProgress from '@mui/material/CircularProgress';
 import { auth, db } from '../firebaseConfig';
 import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -89,8 +90,9 @@ const App = () => {
         backgroundColor: 'var(--background-color)',
         color: 'var(--text-color)'
       }}>
-        <CircularProgress />
-        <Typography variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
+        <Suspense fallback={<CustomSkeleton />}>
+          <Typography variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
+        </Suspense>
       </Box>
     );
   }
@@ -114,22 +116,23 @@ const App = () => {
           overflow: 'hidden',
         }}>
           {/* Background da imagem */}
-          <Box sx={{
-            position: 'absolute',
-            top: 0, left: 0, right: 0, bottom: 0,
-            backgroundImage: `url(${randomPhoto.imageUrl})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: { xs: 'scroll', md: 'fixed' },
-            zIndex: 1,
-            transition: 'filter 1s ease-in-out',
-            '&:hover': {
-              filter: 'blur(0px)',
-            },
-            aspectRatio: '16 / 9',
-          }} />
-
+          <Suspense fallback={<CustomSkeleton />}>
+            <Box sx={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              backgroundImage: `url(${randomPhoto.imageUrl})`,
+              backgroundSize: 'contain',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: { xs: 'scroll', md: 'fixed' },
+              zIndex: 1,
+              transition: 'filter 1s ease-in-out',
+              '&:hover': {
+                filter: 'blur(0px)',
+              },
+              aspectRatio: '16 / 9',
+            }} />
+          </Suspense>
           {/* Overlay escuro */}
           <Box sx={{
             position: 'absolute',
@@ -152,12 +155,6 @@ const App = () => {
             px: 2,
             transition: 'opacity 1s ease-in-out',
           }}>
-            <Typography component="div" variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-              Destaque da Galeria
-            </Typography>
-            <Typography component="div" variant="subtitle1" sx={{ mb: 3 }}>
-              Uma foto escolhida aleatoriamente para te inspirar.
-            </Typography>
             <Button
               variant="contained"
               sx={{
@@ -180,11 +177,9 @@ const App = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '400px',
           backgroundColor: 'var(--background-color)',
           color: 'var(--text-color)'
         }}>
-          <CircularProgress />
           <Typography component="div" variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
         </Box>
       )}

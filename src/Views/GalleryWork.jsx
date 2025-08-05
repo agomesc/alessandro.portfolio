@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
-const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
@@ -67,9 +66,6 @@ const GalleryWork = () => {
                     <ImageThumbs data={galleryData} />
                 </Suspense>
             </Box>
-            <Suspense fallback={<CustomSkeleton />}>
-                <CommentBox itemID="GalleryWork" />
-            </Suspense>
             <Suspense fallback={<CustomSkeleton />}>
                 <SocialMetaTags
                     title={metaData.title}

@@ -4,7 +4,6 @@ import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
-const CommentBox = lazy(() => import("../Components/CommentBox"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 
@@ -52,9 +51,6 @@ const Gallery = () => {
           <ImageThumbs data={galleryData} />
         </Suspense>
       </Box>
-      <Suspense fallback={<CustomSkeleton />}>
-        <CommentBox itemID="Gallery" />
-      </Suspense>
       <Suspense fallback={<CustomSkeleton />}>
       <SocialMetaTags
         title={galleryData[0]?.title || "Galeria de Fotos"}

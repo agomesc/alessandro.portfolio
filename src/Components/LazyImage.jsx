@@ -88,7 +88,7 @@ const LazyImage = ({
             className={className}
             onLoad={() => setIsLoaded(true)}
             style={{
-              objectFit: 'contain',
+              objectFit: 'cover',
               width: '100%',
               height: aspectRatio ? '100%' : 'auto',
               display: 'block',

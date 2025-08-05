@@ -33,9 +33,6 @@ const SocialShareBar = ({ url, title }) => {
           </a>
         ))}
       </div>
-      <Typography component="div" variant="subtitle2" style={{ marginTop: '10px' }}>
-          Ajude-nos!
-        </Typography>
     </div>
   );
 };
