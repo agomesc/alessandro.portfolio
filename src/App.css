@@ -2,15 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Roboto:wght@400;700&display=swap');
 /* styles.css */
 body.light-mode {
-  --primary-color: #F57C00;
-  --secondary-color: #005B9F;
+  --primary-color: #005B9F;
+  --secondary-color: #F57C00;
   --background-color: #f5f5f5;
   --text-color: #222;
 }
 
 body.dark-mode {
-  --primary-color: #F57C00;
-  --secondary-color: #005B9F;
+  --primary-color: #005B9F;
+  --secondary-color: #F57C00;
   --background-color: #121212;
   --text-color: #f0f0f0;
 }
@@ -54,7 +54,7 @@ h1::after, h2::after, h3::after, h4::after {
   h1 { font-size: 20px; }
   h2 { font-size: 18px; }
   h3 { font-size: 16px; }
-  h4 { font-size: 18px; }
+  h4 { font-size: 14px; }
 }
 
 /* Links */

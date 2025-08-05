@@ -97,7 +97,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
         })}
       </Box>
 
-      <Box sx={{ textAlign: 'right', mt: 4, mb: 4 }}>
+      <Box sx={{ textAlign: 'left', mt: 4, mb: 4 }}>
         <Link
           component="button"
           variant="body1"

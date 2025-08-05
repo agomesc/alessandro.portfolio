@@ -6,7 +6,6 @@ import {
     AppBar,
     Toolbar,
     IconButton,
-    Typography,
     Box,
     Drawer,
     Divider,
@@ -123,7 +122,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
 
     const handleLogoutCallback = useCallback(async () => {
         await handleLogout();
-        // Após o logout, você pode fechar o drawer aqui.
         setDrawerOpen(false);
     }, [handleLogout]);
 
@@ -186,104 +184,104 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
             role="presentation"
         >
             <Divider />
-            <nav>
-                <List>
-                    {items.map((item, index) => {
-                        const isChild = item.isChild;
-                        const isParentOfGalleries = item.isParentGallery;
-                        const isEquipamentosParent = item.isEquipamentos;
 
-                        if (!isChild) {
-                            return (
-                                <ListItem key={index} disablePadding>
+            <List>
+                {items.map((item, index) => {
+                    const isChild = item.isChild;
+                    const isParentOfGalleries = item.isParentGallery;
+                    const isEquipamentosParent = item.isEquipamentos;
+
+                    if (!isChild) {
+                        return (
+                            <ListItem key={index} disablePadding>
+                                <ListItemButton
+                                    component={item.route.startsWith("JavaScript") ? "div" : Link}
+                                    to={item.route.startsWith("JavaScript") ? undefined : item.route}
+                                    onClick={(event) => {
+                                        if (item.route.startsWith("JavaScript")) event.preventDefault();
+                                        if (isEquipamentosParent) setOpenEquipamentos((prev) => !prev);
+                                        else if (isParentOfGalleries) setOpenSubGallery((prev) => !prev);
+                                        else setDrawerOpen(false);
+                                    }}
+                                >
+                                    <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.description} />
+                                    {(isEquipamentosParent || isParentOfGalleries) && (
+                                        <ExpandMoreIcon
+                                            sx={{
+                                                transform:
+                                                    (isEquipamentosParent && openEquipamentos) ||
+                                                        (isParentOfGalleries && openSubGallery)
+                                                        ? "rotate(180deg)"
+                                                        : "rotate(0deg)",
+                                                transition: "transform 0.3s ease",
+                                            }}
+                                        />
+                                    )}
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    } else {
+                        const openChild = item.parent === "Equipamentos" ? openEquipamentos : openSubGallery;
+                        return (
+                            <Collapse in={openChild} timeout="auto" unmountOnExit key={index}>
+                                <List component="div" disablePadding>
                                     <ListItemButton
-                                        component={item.route.startsWith("JavaScript") ? "div" : Link}
-                                        to={item.route.startsWith("JavaScript") ? undefined : item.route}
-                                        onClick={(event) => {
-                                            if (item.route.startsWith("JavaScript")) event.preventDefault();
-                                            if (isEquipamentosParent) setOpenEquipamentos((prev) => !prev);
-                                            else if (isParentOfGalleries) setOpenSubGallery((prev) => !prev);
-                                            else setDrawerOpen(false);
-                                        }}
+                                        sx={{ pl: 4 }}
+                                        component={Link}
+                                        to={item.route}
+                                        onClick={() => setDrawerOpen(false)}
                                     >
                                         <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
                                         <ListItemText primary={item.description} />
-                                        {(isEquipamentosParent || isParentOfGalleries) && (
-                                            <ExpandMoreIcon
-                                                sx={{
-                                                    transform:
-                                                        (isEquipamentosParent && openEquipamentos) ||
-                                                            (isParentOfGalleries && openSubGallery)
-                                                            ? "rotate(180deg)"
-                                                            : "rotate(0deg)",
-                                                    transition: "transform 0.3s ease",
-                                                }}
-                                            />
-                                        )}
                                     </ListItemButton>
-                                </ListItem>
-                            );
-                        } else {
-                            const openChild = item.parent === "Equipamentos" ? openEquipamentos : openSubGallery;
-                            return (
-                                <Collapse in={openChild} timeout="auto" unmountOnExit key={index}>
-                                    <List component="div" disablePadding>
-                                        <ListItemButton
-                                            sx={{ pl: 4 }}
-                                            component={Link}
-                                            to={item.route}
-                                            onClick={() => setDrawerOpen(false)}
-                                        >
-                                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>{item.icon}</ListItemIcon>
-                                            <ListItemText primary={item.description} />
-                                        </ListItemButton>
-                                    </List>
-                                </Collapse>
-                            );
-                        }
-                    })}
+                                </List>
+                            </Collapse>
+                        );
+                    }
+                })}
 
-                    {/* Tema */}
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={toggleTheme}>
-                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                {/* Tema */}
+                <ListItem disablePadding>
+                    <ListItemButton onClick={toggleTheme}>
+                        <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </ListItemIcon>
+                        <ListItemText primary={darkMode ? "Modo Claro" : "Modo Escuro"} />
+                    </ListItemButton>
+                </ListItem>
+
+                {/* Login/Logout Section */}
+                <ListItem disablePadding>
+                    {loadingAuth ? (
+                        <ListItemButton disabled>
+                            <ListItemIcon>
+                                <CustomSkeleton />
                             </ListItemIcon>
-                            <ListItemText primary={darkMode ? "Modo Claro" : "Modo Escuro"} />
+                            <ListItemText primary={<CustomSkeleton />} secondary={<CustomSkeleton />} />
                         </ListItemButton>
-                    </ListItem>
+                    ) : (
+                        <ListItemButton onClick={user ? handleLogoutCallback : handleLoginCallback}>
+                            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                                {user?.photoURL ? (
+                                    <Avatar
+                                        src={user.photoURL}
+                                        alt={user.displayName || "Usuário"}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                ) : (
+                                    <AdminPanelSettingsIcon />
+                                )}
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={user ? "Logout" : "Login"}
+                                secondary={user?.displayName || ""}
+                            />
+                        </ListItemButton>
+                    )}
+                </ListItem>
+            </List>
 
-                    {/* Login/Logout Section */}
-                    <ListItem disablePadding>
-                        {loadingAuth ? (
-                            <ListItemButton disabled>
-                                <ListItemIcon>
-                                    <CustomSkeleton />
-                                </ListItemIcon>
-                                <ListItemText primary={<CustomSkeleton />} secondary={<CustomSkeleton />} />
-                            </ListItemButton>
-                        ) : (
-                            <ListItemButton onClick={user ? handleLogoutCallback : handleLoginCallback}>
-                                <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                                    {user?.photoURL ? (
-                                        <Avatar
-                                            src={user.photoURL}
-                                            alt={user.displayName || "Usuário"}
-                                            sx={{ width: 28, height: 28 }}
-                                        />
-                                    ) : (
-                                        <AdminPanelSettingsIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={user ? "Logout" : "Login"}
-                                    secondary={user?.displayName || ""}
-                                />
-                            </ListItemButton>
-                        )}
-                    </ListItem>
-                </List>
-            </nav>
             <Divider />
         </Box>
     );
@@ -315,7 +313,6 @@ const TemporaryDrawer = ({ darkMode, toggleTheme }) => {
                     </IconButton>
                     <Box sx={{ flexGrow: 1 }} /> {/* This pushes items to the right */}
                     <NotificationBell />
-                    {/* Botão de alternância de tema */}
                     <IconButton
                         size="large"
                         onClick={toggleTheme}

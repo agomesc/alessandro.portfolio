@@ -12,7 +12,16 @@ const SocialShareBar = ({ url, title }) => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
+     <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '15px', 
+        position: 'relative',
+        
+      }}
+    >
       <div style={{ display: 'flex', gap: '15px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
           <a
