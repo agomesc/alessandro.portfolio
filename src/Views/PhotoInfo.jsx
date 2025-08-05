@@ -22,6 +22,7 @@ const PhotoDashboard = lazy(() => import("../Components/PhotoDashboard"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const PhotoInfo = () => {
   const { id } = useParams();
@@ -103,7 +104,7 @@ const PhotoInfo = () => {
 
   if (loadingInitialData) {
     return (
-      <Box sx={{ mt: 10, px: 2, maxWidth: "80%", margin: "0 auto" }}>
+      <ContentContainer sx={{ mt: 20 }}>
         <TypographyTitle src="Informações da Foto" />
         <Skeleton
           variant="rectangular"
@@ -118,7 +119,7 @@ const PhotoInfo = () => {
           width="100%"
           sx={{ mt: 3, borderRadius: "4px" }}
         />
-      </Box>
+      </ContentContainer>
     );
   }
 
@@ -141,23 +142,7 @@ const PhotoInfo = () => {
 
   return (
     <>
-      <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+      <ContentContainer sx={{ mt: 20 }}>
         <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Informações da Foto" />
         </Suspense>
@@ -180,10 +165,11 @@ const PhotoInfo = () => {
             <Skeleton height={150} sx={{ mt: 1 }} />
           </Box>
         )}
-      </Box>
-      <Suspense fallback={<CustomSkeleton />}>
-        <CommentBox itemID={id} />
-      </Suspense>
+
+        <Suspense fallback={<CustomSkeleton />}>
+          <CommentBox itemID={id} />
+        </Suspense>
+      </ContentContainer>
       <Suspense fallback={<CustomSkeleton />}>
         <SocialMetaTags
           title={metaData.title}

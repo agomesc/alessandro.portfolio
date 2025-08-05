@@ -1,8 +1,9 @@
-import React, { useMemo, lazy } from "react";
-import { Typography, Box, Paper } from "@mui/material";
+import { useMemo, lazy } from "react";
+import { Typography,  Paper } from "@mui/material";
 
 import SocialMetaTags from "../Components/SocialMetaTags";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const Privacidade = () => {
     const description = useMemo(
@@ -50,23 +51,7 @@ Esta política é efetiva a partir de 5 de agosto de 2025 às 9:45.`,
                 description={description}
             />
 
-            <Box
-                sx={(theme) => ({
-                    p: 0,
-                    width: {
-                        xs: "100%",
-                        sm: "90%",
-                        md: "80%",
-                        lg: "70%",
-                        xl: "80%",
-                    },
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                    padding: theme.customSpacing.pagePadding,
-                    mt: theme.customSpacing.sectionMarginTop,
-                })}
-            >
+            <ContentContainer sx={{ mt: 20 }}>
                 <TypographyTitle src="Política de Privacidade e Termos de Uso" />
                 <Paper
                     elevation={3}
@@ -82,7 +67,7 @@ Esta política é efetiva a partir de 5 de agosto de 2025 às 9:45.`,
                     </Typography>
                 </Paper>
                 <span id="ezoic-privacy-policy-embed"></span>
-            </Box>
+            </ContentContainer>
         </>
     );
 };

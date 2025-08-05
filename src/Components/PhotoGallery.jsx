@@ -33,13 +33,7 @@ const PhotoGallery = ({ src = [] }) => {
 
   return (
     
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          padding: { xs: 1, sm: 2, md: 3 },
-        }}
-      >
+      <>
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
           {src.map((item) => (
             <Box
@@ -104,7 +98,7 @@ const PhotoGallery = ({ src = [] }) => {
             </Box>
           ))}
         </Masonry>
-      </Box>
+      </>
     
   );
 };

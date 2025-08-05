@@ -15,6 +15,7 @@ const StarComponent = lazy(() => import("./StarComponent"));
 const SocialMetaTags = lazy(() => import("./SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
+const TypographyTitle = lazy(() => import("./TypographyTitle"));
 
 const EquipmentValueCalculator = () => {
   const [newPrice, setNewPrice] = useState('');
@@ -70,15 +71,10 @@ const EquipmentValueCalculator = () => {
 
   return (
     <Suspense fallback={<CustomSkeleton />}>
-      <Paper elevation={3} sx={{ maxWidth: 400, mx: 'auto', p: 3 }}>
-        
+      <Paper elevation={3} sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
         <Box display="flex" justifyContent="center" mb={1}>
           <img src="/images/app.png" alt="Camera Icon" style={{ maxWidth: '150px', height: 'auto', marginBottom: '16px' }} />
         </Box>
-
-        <Typography component="div" variant="h6" gutterBottom>
-          Calculadora de Valor Usado
-        </Typography>
 
          <Alert severity="info" sx={{ mb: 2 }}>
           Esta calculadora estima o valor de revenda de um equipamento fotográfico usado com base em:

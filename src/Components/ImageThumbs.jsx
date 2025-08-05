@@ -39,16 +39,8 @@ const App = ({ data = [] }) => {
   }, [search, data]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: 2,
-        width: "100%",
-      }}
-    >
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+    <>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
         <TextField
           variant="outlined"
           size="medium"
@@ -134,7 +126,7 @@ const App = ({ data = [] }) => {
           ))}
         </Masonry>
       )}
-    </Box>
+    </>
   );
 };
 

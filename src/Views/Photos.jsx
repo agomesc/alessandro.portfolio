@@ -7,7 +7,6 @@ import React, {
   useRef
 } from "react";
 import { useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // Importe o ícone
@@ -18,8 +17,7 @@ const PhotoGallery = lazy(() => import("../Components/PhotoGallery"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
-
-
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const Photos = () => {
   const { id } = useParams();
@@ -68,62 +66,41 @@ const Photos = () => {
 
   return (
     <>
-      <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+      <ContentContainer sx={{ mt: 20 }}>
         <Suspense fallback={<CustomSkeleton />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
-
-
-
         <Suspense fallback={<CustomSkeleton />}>
           <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
             Detalhes da Galeria:
           </Typography>
         </Suspense>
-
         <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
           <InfoOutlinedIcon />
         </IconButton>
-      </Box>
-      {showAlbumInfo && (
+        {showAlbumInfo && (
+          <Suspense fallback={<CustomSkeleton />}>
+            <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
+              {galleryInfoData || <CustomSkeleton />}
+            </Typography>
+          </Suspense>
+        )}
         <Suspense fallback={<CustomSkeleton />}>
-          <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-            {galleryInfoData || <CustomSkeleton />}
-          </Typography>
+          <PhotoGallery src={galleryData} />
         </Suspense>
-
-      )}
-      <Suspense fallback={<CustomSkeleton />}>
-        <PhotoGallery src={galleryData} />
-      </Suspense>
-      <Suspense fallback={<CustomSkeleton />}>
-        <CommentBox itemID={id} />
-      </Suspense>
-      <Suspense fallback={<CustomSkeleton />}>
-        <SocialMetaTags
-          title={galleryInfoData}
-          image="/logo_192.png"
-          description={galleryInfoData}
-          url={`${window.location.origin}/photo/${id}`}
-          type="website"
-        />
-      </Suspense>
+        <Suspense fallback={<CustomSkeleton />}>
+          <CommentBox itemID={id} />
+        </Suspense>
+        <Suspense fallback={<CustomSkeleton />}>
+          <SocialMetaTags
+            title={galleryInfoData}
+            image="/logo_192.png"
+            description={galleryInfoData}
+            url={`${window.location.origin}/photo/${id}`}
+            type="website"
+          />
+        </Suspense>
+      </ContentContainer>
     </>
   );
 };

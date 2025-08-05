@@ -4,27 +4,16 @@ import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
 import TypographyTitle from './TypographyTitle';
-import LazyImage from './LazyImage';
+
+const LazyImage = React.lazy(() => import('../Components/LazyImage'));
+const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
+
 
 const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        p: 0,
-        width: {
-          xs: "100%",
-          sm: "90%",
-          md: "80%",
-          lg: "70%",
-          xl: "80%"
-        },
-        margin: "0 auto",
-        padding: "0 20px",
-        mt: 10
-      }}
-    >
+    <ContentContainer sx={{ mt: 4 }}>
       <TypographyTitle src="Atualizações" />
 
       <Box
@@ -55,7 +44,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
                 borderRadius: '16px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 transition: 'transform 0.3s ease-in-out',
-                
+
               }}
             >
               {isHighlighted && (
@@ -113,7 +102,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
           Ver todas as atualizações
         </Link>
       </Box>
-    </Box>
+    </ContentContainer>
   );
 };
 

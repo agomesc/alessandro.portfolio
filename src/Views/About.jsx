@@ -1,10 +1,10 @@
 import { Suspense, lazy, useMemo } from 'react';
-import Box from "@mui/material/Box";
 import CustomSkeleton from "../Components/CustomSkeleton";
 
 const PhotoDescription = lazy(() => import("../Components/PhotoDescription"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const About = () => {
     const title = 'Sobre';
@@ -23,27 +23,11 @@ const About = () => {
 
     return (
         <Suspense fallback={<CustomSkeleton />}>
-            <Box
-                sx={(theme) => ({
-                    p: 0,
-                    width: {
-                        xs: "100%",
-                        sm: "90%",
-                        md: "80%",
-                        lg: "70%",
-                        xl: "80%",
-                    },
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                    padding: theme.customSpacing.pagePadding,
-                    mt: theme.customSpacing.sectionMarginTop,
-                })}
-            >
+            <ContentContainer sx={{ mt: 20 }}>
                 <TypographyTitle src={title} />
                 <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
                 <CommentBox itemID="About" />
-            </Box>
+            </ContentContainer>
         </Suspense>
     );
 };

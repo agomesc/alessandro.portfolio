@@ -17,6 +17,7 @@ const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const ListContentWithPagination = () => {
   const [ads, setAds] = useState([]);
@@ -70,23 +71,7 @@ const ListContentWithPagination = () => {
 
   return (
     <Suspense fallback={<CustomSkeleton />}>
-      <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
+      <ContentContainer sx={{ mt: 20 }}>
         <TypographyTitle src={title} />
         <Typography
           variant="body1"
@@ -158,7 +143,7 @@ const ListContentWithPagination = () => {
           type="website"
         />
 
-      </Box>
+        </ContentContainer>
     </Suspense>
   );
 };

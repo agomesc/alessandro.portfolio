@@ -1,11 +1,11 @@
 import React, { useEffect, useState, lazy, useMemo, useRef, Suspense } from "react";
-import Box from "@mui/material/Box";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const GalleryWork = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -42,30 +42,14 @@ const GalleryWork = () => {
 
     return (
         <>
-            <Box
-                sx={(theme) => ({
-                    p: 0,
-                    width: {
-                        xs: "100%",
-                        sm: "90%",
-                        md: "80%",
-                        lg: "70%",
-                        xl: "80%",
-                    },
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                    padding: theme.customSpacing.pagePadding,
-                    mt: theme.customSpacing.sectionMarginTop,
-                })}
-            >
+            <ContentContainer sx={{ mt: 4 }}>
                 <Suspense fallback={<CustomSkeleton />}>
                     <TypographyTitle src="Meus Trabalhos" />
                 </Suspense>
                 <Suspense fallback={<CustomSkeleton />}>
                     <ImageThumbs data={galleryData} />
                 </Suspense>
-            </Box>
+            </ContentContainer>
             <Suspense fallback={<CustomSkeleton />}>
                 <SocialMetaTags
                     title={metaData.title}

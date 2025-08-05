@@ -1,28 +1,13 @@
 import { lazy } from 'react';
-import { Paper, Typography, Box } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import Link from "@mui/material/Link";
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const Transparencia = () => {
   return (
-    <Box
-      sx={(theme) => ({
-        p: 0,
-        width: {
-          xs: "100%",
-          sm: "90%",
-          md: "80%",
-          lg: "70%",
-          xl: "80%",
-        },
-        alignContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        padding: theme.customSpacing.pagePadding,
-        mt: theme.customSpacing.sectionMarginTop,
-      })}
-    >
+    <ContentContainer sx={{ mt: 20 }}>
       <TypographyTitle src="Página de Transparência" />
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, border: 0, boxShadow: 0 }}>
         <Typography component="div" variant="subtitle1">Quem Sou?</Typography>
@@ -55,7 +40,7 @@ const Transparencia = () => {
           Todo o conteúdo deste site é protegido por direitos autorais.
         </Typography>
       </Paper>
-    </Box>
+    </ContentContainer>
   );
 };
 
