@@ -8,6 +8,8 @@ import Masonry from '@mui/lab/Masonry';
 import LazyImage from "./LazyImage";
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const StarComponent = lazy(() => import('./StarComponent'));
 
@@ -22,7 +24,7 @@ const overlayStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  
+
   boxSizing: 'border-box',
   zIndex: 1,
 };
@@ -46,15 +48,23 @@ const App = ({ data = [] }) => {
         width: "100%",
       }}
     >
-      
-      <TextField
-        variant="outlined"
-        size="small"
-        label="Buscar por título"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+        <TextField
+          variant="outlined"
+          size="medium"
+          label="Buscar por título"
+          value={search}
+          fullWidth
+          onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="action" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
       {filteredData.length === 0 ? (
         <Typography variant="h6" align="center" sx={{ mt: 4, color: 'text.secondary' }}>
           Nenhuma imagem encontrada
