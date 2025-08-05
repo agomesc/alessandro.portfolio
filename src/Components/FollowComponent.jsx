@@ -125,6 +125,7 @@ const FollowComponent = ({ entityId }) => {
       <img
         src="/logo_512.png"
         alt="Olho Fotográfico"
+        loading="lazy"
         style={{ height: "120px", objectFit: "contain" }}
       />
 
@@ -144,13 +145,13 @@ const FollowComponent = ({ entityId }) => {
         />
       ))}
       {followers.length > 3 && (
-        <span style={{ fontSize: "0.9em" }}>
+        <span style={{ fontSize: "0.9em", color: "var(--primary-color)" }}>
           + {followers.length - 3} outros
         </span>
       )}
 
 
-      <span style={{ fontSize: "1.1em", fontWeight: 500, color: "#222" }}>
+      <span style={{ fontSize: "1.1em", fontWeight: 500, color: "var(--primary-color)" }}>
         {followers.length} Seguidor{followers.length !== 1 ? "es" : ""}
       </span>
 
@@ -203,7 +204,7 @@ const FollowComponent = ({ entityId }) => {
       )}
 
       {isProcessing && (
-        <p style={{ fontSize: "0.85em", color: "#ccc" }}>Processando...</p>
+        <p style={{ fontSize: "0.85em", color: "var(--primary-color)" }}>Processando...</p>
       )}
     </div>
   );
