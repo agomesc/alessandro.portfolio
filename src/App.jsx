@@ -45,11 +45,11 @@ const App = () => {
 			<Routes />
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
+   		  {/* <LojaDeFotos /> */}
+			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
-   		  {/* <LojaDeFotos /> */}
-			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
