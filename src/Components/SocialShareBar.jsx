@@ -1,8 +1,6 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaPinterest } from 'react-icons/fa';
-import Typography from '@mui/material/Typography';
 
-const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
 
 const SocialShareBar = ({ url, title }) => {
   const socialNetworks = [
@@ -15,11 +13,6 @@ const SocialShareBar = ({ url, title }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
-      <Suspense fallback={<CustomSkeleton />}>
-        <Typography component="div" variant="subtitle1" style={{ marginBottom: '5px' }}>
-          Compartilhar
-        </Typography>
-      </Suspense>
       <div style={{ display: 'flex', gap: '15px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
           <a
@@ -29,9 +22,9 @@ const SocialShareBar = ({ url, title }) => {
             rel="noopener noreferrer"
             aria-label={`Compartilhar no ${network.name}`}
             title={`Compartilhar no ${network.name}`}
-            style={{ fontSize: '1.5rem', color: '#444', transition: 'color 0.2s' }}
-            onMouseOver={(e) => (e.currentTarget.style.color = '#c0810d')}
-            onMouseOut={(e) => (e.currentTarget.style.color = '#444')}
+            style={{ fontSize: '1.5rem', color: 'var(--primary-color)', transition: 'color 0.2s' }}
+            onMouseOver={(e) => (e.currentTarget.style.color = 'var(--secundary-color)')}
+            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--primary-color)')}
           >
             {network.icon}
           </a>
