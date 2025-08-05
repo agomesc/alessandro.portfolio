@@ -100,7 +100,7 @@ const App = () => {
   return (
     <Box sx={{
       width: "100%",
-      maxWidth: "none",
+      maxWidth: "100%",
       p: 0,
       alignContent: "center",
       alignItems: "center",
@@ -177,10 +177,13 @@ const App = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          height: '400px',
           backgroundColor: 'var(--background-color)',
           color: 'var(--text-color)'
         }}>
-          <Typography component="div" variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
+          <Suspense fallback={<CustomSkeleton />}>
+            <Typography variant="h6" sx={{ ml: 2 }}>Carregando a imagem...</Typography>
+          </Suspense>
         </Box>
       )}
     </Box>

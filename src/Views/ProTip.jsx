@@ -15,6 +15,7 @@ const ProTip = () => {
 					<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
 						<img
 							src="https://flagcdn.com/w80/br.png"
+							loading="lazy"
 							alt="Bandeira do Brasil"
 							style={{ width: '40px', height: 'auto', borderRadius: '2px' }}
 						/>

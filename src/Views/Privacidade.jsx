@@ -5,67 +5,86 @@ import SocialMetaTags from "../Components/SocialMetaTags";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 
 const Privacidade = () => {
-  const description = useMemo(() => `Política de Privacidade
+    const description = useMemo(
+        () =>
+            `Política de Privacidade e Termos de Uso
 
-A sua privacidade é importante para mim. É política do OlhoFotográfico respeitar a sua privacidade em relação a qualquer informação sua que eu possa coletar no site www.olhofotografico.com.br, e em outros sites que possuo e opero.
+A sua privacidade é de extrema importância para mim. O site OlhoFotográfico é meu portfólio pessoal, onde compartilho minha paixão pela fotografia, e também uma plataforma para exibir e vender meu trabalho.
 
-Solicito informações pessoais apenas quando realmente preciso delas para lhe fornecer um serviço. Faço isso por meios justos e legais, com o seu conhecimento e consentimento. Também informo por que estou coletando e como será usada.
+**Coleta e Uso de Dados Pessoais**
 
-Apenas retenho as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando armazeno dados, protejo-os dentro de meios comercialmente aceitáveis para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados.
+Eu **não coleto seus dados pessoais**, como nome ou e-mail, ao navegar pelo site. Você pode visualizar meu portfólio de forma totalmente anônima.
 
-Não compartilho informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.
+**Uso de Cookies e Tecnologias de Rastreamento**
 
-O meu site pode conter links para sites externos que não são operados por mim. Esteja ciente de que não tenho controle sobre o conteúdo e práticas desses sites e não posso aceitar responsabilidade por suas respectivas políticas de privacidade.
+O site **não utiliza cookies ou qualquer outra tecnologia de rastreamento** para monitorar sua navegação.
 
-Você é livre para recusar minha solicitação de informações pessoais, entendendo que talvez eu não consiga fornecer alguns dos serviços desejados.
+**Links Externos**
 
-O uso continuado do meu site será considerado como aceitação das práticas em torno de privacidade e informações pessoais. Se você tiver alguma dúvida sobre como lido com dados de usuários e informações pessoais, entre em contato comigo.
+Meu site pode conter links para sites de terceiros, como plataformas de vendas de fotos ou redes sociais. Fique ciente de que não sou responsável pelas políticas de privacidade ou conteúdo desses sites.
 
-Compromisso do Usuário
-O usuário se compromete a fazer uso adequado dos conteúdos e das informações que o OlhoFotográfico oferece no site e, com caráter enunciativo, mas não limitativo:
+**Compromisso do Usuário**
 
-A) Não se envolver em atividades que sejam ilegais ou contrárias à boa fé e à ordem pública;
-B) Não difundir propaganda ou conteúdo de natureza racista, xenofóbica, jogos de azar, qualquer tipo de pornografia ilegal, de apologia ao terrorismo ou contra os direitos humanos;
-C) Não causar danos aos sistemas físicos (hardware) e lógicos (software) do OlhoFotográfico, de meus fornecedores ou de terceiros, nem introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de hardware ou software capazes de causar danos.
+Ao usar este site, você se compromete a fazer um uso adequado dos conteúdos e das informações, e a não se envolver em atividades que:
+A) Sejam ilegais ou contrárias à boa fé e à ordem pública.
+B) Difundam propaganda racista, xenofóbica, de jogos de azar, qualquer tipo de pornografia ilegal, de apologia ao terrorismo ou contra os direitos humanos.
+C) Causem danos aos sistemas (hardware e software) do OlhoFotográfico, de fornecedores ou de terceiros, incluindo a introdução de vírus ou outros sistemas prejudiciais.
 
-Mais informações
-Espero que isso esteja esclarecido e, como mencionado anteriormente, se houver algo que você não tem certeza se precisa ou não, geralmente é mais seguro deixar os cookies ativados, caso interaja com algum dos recursos usados em meu site.
+**Informações sobre Vendas**
 
-Esta política é efetiva a partir de 24 de março de 2024 às 20:53.`, []);
+As fotos exibidas no portfólio podem estar disponíveis para compra. Se você tiver interesse em adquirir alguma imagem, pode entrar em contato comigo para mais detalhes.
 
-  const title = 'Privacidade';
+Se você tiver alguma dúvida sobre esta política, sinta-se à vontade para entrar em contato.
 
-  return (
-    <>
-      <SocialMetaTags title={title} image="../../public/logo_192.png" description={description} />
+Esta política é efetiva a partir de 5 de agosto de 2025 às 9:45.`,
+        []
+    );
 
-      <Box
-        sx={(theme) => ({
-          p: 0,
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          alignContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
-        <TypographyTitle src="Política de Privacidade e Termos de Uso" />
-        <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, boxShadow: 0 }}>
-          <Typography variant="body1" component="div">
-            {description}
-          </Typography>
-        </Paper>
-        <span id="ezoic-privacy-policy-embed"></span>
-      </Box>
-    </>
-  );
+    const title = "Política de Privacidade";
+
+    return (
+        <>
+            <SocialMetaTags
+                title={title}
+                image="../../public/logo_192.png"
+                description={description}
+            />
+
+            <Box
+                sx={(theme) => ({
+                    p: 0,
+                    width: {
+                        xs: "100%",
+                        sm: "90%",
+                        md: "80%",
+                        lg: "70%",
+                        xl: "80%",
+                    },
+                    alignContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                    padding: theme.customSpacing.pagePadding,
+                    mt: theme.customSpacing.sectionMarginTop,
+                })}
+            >
+                <TypographyTitle src="Política de Privacidade e Termos de Uso" />
+                <Paper
+                    elevation={3}
+                    sx={{
+                        whiteSpace: "pre-wrap",
+                        textAlign: "justify",
+                        p: 5,
+                        boxShadow: 0,
+                    }}
+                >
+                    <Typography variant="body1" component="div">
+                        {description}
+                    </Typography>
+                </Paper>
+                <span id="ezoic-privacy-policy-embed"></span>
+            </Box>
+        </>
+    );
 };
 
 export default Privacidade;

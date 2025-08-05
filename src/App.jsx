@@ -46,9 +46,9 @@ const App = () => {
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
 			{/* <LojaDeFotos /> */}
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+			
 				<FollowComponent entityId="1" />
-			</Box>
+			
 			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />

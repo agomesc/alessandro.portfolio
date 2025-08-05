@@ -16,7 +16,6 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
-const RandomPhoto = lazy(() => import("../Components/PhotoHighlight.jsx"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
@@ -92,18 +91,22 @@ const Home = () => {
 
     return (
         <>
-            <Suspense fallback={<CustomSkeleton />}>
-                <RandomPhoto />
-            </Suspense>
-            <Tabs
+                <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
                 centered
                 sx={{
-                    marginTop: 5,
+                    marginTop: 15,
                     marginBottom: -8,
                     ".MuiTabs-indicator": {
                         backgroundColor: "var(--primary-color)",
+                    },
+                    // Adiciona espaçamento entre as tabs para melhor leitura
+                    "& .MuiTab-root": {
+                        margin: "0 8px",
+                        // Aumenta a espessura da fonte para dar mais ênfase
+                        fontWeight: 600,
+                        borderRadius: "8px",
                     },
                 }}
             >
@@ -111,15 +114,30 @@ const Home = () => {
                     icon={<PhotoLibraryIcon />}
                     iconPosition="start"
                     label="Galeria"
-                    sx={{ color: tabIndex === 0 ? "var(--primary-color)" : "var(--secondary-color)" }}
+                    sx={{
+                        color: tabIndex === 0 ? "var(--primary-color)" : "var(--secondary-color)",
+                        // Adiciona um fundo sutil para a tab selecionada
+                        backgroundColor: tabIndex === 0 ? "rgba(0, 0, 0, 0.04)" : "transparent",
+                        "&:hover": {
+                            backgroundColor: tabIndex === 0 ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.04)",
+                        },
+                    }}
                 />
                 <Tab
                     icon={<BrushIcon />}
                     iconPosition="start"
                     label="Meus Trabalhos"
-                    sx={{ color: tabIndex === 1 ? "var(--primary-color)" : "var(--secondary-color)" }}
+                    sx={{
+                        color: tabIndex === 1 ? "var(--primary-color)" : "var(--secondary-color)",
+                        // Adiciona um fundo sutil para a tab selecionada
+                        backgroundColor: tabIndex === 1 ? "rgba(0, 0, 0, 0.04)" : "transparent",
+                        "&:hover": {
+                            backgroundColor: tabIndex === 1 ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.04)",
+                        },
+                    }}
                 />
             </Tabs>
+
 
             <Box mt={5}>
                 {renderGalleryContent()}

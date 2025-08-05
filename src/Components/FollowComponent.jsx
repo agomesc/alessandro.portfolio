@@ -117,43 +117,38 @@ const FollowComponent = ({ entityId }) => {
         color: "#fff",
         width: "fit-content",
         boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+        justifyContent: 'center',
+        margin: '0 auto',
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
-        <img
-          src="/logo_512.png"
-          alt="Olho Fotográfico"
-          style={{ height: "120px", objectFit: "contain" }}
-        />
 
-        {followers.slice(0, 3).map((follower) => (
-          <img
-            key={follower.uid}
-            src={follower.photoURL || "https://via.placeholder.com/30"}
-            alt={follower.displayName || "Follower"}
-            title={follower.displayName || "Follower"}
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              border: "2px solid gold",
-            }}
-          />
-        ))}
-        {followers.length > 3 && (
-          <span style={{ fontSize: "0.9em" }}>
-            + {followers.length - 3} outros
-          </span>
-        )}
-      </div>
+      <img
+        src="/logo_512.png"
+        alt="Olho Fotográfico"
+        style={{ height: "120px", objectFit: "contain" }}
+      />
+
+      {followers.slice(0, 3).map((follower) => (
+        <img
+          key={follower.uid}
+          src={follower.photoURL || "https://via.placeholder.com/30"}
+          alt={follower.displayName || "Follower"}
+          title={follower.displayName || "Follower"}
+          loading="lazy"
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "50%",
+            border: "2px solid gold",
+          }}
+        />
+      ))}
+      {followers.length > 3 && (
+        <span style={{ fontSize: "0.9em" }}>
+          + {followers.length - 3} outros
+        </span>
+      )}
+
 
       <span style={{ fontSize: "1.1em", fontWeight: 500, color: "#222" }}>
         {followers.length} Seguidor{followers.length !== 1 ? "es" : ""}

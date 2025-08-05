@@ -67,18 +67,8 @@ const GroupedFlickrPhotos = () => {
 
                 {photosByYear.map(({ year, photos }) => (
                     <Box key={year} mb={8}>
-                        <Box textAlign="center" mb={2}>
-                            <Typography
-                                variant="h3"
-                                sx={{
-                                    fontWeight: 'bold',
-                                    color: 'primary.main',
-                                    textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
-                                }}
-                            >
-                                {year}
-                            </Typography>
-                            <Divider sx={{ maxWidth: 200, mx: 'auto', mt: 1, mb: 3 }} />
+                        <Box mb={2}>
+                            <TypographyTitle src={year} />
                         </Box>
 
                         <Suspense fallback={<CustomSkeleton />}>
