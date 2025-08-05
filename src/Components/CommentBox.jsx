@@ -376,6 +376,7 @@ function CommentBox({ itemID }) {
 
                     <Box sx={{ mb: 2 }}>
                         <Editor
+                            
                             onContentChange={setComment}
                             defaultValue={comment}
                             height="250px"

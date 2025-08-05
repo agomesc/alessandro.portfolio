@@ -111,14 +111,15 @@ const FollowComponent = ({ entityId }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "12px",
+        gap: "5px",
         padding: "20px",
         borderRadius: "12px",
         color: "#fff",
         width: "fit-content",
         boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
         justifyContent: 'center',
-        margin: '0 auto',
+        margin: '20px auto', // Changed this line
+        marginTop: '20px', // Added this line
       }}
     >
 

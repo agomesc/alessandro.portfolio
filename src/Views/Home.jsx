@@ -45,7 +45,7 @@ const Home = () => {
                         : await flickrInstance.current.getLatestPhotosLargeSquarelWork() ?? [];
                 setGalleryData(data);
             } catch (error) {
-                
+                console.error("Erro ao carregar imagens:", error);
                 setSnackbarMessage("Falha ao carregar fotos. Por favor, tente novamente mais tarde.");
                 setSnackbarSeverity("error");
                 setSnackbarOpen(true);

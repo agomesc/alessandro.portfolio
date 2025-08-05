@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Roboto:wght@400;700&display=swap');
-/* styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+
+:root {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 body.light-mode {
   --primary-color: #005B9F;
   --secondary-color: #F57C00;
@@ -15,24 +23,25 @@ body.dark-mode {
   --text-color: #f0f0f0;
 }
 
-/* O restante do seu CSS vai aqui */
-body,
-html {
+body, html {
   font-family: 'Roboto', sans-serif;
-  /* Aplica as variáveis de cor para elementos fora do Material-UI */
   background: var(--background-color);
   color: var(--text-color);
   transition: background 0.3s, color 0.3s;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* Títulos */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Lora', serif; /* Usando a nova fonte serifada para os títulos */
+  font-family: 'Lora', serif;
   color: var(--secondary-color);
   position: relative;
+  margin: 1em 0 0.5em;
 }
 
-/* Linha decorativa nos títulos */
 h1::after, h2::after, h3::after, h4::after {
   content: "";
   position: absolute;
@@ -50,6 +59,7 @@ h1::after, h2::after, h3::after, h4::after {
   h3 { font-size: 14px; }
   h4 { font-size: 12px; }
 }
+
 @media (min-width: 601px) {
   h1 { font-size: 20px; }
   h2 { font-size: 18px; }
@@ -65,7 +75,7 @@ a {
 
 a:hover {
   color: var(--secondary-color);
-  transition: 'color 0.2s'
+  transition: color 0.2s;
 }
 
 a:focus {
@@ -73,38 +83,41 @@ a:focus {
   outline-offset: 4px;
 }
 
+/* Imagens */
 img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
   object-fit: contain;
   -webkit-user-drag: none;
   user-drag: none;
+  display: block;
 }
 
 a img {
   transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  
 }
+
 a img:hover {
   filter: blur(3px);
   opacity: 0.8;
 }
 
-.Container {
+/* Container responsivo */
+.container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px; /* Add some space between items */
+  place-items: center;
 }
 
+
+/* Editor Quill */
 .ql-editor img.quill-custom-image {
-  max-width: 320px !important;
-  max-height: 240px !important;
-  width: auto !important;
+  max-width: 100% !important;
   height: auto !important;
   display: block;
   margin: 10px 0;
 }
 
+/* Animações */
 .fade-container {
   opacity: 0;
   animation: fadeIn 0.6s ease forwards;

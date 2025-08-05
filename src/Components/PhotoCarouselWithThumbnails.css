@@ -1,0 +1,36 @@
+.carousel-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.main-photo img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.thumbnails {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.thumbnails img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border 0.3s ease;
+}
+
+.thumbnails img.active {
+  border: 2px solid #1976d2;
+}

@@ -89,31 +89,29 @@ const Photos = () => {
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
 
-        {/* Info Icon to trigger album info loading */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 3 }}>
 
-          <Suspense fallback={<CustomSkeleton />}>
-            <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
-              Detalhes da Galeria:
-            </Typography>
-          </Suspense>
 
-          <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
-            <InfoOutlinedIcon />
-          </IconButton>
-        </Box>
-        {showAlbumInfo && (
-          <Suspense fallback={<CustomSkeleton />}>
-            <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-              {galleryInfoData || <CustomSkeleton />}
-            </Typography>
-          </Suspense>
-
-        )}
         <Suspense fallback={<CustomSkeleton />}>
-          <PhotoGallery src={galleryData} />
+          <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
+            Detalhes da Galeria:
+          </Typography>
         </Suspense>
+
+        <IconButton onClick={() => setShowAlbumInfo(true)} aria-label="mostrar informações da galeria">
+          <InfoOutlinedIcon />
+        </IconButton>
       </Box>
+      {showAlbumInfo && (
+        <Suspense fallback={<CustomSkeleton />}>
+          <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
+            {galleryInfoData || <CustomSkeleton />}
+          </Typography>
+        </Suspense>
+
+      )}
+      <Suspense fallback={<CustomSkeleton />}>
+        <PhotoGallery src={galleryData} />
+      </Suspense>
       <Suspense fallback={<CustomSkeleton />}>
         <CommentBox itemID={id} />
       </Suspense>

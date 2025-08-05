@@ -18,11 +18,11 @@ export const lightTheme = createTheme({
     fontFamily: "Roboto, sans-serif",
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 5,
   },
   customSpacing: {
     pagePadding: "0 10px",
-    sectionMarginTop: 10,
+    sectionMarginTop: 20,
   },
 });
 
@@ -42,10 +42,10 @@ export const darkTheme = createTheme({
     fontFamily: "Roboto, sans-serif",
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 5,
   },
   customSpacing: {
     pagePadding: "0 10px",
-    sectionMarginTop: 10,
+    sectionMarginTop: 20,
   },
 });

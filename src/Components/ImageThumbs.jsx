@@ -22,7 +22,7 @@ const overlayStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '8px 12px',
+  
   boxSizing: 'border-box',
   zIndex: 1,
 };
@@ -37,26 +37,23 @@ const App = ({ data = [] }) => {
   }, [search, data]);
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Box
-        sx={{
-          mb: 3,
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 2,
-        }}
-      >
-        <TextField
-          variant="outlined"
-          size="small"
-          label="Buscar por título"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ flexGrow: 1, maxWidth: 300 }}
-        />
-      </Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: 2,
+        width: "100%",
+      }}
+    >
+      
+      <TextField
+        variant="outlined"
+        size="small"
+        label="Buscar por título"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {filteredData.length === 0 ? (
         <Typography variant="h6" align="center" sx={{ mt: 4, color: 'text.secondary' }}>
