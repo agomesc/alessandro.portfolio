@@ -46,13 +46,13 @@ const App = () => {
 			<SocialShareBar url={urlAtual} title="Confira o meu trabalho!" />
 			<NavigationButtons />
    		  {/* <LojaDeFotos /> */}
-			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
+			<ProTip />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);

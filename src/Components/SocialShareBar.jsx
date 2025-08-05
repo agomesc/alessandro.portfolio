@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp, FaPinterest } from 'react-icons/fa';
 import Typography from '@mui/material/Typography';
+
+const CustomSkeleton = lazy(() => import("./CustomSkeleton"));
 
 const SocialShareBar = ({ url, title }) => {
   const socialNetworks = [
@@ -13,9 +15,11 @@ const SocialShareBar = ({ url, title }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', padding: '5px' }}>
-      <Typography component="div" variant="subtitle1" style={{ marginBottom: '5px' }}>
-        Compartilhar
-      </Typography>
+      <Suspense fallback={<CustomSkeleton />}>
+        <Typography component="div" variant="subtitle1" style={{ marginBottom: '5px' }}>
+          Compartilhar
+        </Typography>
+      </Suspense>
       <div style={{ display: 'flex', gap: '15px', marginBottom: '5%' }}>
         {socialNetworks.map((network) => (
           <a
