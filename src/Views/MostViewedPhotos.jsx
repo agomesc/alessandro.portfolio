@@ -5,7 +5,8 @@ import {
   ImageListItem,
   ImageListItemBar,
   CircularProgress,
-  Box
+  Box,
+  Pagination
 } from '@mui/material';
 
 const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
@@ -14,6 +15,8 @@ const TypographyTitle = React.lazy(() => import('../Components/TypographyTitle')
 const MostViewedGallery = ({ userID }) => {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const photosPerPage = 20;
   const flickrInstance = useRef(null);
 
   if (!flickrInstance.current) {
@@ -35,6 +38,24 @@ const MostViewedGallery = ({ userID }) => {
     fetchPhotos();
   }, [userID]);
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(date);
+  };
+
+  const paginatedPhotos = photos.slice(
+    (page - 1) * photosPerPage,
+    page * photosPerPage
+  );
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
@@ -47,7 +68,7 @@ const MostViewedGallery = ({ userID }) => {
     <ContentContainer sx={{ mt: 20 }}>
       <TypographyTitle src="Fotos mais vistas" gutterBottom />
       <ImageList variant="masonry" cols={4} gap={12}>
-        {photos.map(photo => (
+        {paginatedPhotos.map(photo => (
           <ImageListItem key={photo.id} sx={{ position: 'relative' }}>
             <Box
               component="img"
@@ -57,13 +78,14 @@ const MostViewedGallery = ({ userID }) => {
               sx={{
                 width: '100%',
                 height: 'auto',
+                maxWidth:'320px',
                 objectFit: 'cover',
                 borderRadius: 2,
               }}
             />
             <ImageListItemBar
               title={photo.title || 'Sem título'}
-              subtitle={`👁️ ${photo.views} views`}
+              subtitle={`📅 ${formatDate(photo.date)} — 👁️ ${photo.views} views`}
               position="top"
               sx={{
                 background: 'rgba(0, 0, 0, 0.4)',
@@ -75,6 +97,15 @@ const MostViewedGallery = ({ userID }) => {
           </ImageListItem>
         ))}
       </ImageList>
+
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Pagination
+          count={Math.ceil(photos.length / photosPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
     </ContentContainer>
   );
 };
