@@ -6,8 +6,10 @@ import {
   ImageListItemBar,
   CircularProgress,
   Box,
-  Pagination
+  Pagination,
+  useMediaQuery
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
 const TypographyTitle = React.lazy(() => import('../Components/TypographyTitle'));
@@ -18,6 +20,10 @@ const MostViewedGallery = ({ userID }) => {
   const [page, setPage] = useState(1);
   const photosPerPage = 20;
   const flickrInstance = useRef(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
@@ -56,6 +62,12 @@ const MostViewedGallery = ({ userID }) => {
     page * photosPerPage
   );
 
+  const getColumns = () => {
+    if (isMobile) return 1;
+    if (isTablet) return 2;
+    return 4;
+  };
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
@@ -67,7 +79,7 @@ const MostViewedGallery = ({ userID }) => {
   return (
     <ContentContainer sx={{ mt: 20 }}>
       <TypographyTitle src="Fotos mais vistas" gutterBottom />
-      <ImageList variant="masonry" cols={4} gap={12}>
+      <ImageList variant="masonry" cols={getColumns()} gap={12}>
         {paginatedPhotos.map(photo => (
           <ImageListItem key={photo.id} sx={{ position: 'relative' }}>
             <Box
@@ -78,7 +90,7 @@ const MostViewedGallery = ({ userID }) => {
               sx={{
                 width: '100%',
                 height: 'auto',
-                maxWidth:'100%',
+                maxWidth: '100%',
                 objectFit: 'cover',
                 borderRadius: 2,
               }}
