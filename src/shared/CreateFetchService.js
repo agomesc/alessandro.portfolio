@@ -1,5 +1,10 @@
 // src/services/fetchService.js
+
+let fetchServiceInstance = null;
+
 const CreateFetchService = () => {
+    if (fetchServiceInstance) return fetchServiceInstance;
+
     let lastRequestTime = 0;
     const observers = new Set();
     const DEFAULT_CACHE_DURATION = 20 * 60 * 1000; // 20 minutos
@@ -43,7 +48,7 @@ const CreateFetchService = () => {
             return data;
         } catch (error) {
             notify("error", { url, options, error: error.message });
-            console.error(`Erro na requisição ${url}:`, error); // Adicione um console.error aqui
+            console.error(`Erro na requisição ${url}:`, error);
             throw new Error(`Erro na requisição: ${error.message}`);
         }
     }
@@ -51,7 +56,7 @@ const CreateFetchService = () => {
     async function get(url, cacheOptions = {}) {
         if (!navigator.onLine) {
             notify("error", { url, error: TryError(521) });
-            throw new Error(TryError(521)); // Offline error
+            throw new Error(TryError(521));
         }
 
         const { useCache = true, cacheDuration = DEFAULT_CACHE_DURATION } = cacheOptions;
@@ -66,29 +71,27 @@ const CreateFetchService = () => {
                     if (now - timestamp < cacheDuration) {
                         notify("cache-hit", { url, data });
                         console.log(`[CACHE HIT] Retornando do cache para: ${url}`);
-                        return data; // Retorna dados do cache se estiverem frescos
+                        return data;
                     } else {
                         console.log(`[CACHE EXPIRADO] Removendo cache para: ${url}`);
-                        sessionStorage.removeItem(cacheKey); // Remove dados expirados
+                        sessionStorage.removeItem(cacheKey);
                     }
                 }
             } catch (e) {
                 console.error(`[ERRO CACHE] Falha ao ler ou parsear cache para ${url}:`, e);
-                sessionStorage.removeItem(cacheKey); // Limpa entrada de cache corrompida
+                sessionStorage.removeItem(cacheKey);
             }
         }
 
-        // Se não houver cache, ou cache estiver expirado/desativado, faz a requisição real
         const response = await fetchWithInterceptor(url);
 
         if (useCache) {
             try {
-                // Armazena a resposta com um timestamp
                 sessionStorage.setItem(cacheKey, JSON.stringify({ data: response, timestamp: now }));
                 console.log(`[CACHE SET] Armazenando no cache para: ${url}`);
             } catch (e) {
                 console.error(`[ERRO CACHE] Falha ao armazenar cache para ${url}:`, e);
-                throw new Error(TryError(500)); // Usar um erro genérico de servidor ou um específico para storage
+                throw new Error(TryError(500));
             }
         }
 
@@ -98,14 +101,14 @@ const CreateFetchService = () => {
     async function post(url, data) {
         if (!navigator.onLine) {
             notify("error", { url, error: TryError(521) });
-            throw new Error(TryError(521)); // Offline error
+            throw new Error(TryError(521));
         }
 
         const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Cache-Control": "no-cache", // Importante para requisições POST
+                "Cache-Control": "no-cache",
                 "Connection": "keep-alive"
             },
             body: JSON.stringify(data)
@@ -115,7 +118,8 @@ const CreateFetchService = () => {
         return response;
     }
 
-    return { get, post, subscribe, unsubscribe };
+    fetchServiceInstance = { get, post, subscribe, unsubscribe };
+    return fetchServiceInstance;
 };
 
 function TryError(code) {

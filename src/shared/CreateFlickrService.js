@@ -109,9 +109,5 @@ const CreateFlickrService = () => {
     };
 };
 
-// Crie e exporte a ÚNICA INSTÂNCIA do seu FlickrService
 export default CreateFlickrService;
 
-// Opcional: Se você quiser expor o fetchInstance para subscrever eventos, faça assim:
-// export const subscribeToFetchEvents = fetchInstance.subscribe;
-// export const unsubscribeFromFetchEvents = fetchInstance.unsubscribe;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense, useRef } from 'react';
 import CreateFlickrApp from '../shared/CreateFlickrApp';
 import {
   Typography,
@@ -12,7 +12,12 @@ const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const GroupedFlickrPhotos = () => {
-  const flickr = CreateFlickrApp();
+  const flickrInstance = useRef(null);
+
+  if (!flickrInstance.current) {
+    flickrInstance.current = CreateFlickrApp();
+  }
+
   const [photosByYear, setPhotosByYear] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagesByYear, setPagesByYear] = useState({});
@@ -21,7 +26,7 @@ const GroupedFlickrPhotos = () => {
   useEffect(() => {
     const loadPhotos = async () => {
       try {
-        const grouped = await flickr.getPhotosGroupedByYear();
+        const grouped = await flickrInstance.current.getPhotosGroupedByYear();
         setPhotosByYear(grouped);
 
         const initialPages = {};

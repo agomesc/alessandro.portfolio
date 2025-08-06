@@ -40,7 +40,7 @@ const App = ({ data = [] }) => {
 
   return (
     <>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
         <TextField
           variant="outlined"
           size="medium"

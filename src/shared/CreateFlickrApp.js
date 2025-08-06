@@ -1,7 +1,10 @@
 import CreateFlickrService from "./CreateFlickrService";
 
 // https://www.flickr.com/services/api/flickr.photos.getSizes.html
+let flickrAppInstance; // singleton
 const CreateFlickrApp = () => {
+	if (flickrAppInstance) return flickrAppInstance;
+	
 	const userID = process.env.REACT_APP_USER_ID;
 	const userwORKID = process.env.REACT_APP_USER_WORK_ID;
 	const instance = CreateFlickrService();
@@ -166,8 +169,7 @@ const CreateFlickrApp = () => {
 			}));
 	};
 
-
-	return {
+	flickrAppInstance = {
 		getGallery,
 		getGallerySmall,
 		getAlbum,
@@ -184,6 +186,8 @@ const CreateFlickrApp = () => {
 		getPhotosGroupedByYear,
 		getMostViewedPhotos
 	};
+
+	return flickrAppInstance;
 };
 
 export default CreateFlickrApp;

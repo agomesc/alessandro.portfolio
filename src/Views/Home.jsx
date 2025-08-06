@@ -9,11 +9,15 @@ import {
 } from "react";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import {
+    Box,
+    Tabs,
+    Tab
+} from "@mui/material";
+
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
+import StarIcon from "@mui/icons-material/Star"; // ícone para "Mais Vistas"
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -22,7 +26,6 @@ const MostViewedPhotos = lazy(() => import("./MostViewedPhotos"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
-
 
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -37,28 +40,29 @@ const Home = () => {
         flickrInstance.current = CreateFlickrApp();
     }
 
-
     useEffect(() => {
         document.body.classList.add("light-mode");
     }, []);
 
     useEffect(() => {
-        const fetchPhotos = async () => {
-            setGalleryData(null);
-            try {
-                const data =
-                    tabIndex === 0
-                        ? await flickrInstance.current.getLatestPhotosLargeSquare() ?? []
-                        : await flickrInstance.current.getLatestPhotosLargeSquarelWork() ?? [];
-                setGalleryData(data);
-            } catch (error) {
-                console.error("Erro ao carregar imagens:", error);
-                setSnackbarMessage("Falha ao carregar fotos. Por favor, tente novamente mais tarde.");
-                setSnackbarSeverity("error");
-                setSnackbarOpen(true);
-            }
-        };
-        fetchPhotos();
+        if (tabIndex === 0 || tabIndex === 1) {
+            const fetchPhotos = async () => {
+                setGalleryData(null);
+                try {
+                    const data =
+                        tabIndex === 0
+                            ? await flickrInstance.current.getLatestPhotosLargeSquare() ?? []
+                            : await flickrInstance.current.getLatestPhotosLargeSquarelWork() ?? [];
+                    setGalleryData(data);
+                } catch (error) {
+                    console.error("Erro ao carregar imagens:", error);
+                    setSnackbarMessage("Falha ao carregar fotos. Por favor, tente novamente mais tarde.");
+                    setSnackbarSeverity("error");
+                    setSnackbarOpen(true);
+                }
+            };
+            fetchPhotos();
+        }
     }, [tabIndex]);
 
     useEffect(() => {
@@ -84,6 +88,7 @@ const Home = () => {
         if (!deferredGalleryData || deferredGalleryData.length === 0) {
             return <CustomSkeleton />;
         }
+
         return (
             <Suspense fallback={<CustomSkeleton />}>
                 <SwipeableSlider itemData={deferredGalleryData} allUpdatesUrl="/latestphotos" />
@@ -101,29 +106,34 @@ const Home = () => {
             <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
+                variant="standard" // scrollable não faz sentido se quer centralizar
                 centered
                 sx={{
                     marginTop: 15,
                     marginBottom: -8,
+                    display: "flex",
+                    justifyContent: "center",
+                    ".MuiTabs-flexContainer": {
+                        justifyContent: "center", // garante centralização do container das tabs
+                    },
                     ".MuiTabs-indicator": {
                         backgroundColor: "var(--primary-color)",
                     },
-                    // Adiciona espaçamento entre as tabs para melhor leitura
                     "& .MuiTab-root": {
                         margin: "0 8px",
-                        // Aumenta a espessura da fonte para dar mais ênfase
                         fontWeight: 600,
                         borderRadius: "8px",
+                        minWidth: "120px",
                     },
                 }}
             >
+
                 <Tab
                     icon={<PhotoLibraryIcon />}
                     iconPosition="start"
                     label="Galeria"
                     sx={{
                         color: tabIndex === 0 ? "var(--primary-color)" : "var(--secondary-color)",
-                        // Adiciona um fundo sutil para a tab selecionada
                         backgroundColor: tabIndex === 0 ? "rgba(0, 0, 0, 0.04)" : "transparent",
                         "&:hover": {
                             backgroundColor: tabIndex === 0 ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.04)",
@@ -136,21 +146,34 @@ const Home = () => {
                     label="Meus Trabalhos"
                     sx={{
                         color: tabIndex === 1 ? "var(--primary-color)" : "var(--secondary-color)",
-                        // Adiciona um fundo sutil para a tab selecionada
                         backgroundColor: tabIndex === 1 ? "rgba(0, 0, 0, 0.04)" : "transparent",
                         "&:hover": {
                             backgroundColor: tabIndex === 1 ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.04)",
                         },
                     }}
                 />
+                <Tab
+                    icon={<StarIcon />}
+                    iconPosition="start"
+                    label="Mais Vistas"
+                    sx={{
+                        color: tabIndex === 2 ? "var(--primary-color)" : "var(--secondary-color)",
+                        backgroundColor: tabIndex === 2 ? "rgba(0, 0, 0, 0.04)" : "transparent",
+                        "&:hover": {
+                            backgroundColor: tabIndex === 2 ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.04)",
+                        },
+                    }}
+                />
             </Tabs>
 
-
             <Box mt={5}>
-                {renderGalleryContent()}
-            </Box>
-            <Box mt={5}>
-                <MostViewedPhotos />
+                {tabIndex === 0 || tabIndex === 1 ? (
+                    renderGalleryContent()
+                ) : (
+                    <Suspense fallback={<CustomSkeleton />}>
+                        <MostViewedPhotos />
+                    </Suspense>
+                )}
             </Box>
 
             <Suspense fallback={<CustomSkeleton />}>
@@ -162,12 +185,15 @@ const Home = () => {
                     type="website"
                 />
             </Suspense>
-            <MessageSnackbar
-                open={snackbarOpen}
-                message={snackbarMessage}
-                severity={snackbarSeverity}
-                onClose={handleSnackbarClose}
-            />
+            <Suspense fallback={<CustomSkeleton />}>
+                <MessageSnackbar
+                    open={snackbarOpen}
+                    message={snackbarMessage}
+                    severity={snackbarSeverity}
+                    onClose={handleSnackbarClose}
+
+                />
+            </Suspense>
         </>
     );
 };
