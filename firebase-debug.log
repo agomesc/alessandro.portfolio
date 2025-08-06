@@ -1,0 +1,38 @@
+[debug] [2025-08-06T01:22:58.510Z] ----------------------------------------------------------------------
+[debug] [2025-08-06T01:22:58.513Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\agome\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-08-06T01:22:58.514Z] CLI Version:   14.11.2
+[debug] [2025-08-06T01:22:58.514Z] Platform:      win32
+[debug] [2025-08-06T01:22:58.514Z] Node Version:  v22.17.0
+[debug] [2025-08-06T01:22:58.514Z] Time:          Tue Aug 05 2025 22:22:58 GMT-0300 (Horário Padrão de Brasília)
+[debug] [2025-08-06T01:22:58.514Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-08-06T01:22:58.755Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-06T01:22:58.755Z] > authorizing via signed-in user (alessandrogomescunha@gmail.com)
+[debug] [2025-08-06T01:22:58.755Z] [iam] checking project alessandro-portfolio for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2025-08-06T01:22:58.756Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:22:58.756Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:22:58.757Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions [none]
+[debug] [2025-08-06T01:22:58.757Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions x-goog-quota-user=projects/alessandro-portfolio
+[debug] [2025-08-06T01:22:58.757Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2025-08-06T01:22:59.662Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions 200
+[debug] [2025-08-06T01:22:59.662Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/alessandro-portfolio:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2025-08-06T01:22:59.662Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:22:59.662Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:22:59.663Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio [none]
+[debug] [2025-08-06T01:23:00.086Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio 200
+[debug] [2025-08-06T01:23:00.087Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/alessandro-portfolio {"projectId":"alessandro-portfolio","projectNumber":"1077155633264","displayName":"olhotofografico","name":"projects/alessandro-portfolio","resources":{"hostingSite":"alessandro-portfolio","realtimeDatabaseInstance":"alessandro-portfolio-default-rtdb","locationId":"asia-northeast3"},"state":"ACTIVE","etag":"1_93809544-0730-4368-9e03-ca9dadd81171"}
+[info] 
+[info] === Deploying to 'alessandro-portfolio'...
+[info] 
+[info] i  deploying storage, firestore, hosting 
+[info] i  storage: ensuring required API firebasestorage.googleapis.com is enabled... 
+[debug] [2025-08-06T01:23:00.093Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:23:00.093Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:23:00.093Z] >>> [apiv2][query] GET https://firebasestorage.googleapis.com/v1alpha/projects/alessandro-portfolio/defaultBucket [none]
+[debug] [2025-08-06T01:23:00.520Z] <<< [apiv2][status] GET https://firebasestorage.googleapis.com/v1alpha/projects/alessandro-portfolio/defaultBucket 200
+[debug] [2025-08-06T01:23:00.520Z] <<< [apiv2][body] GET https://firebasestorage.googleapis.com/v1alpha/projects/alessandro-portfolio/defaultBucket {"name":"projects/alessandro-portfolio/defaultBucket","location":"US-CENTRAL1","bucket":{"name":"projects/alessandro-portfolio/buckets/alessandro-portfolio.firebasestorage.app"},"storageClass":"REGIONAL"}
+[info] i  firebase.storage: checking storage.rules for compilation errors... 
+[debug] [2025-08-06T01:23:00.522Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:23:00.522Z] Checked if tokens are valid: true, expires at: 1754446191366
+[debug] [2025-08-06T01:23:00.522Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/alessandro-portfolio:test [none]
+[debug] [2025-08-06T01:23:00.522Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/alessandro-portfolio:test [omitted]

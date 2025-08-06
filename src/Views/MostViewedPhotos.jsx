@@ -78,7 +78,7 @@ const MostViewedGallery = ({ userID }) => {
               sx={{
                 width: '100%',
                 height: 'auto',
-                maxWidth:'320px',
+                maxWidth:'100%',
                 objectFit: 'cover',
                 borderRadius: 2,
               }}
