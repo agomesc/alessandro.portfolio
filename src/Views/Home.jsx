@@ -5,15 +5,19 @@ import {
     lazy,
     useDeferredValue,
     useRef,
-    useCallback
+    useCallback,
+    
 } from "react";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import {
     Box,
     Tabs,
-    Tab
+    Tab,
+    useMediaQuery,
+    useTheme 
 } from "@mui/material";
+
 
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
@@ -28,6 +32,7 @@ const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const Home = () => {
+    const theme = useTheme();
     const [galleryData, setGalleryData] = useState(null);
     const flickrInstance = useRef(null);
     const deferredGalleryData = useDeferredValue(galleryData);
@@ -35,6 +40,8 @@ const Home = () => {
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // mobile < 600px
 
     if (!flickrInstance.current) {
         flickrInstance.current = CreateFlickrApp();
@@ -106,15 +113,17 @@ const Home = () => {
             <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
-                variant="standard" // scrollable não faz sentido se quer centralizar
-                centered
+                variant={isMobile ? "scrollable" : "standard"}
+                scrollButtons={isMobile ? "auto" : false}
+                allowScrollButtonsMobile={true}
+                centered={!isMobile}
                 sx={{
                     marginTop: 15,
                     marginBottom: -8,
                     display: "flex",
                     justifyContent: "center",
                     ".MuiTabs-flexContainer": {
-                        justifyContent: "center", // garante centralização do container das tabs
+                        justifyContent: isMobile ? "flex-start" : "center",
                     },
                     ".MuiTabs-indicator": {
                         backgroundColor: "var(--primary-color)",
