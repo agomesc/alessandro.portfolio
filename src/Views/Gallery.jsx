@@ -16,7 +16,6 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true);
   const flickrInstance = useRef(null);
 
-
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
   }
