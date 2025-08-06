@@ -1,18 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, lazy } from 'react';
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import {
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-  CircularProgress,
   Box,
+  CircularProgress,
   Pagination,
-  useMediaQuery
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
-const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
-const TypographyTitle = React.lazy(() => import('../Components/TypographyTitle'));
+const ContentContainer = lazy(() => import('../Components/ContentContainer'));
+const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
+const PhotoGrid = lazy(() => import('../Components/PhotoGrid')); // ajuste o caminho se necessário
 
 const MostViewedGallery = ({ userID }) => {
   const [photos, setPhotos] = useState([]);
@@ -20,11 +16,7 @@ const MostViewedGallery = ({ userID }) => {
   const [page, setPage] = useState(1);
   const photosPerPage = 20;
   const flickrInstance = useRef(null);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-
+  
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
   }
@@ -48,25 +40,10 @@ const MostViewedGallery = ({ userID }) => {
     setPage(value);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(date);
-  };
-
   const paginatedPhotos = photos.slice(
     (page - 1) * photosPerPage,
     page * photosPerPage
   );
-
-  const getColumns = () => {
-    if (isMobile) return 1;
-    if (isTablet) return 2;
-    return 4;
-  };
 
   if (loading) {
     return (
@@ -79,36 +56,8 @@ const MostViewedGallery = ({ userID }) => {
   return (
     <ContentContainer sx={{ mt: 20 }}>
       <TypographyTitle src="Fotos mais vistas" gutterBottom />
-      <ImageList variant="masonry" cols={getColumns()} gap={12}>
-        {paginatedPhotos.map(photo => (
-          <ImageListItem key={photo.id} sx={{ position: 'relative' }}>
-            <Box
-              component="img"
-              src={photo.url}
-              alt={photo.title}
-              loading="lazy"
-              sx={{
-                width: '100%',
-                height: 'auto',
-                maxWidth: '100%',
-                objectFit: 'cover',
-                borderRadius: 2,
-              }}
-            />
-            <ImageListItemBar
-              title={photo.title || 'Sem título'}
-              subtitle={`📅 ${formatDate(photo.date)} — 👁️ ${photo.views} views`}
-              position="top"
-              sx={{
-                background: 'rgba(0, 0, 0, 0.4)',
-                color: '#fff',
-                padding: '8px',
-                borderRadius: '0 0 8px 8px',
-              }}
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
+      
+      <PhotoGrid itemData={paginatedPhotos} />
 
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination
