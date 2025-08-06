@@ -86,6 +86,15 @@ const CreateFlickrService = () => {
         return data;
     };
 
+    const getMostViewedPhotos = async (userId) => {
+        if (!userId) {
+            throw new Error("userId é obrigatório para getMostViewedPhotos.");
+        }
+        const url = `${urlApi}/flickr/most-viewed/${userId}`;
+        const response = await instance.get(url);
+        return response;
+    };
+
 
     return {
         getList,
@@ -95,7 +104,8 @@ const CreateFlickrService = () => {
         getLatestPhotos,
         getInfo,
         getExifInfo,
-        getPhotosGroupedByYear 
+        getPhotosGroupedByYear,
+        getMostViewedPhotos
     };
 };
 

@@ -18,18 +18,25 @@ import BrushIcon from "@mui/icons-material/Brush";
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const Gallery = lazy(() => import("./Gallery"));
+const MostViewedPhotos = lazy(() => import("./MostViewedPhotos"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
+
 const Home = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const flickrInstance = useRef(CreateFlickrApp());
+    const flickrInstance = useRef(null);
     const deferredGalleryData = useDeferredValue(galleryData);
     const [tabIndex, setTabIndex] = useState(0);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("info");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    if (!flickrInstance.current) {
+        flickrInstance.current = CreateFlickrApp();
+    }
+
 
     useEffect(() => {
         document.body.classList.add("light-mode");
@@ -91,7 +98,7 @@ const Home = () => {
 
     return (
         <>
-                <Tabs
+            <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
                 centered
@@ -141,6 +148,9 @@ const Home = () => {
 
             <Box mt={5}>
                 {renderGalleryContent()}
+            </Box>
+            <Box mt={5}>
+                <MostViewedPhotos />
             </Box>
 
             <Suspense fallback={<CustomSkeleton />}>

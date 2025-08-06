@@ -151,6 +151,21 @@ const CreateFlickrApp = () => {
 			}));
 	};
 
+	const getMostViewedPhotos = async () => {
+		const data = await instance.getMostViewedPhotos(userID);
+
+		// Ordena por número de visualizações decrescente
+		return data
+			.sort((a, b) => b.views - a.views)
+			.map(photo => ({
+				id: photo.id,
+				title: photo.title,
+				date: photo.date,
+				url: photo.url,
+				views: photo.views,
+			}));
+	};
+
 
 	return {
 		getGallery,
@@ -166,7 +181,8 @@ const CreateFlickrApp = () => {
 		getLatestPhotosMedium,
 		getPhotoBasicInfo,
 		getPhotoExifInfo,
-		getPhotosGroupedByYear 
+		getPhotosGroupedByYear,
+		getMostViewedPhotos
 	};
 };
 
