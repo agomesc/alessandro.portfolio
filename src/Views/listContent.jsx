@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import {
@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
 
 const LinkPreview = lazy(() => import("../Components/LinkPreview"));
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const ListContent = () => {
   const [ads, setAds] = useState([]);
@@ -68,9 +69,11 @@ const ListContent = () => {
 
   return (
     <Box sx={{ p: 2, maxWidth: "1200px", margin: "0 auto" }}>
-      <Typography variant="subtitle1" sx={{ mt: 10, mb: 3 }}>
-        Seu Guia Afiliado para as Melhores Compras Online!
-      </Typography>
+      <Suspense fallback={<CustomSkeleton />}>
+        <Typography variant="subtitle1" sx={{ mt: 10, mb: 3 }}>
+          Seu Guia Afiliado para as Melhores Compras Online!
+        </Typography>
+      </Suspense>
 
       <Button
         variant="contained"
@@ -84,22 +87,24 @@ const ListContent = () => {
       <Grid container spacing={2}>
         {paginatedAds.map(ad => (
           <Grid item xs={12} sm={6} key={ad.id}>
-            <Paper sx={{ p: 2, position: 'relative' }}>
-              <IconButton
-                onClick={() => handleDelete(ad.id)}
-                sx={{ position: 'absolute', top: 8, right: 8 }}
-              >
-                <DeleteIcon />
-              </IconButton>
-              {ad.isLink ? (
-                <LinkPreview url={ad.text} />
-              ) : (
-                <div dangerouslySetInnerHTML={{ __html: ad.text }} />
-              )}
-              <Typography variant="caption" color="text.secondary">
-                {ad.createdAt}
-              </Typography>
-            </Paper>
+            <Suspense fallback={<CustomSkeleton />}>
+              <Paper sx={{ p: 2, position: 'relative' }}>
+                <IconButton
+                  onClick={() => handleDelete(ad.id)}
+                  sx={{ position: 'absolute', top: 8, right: 8 }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+                {ad.isLink ? (
+                  <LinkPreview url={ad.text} />
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: ad.text }} />
+                )}
+                <Typography variant="caption" color="text.secondary">
+                  {ad.createdAt}
+                </Typography>
+              </Paper>
+            </Suspense>
           </Grid>
         ))}
       </Grid>
