@@ -63,11 +63,6 @@ const GalleryWork = () => {
         );
     }
 
-    
-    if (!galleryData) {
-        return <CustomSkeleton />;
-    }
-
     return (
         <>
             <ContentContainer sx={{ mt: 20 }}>

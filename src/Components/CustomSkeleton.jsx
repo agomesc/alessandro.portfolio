@@ -1,3 +1,4 @@
+import React from 'react' 
 import { Skeleton } from '@mui/material';
 
 const CustomSkeleton = ({ 
@@ -21,4 +22,4 @@ const CustomSkeleton = ({
   />
 );
 
-export default CustomSkeleton;
+export default React.memo(CustomSkeleton);

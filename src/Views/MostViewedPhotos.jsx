@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, lazy } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import {
   Box,
@@ -9,6 +9,7 @@ import {
 const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
 const PhotoGrid = lazy(() => import('../Components/PhotoGrid')); // ajuste o caminho se necessário
+const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 
 const MostViewedGallery = ({ userID }) => {
   const [photos, setPhotos] = useState([]);
@@ -16,7 +17,7 @@ const MostViewedGallery = ({ userID }) => {
   const [page, setPage] = useState(1);
   const photosPerPage = 20;
   const flickrInstance = useRef(null);
-  
+
   if (!flickrInstance.current) {
     flickrInstance.current = CreateFlickrApp();
   }
@@ -55,10 +56,12 @@ const MostViewedGallery = ({ userID }) => {
 
   return (
     <ContentContainer sx={{ mt: 20 }}>
-      <TypographyTitle src="Fotos mais vistas" gutterBottom />
-      
-      <PhotoGrid itemData={paginatedPhotos} />
-
+      <Suspense fallback={<CustomSkeleton />}>
+        <TypographyTitle src="Fotos mais vistas" gutterBottom />
+      </Suspense>
+      <Suspense fallback={<CustomSkeleton />}>
+        <PhotoGrid itemData={paginatedPhotos} />
+      </Suspense>
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination
           count={Math.ceil(photos.length / photosPerPage)}
