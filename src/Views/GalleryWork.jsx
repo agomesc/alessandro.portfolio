@@ -1,5 +1,10 @@
 import React, { useEffect, useState, lazy, useMemo, useRef, Suspense } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
+import {
+  Box,
+  CircularProgress,
+} from '@mui/material';
+
 
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -9,13 +14,26 @@ const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const GalleryWork = () => {
     const [galleryData, setGalleryData] = useState(null);
-    const flickrInstance = useRef(CreateFlickrApp());
+    const flickrInstance = useRef(null);
+    const [loading, setLoading] = useState(true);
+
+    if (!flickrInstance.current) {
+        flickrInstance.current = CreateFlickrApp();
+    }
 
     useEffect(() => {
-        flickrInstance.current
-            .getGalleryWork()
-            .then(setGalleryData)
-            .catch(console.error);
+        const fetchPhotos = async () => {
+            try {
+                const result = await flickrInstance.current.getGallerySmall();
+                setGalleryData(result);
+            } catch (error) {
+                console.error('Erro ao carregar galeria:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPhotos();
     }, []);
 
     const metaData = useMemo(() => {
@@ -31,18 +49,28 @@ const GalleryWork = () => {
         return {
             title: randomItem.title,
             description: randomItem.description,
-            image: randomItem.img, // 'image' é o nome da prop
+            image: randomItem.img,
             url: `${window.location.origin}/galleryWork`,
         };
     }, [galleryData]);
 
+    
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" mt={4}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    
     if (!galleryData) {
         return <CustomSkeleton />;
     }
 
     return (
         <>
-            <ContentContainer sx={{ mt: 4 }}>
+            <ContentContainer sx={{ mt: 20 }}>
                 <Suspense fallback={<CustomSkeleton />}>
                     <TypographyTitle src="Meus Trabalhos" />
                 </Suspense>
