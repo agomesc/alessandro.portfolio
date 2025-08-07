@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,12 +8,27 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 
 const NavigationButtons = () => {
   const navigate = useNavigate();
+  const [showButtons, setShowButtons] = useState(false);
 
   const goBack = () => navigate(-1);
   const goHome = () => navigate("/");
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const hasScrolledPastViewport = window.scrollY > window.innerHeight;
+      setShowButtons(hasScrolledPastViewport);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Verifica logo que o componente monta
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const buttonStyle = {
     position: "fixed",
@@ -25,6 +40,8 @@ const NavigationButtons = () => {
     },
     boxShadow: "0px 2px 6px rgba(0,0,0,0.3)",
   };
+
+  if (!showButtons) return null;
 
   return (
     <>

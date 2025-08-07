@@ -41,25 +41,20 @@ const App = () => {
 
 	return (
 		<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
-			<NavigationButtons />
 			{/* <LojaDeFotos /> */}
-			
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<FollowComponent entityId="1" />
 			</Box>
-			
-			
-			<SocialShareBar url={urlAtual} title="Compartilhe este site!" />
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<SocialShareBar url={urlAtual} title="Compartilhe este site!" />
+			</Box>
 			<ProTip />
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
-
-
-
+			<NavigationButtons />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>
 	);
