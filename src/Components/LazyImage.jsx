@@ -23,8 +23,44 @@ const LazyImage = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [convertedWebP, setConvertedWebP] = useState(null);
   const wrapperRef = useRef(null);
   const observer = useRef(null);
+
+  const isFlickrUrl = typeof dataSrc === 'string' && dataSrc.includes('flickr.com') && dataSrc.endsWith('.jpg');
+
+  useEffect(() => {
+    if (!isFlickrUrl) return;
+
+    const convertToWebP = async () => {
+      try {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = dataSrc;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(
+            (blob) => {
+              const webpURL = URL.createObjectURL(blob);
+              setConvertedWebP(webpURL);
+            },
+            'image/webp',
+            0.85
+          );
+        };
+      } catch (err) {
+        console.error('Erro ao converter Flickr para WebP:', err);
+      }
+    };
+
+    convertToWebP();
+  }, [dataSrc, isFlickrUrl]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -51,7 +87,13 @@ const LazyImage = ({
     ...(aspectRatio ? { aspectRatio } : {}),
   };
 
-  const webpSrc = typeof dataSrc === 'object' ? dataSrc.webp : null;
+  const webpSrc =
+    typeof dataSrc === 'object'
+      ? dataSrc.webp
+      : isFlickrUrl && convertedWebP
+      ? convertedWebP
+      : null;
+
   const fallbackSrc = typeof dataSrc === 'object' ? dataSrc.fallback : dataSrc;
 
   return (

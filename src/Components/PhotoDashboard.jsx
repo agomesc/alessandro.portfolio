@@ -12,7 +12,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
-import LazyImage from "./LazyImage";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info"; // Importar InfoIcon
 import Tooltip from "@mui/material/Tooltip"; // Importar Tooltip
@@ -20,6 +19,7 @@ import Skeleton from "@mui/material/Skeleton"; // Importar Skeleton
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
+const FlickrToWebP = lazy(() => import('./FlickrToWebP'));
 
 const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAdditionalInfo, loadingExif }) => {
   const [openFullscreen, setOpenFullscreen] = useState(false);
@@ -69,8 +69,8 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
         onClick={handleImageClick}
         style={{ cursor: "pointer", overflow: "hidden" }}
       >
-        <LazyImage
-          dataSrc={photoData.url}
+        <FlickrToWebP
+          flickrUrl={photoData.url}
           alt={photoData.title}
           width="100%"
           height="auto"
@@ -204,7 +204,7 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <LazyImage
+            <flickrUrl
               dataSrc={photoData.url}
               alt={photoData.title}
               style={{

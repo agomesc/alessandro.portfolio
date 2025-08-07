@@ -5,13 +5,13 @@ import {
   Typography,
 } from '@mui/material';
 import Masonry from '@mui/lab/Masonry';
-import LazyImage from "./LazyImage";
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const StarComponent = lazy(() => import('./StarComponent'));
+const FlickrToWebP = lazy(() => import('./FlickrToWebP'));
 
 const overlayStyle = {
   position: 'absolute',
@@ -82,8 +82,8 @@ const App = ({ data = [] }) => {
                 style={{ textDecoration: 'none', display: 'block' }}
                 aria-label={`Detalhes da foto: ${title}`}
               >
-                <LazyImage
-                  dataSrc={img}
+                <FlickrToWebP
+                  flickrUrl={img}
                   alt={title}
                   style={{
                     width: '100%',
