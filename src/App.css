@@ -67,39 +67,26 @@ h1::after, h2::after, h3::after, h4::after {
   h4 { font-size: 14px; }
 }
 
-/* Links */
 a {
-  color: var(--secondary-color);
+  color: var(--primary-color); /* Azul */
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--secondary-color);
+  color: var(--secondary-color); /* Coral */
   transition: color 0.2s;
-}
-
-a:focus {
-  outline: 2px dashed var(--primary-color);
-  outline-offset: 4px;
-}
-
-/* Imagens */
-img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  -webkit-user-drag: none;
-  user-drag: none;
-  display: block;
+  filter: blur(0); /* Nítida ao passar o mouse */
 }
 
 a img {
+  filter: blur(3px); /* Embaçada por padrão */
+  opacity: 0.8;
   transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 a img:hover {
-  filter: blur(3px);
-  opacity: 0.8;
+  filter: blur(0); /* Nítida ao passar o mouse */
+  opacity: 1;
 }
 
 /* Container responsivo */

@@ -31,9 +31,6 @@ const SocialShareBar = ({ url, title }) => {
             rel="noopener noreferrer"
             aria-label={`Compartilhar no ${network.name}`}
             title={`Compartilhar no ${network.name}`}
-            style={{ fontSize: '1.5rem', color: 'var(--primary-color)', transition: 'color 0.2s' }}
-            onMouseOver={(e) => (e.currentTarget.style.color = 'var(--secundary-color)')}
-            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--primary-color)')}
           >
             {network.icon}
           </a>

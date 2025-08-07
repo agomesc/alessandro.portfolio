@@ -71,9 +71,9 @@ const App = ({ data = [] }) => {
                 borderRadius: 2,
                 overflow: 'hidden',
                 cursor: 'pointer',
-                '&:hover': {
-                  transform: 'scale(1.03)',
-                  transition: 'transform 0.3s ease',
+                "&:hover img": {
+                  filter: "blur(0)",
+                  transform: "scale(1.03)",
                 },
               }}
             >

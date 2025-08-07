@@ -24,7 +24,7 @@ const Footer = () => {
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--text-color)' }
+            '&:hover': { color: 'var(--secundary-color)' }
           }}
         >
           <FaFlickr />
@@ -35,7 +35,7 @@ const Footer = () => {
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--text-color)' }
+            '&:hover': { color: 'var(--secundary-color)' }
           }}
         >
           <Fa500Px />
@@ -46,7 +46,7 @@ const Footer = () => {
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--text-color)' }
+            '&:hover': { color: 'var(--secundary-color)' }
           }}
         >
           <FaTwitter />
@@ -56,7 +56,7 @@ const Footer = () => {
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--text-color)' }
+            '&:hover': { color: 'var(--secundary-color)' }
           }}
         >
           <FaLock title="Política de Privacidade" />
@@ -66,7 +66,7 @@ const Footer = () => {
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--text-color)' }
+            '&:hover': { color: 'var(--secundary-color)' }
           }}
         >
           <FaFileAlt title="Transparência" />

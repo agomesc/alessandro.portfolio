@@ -24,7 +24,7 @@ const GalleryWork = () => {
     useEffect(() => {
         const fetchPhotos = async () => {
             try {
-                const result = await flickrInstance.current.getGallerySmall();
+                const result = await flickrInstance.current.getGalleryWork();
                 setGalleryData(result);
             } catch (error) {
                 console.error('Erro ao carregar galeria:', error);

@@ -32,74 +32,74 @@ const PhotoGallery = ({ src = [] }) => {
   }
 
   return (
-    
-      <>
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
-          {src.map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                position: "relative",
-                overflow: "hidden",
-                borderRadius: "12px",
-                cursor: "pointer",
-                "&:hover": {
-                  transform: "scale(1.03)",
+
+    <>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={2}>
+        {src.map((item) => (
+          <Box
+            key={item.id}
+            sx={{
+              position: "relative",
+              overflow: "hidden",
+              borderRadius: "12px",
+              cursor: "pointer",
+              "&:hover img": {
+                filter: "blur(0)",
+                transform: "scale(1.03)",
+              },
+            }}
+          >
+            <NavLink
+              to={`/PhotoInfo/${item.id}`}
+              style={{ textDecoration: "none", display: "block" }}
+              aria-label={`Detalhes da foto: ${item.title}`}
+            >
+              <LazyImage
+                dataSrc={item.url}
+                alt={item.title}
+                style={{
+                  width: "100%",
+                  display: "block",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   transition: "transform 0.3s ease",
-                },
+                }}
+              />
+            </NavLink>
+
+            <Box
+              sx={{
+                ...overlayStyle,
+                opacity: 1,
+                transform: "translateY(0)",
+                transition: "opacity 0.4s ease, transform 0.4s ease",
               }}
             >
-              <NavLink
-                to={`/PhotoInfo/${item.id}`}
-                style={{ textDecoration: "none", display: "block" }}
-                aria-label={`Detalhes da foto: ${item.title}`}
-              >
-                <LazyImage
-                  dataSrc={item.url}
-                  alt={item.title}
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    borderRadius: "12px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    transition: "transform 0.3s ease",
+              <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                <Typography
+                  variant="caption"
+                  component="div"
+                  sx={{
+                    color: "white",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                    fontWeight: "bold",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   }}
-                />
-              </NavLink>
-
-              <Box
-                sx={{
-                  ...overlayStyle,
-                  opacity: 1,
-                  transform: "translateY(0)",
-                  transition: "opacity 0.4s ease, transform 0.4s ease",
-                }}
-              >
-                <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    sx={{
-                      color: "white",
-                      textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {item.title}
-                  </Typography>
-                </Box>
-                <Box sx={{ ml: 1 }}>
-                  <StarComponent id={item.id} />
-                </Box>
+                >
+                  {item.title}
+                </Typography>
+              </Box>
+              <Box sx={{ ml: 1 }}>
+                <StarComponent id={item.id} />
               </Box>
             </Box>
-          ))}
-        </Masonry>
-      </>
-    
+          </Box>
+        ))}
+      </Masonry>
+    </>
+
   );
 };
 
