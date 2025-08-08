@@ -166,3 +166,11 @@ a img:hover {
 .fade-delay-2 {
   animation-delay: 0.6s;
 }
+
+.ql-container {
+  height: 100% !important;
+}
+.ql-editor {
+  height: 100% !important;
+  overflow-y: auto;
+}

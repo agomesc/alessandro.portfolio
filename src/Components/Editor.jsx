@@ -6,9 +6,21 @@ const Editor = ({ onContentChange, defaultValue = '', height = '300px' }) => {
   const [content, setContent] = useState(defaultValue);
   const quillRef = useRef(null);
 
+  // Atualiza o conteúdo se defaultValue mudar
+  useEffect(() => {
+    setContent(defaultValue);
+  }, [defaultValue]);
+
+  // Notifica mudanças no conteúdo
   useEffect(() => {
     onContentChange?.(content);
   }, [content, onContentChange]);
+
+  // Acesso direto ao editor (se necessário)
+  useEffect(() => {
+    const editor = quillRef.current?.getEditor();
+    // Você pode usar `editor` para manipular o Quill diretamente
+  }, []);
 
   const modules = useMemo(() => ({
     toolbar: [
@@ -26,15 +38,17 @@ const Editor = ({ onContentChange, defaultValue = '', height = '300px' }) => {
   ];
 
   return (
-    <ReactQuill
-      ref={quillRef}
-      theme="snow"
-      value={content}
-      onChange={setContent}
-      modules={modules}
-      formats={formats}
-      style={{ height, marginBottom: '50px' }}
-    />
+    <div style={{ height, marginBottom: '50px' }}>
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={content}
+        onChange={setContent}
+        modules={modules}
+        formats={formats}
+        style={{ height: '100%' }}
+      />
+    </div>
   );
 };
 

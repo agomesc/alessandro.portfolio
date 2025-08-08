@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, lazy, Suspense, useRef, useCallback } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import {
@@ -39,7 +38,7 @@ import { logUserAction } from '../shared/firebase-logger';
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
 
-const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
+const stripHtml = (html) => html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 
 const DEFAULT_ANONYMOUS_AVATAR = '/images/default-avatar.png';
 
@@ -60,11 +59,11 @@ function CommentBox({ itemID }) {
     const [severity, setSeverity] = useState('success');
     const [comments, setComments] = useState([]);
     const [replyingTo, setReplyingTo] = useState(null);
-    const [image, setImage] = useState(null); // Armazenará a Base64 URL
+    const [image, setImage] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [emailError, setEmailError] = useState(false);
-    const [processingProgress, setProcessingProgress] = useState(0); // Renomeado para progresso de processamento local
-    const [isProcessingImage, setIsProcessingImage] = useState(false); // Renomeado para indicar processamento local da imagem
+    const [processingProgress, setProcessingProgress] = useState(0);
+    const [isProcessingImage, setIsProcessingImage] = useState(false);
 
     const editorRef = useRef(null);
     const commentFormRef = useRef(null);
@@ -95,18 +94,15 @@ function CommentBox({ itemID }) {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user);
             if (user) {
-                if (!name && user.displayName) setName(user.displayName);
-                if (!email && user.email) setEmail(user.email);
+                setName(prev => prev || user.displayName || '');
+                setEmail(prev => prev || user.email || '');
             } else {
-                if (currentUser && currentUser.uid) {
-                    setName('');
-                    setEmail('');
-                }
+                setName('');
+                setEmail('');
             }
         });
-
-        return () => unsubscribe();
-    }, [currentUser, name, email]);
+        return unsubscribe;
+    }, []);
 
     useEffect(() => {
         const fetchIpAddress = async () => {
@@ -114,21 +110,12 @@ function CommentBox({ itemID }) {
                 const response = await fetch('https://api.ipify.org?format=json');
                 const data = await response.json();
                 setIpAddress(data.ip);
-            } catch (error) {
-                console.error('Erro ao obter o endereço IP:', error);
+            } catch {
                 setIpAddress(null);
             }
         };
         fetchIpAddress();
     }, []);
-
-    useEffect(() => {
-        if (replyingTo && editorRef.current) {
-            if (editorRef.current.editor && typeof editorRef.current.editor.focus === 'function') {
-                editorRef.current.editor.focus();
-            }
-        }
-    }, [replyingTo]);
 
     const groupComments = useCallback((list) => {
         const map = {};
@@ -143,7 +130,7 @@ function CommentBox({ itemID }) {
         });
         Object.values(map).forEach(comment => {
             if (comment.replies) {
-                comment.replies.sort((a, b) => a.timestamp - b.timestamp);
+                comment.replies = [...comment.replies].sort((a, b) => a.timestamp - b.timestamp);
             }
         });
         return roots.sort((a, b) => b.timestamp - a.timestamp);
@@ -155,17 +142,15 @@ function CommentBox({ itemID }) {
             where('itemID', '==', itemID),
             orderBy('timestamp', 'desc')
         );
-
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setComments(groupComments(fetched));
         });
-
         return unsubscribe;
     }, [itemID, groupComments]);
 
     const clearEditor = useCallback(() => {
-        if (editorRef.current && editorRef.current.editor) {
+        if (editorRef.current?.editor) {
             editorRef.current.editor.setText('');
             editorRef.current.editor.setContents([{ insert: '\n' }]);
         }
@@ -173,28 +158,20 @@ function CommentBox({ itemID }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (email && !validateEmail(email)) {
             setEmailError(true);
             showMessage('Por favor, insira um endereço de e-mail válido.', 'error');
             return;
-        } else {
-            setEmailError(false);
         }
-
         if (!name.trim() || !country.trim() || !stripHtml(comment)) {
             showMessage('Por favor, preencha o nome, selecione o país e digite seu comentário.', 'warning');
             return;
         }
-
         if (image && !currentUser) {
             showMessage('Você precisa estar logado para enviar uma imagem.', 'warning');
             return;
         }
-
-        // isProcessingImage agora cobre tanto o carregamento da imagem quanto a submissão
         setIsProcessingImage(true);
-
         try {
             const commentData = {
                 name: name.trim(),
@@ -208,46 +185,28 @@ function CommentBox({ itemID }) {
                 userId: currentUser?.uid || null,
                 image: image || null,
             };
-
             await addDoc(collection(db, 'comments'), commentData);
-
-            logUserAction('Comentários', {
-                elementId: itemID,
-                details: commentData
-            });
-
-            // Limpa os campos do formulário após o envio
+            logUserAction('Comentários', { elementId: itemID, details: commentData });
             if (!currentUser) {
                 setName('');
                 setEmail('');
             }
             setCountry('BR');
             setComment('');
-            setImage(null); // Limpa a Base64 URL da imagem
+            setImage(null);
             setReplyingTo(null);
-            setProcessingProgress(0); // Reseta o progresso
-            setIsProcessingImage(false); // Libera o formulário
-
+            setProcessingProgress(0);
+            setIsProcessingImage(false);
             clearEditor();
-
-            if (fileInputRef.current) {
-                fileInputRef.current.value = null; // Limpa o input de arquivo
-            }
-
+            if (fileInputRef.current) fileInputRef.current.value = null;
             showMessage('Comentário adicionado com sucesso!', 'success');
         } catch (err) {
-            console.error("Erro ao adicionar comentário:", err);
-            // Mensagem de erro mais específica para o caso de documento muito grande
-            if (err.code === 'resource-exhausted') {
-                showMessage('Erro: Imagem muito grande para ser salva. Por favor, escolha uma imagem menor.', 'error');
-            } else {
-                showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
-            }
-            setIsProcessingImage(false); // Em caso de erro, libera o formulário
+            showMessage('Erro ao adicionar comentário: ' + err.message, 'error');
+            setIsProcessingImage(false);
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = useCallback(async (id) => {
         if (!currentUser) {
             showMessage('Você precisa estar logado para remover comentários.', 'warning');
             return;
@@ -258,11 +217,9 @@ function CommentBox({ itemID }) {
                 showMessage('Comentário não encontrado.', 'error');
                 return;
             }
-
             const isAdmin = currentUser.uid === process.env.REACT_APP_ADMIN_UID;
             const isAuthor = currentUser.uid === commentToDelete.userId;
-
-            if (isAuthor || isAdmin) { // This is where the rule is applied
+            if (isAuthor || isAdmin) {
                 if (window.confirm("Tem certeza que deseja remover este comentário?")) {
                     await deleteDoc(doc(db, 'comments', id));
                     showMessage('Comentário removido com sucesso!', 'success');
@@ -271,14 +228,13 @@ function CommentBox({ itemID }) {
                 showMessage('Você não tem permissão para remover este comentário.', 'warning');
             }
         } catch (err) {
-            console.error("Erro ao remover comentário:", err);
             showMessage('Erro ao remover comentário: ' + err.message, 'error');
         }
-    };
+    }, [comments, currentUser, showMessage]);
 
-    const renderComment = (comment) => (
-    <Suspense fallback={null}>
-            <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }} id={comment.id}>
+    const renderComment = useCallback((comment) => (
+        <Suspense key={comment.id} fallback={null}>
+            <Card sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }} id={comment.id}>
                 <CardHeader
                     avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
                     title={`${comment.name} (${comment.country})`}
@@ -297,43 +253,32 @@ function CommentBox({ itemID }) {
                     </Typography>
                     {comment.image && (
                         <img
-                            src={comment.image} // Aqui vai a Base64 URL
+                            src={comment.image}
                             alt="Comentário com imagem"
-                            style={{
-                                maxWidth: '240px',
-                                height: 'auto',
-                                marginTop: '10px',
-                                borderRadius: '6px',
-                                display: 'block'
-                            }}
+                            style={{ maxWidth: '240px', height: 'auto', marginTop: '10px', borderRadius: '6px', display: 'block' }}
                         />
                     )}
                     <Box mt={1}>
                         <Button size="small" onClick={() => setReplyingTo(comment)}>Responder</Button>
                     </Box>
                     <Box sx={{ ml: 2 }}>
-                        {comment.replies.sort((a, b) => a.timestamp?.toDate ? a.timestamp.toDate() - b.timestamp.toDate() : a.timestamp - b.timestamp).map(renderComment)}
+                        {[...comment.replies].sort((a, b) => a.timestamp - b.timestamp).map(renderComment)}
                     </Box>
                 </CardContent>
             </Card>
         </Suspense>
-    );
+    ), [currentUser, handleDelete]);
 
     return (
-    <Suspense fallback={null}>
+        <Suspense fallback={null}>
             <Box sx={{ width: { xs: '100%', sm: '90%', md: '80%', lg: '70%', xl: '80%' }, m: '0 auto', p: '0 20px', mt: 10 }}>
                 <TypographyTitle src="Comentários" />
                 {replyingTo && (
                     <Box mb={2}>
-                        <Typography component="div" variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
-                        <Button size="small" onClick={() => {
-                            setReplyingTo(null);
-                            setComment('');
-                            clearEditor();
-                        }}>Cancelar</Button>
+                        <Typography variant="body2">Respondendo a: <strong>{replyingTo.name}</strong></Typography>
+                        <Button size="small" onClick={() => { setReplyingTo(null); setComment(''); clearEditor(); }}>Cancelar</Button>
                     </Box>
                 )}
-
                 <form onSubmit={handleSubmit} ref={commentFormRef}>
                     <TextField
                         label="Nome"
@@ -342,23 +287,19 @@ function CommentBox({ itemID }) {
                         fullWidth
                         required
                         sx={{ mb: 2 }}
-                        disabled={!!currentUser || isProcessingImage} // Desabilita se logado ou durante o processamento
+                        disabled={!!currentUser || isProcessingImage}
                     />
                     <TextField
                         label="E-mail (opcional)"
                         type="email"
                         value={email}
-                        onChange={e => {
-                            setEmail(e.target.value);
-                            if (emailError) setEmailError(false);
-                        }}
+                        onChange={e => { setEmail(e.target.value); if (emailError) setEmailError(false); }}
                         fullWidth
                         sx={{ mb: 2 }}
-                        disabled={!!currentUser || isProcessingImage} // Desabilita se logado ou durante o processamento
+                        disabled={!!currentUser || isProcessingImage}
                         error={emailError}
                         helperText={emailError ? "Endereço de e-mail inválido" : ""}
                     />
-
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <ReactFlagsSelect
                             selected={country}
@@ -368,23 +309,20 @@ function CommentBox({ itemID }) {
                             showSelectedLabel
                             showOptionLabel
                             placeholder="Selecione o país"
-                            disabled={isProcessingImage} // Desabilita durante o processamento
+                            disabled={isProcessingImage}
                         />
                         <FormHelperText>Selecione o país</FormHelperText>
                     </FormControl>
-
                     <Box sx={{ mb: 2 }}>
                         <Editor
-                            
                             onContentChange={setComment}
                             defaultValue={comment}
                             height="250px"
                             editorRef={editorRef}
                             key={replyingTo ? `editor-${replyingTo.id}` : 'editor-new-comment'}
-                            readOnly={isProcessingImage} // Desabilita durante o processamento
+                            readOnly={isProcessingImage}
                         />
                     </Box>
-
                     <Box sx={{ position: "relative", mb: 2 }}>
                         <input
                             ref={fileInputRef}
@@ -398,64 +336,51 @@ function CommentBox({ itemID }) {
                                 }
                                 const file = e.target.files[0];
                                 if (!file) return;
-
-                                setIsProcessingImage(true); // Inicia o estado de processamento
-                                setProcessingProgress(50); // Simula algum progresso para o redimensionamento/leitura
-
+                                setIsProcessingImage(true);
+                                setProcessingProgress(50);
                                 try {
-                                    // CHAMA SUA FUNÇÃO resizeImage (QUE RETORNA BASE64)
-                                    // Você pode ajustar maxWidth, maxHeight e quality aqui se quiser
                                     const base64Image = await resizeImage(file, 800, 600, 0.7);
-                                    setImage(base64Image); // Define a Base64 URL no estado
+                                    setImage(base64Image);
                                     showMessage('Imagem carregada e processada!', 'success');
-                                } catch (error) {
-                                    console.error("Erro ao processar a imagem:", error);
+                                } catch {
                                     showMessage("Erro ao processar a imagem. Tente novamente.", "error");
-                                    e.target.value = null; // Limpa o input de arquivo
-                                    setImage(null); // Garante que o estado da imagem é limpo
+                                    e.target.value = null;
+                                    setImage(null);
                                 } finally {
-                                    setIsProcessingImage(false); // Finaliza o estado de processamento
-                                    setProcessingProgress(0); // Reseta o progresso
+                                    setIsProcessingImage(false);
+                                    setProcessingProgress(0);
                                 }
                             }}
-                            disabled={isProcessingImage} // Desabilita o input de arquivo durante o processamento
+                            disabled={isProcessingImage}
                         />
-                        {isProcessingImage && ( // Mostra a barra de progresso apenas se isProcessingImage for true
+                        {isProcessingImage && (
                             <Box sx={{ width: '100%', mt: 1 }}>
                                 <LinearProgress variant="determinate" value={processingProgress} />
                                 <Typography variant="caption" color="text.secondary">{processingProgress}%</Typography>
                             </Box>
                         )}
-                        {image && !isProcessingImage && ( // Mostra a pré-visualização e o botão "Remover"
+                        {image && !isProcessingImage && (
                             <Box sx={{ mt: 1 }}>
-                                <img
-                                    src={image} // Pré-visualização da imagem Base64
-                                    alt="Pré-visualização"
-                                    style={{ maxWidth: '100px', maxHeight: '100px', borderRadius: '4px', marginRight: '10px' }}
-                                />
+                                <img src={image} alt="Pré-visualização" style={{ maxWidth: '100px', maxHeight: '100px', borderRadius: '4px', marginRight: '10px' }} />
                                 <Typography variant="caption">Imagem selecionada ({Math.floor(image.length / 1024)} KB)</Typography>
                                 <Button size="small" onClick={() => { setImage(null); if (fileInputRef.current) fileInputRef.current.value = null; }}>Remover Imagem</Button>
                             </Box>
                         )}
                     </Box>
-
                     <Button
                         type="submit"
                         variant="contained"
                         sx={{ backgroundColor: "var(--primary-color)", color: "var(--text-color)", '&:hover': { backgroundColor: 'var(--secondary-color)' } }}
-                        // O botão é desabilitado durante o processamento/submissão, ou se campos obrigatórios estão vazios/inválidos
                         disabled={isProcessingImage || !name.trim() || !country.trim() || !stripHtml(comment) || emailError}
                     >
                         {isProcessingImage ? 'Processando...' : 'Enviar comentário'}
                     </Button>
                 </form>
-
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                         {message}
                     </Alert>
                 </Snackbar>
-
                 {comments.map(renderComment)}
             </Box>
         </Suspense>
