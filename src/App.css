@@ -79,13 +79,10 @@ a:hover {
 }
 
 a img {
-  filter: blur(3px); /* Embaçada por padrão */
-  opacity: 0.8;
   transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 a img:hover {
-  filter: blur(0); /* Nítida ao passar o mouse */
   opacity: 1;
 }
 

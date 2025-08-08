@@ -76,7 +76,7 @@ const PhotoInfo = () => {
 
   const handleImageLoad = useCallback(() => {
     setImageLoaded(true);
-  }, []);
+  }, [setImageLoaded]);
 
   const metaData = useMemo(() => {
     if (basicPhotoData) {

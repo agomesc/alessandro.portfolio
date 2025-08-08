@@ -89,9 +89,6 @@ const App = ({ data = [] }) => {
                   style={{
                     width: "100%",
                     display: "block",
-                    borderRadius: "12px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    transition: "transform 0.3s ease",
                   }}
                 />
 

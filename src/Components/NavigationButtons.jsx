@@ -23,7 +23,7 @@ const NavigationButtons = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Verifica logo que o componente monta
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);

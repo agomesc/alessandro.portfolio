@@ -19,7 +19,7 @@ import Skeleton from "@mui/material/Skeleton"; // Importar Skeleton
 
 const StarComponent = lazy(() => import("./StarComponent"));
 const ViewComponent = lazy(() => import("./ViewComponent"));
-const FlickrToWebP = lazy(() => import('./FlickrToWebP'));
+const LazyImage = lazy(() => import('./LazyImage'));
 
 const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAdditionalInfo, loadingExif }) => {
   const [openFullscreen, setOpenFullscreen] = useState(false);
@@ -69,8 +69,8 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
         onClick={handleImageClick}
         style={{ cursor: "pointer", overflow: "hidden" }}
       >
-        <FlickrToWebP
-          flickrUrl={photoData.url}
+        <LazyImage
+          dataSrc={photoData.url}
           alt={photoData.title}
           width="100%"
           height="auto"
@@ -204,12 +204,12 @@ const PhotoDashboard = ({ photoData, onImageLoad, showAdditionalInfo, onShowAddi
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <flickrUrl
+            <LazyImage
               dataSrc={photoData.url}
               alt={photoData.title}
               style={{
                 display: "block",
-                maxWidth: "100%",
+                maxWidth: "1024px",
                 maxHeight: "100%",
                 objectFit: "contain",
               }}
