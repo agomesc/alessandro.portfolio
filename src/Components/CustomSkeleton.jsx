@@ -6,7 +6,7 @@ const CustomSkeleton = ({
   width = '100%',
   variant = 'rectangular',
   radius = 2,
-  animation = '',
+  animation = 'wave',
   sx = {},
 }) => (
   <Skeleton
