@@ -10,6 +10,7 @@ import Masonry from '@mui/lab/Masonry';
 
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const ContentContainer = lazy(() => import("../Components/ContentContainer"));
 
 const GroupedFlickrPhotos = () => {
   const flickrInstance = useRef(null);
@@ -64,43 +65,33 @@ const GroupedFlickrPhotos = () => {
   }
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
-      <Box
-        sx={(theme) => ({
-          width: {
-            xs: "100%",
-            sm: "90%",
-            md: "80%",
-            lg: "70%",
-            xl: "80%",
-          },
-          margin: "0 auto",
-          padding: theme.customSpacing.pagePadding,
-          mt: theme.customSpacing.sectionMarginTop,
-        })}
-      >
-        <TypographyTitle src="Linha do Tempo" />
+    <ContentContainer sx={{ mt: 20 }}>
+      <TypographyTitle src="Linha do Tempo" />
 
-        {photosByYear.map(({ year, photos }) => {
-          const currentPage = pagesByYear[year] || 1;
-          const totalPages = Math.ceil(photos.length / photosPerPage);
-          const paginatedPhotos = photos.slice(
-            (currentPage - 1) * photosPerPage,
-            currentPage * photosPerPage
-          );
+      {photosByYear.map(({ year, photos }) => {
+        const currentPage = pagesByYear[year] || 1;
+        const totalPages = Math.ceil(photos.length / photosPerPage);
+        const paginatedPhotos = photos.slice(
+          (currentPage - 1) * photosPerPage,
+          currentPage * photosPerPage
+        );
 
-          return (
-            <Box key={year} mb={8}>
-              <Box mb={2}>
+        return (
+          <Box key={year} mb={8}>
+            <Box mb={2}>
+              <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
                 <TypographyTitle src={year} />
-              </Box>
+              </Suspense>
+            </Box>
 
-              {paginatedPhotos.length > 0 && (
-                <Masonry
-                  columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                  spacing={2}
-                >
-                  {paginatedPhotos.map(photo => (
+            {paginatedPhotos.length > 0 && (
+              <Masonry
+                columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                spacing={2}
+              >
+                {paginatedPhotos.map(photo => (
+
+                  <Suspense fallback={<CustomSkeleton width={320} height={240} />}>
                     <Box
                       key={photo.id}
                       component="img"
@@ -114,25 +105,25 @@ const GroupedFlickrPhotos = () => {
                         boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
                       }}
                     />
-                  ))}
-                </Masonry>
-              )}
+                  </Suspense>
+                ))}
+              </Masonry>
+            )}
 
-              {totalPages > 1 && (
-                <Box display="flex" justifyContent="center" mt={3}>
-                  <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={(e, value) => handlePageChange(year, value)}
-                    color="primary"
-                  />
-                </Box>
-              )}
-            </Box>
-          );
-        })}
-      </Box>
-    </Suspense>
+            {totalPages > 1 && (
+              <Box display="flex" justifyContent="center" mt={3}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={(e, value) => handlePageChange(year, value)}
+                  color="primary"
+                />
+              </Box>
+            )}
+          </Box>
+        );
+      })}
+    </ContentContainer>
   );
 };
 

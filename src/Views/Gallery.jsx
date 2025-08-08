@@ -46,14 +46,14 @@ const Gallery = () => {
   return (
     <>
       <ContentContainer sx={{ mt: 20 }}>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton width="600" height="300" />}>
           <ImageThumbs data={galleryData} />
         </Suspense>
       </ContentContainer>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={null}>
         <SocialMetaTags
           title={galleryData[0]?.title || "Galeria de Fotos"}
           image={galleryData[0]?.img || "/logo_192.png"}

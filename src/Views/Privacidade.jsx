@@ -1,5 +1,5 @@
 import { useMemo, lazy } from "react";
-import { Typography,  Paper } from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 
 import SocialMetaTags from "../Components/SocialMetaTags";
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));

@@ -1,5 +1,5 @@
 import React, { useRef,useEffect, Suspense } from 'react';
-import LoadingMessage from '../Components/LoadingMessage'
+
 
 const loadedIframesCache = new Set(); 
 
@@ -35,6 +35,7 @@ const LazyIframe = ({
 
         return () => {
             if (containerRef.current) {
+                // eslint-disable-next-line react-hooks/exhaustive-deps
                 observer.unobserve(containerRef.current);
             }
         };
@@ -60,7 +61,7 @@ const LazyIframe = ({
     };
 
     return (
-        <Suspense fallback={<LoadingMessage />}>
+        <Suspense fallback={null}>
             <div ref={containerRef} style={containerStyle}>
                     <iframe
                         src={src}

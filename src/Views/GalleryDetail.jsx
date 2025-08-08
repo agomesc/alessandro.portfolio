@@ -2,10 +2,11 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Box, Typography, CircularProgress, Alert, Skeleton, Stack } from '@mui/material';
+import { Box, Typography, CircularProgress, Alert, Stack } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const StarComponent = React.lazy(() => import("../Components/StarComponent"));
+const ContentContainer = React.lazy(() => import('../Components/ContentContainer'));
 const ViewComponent = React.lazy(() => import("../Components/ViewComponent"));
 const CommentBox = React.lazy(() => import("../Components/CommentBox"));
 const LazyImage = React.lazy(() => import("../Components/LazyImage"));
@@ -74,23 +75,7 @@ const GalleryDetail = () => {
 
     return (
         <>
-            <Box
-                sx={(theme) => ({
-                    p: 0,
-                    width: {
-                        xs: "100%",
-                        sm: "90%",
-                        md: "80%",
-                        lg: "70%",
-                        xl: "80%",
-                    },
-                    alignContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                    padding: theme.customSpacing.pagePadding,
-                    mt: theme.customSpacing.sectionMarginTop,
-                })}
-            >
+            <ContentContainer sx={{ mt: 20 }}>
                 <Suspense fallback={<CustomSkeleton />}>
                     <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
                         {gallery.title}
@@ -123,7 +108,7 @@ const GalleryDetail = () => {
 
                 {gallery.link && (
                     <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 3 }}>
-                        <Suspense fallback={<CustomSkeleton />}>
+                        <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
                             <Typography
                                 variant="body1"
                                 component="a"
@@ -141,19 +126,19 @@ const GalleryDetail = () => {
                                 Visitar Conteúdo Original <OpenInNewIcon sx={{ ml: 0.5, fontSize: 'small' }} />
                             </Typography>
                         </Suspense>
-                        <Suspense fallback={<CustomSkeleton />}>
+                        <Suspense fallback={<CustomSkeleton variant="text" width="30" height="20" />}>
                             <StarComponent id={gallery.id} />
                         </Suspense>
-                        <Suspense fallback={<CustomSkeleton />}>
+                        <Suspense fallback={<CustomSkeleton variant="text" width="30" height="20" />}>
                             <ViewComponent id={gallery.id} />
                         </Suspense>
                     </Stack>
                 )}
-            </Box>
-            <Suspense fallback={<CustomSkeleton />}>
+            </ContentContainer>
+            <Suspense fallback={<CustomSkeleton height={300} />}>
                 <CommentBox itemID="Contents" />
             </Suspense>
-            <Suspense fallback={<CustomSkeleton />}>
+            <Suspense fallback={null}>
                 <SocialMetaTags
                     title={gallery.title}
                     image={gallery.image}

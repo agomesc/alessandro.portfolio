@@ -18,6 +18,7 @@ const CommentBox = lazy(() => import("../Components/CommentBox"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const ContentContainer = lazy(() => import('../Components/ContentContainer'));
+const LoadingMessage = lazy(() => import('../Components/LoadingMessage'));
 
 const Photos = () => {
   const { id } = useParams();
@@ -61,16 +62,16 @@ const Photos = () => {
   }, [showAlbumInfo, loadAlbumInfo]);
 
   if (!galleryData) {
-    return <CustomSkeleton />;
+    return <LoadingMessage />;
   }
 
   return (
     <>
       <ContentContainer sx={{ mt: 20 }}>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
           <Typography component="div" variant="subtitle1" sx={{ mr: 1 }}>
             Detalhes da Galeria:
           </Typography>
@@ -79,19 +80,19 @@ const Photos = () => {
           <InfoOutlinedIcon />
         </IconButton>
         {showAlbumInfo && (
-          <Suspense fallback={<CustomSkeleton />}>
+          <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
             <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
               {galleryInfoData || <CustomSkeleton />}
             </Typography>
           </Suspense>
         )}
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton height={800} />}>
           <PhotoGallery src={galleryData} />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton height={600} />}>
           <CommentBox itemID={id} />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={null}>
           <SocialMetaTags
             title={galleryInfoData}
             image="/logo_192.png"

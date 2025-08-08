@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
 
+const LazyImage = React.lazy(() => import("../Components/LazyImage"));
+
 const ProTip = () => {
 	return (
 		<Box sx={{ mt: 15, pt: 10, display: "flex", justifyContent: "center" }}>
@@ -13,9 +15,8 @@ const ProTip = () => {
 
 					{/* Bandeira do Brasil centralizada */}
 					<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-						<img
-							src="https://flagcdn.com/w80/br.png"
-							loading="lazy"
+						<LazyImage
+							dataSrc="https://flagcdn.com/w80/br.png"
 							alt="Bandeira do Brasil"
 							style={{ width: '40px', height: 'auto', borderRadius: '2px' }}
 						/>

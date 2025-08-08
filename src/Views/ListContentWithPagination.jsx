@@ -110,16 +110,18 @@ const ListContentWithPagination = () => {
                       to={ad.text}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Suspense fallback={<Skeleton variant="rectangular" height={140} />}>
+                      <Suspense fallback={<Skeleton height={140} />}>
                         <LinkPreview url={ad.text} />
                       </Suspense>
                     </Link>
                   ) : (
-                    <Typography
-                      dangerouslySetInnerHTML={{ __html: ad.text }}
-                      variant="body2"
-                      component="div"
-                    />
+                    <Suspense fallback={<Skeleton height={140} />}>
+                      <Typography
+                        dangerouslySetInnerHTML={{ __html: ad.text }}
+                        variant="body2"
+                        component="div"
+                      />
+                    </Suspense>
                   )}
                 </CardContent>
               </Card>
@@ -143,7 +145,7 @@ const ListContentWithPagination = () => {
           type="website"
         />
 
-        </ContentContainer>
+      </ContentContainer>
     </Suspense>
   );
 };

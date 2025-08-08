@@ -21,7 +21,7 @@ import {
 
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
-import StarIcon from "@mui/icons-material/Star"; // ícone para "Mais Vistas"
+import StarIcon from "@mui/icons-material/Star"; 
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -93,18 +93,18 @@ const Home = () => {
 
     const renderGalleryContent = () => {
         if (!deferredGalleryData || deferredGalleryData.length === 0) {
-            return <CustomSkeleton />;
+            return <CustomSkeleton width={800} height={100} />;
         }
 
         return (
-            <Suspense fallback={<CustomSkeleton />}>
+            <>
                 <SwipeableSlider itemData={deferredGalleryData} allUpdatesUrl="/latestphotos" />
                 {tabIndex === 0 ? (
                     <Gallery itemData={deferredGalleryData} />
                 ) : (
                     <GalleryWork itemData={deferredGalleryData} />
                 )}
-            </Suspense>
+            </>
         );
     };
 
@@ -179,13 +179,11 @@ const Home = () => {
                 {tabIndex === 0 || tabIndex === 1 ? (
                     renderGalleryContent()
                 ) : (
-                    <Suspense fallback={<CustomSkeleton />}>
                         <MostViewedPhotos />
-                    </Suspense>
                 )}
             </Box>
 
-            <Suspense fallback={<CustomSkeleton />}>
+            <Suspense fallback={null}>
                 <SocialMetaTags
                     title="Atualizações"
                     image="/logo_192.png"
@@ -194,7 +192,7 @@ const Home = () => {
                     type="website"
                 />
             </Suspense>
-            <Suspense fallback={<CustomSkeleton />}>
+            <Suspense fallback={null}>
                 <MessageSnackbar
                     open={snackbarOpen}
                     message={snackbarMessage}

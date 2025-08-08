@@ -10,13 +10,13 @@ const App = () => {
 
   return (
     <ContentContainer sx={{ mt: 20 }}>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
         <TypographyTitle src="Feeds" />
       </Suspense>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={<CustomSkeleton height={500} />}>
         <CommentBox itemID="Feeds" />
       </Suspense>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={null}>
         <SocialMetaTags
           title="Feeds"
           image="/logo_192.png"

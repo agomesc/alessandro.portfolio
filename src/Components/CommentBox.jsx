@@ -38,7 +38,6 @@ import { resizeImage } from '../shared/Util';
 import { logUserAction } from '../shared/firebase-logger';
 
 const TypographyTitle = lazy(() => import('./TypographyTitle'));
-const CustomSkeleton = lazy(() => import('./CustomSkeleton'));
 
 const stripHtml = (html) => html.replace(/<[^>]*>?/gm, '').trim();
 
@@ -278,7 +277,7 @@ function CommentBox({ itemID }) {
     };
 
     const renderComment = (comment) => (
-        <Suspense fallback={<CustomSkeleton />}>
+    <Suspense fallback={null}>
             <Card key={comment.id} sx={{ mb: 2, mt: 2, p: 1, ml: comment.parentId ? 4 : 0 }} id={comment.id}>
                 <CardHeader
                     avatar={comment.userPhoto ? <Avatar src={comment.userPhoto} /> : <Avatar><AccountCircle /></Avatar>}
@@ -321,7 +320,7 @@ function CommentBox({ itemID }) {
     );
 
     return (
-        <Suspense fallback={<CustomSkeleton />}>
+    <Suspense fallback={null}>
             <Box sx={{ width: { xs: '100%', sm: '90%', md: '80%', lg: '70%', xl: '80%' }, m: '0 auto', p: '0 20px', mt: 10 }}>
                 <TypographyTitle src="Comentários" />
                 {replyingTo && (
