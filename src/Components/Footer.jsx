@@ -21,10 +21,11 @@ const Footer = () => {
         <IconButton
           href="https://www.flickr.com/agomesc"
           target="_blank"
+          title="Flickr"
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--secundary-color)' }
+            '&:hover': { color: 'var(--secondary-color)' }
           }}
         >
           <FaFlickr />
@@ -32,10 +33,11 @@ const Footer = () => {
         <IconButton
           href="https://500px.com/p/alessandrogomescunha?view=photos"
           target="_blank"
+          title="500px"
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--secundary-color)' }
+            '&:hover': { color: 'var(--secondary-color)' }
           }}
         >
           <Fa500Px />
@@ -43,33 +45,36 @@ const Footer = () => {
         <IconButton
           href="https://x.com/olhotofografico"
           target="_blank"
+          title="Twitter"
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--secundary-color)' }
+            '&:hover': { color: 'var(--secondary-color)' }
           }}
         >
           <FaTwitter />
         </IconButton>
         <IconButton
           href="/privacidade"
+          title="Política de Privacidade"
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--secundary-color)' }
+            '&:hover': { color: 'var(--secondary-color)' }
           }}
         >
-          <FaLock title="Política de Privacidade" />
+          <FaLock />
         </IconButton>
         <IconButton
           href="/transparencia"
+          title="Transparência"
           sx={{
             color: 'var(--primary-color)',
             transition: 'color 0.3s',
-            '&:hover': { color: 'var(--secundary-color)' }
+            '&:hover': { color: 'var(--secondary-color)' }
           }}
         >
-          <FaFileAlt title="Transparência" />
+          <FaFileAlt />
         </IconButton>
       </Toolbar>
     </AppBar>

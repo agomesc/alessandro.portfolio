@@ -2,9 +2,9 @@ import React, { lazy } from 'react';
 import { Box, Typography } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from "react-router-dom";
-import LazyImage from "../Components/LazyImage";
 
 const StarComponent = lazy(() => import("../Components/StarComponent"));
+const LazyImage = lazy(() => import("../Components/LazyImage"));
 
 const overlayStyle = {
   position: "absolute",

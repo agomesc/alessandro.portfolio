@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const StarComponent = lazy(() => import('./StarComponent'));
-const FlickrToWebP = lazy(() => import('./FlickrToWebP'));
+const LazyImage = lazy(() => import('./LazyImage'));
 
 const overlayStyle = {
   position: 'absolute',
@@ -82,17 +82,19 @@ const App = ({ data = [] }) => {
                 style={{ textDecoration: 'none', display: 'block' }}
                 aria-label={`Detalhes da foto: ${title}`}
               >
-                <FlickrToWebP
-                  flickrUrl={img}
+
+                <LazyImage
+                  dataSrc={img}
                   alt={title}
                   style={{
-                    width: '100%',
-                    display: 'block',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    transition: 'transform 0.3s ease',
+                    width: "100%",
+                    display: "block",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                    transition: "transform 0.3s ease",
                   }}
                 />
+
               </NavLink>
 
               {/* Ícone Biblioteca */}
