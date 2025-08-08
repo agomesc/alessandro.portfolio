@@ -3,12 +3,12 @@ import {
   Box,
   TextField,
   Typography,
+  InputAdornment,
 } from '@mui/material';
 import Masonry from '@mui/lab/Masonry';
 import { NavLink } from 'react-router-dom';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SearchIcon from '@mui/icons-material/Search';
-import InputAdornment from '@mui/material/InputAdornment';
 
 const StarComponent = lazy(() => import('./StarComponent'));
 const LazyImage = lazy(() => import('./LazyImage'));
@@ -24,7 +24,7 @@ const overlayStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-
+  padding: '8px 12px',
   boxSizing: 'border-box',
   zIndex: 1,
 };
@@ -33,7 +33,8 @@ const App = ({ data = [] }) => {
   const [search, setSearch] = useState('');
 
   const filteredData = useMemo(() => {
-    return data.filter(item =>
+    const safeData = Array.isArray(data) ? data : [];
+    return safeData.filter(item =>
       item.title.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, data]);
@@ -57,8 +58,13 @@ const App = ({ data = [] }) => {
           }}
         />
       </Box>
+
       {filteredData.length === 0 ? (
-        <Typography variant="h6" align="center" sx={{ mt: 4, color: 'text.secondary' }}>
+        <Typography
+          variant="h6"
+          align="center"
+          sx={{ mt: 4, color: 'text.secondary', width: '100%' }}
+        >
           Nenhuma imagem encontrada
         </Typography>
       ) : (
@@ -68,12 +74,13 @@ const App = ({ data = [] }) => {
               key={id}
               sx={{
                 position: 'relative',
-                borderRadius: 2,
+                borderRadius: '12px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                "&:hover img": {
-                  filter: "blur(0)",
+                "&:hover": {
                   transform: "scale(1.03)",
+                  transition: "transform 0.3s ease",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
                 },
               }}
             >
@@ -82,16 +89,17 @@ const App = ({ data = [] }) => {
                 style={{ textDecoration: 'none', display: 'block' }}
                 aria-label={`Detalhes da foto: ${title}`}
               >
-
                 <LazyImage
                   dataSrc={img}
                   alt={title}
                   style={{
                     width: "100%",
                     display: "block",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                    transition: "transform 0.3s ease",
                   }}
                 />
-
               </NavLink>
 
               {/* Ícone Biblioteca */}
@@ -106,12 +114,12 @@ const App = ({ data = [] }) => {
                     variant="caption"
                     component="div"
                     sx={{
-                      color: 'white',
-                      textShadow: '1px 1px 3px rgba(0,0,0,0.8)',
-                      fontWeight: 'bold',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
+                      color: "white",
+                      textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+                      fontWeight: "bold",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {title}
