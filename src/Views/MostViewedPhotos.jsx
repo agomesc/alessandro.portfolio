@@ -51,7 +51,7 @@ const MostViewedGallery = ({ userID }) => {
   }
 
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 10 }}>
       <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
         <TypographyTitle src="Fotos mais vistas" gutterBottom />
       </Suspense>

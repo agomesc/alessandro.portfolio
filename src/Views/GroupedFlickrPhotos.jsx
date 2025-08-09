@@ -65,7 +65,7 @@ const GroupedFlickrPhotos = () => {
   }
 
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 15, mb: 10 }}>
       <TypographyTitle src="Linha do Tempo" />
 
       {photosByYear.map(({ year, photos }) => {

@@ -38,11 +38,11 @@ const Gallery = () => {
 
   return (
     <>
-      <ContentContainer sx={{ mt: 20 }}>
-        <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
+        <Suspense fallback={<CustomSkeleton variant="text" height="20" />}>
           <TypographyTitle src="Galeria de Fotos" />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton width="600" height="300" />}>
+        <Suspense fallback={<CustomSkeleton height="300" />}>
           <ImageThumbs data={galleryData} />
         </Suspense>
       </ContentContainer>

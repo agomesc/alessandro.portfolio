@@ -12,9 +12,9 @@ const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
-// const LojaDeFotos = lazy(() => import("./Views/LojaDeFotos"));
 const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 const FollowComponent = lazy(() => import("./Components/FollowComponent"));
+const RandomAffiliateAd = lazy(() => import("./Views/RandomAffiliateAd"));
 
 const App = () => {
 	const location = useLocation();
@@ -54,6 +54,9 @@ const App = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
 				<ViewComponent id="Gallery" />
 			</Box>
+			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+				<RandomAffiliateAd />	
+			</Box>			
 			<NavigationButtons />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>

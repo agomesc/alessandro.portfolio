@@ -72,7 +72,7 @@ const EquipmentValueCalculator = () => {
 
   return (
     <Suspense fallback={<CustomSkeleton height={300} />}>
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
         <TypographyTitle src="Calcular Valor Estimado" />
         <Paper elevation={3} sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
           <Box display="flex" justifyContent="center" mb={1}>

@@ -69,7 +69,7 @@ const App = () => {
 
   return (
     <Suspense fallback={<CustomSkeleton />}>
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
 
         <TypographyTitle src="Galeria de Fotos" />
 

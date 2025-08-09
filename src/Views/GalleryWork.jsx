@@ -56,7 +56,7 @@ const GalleryWork = () => {
     }
     return (
         <>
-            <ContentContainer sx={{ mt: 20 }}>
+            <ContentContainer sx={{ mt: 15, mb: 10 }}>
                 <Suspense fallback={<CustomSkeleton variant="text" width="100" height="20" />}>
                     <TypographyTitle src="Meus Trabalhos" />
                 </Suspense>

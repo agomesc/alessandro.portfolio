@@ -51,7 +51,7 @@ Esta política é efetiva a partir de 5 de agosto de 2025 às 9:45.`,
                 description={description}
             />
 
-            <ContentContainer sx={{ mt: 20 }}>
+            <ContentContainer sx={{ mt: 15, mb: 10 }}>
                 <TypographyTitle src="Política de Privacidade e Termos de Uso" />
                 <Paper
                     elevation={3}

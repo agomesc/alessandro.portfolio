@@ -75,9 +75,9 @@ const GalleryDetail = () => {
 
     return (
         <>
-            <ContentContainer sx={{ mt: 20 }}>
-                <Suspense fallback={<CustomSkeleton />}>
-                    <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#78884c' }}>
+            <ContentContainer sx={{ mt: 15, mb: 10 }}>
+                <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
+                    <Typography variant="h4" component="h1" gutterBottom>
                         {gallery.title}
                     </Typography>
                 </Suspense>

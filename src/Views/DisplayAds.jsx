@@ -63,10 +63,8 @@ const App = () => {
 
     return (
         <Suspense fallback={<CustomSkeleton />}>
-            <ContentContainer sx={{ mt: 20 }}>
-
+            <ContentContainer sx={{ mt: 15, mb: 10 }}>
                 <TypographyTitle src="Conteúdos" />
-
 
                 {/* Changed display to 'block' for vertical stacking of cards */}
                 <Box

@@ -7,7 +7,7 @@ const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const Transparencia = () => {
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 15, mb: 10 }}>
       <TypographyTitle src="Página de Transparência" />
       <Paper elevation={3} sx={{ whiteSpace: 'pre-wrap', textAlign: "justify", p: 5, border: 0, boxShadow: 0 }}>
         <Typography component="div" variant="subtitle1">Quem Sou?</Typography>

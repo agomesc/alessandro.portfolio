@@ -13,7 +13,14 @@ const ContentContainer = ({ children, sx = {} }) => (
         xl: '80%',
       },
       margin: '0 auto',
-      padding: '0 20px',
+      padding: {
+        xs: '24px 16px',
+        sm: '32px 24px',
+        md: '40px 32px',
+      }, // espaçamento interno maior
+      backgroundColor: '#ffffff',
+      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+      borderRadius: '5px',
       ...sx,
     }}
   >

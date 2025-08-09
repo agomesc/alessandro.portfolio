@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 const LinkPreview = lazy(() => import('../Components/LinkPreview'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
-const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 
 const ListContentWithPagination = () => {
@@ -70,8 +69,7 @@ const ListContentWithPagination = () => {
   );
 
   return (
-    <Suspense fallback={<CustomSkeleton height={300} />}>
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
         <TypographyTitle src={title} />
         <Typography
           variant="body1"
@@ -137,6 +135,7 @@ const ListContentWithPagination = () => {
             color="primary"
           />
         </Box>
+        <Suspense fallback={null }>
         <SocialMetaTags
           title={title}
           image="/logo-512.png"
@@ -144,9 +143,9 @@ const ListContentWithPagination = () => {
           url={`${window.location.origin}/listContentWithPagination`}
           type="website"
         />
+        </Suspense>
 
       </ContentContainer>
-    </Suspense>
   );
 };
 

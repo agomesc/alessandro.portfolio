@@ -9,7 +9,7 @@ const ContentContainer = React.lazy(() => import('../Components/ContentContainer
 const App = () => {
 
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 15, mb: 10 }}>
       <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
         <TypographyTitle src="Feeds" />
       </Suspense>

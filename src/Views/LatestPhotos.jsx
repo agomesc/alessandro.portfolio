@@ -44,7 +44,7 @@ const LatestPhotos = () => {
 
   return (
     <>
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
         <Suspense fallback={<CustomSkeleton variant="texte" width={100} height={10} />}>
           <TypographyTitle src="Atualizações" />
         </Suspense>

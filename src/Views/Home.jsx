@@ -6,7 +6,7 @@ import {
     useDeferredValue,
     useRef,
     useCallback,
-    
+
 } from "react";
 
 import CreateFlickrApp from "../shared/CreateFlickrApp";
@@ -15,13 +15,13 @@ import {
     Tabs,
     Tab,
     useMediaQuery,
-    useTheme 
+    useTheme
 } from "@mui/material";
 
 
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import BrushIcon from "@mui/icons-material/Brush";
-import StarIcon from "@mui/icons-material/Star"; 
+import StarIcon from "@mui/icons-material/Star";
 
 const SwipeableSlider = lazy(() => import("../Components/SwipeableSlider"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
@@ -30,6 +30,7 @@ const MostViewedPhotos = lazy(() => import("./MostViewedPhotos"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
 const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
+const DisplayAds = lazy(() => import("./DisplayAds"));
 
 const Home = () => {
     const theme = useTheme();
@@ -179,8 +180,12 @@ const Home = () => {
                 {tabIndex === 0 || tabIndex === 1 ? (
                     renderGalleryContent()
                 ) : (
-                        <MostViewedPhotos />
+                    <MostViewedPhotos />
                 )}
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
+                <DisplayAds />
             </Box>
 
             <Suspense fallback={null}>

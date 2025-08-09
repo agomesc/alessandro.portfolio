@@ -13,7 +13,7 @@ const App = ({ itemData = [], allUpdatesUrl = '/latestphotos' }) => {
   const navigate = useNavigate();
 
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 15, mb: 10 }}>
       <TypographyTitle src="Atualizações" />
 
       <Box

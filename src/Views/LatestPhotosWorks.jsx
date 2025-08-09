@@ -44,18 +44,18 @@ const LatestPhotos = () => {
 
   return (
     <>
-      <ContentContainer sx={{ mt: 20 }}>
-        <Suspense fallback={<CustomSkeleton />}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
+        <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
           <TypographyTitle src="Atualizações" />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton height={300} />}>
           <PhotoGrid itemData={galleryData} />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton height={300} />}>
           <CommentBox itemID="LatestPhotos" />
         </Suspense>
       </ContentContainer>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={null}>
         <SocialMetaTags
           title={metaData.title}
           image={metaData.image}

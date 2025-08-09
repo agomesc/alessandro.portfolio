@@ -67,7 +67,7 @@ const Photos = () => {
 
   return (
     <>
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
         <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
           <TypographyTitle src="Minhas Fotos" />
         </Suspense>
@@ -82,14 +82,14 @@ const Photos = () => {
         {showAlbumInfo && (
           <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
             <Typography component="div" sx={{ mt: 1, mb: 3 }} variant="subtitle1">
-              {galleryInfoData || <CustomSkeleton />}
+              {galleryInfoData || <CustomSkeleton variant="text" height={10} />}
             </Typography>
           </Suspense>
         )}
-        <Suspense fallback={<CustomSkeleton height={800} />}>
+        <Suspense fallback={<CustomSkeleton height={300} />}>
           <PhotoGallery src={galleryData} />
         </Suspense>
-        <Suspense fallback={<CustomSkeleton height={600} />}>
+        <Suspense fallback={<CustomSkeleton height={300} />}>
           <CommentBox itemID={id} />
         </Suspense>
         <Suspense fallback={null}>

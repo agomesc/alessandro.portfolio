@@ -82,7 +82,7 @@ function ContactForm() {
   };
 
   return (
-    <ContentContainer sx={{ mt: 20 }}>
+    <ContentContainer sx={{ mt: 20, mb: 10 }}>
       <Suspense fallback={<LoadingMessage />}>
         <TypographyTitle src="Contatos" />
       </Suspense>

@@ -104,7 +104,7 @@ const PhotoInfo = () => {
 
   if (loadingInitialData) {
     return (
-      <ContentContainer sx={{ mt: 20 }}>
+      <ContentContainer sx={{ mt: 15, mb: 10 }}>
         <TypographyTitle src="Informações da Foto" />
         <Skeleton
           variant="rectangular"
@@ -142,12 +142,12 @@ const PhotoInfo = () => {
 
   return (
     <>
-      <ContentContainer sx={{ mt: 20 }}>
-        <Suspense fallback={<CustomSkeleton />}>
+      <ContentContainer sx={{ mt: 15 }}>
+        <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
           <TypographyTitle src="Informações da Foto" />
         </Suspense>
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <Suspense fallback={<CustomSkeleton />}>
+          <Suspense fallback={<CustomSkeleton height={300} />}>
             <PhotoDashboard
               photoData={combinedPhotoData}
               onImageLoad={handleImageLoad}
@@ -159,18 +159,18 @@ const PhotoInfo = () => {
         </Box>
         {showAdditionalInfo && loadingExifData && (
           <Box sx={{ mt: 3, textAlign: 'center' }}>
-            <Suspense fallback={<CustomSkeleton />}>
+            <Suspense fallback={<CustomSkeleton variant="text" height={10} />}>
               <Typography variant="body1">Carregando detalhes EXIF...</Typography>
             </Suspense>
-            <Skeleton height={150} sx={{ mt: 1 }} />
+            <Skeleton height={150} />
           </Box>
         )}
 
-        <Suspense fallback={<CustomSkeleton />}>
+        <Suspense fallback={<CustomSkeleton height={300} />}>
           <CommentBox itemID={id} />
         </Suspense>
       </ContentContainer>
-      <Suspense fallback={<CustomSkeleton />}>
+      <Suspense fallback={null}>
         <SocialMetaTags
           title={metaData.title}
           image={metaData.image}

@@ -23,7 +23,7 @@ const About = () => {
 
     return (
         <Suspense fallback={<CustomSkeleton />}>
-            <ContentContainer sx={{ mt: 20 }}>
+            <ContentContainer sx={{ mt: 15, mb: 10 }}>
                 <TypographyTitle src={title} />
                 <PhotoDescription imageUrl="/logo_192.png" description={minhaDescricao} />
                 <CommentBox itemID="About" />
