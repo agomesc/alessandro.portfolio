@@ -1,16 +1,12 @@
 import React, { useEffect, useState, lazy, useMemo, useRef, Suspense } from "react";
 import CreateFlickrApp from "../shared/CreateFlickrApp";
-import {
-  Box,
-  CircularProgress,
-} from '@mui/material';
-
 
 const ImageThumbs = lazy(() => import("../Components/ImageThumbs"));
 const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const TypographyTitle = lazy(() => import("../Components/TypographyTitle"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const ContentContainer = lazy(() => import('../Components/ContentContainer'));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const GalleryWork = () => {
     const [galleryData, setGalleryData] = useState(null);
@@ -56,11 +52,7 @@ const GalleryWork = () => {
 
     
     if (loading) {
-        return (
-            <Box display="flex" justifyContent="center" mt={4}>
-                <CircularProgress />
-            </Box>
-        );
+        return <LoadingMessage />
     }
     return (
         <>

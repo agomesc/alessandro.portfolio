@@ -70,7 +70,7 @@ const ListContentWithPagination = () => {
   );
 
   return (
-    <Suspense fallback={<CustomSkeleton />}>
+    <Suspense fallback={<CustomSkeleton height={300} />}>
       <ContentContainer sx={{ mt: 20 }}>
         <TypographyTitle src={title} />
         <Typography

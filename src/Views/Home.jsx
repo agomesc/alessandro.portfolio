@@ -29,7 +29,7 @@ const Gallery = lazy(() => import("./Gallery"));
 const MostViewedPhotos = lazy(() => import("./MostViewedPhotos"));
 const GalleryWork = lazy(() => import("./GalleryWork"));
 const MessageSnackbar = lazy(() => import("../Components/MessageSnackbar"));
-const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const Home = () => {
     const theme = useTheme();
@@ -93,7 +93,7 @@ const Home = () => {
 
     const renderGalleryContent = () => {
         if (!deferredGalleryData || deferredGalleryData.length === 0) {
-            return <CustomSkeleton width={800} height={100} />;
+            return <LoadingMessage />;
         }
 
         return (

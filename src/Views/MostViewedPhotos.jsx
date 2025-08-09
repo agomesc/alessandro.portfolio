@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import CreateFlickrApp from "../shared/CreateFlickrApp";
 import {
   Box,
-  CircularProgress,
   Pagination,
 } from '@mui/material';
 
@@ -10,6 +9,7 @@ const ContentContainer = lazy(() => import('../Components/ContentContainer'));
 const TypographyTitle = lazy(() => import('../Components/TypographyTitle'));
 const PhotoGrid = lazy(() => import('../Components/PhotoGrid')); // ajuste o caminho se necessário
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const MostViewedGallery = ({ userID }) => {
   const [photos, setPhotos] = useState([]);
@@ -47,11 +47,7 @@ const MostViewedGallery = ({ userID }) => {
   );
 
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingMessage />
   }
 
   return (

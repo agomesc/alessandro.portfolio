@@ -7,6 +7,7 @@ const SocialMetaTags = lazy(() => import("../Components/SocialMetaTags"));
 const CommentBox = lazy(() => import("../Components/CommentBox"));
 const CustomSkeleton = lazy(() => import("../Components/CustomSkeleton"));
 const ContentContainer = lazy(() => import('../Components/ContentContainer'));
+const LoadingMessage = lazy(() => import("../Components/LoadingMessage"));
 
 const LatestPhotos = () => {
   const [galleryData, setGalleryData] = useState(null);
@@ -39,7 +40,7 @@ const LatestPhotos = () => {
     };
   }, [galleryData]);
 
-  if (!galleryData) return <CustomSkeleton />;
+  if (!galleryData) return <LoadingMessage/>;
 
   return (
     <>

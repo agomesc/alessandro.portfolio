@@ -6,6 +6,7 @@ const LoadingMessage = () => {
     <Box
       sx={{
         display: 'flex',
+        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
