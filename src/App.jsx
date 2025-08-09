@@ -12,7 +12,6 @@ const NavigationButtons = lazy(() => import("./Components/NavigationButtons"));
 const SocialShareBar = lazy(() => import("./Components/SocialShareBar"));
 const Footer = lazy(() => import("./Components/Footer"));
 const Menu = lazy(() => import("./Views/Menu"));
-const ViewComponent = lazy(() => import("./Components/ViewComponent"));
 const FollowComponent = lazy(() => import("./Components/FollowComponent"));
 const RandomAffiliateAd = lazy(() => import("./Views/RandomAffiliateAd"));
 
@@ -44,19 +43,10 @@ const App = () => {
 			<Menu darkMode={darkMode} toggleTheme={toggleTheme} />
 			<Routes />
 			{/* <LojaDeFotos /> */}
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<FollowComponent entityId="1" />
-			</Box>
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<SocialShareBar url={urlAtual} title="Compartilhe este site!" />
-			</Box>
+			<FollowComponent entityId="1" />
+			<SocialShareBar url={urlAtual} title="Compartilhe este site!" />
+			<RandomAffiliateAd />
 			<ProTip />
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<ViewComponent id="Gallery" />
-			</Box>
-			<Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-				<RandomAffiliateAd />	
-			</Box>			
 			<NavigationButtons />
 			<Footer darkMode={darkMode} />
 		</ThemeProvider>

@@ -184,9 +184,8 @@ const Home = () => {
                 )}
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', p: 10 }}>
-                <DisplayAds />
-            </Box>
+
+            <DisplayAds />
 
             <Suspense fallback={null}>
                 <SocialMetaTags
